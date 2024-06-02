@@ -1,0 +1,143 @@
+
+<!doctype html>
+<html dir="ltr" lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <title>migrations command tool</title>
+	<link rel="icon" href="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/orange_dark_grey/16x16/plain/tools.png" type="image/x-icon" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <style>
+      body {
+        background: #D8D8E8;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body class="p-5">
+	<div>
+		<h4>Base setting</h4>
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">Project</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="..\xxx.Service" project>
+		</div>
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">Context</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="DbContext" context>
+		</div>
+	</div>
+	<div>
+		<h4>migrations add</h4>
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">MigrationId</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="MigrationId" migration-id>
+		</div>
+		<div class="input-group mb-3">
+		  <input type="text" class="form-control" add-command>
+		  <div class="input-group-append">
+			<button class="btn btn-success" type="button" onclick="add();">Generate</button>
+		  </div>
+		</div>
+	</div>
+	
+	<div>
+		<h4>migrations remove</h4>
+		<div class="input-group mb-3">
+		  <input type="text" class="form-control" remove-command>
+		  <div class="input-group-append">
+			<button class="btn btn-success" type="button" onclick="remove();">Generate</button>
+		  </div>
+		</div>
+	</div>
+	
+	<div>
+		<h4>database update</h4>
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">MigrationId</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="MigrationId" migration-id-update>
+		  <div class="input-group-text bg-info">
+			<input class="form-check-input mt-0" type="checkbox" value="" migration-id-update-rollback>
+		  </div>
+		</div>
+		<div class="input-group mb-3">
+		  <input type="text" class="form-control" update-command>
+		  <div class="input-group-append">
+			<button class="btn btn-success" type="button" onclick="update();">Generate</button>
+		  </div>
+		</div>
+	</div>
+	
+
+  
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script>
+	
+		$(function(){
+			$("input[type='text']").on("click", function() {
+				$(this).select();
+			});
+			$("input").focus(function() {
+				$(this).select();
+			});
+			$("input").focusin(function() {
+				$(this).select();
+			});
+		})
+	
+		function add(){
+			let command = `dotnet ef migrations add `;
+			let project = $("[project]").val();
+			let context = $("[context]").val();
+			let migrationId = $("[migration-id]").val();
+			
+			if(migrationId)
+				command += `${migrationId} `;
+
+			if(context)
+				command += `--context ${context} `;
+
+			if(project)
+				command += `--project ${project} `;				
+		
+			$("[add-command]").val(command);
+		
+		}
+		
+		function remove(){
+			let command = `dotnet ef migrations remove `;
+			let project = $("[project]").val();
+			let context = $("[context]").val();
+			
+			if(context)
+				command += `--context ${context} `;
+
+			if(project)
+				command += `--project ${project} `;	
+				
+			$("[remove-command]").val(command);
+		}
+		
+		function update(){
+			let rollback = $("[migration-id-update-rollback]").prop("checked");
+			let command = `dotnet ef database update `;
+			let context = $("[context]").val();
+			let migrationId = $("[migration-id-update]").val();
+			
+			if(migrationId && rollback)
+				command += `${migrationId} `;
+				
+			if(context)
+				command += `--context ${context} `;
+				
+			$("[update-command]").val(command);
+		}
+	</script>
+  </body>
+</html>
