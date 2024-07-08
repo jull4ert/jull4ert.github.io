@@ -28,6 +28,16 @@
 		  </div>
 		  <input type="text" class="form-control" placeholder="DbContext" context>
 		</div>
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">OutputDir</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="Migrations/SqlServerMigrations" outputDir>
+		    <div class="input-group-append">
+				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('SqlServerMigrations');">SqlServerMigrations</button>
+				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('PostgreSQLMigrations');">PostgreSQLMigrations</button>
+			  </div>
+		</div>
 	</div>
 	<div>
 		<h4>migrations add</h4>
@@ -90,12 +100,17 @@
 				$(this).select();
 			});
 		})
+		
+		function outputDirAppend(obj){
+			$("[outputDir").val($("[outputDir").val() + "\\" + obj);
+		}
 	
 		function add(){
 			let command = `dotnet ef migrations add `;
 			let project = $("[project]").val();
 			let context = $("[context]").val();
 			let migrationId = $("[migration-id]").val();
+			let outputDir = $("[outputDir").val();
 			
 			if(migrationId)
 				command += `${migrationId} `;
@@ -104,7 +119,10 @@
 				command += `--context ${context} `;
 
 			if(project)
-				command += `--project ${project} `;				
+				command += `--project ${project} `;		
+
+			if(outputDir)
+				command += `--output-dir ${outputDir} `;					
 		
 			$("[add-command]").val(command);
 		
