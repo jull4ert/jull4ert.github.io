@@ -30,12 +30,12 @@
 		</div>
 		<div class="input-group mb-3">
 		  <div class="input-group-prepend">
-			<span class="input-group-text bg-info text-white">OutputDir</span>
+			<span class="input-group-text bg-info text-white">DatabaseProvider</span>
 		  </div>
-		  <input type="text" class="form-control" placeholder="Migrations/SqlServerMigrations" outputDir>
+		  <input type="text" class="form-control" placeholder="" databaseProvider>
 		    <div class="input-group-append">
-				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('SqlServerMigrations');">SqlServerMigrations</button>
-				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('PostgreSQLMigrations');">PostgreSQLMigrations</button>
+				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('SqlServer');">SqlServer</button>
+				<button class="btn btn-secondary" type="button" onclick="outputDirAppend('PostgreSql');">PostgreSql</button>
 			  </div>
 		</div>
 	</div>
@@ -102,7 +102,7 @@
 		})
 		
 		function outputDirAppend(obj){
-			$("[outputDir").val($("[outputDir").val() + "\\" + obj);
+			$("[databaseProvider").val($("[databaseProvider").val() + obj);
 		}
 	
 		function add(){
@@ -110,7 +110,7 @@
 			let project = $("[project]").val();
 			let context = $("[context]").val();
 			let migrationId = $("[migration-id]").val();
-			let outputDir = $("[outputDir").val();
+			let databaseProvider = $("[databaseProvider").val();
 			
 			if(migrationId)
 				command += `${migrationId} `;
@@ -121,8 +121,8 @@
 			if(project)
 				command += `--project ${project} `;		
 
-			if(outputDir)
-				command += `--output-dir ${outputDir} `;					
+			if(databaseProvider)
+				command += `-- --DatabaseProvider ${databaseProvider} `;					
 		
 			$("[add-command]").val(command);
 		
