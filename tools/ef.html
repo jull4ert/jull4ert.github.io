@@ -111,7 +111,6 @@
   
 	<script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script>
-	
 		$(function(){
 			$("input[type='text']").on("click", function() {
 				$(this).select();
@@ -125,15 +124,19 @@
 		})
 		
 		function setDatabaseProvider(obj, index){
-			let ms = $("[project]").val().split("\\")[1]?.split(".")[0];
-			
-			if(ms){
-				let dbContextArray = $(`table[msDbContext] tr[${ms}]`).find("td").toArray();
-				if(dbContextArray)
-					$("[context]").val(dbContextArray[index].innerText);
-					else
-					alert('not found');
-			}
+			let msDbContext = new Map(); 
+			msDbContext.set('agenda', ['AgendaSqlServerContext','AgendaPostgreSqlContext']);
+			msDbContext.set('identity', ['AppIdentitySqlServerContext','AppIdentityPostgreSqlContext']);
+			msDbContext.set('notification', ['NotificationSqlServerContext','NotificationPostgreSqlContext']);
+			msDbContext.set('order', ['OrderSqlServerContext','OrderPostgreSqlContext']);
+			msDbContext.set('routeMap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+		
+			let ms = $("[project]").val().split("\\")[1]?.split(".")[0].toLowerCase();
+		
+			if(ms && msDbContext.has(ms))
+				$("[context]").val(msDbContext.get(ms)[index]);
+			else
+				$("[context]").val("");
 		
 			$("[databaseProvider").val(obj);
 		}
