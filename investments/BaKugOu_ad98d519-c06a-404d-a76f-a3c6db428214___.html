@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.8.35/dayjs.min.js"></script>
+    
+    <script src="https://5gzcyybhxnieatjzpvgetg.on.drv.tw/WebPage/js/jquery-chefextend/1.8.15.min.js"></script>
+    <style>
+        table, th, td {border: #555555 solid 1px;border-spacing: 0;}
+        thead {background-color: #CAD4F0;}
+        hr {margin-bottom: 10px;}
+        .text-r {text-align: right;}
+        .text-l {text-align: left;}
+        .span-block {display: inline-block;margin-right: 15px;}
+        .color-r {color: #cc0000;}
+        .color-g {color: #00aa00;}
+    </style>
+</head>
+<body bgcolor="#f0f2f5" style="margin: 0; padding: 0; width: 100%; background-color: #f0f2f5;">
+<div style="width: 1440px; margin-left: auto; margin-right: auto; margin-bottom: 25px;">
+    
+
+
+
+<div>
+    <h1>爆豪日報</h1>
+    <span style="float: right; position: relative; top: -50px; color: #999999; font-size: smaller;">2024/07/15 22:56 release</span>
+</div>
+<hr />
+
+<div>
+    <ul ploys></ul>
+</div>
+
+<table width="100%" id="baKugOu">
+    <thead>
+    <tr class="text-r">
+        <th>Ploy</th>
+        <th onclick="sorting('stockId')">名稱/代號</th>
+        <th onclick="sorting('date')">顯示日</th>
+        <th onclick="sorting('daily.close')">收盤價</th>
+        <th class="text-l" onclick="sorting('cheapRate')">便宜價</th>
+        <th class="text-l" onclick="sorting('stockFarmerInfo.estimatedYields')">預估&備註</th>
+        <th class="text-l" style="width:60px;"></th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<template id="row">
+    <tr class="text-r" item>
+        <td c-model="shortPloy"></td>
+        <td>
+            <span c-model="name"></span><a stockId></a>
+        </td>
+        <td>
+            <span c-model="date"></span><br/>
+            <span c-model="yearSeason"></span>
+        </td>
+        <td c-model="daily.close" close></td>
+        <td class="text-l">
+            <ul cheapPrice></ul>
+        </td>
+        <td class="text-l">
+            <ul estimated></ul>
+        </td>
+        <td class="text-l"><a statementdog>財報狗</a></td>
+    </tr>
+</template>
+
+<script>
+    window.pageData = [{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"1108","name":"幸福","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"1108","stockName":"幸福","date":"2024-07-15T00:00:00","open":16.600,"high":16.650,"low":16.550,"close":16.600,"tradingShares":440020,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"1475","name":"業旺","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"1475","stockName":"業旺","date":"2024-07-15T00:00:00","open":67.700,"high":67.800,"low":65.700,"close":66.300,"tradingShares":335695,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"2109","name":"華豐","reductionNotice":"2021/03/18:彌補虧損","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2109","stockName":"華豐","date":"2024-07-15T00:00:00","open":19.350,"high":19.350,"low":19.000,"close":19.000,"tradingShares":658862,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"2459","name":"敦吉","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2459","stockName":"敦吉","date":"2024-07-15T00:00:00","open":73.400,"high":73.500,"low":73.200,"close":73.200,"tradingShares":60918,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"2739","name":"寒舍","reductionNotice":"2022/08/11:彌補虧損","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2739","stockName":"寒舍","date":"2024-07-15T00:00:00","open":64.000,"high":65.800,"low":63.400,"close":64.800,"tradingShares":684957,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"2745","name":"五福","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2745","stockName":"五福","date":"2024-07-15T00:00:00","open":124.500,"high":125.000,"low":122.500,"close":123.000,"tradingShares":288000,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"2852","name":"第一保","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2852","stockName":"第一保","date":"2024-07-15T00:00:00","open":25.100,"high":25.100,"low":24.600,"close":24.600,"tradingShares":302547,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"3188","name":"鑫龍騰","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"3188","stockName":"鑫龍騰","date":"2024-07-15T00:00:00","open":42.550,"high":42.550,"low":40.100,"close":40.600,"tradingShares":3223000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"3266","name":"昇陽","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"3266","stockName":"昇陽","date":"2024-07-15T00:00:00","open":24.650,"high":25.800,"low":24.600,"close":25.300,"tradingShares":659359,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"3390","name":"旭軟","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"3390","stockName":"旭軟","date":"2024-07-15T00:00:00","open":34.000,"high":34.000,"low":33.250,"close":33.800,"tradingShares":419000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"3501","name":"維熹","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"3501","stockName":"維熹","date":"2024-07-15T00:00:00","open":73.800,"high":74.900,"low":73.800,"close":74.700,"tradingShares":434311,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"3679","name":"新至陞","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"3679","stockName":"新至陞","date":"2024-07-15T00:00:00","open":137.500,"high":137.500,"low":136.500,"close":136.500,"tradingShares":71180,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"4107","name":"邦特","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"4107","stockName":"邦特","date":"2024-07-15T00:00:00","open":133.500,"high":134.500,"low":133.000,"close":134.500,"tradingShares":42000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"4952","name":"凌通","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"4952","stockName":"凌通","date":"2024-07-15T00:00:00","open":67.800,"high":69.900,"low":66.600,"close":68.300,"tradingShares":2628189,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6212","name":"理銘","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6212","stockName":"理銘","date":"2024-07-15T00:00:00","open":76.400,"high":78.700,"low":76.400,"close":78.500,"tradingShares":34000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6221","name":"晉泰","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6221","stockName":"晉泰","date":"2024-07-15T00:00:00","open":87.200,"high":87.300,"low":87.000,"close":87.100,"tradingShares":24000,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6486","name":"互動","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6486","stockName":"互動","date":"2024-07-15T00:00:00","open":99.200,"high":99.300,"low":98.400,"close":99.000,"tradingShares":326000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6667","name":"信紘科","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6667","stockName":"信紘科","date":"2024-07-15T00:00:00","open":198.000,"high":204.000,"low":197.500,"close":201.000,"tradingShares":1025000,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6727","name":"亞泰金屬","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6727","stockName":"亞泰金屬","date":"2024-07-15T00:00:00","open":68.300,"high":68.300,"low":67.600,"close":68.000,"tradingShares":177000,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"6754","name":"匯僑設計","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6754","stockName":"匯僑設計","date":"2024-07-15T00:00:00","open":63.500,"high":63.500,"low":62.800,"close":62.900,"tradingShares":64986,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"8446","name":"華研","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"8446","stockName":"華研","date":"2024-07-15T00:00:00","open":109.500,"high":109.500,"low":108.500,"close":109.000,"tradingShares":135000,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-15T00:00:00","stockId":"8463","name":"潤泰材","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"8463","stockName":"潤泰材","date":"2024-07-15T00:00:00","open":30.250,"high":32.500,"low":30.250,"close":32.000,"tradingShares":1494180,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-12T00:00:00","stockId":"5225","name":"東科-KY","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"5225","stockName":"東科-KY","date":"2024-07-15T00:00:00","open":126.500,"high":138.000,"low":125.500,"close":138.000,"tradingShares":4579092,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-10T00:00:00","stockId":"1524","name":"耿鼎","reductionNotice":"2020/10/22:退還股款","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"1524","stockName":"耿鼎","date":"2024-07-15T00:00:00","open":32.900,"high":33.000,"low":32.500,"close":32.600,"tradingShares":1624492,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-10T00:00:00","stockId":"1580","name":"新麥","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"1580","stockName":"新麥","date":"2024-07-15T00:00:00","open":149.500,"high":149.500,"low":147.500,"close":148.000,"tradingShares":135000,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-10T00:00:00","stockId":"2228","name":"劍麟","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2228","stockName":"劍麟","date":"2024-07-15T00:00:00","open":106.000,"high":108.000,"low":106.000,"close":106.500,"tradingShares":649098,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-07-10T00:00:00","stockId":"5464","name":"霖宏","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"5464","stockName":"霖宏","date":"2024-07-15T00:00:00","open":31.500,"high":31.600,"low":31.300,"close":31.300,"tradingShares":66000,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-10T00:00:00","stockId":"8467","name":"波力-KY","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"8467","stockName":"波力-KY","date":"2024-07-15T00:00:00","open":198.500,"high":202.000,"low":193.000,"close":197.000,"tradingShares":363820,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-09T00:00:00","stockId":"2832","name":"台產","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2832","stockName":"台產","date":"2024-07-15T00:00:00","open":28.600,"high":28.700,"low":28.450,"close":28.550,"tradingShares":197059,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2024-07-09T00:00:00","stockId":"6613","name":"朋億*","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"6613","stockName":"朋億*","date":"2024-07-15T00:00:00","open":177.500,"high":177.500,"low":174.500,"close":176.500,"tradingShares":102000,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"小資","date":"2024-07-04T00:00:00","stockId":"2514","name":"龍邦","reductionNotice":"2019/12/05:退還股款","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"2514","stockName":"龍邦","date":"2024-07-15T00:00:00","open":25.250,"high":25.550,"low":25.100,"close":25.400,"tradingShares":1015329,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-06-28T00:00:00","stockId":"5519","name":"隆大","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"5519","stockName":"隆大","date":"2024-07-15T00:00:00","open":49.950,"high":52.900,"low":49.450,"close":51.100,"tradingShares":6656610,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2024-06-26T00:00:00","stockId":"1472","name":"三洋實業","reductionNotice":"2021/10/07:彌補虧損","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"daily":{"stockId":"1472","stockName":"三洋實業","date":"2024-07-15T00:00:00","open":67.000,"high":67.000,"low":66.600,"close":66.800,"tradingShares":49965,"tempDecimal":0.0},"dailyColor":"#65B206"}];
+    window.sortingSet = { column: "date", dir: 1 };
+    window.showPloys = [];
+
+    $(function () {
+        bindCheckboxes();
+        bindData();
+    });
+
+    function bindCheckboxes() {
+        var ploys = window.pageData.map(x => x.shortPloy).filter((i, index, self) => index === self.indexOf(i));
+        window.showPloys = ploys;
+
+        $("ul[ploys]").empty();
+
+        ploys.map(p => {
+            $("ul[ploys]").append(`<li><input type="checkbox" id="${p}" value="${p}" onchange="changeShowPloys(this);" checked/><label for="${p}">${p}<label></li>`);
+        });
+    }
+
+    function changeShowPloys(obj) {
+        var $input = $(obj);
+
+        if ($input.prop("checked")) {
+            window.showPloys.push($input.val());
+        } else {
+            window.showPloys = window.showPloys.filter(x => x !== $input.val());
+        }
+
+        bindData();
+    }
+
+    function sorting(column) {
+        window.sortingSet.column = column;
+        bindData();
+        window.sortingSet.dir = window.sortingSet.dir * -1;
+    }
+
+    function bindData() {
+
+        var temp = window.pageData
+            .filter(x => window.showPloys.indexOf(x.shortPloy) > -1)
+            .map(x => {
+                var cheapPriceBase = x.stockFarmerInfo?.cheapPriceWhatIf ?? x.stockFarmerInfo?.cheapPrice ?? 9999;
+                x.cheapRate = x.daily.close / cheapPriceBase;
+                return x;
+            })
+            .sort(sortRule);
+
+        $("tbody")
+            .empty()
+            .models(temp,
+                $("#row").template(),
+                ($self, setter) => {
+
+                    $self.find("a[stockId]")
+                        .html(setter.stockId)
+                        .attr("href", `https://www.wantgoo.com/stock/${setter.stockId}/technical-chart`);
+
+                    $self.find("a[statementdog]")
+                        .attr("href", `https://statementdog.com/analysis/${setter.stockId}/stock-health-check`);
+
+                    $self.model("date", dayjs(setter.date).format("MM/DD"));
+
+                    $self.find("td[close]").css("color", setter.dailyColor);
+
+                    var stockFarmerInfo = setter.stockFarmerInfo;
+                    if (stockFarmerInfo) {
+                        if (stockFarmerInfo.cheapPrice) {
+                            var prices = [
+                                {
+                                    title: "價A",
+                                    price: stockFarmerInfo.cheapPrice,
+                                }, {
+                                    title: "價B",
+                                    price: stockFarmerInfo.cheapPriceWhatIf,
+                                }
+                            ].map(x => {
+                                x.color = x.price > setter.daily.close ? "#FF7777" : "#000000";
+                                return x;
+                            });
+
+                            prices.map(x => {
+                                $self.find("ul[cheapPrice]")
+                                    .append(`<li>${x.title}<span style="color:${x.color}">${x.price.toFixed(2)}<span></li>`);
+                            });
+
+                            var estimateds = [
+                                `預估股息:${stockFarmerInfo.estimatedCashDividend.toFixed(2)}`,
+                                `預估EPS:${stockFarmerInfo.estimatedEPS.toFixed(2)}`,
+                                `預估YR:${(stockFarmerInfo.estimatedYields * 100).toFixed(2)}%`,
+                            ];
+
+                            if (stockFarmerInfo.hasFuture) estimateds.push("股期");
+
+                            if (stockFarmerInfo.reductionNotice) estimateds.push(stockFarmerInfo.reductionNotice);
+
+                            estimateds.map(x => { $self.find("ul[estimated]").append(`<li>${x}</li>`); });
+                        }
+                    }
+                });
+
+        $("tr[item]").on("click", highLight);
+
+        $("tbody li").css("float", "left").css("display", "block").css("padding-right", "12px");//.css("width", "140px");
+    }
+
+    function highLight() {
+        $(this).siblings().css("background-color", "#f0f2f5");
+        $(this).css("background-color", "#f0d0d0");
+    }
+
+    function sortRule(a, b) {
+
+        var keys = window.sortingSet.column.split('.');
+
+        try {
+            switch (keys.length) {
+                case 1:
+                    return (a[keys[0]] - b[keys[0]]) * window.sortingSet.dir;
+                case 2:
+                    return (a[keys[0]][keys[1]] - b[keys[0]][keys[1]]) * window.sortingSet.dir;
+            }
+            
+        } catch (e) {} 
+
+        return 0;
+    }
+</script>
+
+
+</div>
+</body>
+
+</html>
