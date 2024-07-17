@@ -28,6 +28,15 @@
 		  </div>
 		  <input type="text" class="form-control" placeholder="DbContext" context>
 		</div>
+		
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">Connection</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="connection 不用引號" connection>
+		</div>
+		
+		
 		<div class="input-group mb-3">
 		  <div class="input-group-prepend">
 			<span class="input-group-text bg-info text-white">DatabaseProvider</span>
@@ -103,8 +112,9 @@
 			msDbContext.set('agenda', ['AgendaSqlServerContext','AgendaPostgreSqlContext']);
 			msDbContext.set('identity', ['AppIdentitySqlServerContext','AppIdentityPostgreSqlContext']);
 			msDbContext.set('notification', ['NotificationSqlServerContext','NotificationPostgreSqlContext']);
-			msDbContext.set('order', ['OrderSqlServerContext','OrderPostgreSqlContext']);
-			msDbContext.set('routeMap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('ordering', ['OrderSqlServerContext','OrderPostgreSqlContext']);
+			msDbContext.set('routejap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('productcarbonfootprint', ['ProductCarbonFootprintSqlServerContext','ProductCarbonFootprintPostgreSqlContext']);
 		
 			let ms = $("[project]").val().split("\\")[1]?.split(".")[0].toLowerCase();
 		
@@ -121,19 +131,18 @@
 			let project = $("[project]").val();
 			let context = $("[context]").val();
 			let migrationId = $("[migration-id]").val();
+			let connection = $("[connection]").val();
 			let databaseProvider = $("[databaseProvider").val();
 			
-			if(migrationId)
-				command += `${migrationId} `;
+			if(migrationId) command += `${migrationId} `;
 
-			if(context)
-				command += `--context ${context} `;
+			if(context) command += `--context ${context} `;
 
-			if(project)
-				command += `--project ${project} `;		
+			if(project) command += `--project ${project} `;		
+			
+			if(connection) command += `--connection "${connection}" `;		
 
-			if(databaseProvider)
-				command += `-- --DatabaseProvider ${databaseProvider} `;					
+			if(databaseProvider) command += `-- --DatabaseProvider ${databaseProvider} `;					
 		
 			$("[add-command]").val(command);
 		
