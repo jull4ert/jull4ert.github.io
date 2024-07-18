@@ -110,11 +110,19 @@
 		function setDatabaseProvider(obj, index){
 			let msDbContext = new Map(); 
 			msDbContext.set('agenda', ['AgendaSqlServerContext','AgendaPostgreSqlContext']);
+			msDbContext.set('customs', ['CustomsSqlServerContext','CustomsPostgreSqlContext']);
+			msDbContext.set('datacenter', ['DataCenterSqlServerContext','DataCenterPostgreSqlContext']);
+			msDbContext.set('ghg2crm', ['GHG2CRMSqlServerContext','GHG2CRMPostgreSqlContext']);
 			msDbContext.set('identity', ['AppIdentitySqlServerContext','AppIdentityPostgreSqlContext']);
+			//msDbContext.set('lcidata', ['LCIDataSqlServerContext','LCIDataPostgreSqlContext']);
 			msDbContext.set('notification', ['NotificationSqlServerContext','NotificationPostgreSqlContext']);
 			msDbContext.set('ordering', ['OrderSqlServerContext','OrderPostgreSqlContext']);
-			msDbContext.set('routejap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('organizationinventory', ['OrganizationInventorySqlServerContext','OrganizationInventoryPostgreSqlContext']);
 			msDbContext.set('productcarbonfootprint', ['ProductCarbonFootprintSqlServerContext','ProductCarbonFootprintPostgreSqlContext']);
+			msDbContext.set('routejap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('supplierreply', ['SupplierReplySqlServerContext','SupplierReplyPostgreSqlContext']);
+			msDbContext.set('supplychain', ['SupplyChainSqlServerContext','SupplyChainPostgreSqlContext']);
+			
 		
 			let ms = $("[project]").val().split("\\")[1]?.split(".")[0].toLowerCase();
 		
