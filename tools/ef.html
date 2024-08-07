@@ -20,7 +20,7 @@
 		  <div class="input-group-prepend">
 			<span class="input-group-text bg-info text-white">Project</span>
 		  </div>
-		  <input type="text" class="form-control" placeholder="..\xxx.Service" project>
+		  <input type="text" class="form-control" placeholder="..\xxx.存放Migration專案" project>
 		</div>
 		<div class="input-group mb-3">
 		  <div class="input-group-prepend">
@@ -28,6 +28,15 @@
 		  </div>
 		  <input type="text" class="form-control" placeholder="DbContext" context>
 		</div>
+		
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+			<span class="input-group-text bg-info text-white">Connection</span>
+		  </div>
+		  <input type="text" class="form-control" placeholder="connection 不用引號" connection>
+		</div>
+		
+		
 		<div class="input-group mb-3">
 		  <div class="input-group-prepend">
 			<span class="input-group-text bg-info text-white">DatabaseProvider</span>
@@ -101,10 +110,19 @@
 		function setDatabaseProvider(obj, index){
 			let msDbContext = new Map(); 
 			msDbContext.set('agenda', ['AgendaSqlServerContext','AgendaPostgreSqlContext']);
+			msDbContext.set('customs', ['CustomsSqlServerContext','CustomsPostgreSqlContext']);
+			msDbContext.set('datacenter', ['DataCenterSqlServerContext','DataCenterPostgreSqlContext']);
+			msDbContext.set('ghg2crm', ['GHG2CRMSqlServerContext','GHG2CRMPostgreSqlContext']);
 			msDbContext.set('identity', ['AppIdentitySqlServerContext','AppIdentityPostgreSqlContext']);
+			//msDbContext.set('lcidata', ['LCIDataSqlServerContext','LCIDataPostgreSqlContext']);
 			msDbContext.set('notification', ['NotificationSqlServerContext','NotificationPostgreSqlContext']);
-			msDbContext.set('order', ['OrderSqlServerContext','OrderPostgreSqlContext']);
-			msDbContext.set('routeMap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('ordering', ['OrderSqlServerContext','OrderPostgreSqlContext']);
+			msDbContext.set('organizationinventory', ['OrganizationInventorySqlServerContext','OrganizationInventoryPostgreSqlContext']);
+			msDbContext.set('productcarbonfootprint', ['ProductCarbonFootprintSqlServerContext','ProductCarbonFootprintPostgreSqlContext']);
+			msDbContext.set('routemap', ['RouteMapSqlServerContext','RouteMapPostgreSqlContext']);
+			msDbContext.set('supplierreply', ['SupplierReplySqlServerContext','SupplierReplyPostgreSqlContext']);
+			msDbContext.set('supplychain', ['SupplyChainSqlServerContext','SupplyChainPostgreSqlContext']);
+			
 		
 			let ms = $("[project]").val().split("\\")[1]?.split(".")[0].toLowerCase();
 		
@@ -121,19 +139,18 @@
 			let project = $("[project]").val();
 			let context = $("[context]").val();
 			let migrationId = $("[migration-id]").val();
+			let connection = $("[connection]").val();
 			let databaseProvider = $("[databaseProvider").val();
 			
-			if(migrationId)
-				command += `${migrationId} `;
+			if(migrationId) command += `${migrationId} `;
 
-			if(context)
-				command += `--context ${context} `;
+			if(context) command += `--context ${context} `;
 
-			if(project)
-				command += `--project ${project} `;		
+			if(project) command += `--project ${project} `;		
+			
+			if(connection) command += `--connection "${connection}" `;		
 
-			if(databaseProvider)
-				command += `-- --DatabaseProvider ${databaseProvider} `;					
+			if(databaseProvider) command += `-- --DatabaseProvider ${databaseProvider} `;					
 		
 			$("[add-command]").val(command);
 		
