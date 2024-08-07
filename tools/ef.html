@@ -148,7 +148,7 @@
 
 			if(project) command += `--project ${project} `;		
 			
-			if(connection) command += `--connection "${connection}" `;		
+			//if(connection) command += `--connection "${connection}" `;		
 
 			if(databaseProvider) command += `-- --DatabaseProvider ${databaseProvider} `;					
 		
@@ -175,12 +175,15 @@
 			let command = `dotnet ef database update `;
 			let context = $("[context]").val();
 			let migrationId = $("[migration-id-update]").val();
+			let connection = $("[connection]").val();
 			
 			if(migrationId && rollback)
 				command += `${migrationId} `;
 				
 			if(context)
 				command += `--context ${context} `;
+				
+			if(connection) command += `--connection "${connection}" `;		
 				
 			$("[update-command]").val(command);
 		}
