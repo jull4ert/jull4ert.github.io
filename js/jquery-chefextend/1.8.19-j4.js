@@ -235,11 +235,15 @@
             if (this.is(":radio")) return $("input[type='radio'][name='" + this.attr("name") + "']:checked").val();
 
             if (this.is(":checkbox")) {
-                if (this.attr("value")) {
-                    return this.prop("checked") ? this.val() : undefined;
-                } else {
-                    return this.prop("checked");
-                }
+				if (this.attr("name")) {
+					return $("input[name='" + this.attr("name") +"']:checked").map((index, x)=> $(x).val()).toArray();
+				} else {
+					if (this.attr("value")) {
+						return this.prop("checked") ? this.val() : undefined;
+					} else {
+						return this.prop("checked");
+					}
+				}
             }
 
             if (this.is("[contenteditable]")) {
@@ -252,11 +256,27 @@
             if (this.is(":radio")) {
                 $("input[type='radio'][name='" + this.attr("name") + "']").prop("checked", false).filter("[value='" + value + "']").prop("checked", true);
             } else if (this.is(":checkbox")) {
-                if (this.attr("value")) {
-                    this.prop("checked", this.val() === value.toString());
-                } else {
-                    this.prop("checked", value);
-                }
+				
+				if (this.attr("name")) {
+					
+					if (Array.isArray(value)) {
+						$("input[name='" + this.attr("name") +"']").map((index, x)=> {
+							$(x).prop("checked", value.indexOf($(x).val()) > -1);
+						});
+					} else {
+						$("input[name='" + this.attr("name") +"']").map((index, x)=> {
+							$(x).prop("checked", value === $(x).val());
+						});						
+					}
+
+				} else {
+					if (this.attr("value")) {
+						this.prop("checked", this.val() === value.toString());
+					} else {
+						this.prop("checked", value);
+					}
+				}
+                
             } else {
                 this.val(value);
             }
