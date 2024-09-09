@@ -1,0 +1,37 @@
+@echo off
+setlocal
+
+:: 檢查是否提供了解決方案名稱
+if "%~1"=="" (
+    echo 請提供解決方案名稱
+    exit /b 1
+)
+
+set SOLUTION_NAME=%~1
+
+:: 建立解決方案
+dotnet new sln -n %SOLUTION_NAME%
+
+:: 建立專案
+dotnet new mvc -n %SOLUTION_NAME%.Web
+dotnet new classlib -n %SOLUTION_NAME%.Logic
+dotnet new classlib -n %SOLUTION_NAME%.Physical
+dotnet new classlib -n %SOLUTION_NAME%.Protocol
+
+:: 將專案新增至解決方案
+dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj
+dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj
+dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
+dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+
+:: 新增項目引用
+dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj
+dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
+dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+
+dotnet add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj reference %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
+dotnet add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+
+dotnet add %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+
+endlocal
