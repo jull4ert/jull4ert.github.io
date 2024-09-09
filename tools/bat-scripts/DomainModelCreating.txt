@@ -1,0 +1,97 @@
+@echo off
+setlocal
+
+REM 取得傳入的參數
+set modelName=%1
+set needService=%2
+set needRepository=%3
+
+REM 取前bat文件所在目錄
+set CURRENT_DIR=%~dp0
+
+REM 去除末尾的反斜杠
+set CURRENT_DIR=%CURRENT_DIR:~0,-1%
+
+REM 最后一層目錄名稱
+for %%i in ("%CURRENT_DIR%") do set LAST_FOLDER=%%~nxi
+set projectName=%LAST_FOLDER%
+
+
+
+set dirProtocolModels=%projectName%.Protocol\Models
+set dirProtocolLogic=%projectName%.Protocol\Logic
+set dirProtocolPhysical=%projectName%.Protocol\Physical
+set dirLogic=%projectName%.Logic\Services
+set dirPhysical=%projectName%.Physical\Repositories
+
+IF NOT EXIST %dirProtocolModels% (
+    mkdir %dirProtocolModels%
+)
+
+
+REM 產生model
+(
+    echo namespace %projectName%.Protocol.Models;
+    echo public class %modelName%
+    echo {
+    echo }
+) >> "%dirProtocolModels%\%modelName%.cs"
+
+REM 產生IService
+If "%needService%"=="1" (
+    
+    IF NOT EXIST %dirProtocolLogic% (
+        mkdir %dirProtocolLogic%
+    )
+
+    (
+        echo namespace %dirProtocolLogic:\=.%;
+        echo public interface I%modelName%Service
+        echo {
+        echo }
+    ) >> "%dirProtocolLogic%\I%modelName%Service.cs"
+    
+    IF NOT EXIST %dirLogic% (
+        mkdir %dirLogic%
+    )
+
+    (
+        echo using %dirProtocolLogic:\=.%;
+        echo namespace %dirLogic:\=.%;
+        echo public class %modelName%Service : I%modelName%Service
+        echo {
+        echo }
+    ) >> "%dirLogic%\%modelName%Service.cs"
+)
+
+REM 產生IRepository
+If "%needRepository%"=="1" (
+    
+    IF NOT EXIST %dirProtocolPhysical% (
+        mkdir %dirProtocolPhysical%
+    )
+
+    (
+        echo namespace %dirProtocolPhysical:\=.%;
+        echo public interface I%modelName%Repository : IRepository
+        echo {
+        echo }
+    ) >> "%dirProtocolPhysical%\I%modelName%Repository.cs"
+    
+    IF NOT EXIST %dirPhysical% (
+        mkdir %dirPhysical%
+    )
+
+    (
+        echo using Microsoft.EntityFrameworkCore;
+        echo using %dirProtocolPhysical:\=.%;
+        echo namespace %dirPhysical:\=.%;
+        echo public class %modelName%Repository : %projectName%RepositoryBase, I%modelName%Repository
+        echo {
+        echo }
+    ) >> "%dirPhysical%\%modelName%Repository.cs"
+)
+
+
+
+endlocal
