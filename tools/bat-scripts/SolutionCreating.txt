@@ -23,15 +23,21 @@ dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.cspro
 dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj
 dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
 dotnet sln %SOLUTION_NAME%.sln add %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+dotnet sln %SOLUTION_NAME%.sln add ..\Foundation\Foundation\Foundation.csproj
 
 :: 新增項目引用
 dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj
 dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
 dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+dotnet add %SOLUTION_NAME%.Web\%SOLUTION_NAME%.Web.csproj reference ..\Foundation\Foundation\Foundation.csproj
 
 dotnet add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj reference %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj
 dotnet add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+dotnet add %SOLUTION_NAME%.Logic\%SOLUTION_NAME%.Logic.csproj reference ..\Foundation\Foundation\Foundation.csproj
 
 dotnet add %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj reference %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj
+dotnet add %SOLUTION_NAME%.Physical\%SOLUTION_NAME%.Physical.csproj reference ..\Foundation\Foundation\Foundation.csproj
+
+dotnet add %SOLUTION_NAME%.Protocol\%SOLUTION_NAME%.Protocol.csproj reference ..\Foundation\Foundation\Foundation.csproj
 
 endlocal
