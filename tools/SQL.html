@@ -14,7 +14,6 @@
     </style>
 </head>
 <body>
-
     <h2>📌 貼上表結構資訊&nbsp;&nbsp;&nbsp;&nbsp; exec sp_columns &lt;&lt;TableName&gt;&gt;</h2>
     <textarea id="tableStructure" placeholder="貼上表結構資訊"></textarea>
 
@@ -31,12 +30,11 @@
     <h2>📌 產生的 SQL</h2>
     <pre id="sqlOutput"></pre>
 
-
     <script>
         function generateSQL(type) {
             const tableStructureText = $("#tableStructure").val().trim();
             const tableDataText = $("#tableData").val().trim();
-            const insertIdentity = $("#insertIdentity").prop("checked"); // 是否插入 Identity
+            const insertIdentity = $("#insertIdentity").prop("checked");
 
             if (!tableStructureText || !tableDataText) {
                 alert("請輸入表結構資訊和資料內容！");
@@ -45,19 +43,17 @@
 
             const structureLines = tableStructureText.split("\n").map(line => line.trim());
             const dataLines = tableDataText.split("\n").map(line => line.trim());
-
+            
             if (dataLines.length < 2) {
                 alert("資料內容格式不正確！");
                 return;
             }
 
-            // 解析欄位名稱
             const columnNames = dataLines[0].split("\t");
             const columnTypes = {};
-            const tableName = structureLines[1].split("\t")[2]; // 從結構資料取得 Table 名稱
+            const tableName = structureLines[1].split("\t")[2];
             let identityColumn = "";
 
-            // 解析欄位型別，判斷 Identity 欄位
             structureLines.forEach(line => {
                 const parts = line.split("\t");
                 if (parts.length >= 5) {
@@ -66,7 +62,7 @@
                     columnTypes[columnName] = typeName;
 
                     if (typeName.includes("identity")) {
-                        identityColumn = columnName; // 記錄 Identity 欄位名稱
+                        identityColumn = columnName;
                     }
                 }
             });
@@ -79,13 +75,15 @@
 
                 columnNames.forEach((col, index) => {
                     let value = values[index] === "NULL" ? "NULL" : values[index];
-                    const type = columnTypes[col] || "nvarchar"; // 預設 nvarchar
+                    const type = columnTypes[col] || "nvarchar";
                     
-                    // 如果是文字類型，需要加上單引號
                     if (type.includes("char") || type.includes("text") || type.includes("date")) {
                         value = value !== "NULL" ? `'${value}'` : value;
+                        if (type.includes("nvarchar")) {
+                            value = value.replace("'", "N'");
+                        }
                     }
-
+                    
                     columnData[col] = value;
                 });
 
@@ -94,7 +92,6 @@
                     let insertValues = Object.values(columnData);
 
                     if (!insertIdentity && identityColumn) {
-                        // 移除 Identity 欄位
                         const index = insertColumns.indexOf(identityColumn);
                         if (index !== -1) {
                             insertColumns.splice(index, 1);
@@ -110,9 +107,9 @@
 
                     sqlCommands.push(sql);
                 } else if (type === "update") {
-                    const idValue = columnData["Id"]; // 取出 Id 作為 WHERE 條件
-                    delete columnData["Id"]; // 移除 Id 欄位避免更新
-
+                    const idValue = columnData["Id"];
+                    delete columnData["Id"];
+                    
                     const setClause = Object.entries(columnData).map(([key, val]) => `${key} = ${val}`).join(", ");
                     const sql = `UPDATE ${tableName} SET ${setClause} WHERE Id = ${idValue};`;
                     sqlCommands.push(sql);
@@ -136,6 +133,5 @@
             });
         }
     </script>
-
 </body>
 </html>
