@@ -79,7 +79,7 @@
                     
                     if (type.includes("char") || type.includes("text") || type.includes("date")) {
                         value = value !== "NULL" ? `'${value}'` : value;
-                        if (type.includes("nvarchar")) {
+                        if (type.includes("nvarchar") || type.includes("ntext")) {
                             value = value.replace("'", "N'");
                         }
                     }
