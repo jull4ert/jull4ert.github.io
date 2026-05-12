@@ -44,7 +44,6 @@
         <input type="text" class="form-control" id="jsonPathInput" placeholder="例如：$.store.book[*].author">
         <button class="btn btn-success" id="runBtn">執行</button>
       </div>
-      <!-- 建議清單放在 input-group 外，但仍在同一個相對定位容器 -->
       <div id="suggestionBox"></div>
     </div>
   </div>
@@ -90,12 +89,20 @@
     import { JSONPath } from "https://cdn.jsdelivr.net/npm/jsonpath-plus@10.0.0/dist/index-browser-esm.min.js";
 
     const pathInput = document.getElementById("jsonPathInput");
+    const jsonInput = document.getElementById("jsonInput");
     const suggestionBox = document.getElementById("suggestionBox");
     let activeIndex = -1;
 
+    // 定義一個專門將 Unicode 轉為一般字元的函式
+    function decodeUnicode(str) {
+      return str.replace(/\\u([0-9a-fA-F]{4})/g, (match, grp) => {
+        return String.fromCharCode(parseInt(grp, 16));
+      });
+    }
+
     document.getElementById("runBtn").addEventListener("click", () => {
       try {
-        const json = JSON.parse(document.getElementById("jsonInput").value);
+        const json = JSON.parse(jsonInput.value);
         const path = pathInput.value;
         const result = JSONPath({ path, json });
         document.getElementById("output").value = JSON.stringify(result, null, 2);
@@ -138,7 +145,7 @@
       activeIndex = -1;
 
       try {
-        const json = JSON.parse(document.getElementById("jsonInput").value);
+        const json = JSON.parse(jsonInput.value);
         const path = pathInput.value;
 
         // "[" → 顯示 index 候選 (不補 "]")
@@ -225,15 +232,18 @@
       }
     }
 
-    // 貼上時自動嘗試格式化 JSON
-    document.getElementById("jsonInput").addEventListener("paste", (event) => {
-      const paste = (event.clipboardData || window.clipboardData).getData("text");
+    // 貼上時自動格式化 JSON 並轉換 Unicode
+    jsonInput.addEventListener("paste", (event) => {
+      const pasteData = (event.clipboardData || window.clipboardData).getData("text");
+      
       setTimeout(() => {
         try {
-          const json = JSON.parse(document.getElementById("jsonInput").value);
-          document.getElementById("jsonInput").value = JSON.stringify(json, null, 2);
+          // 第一層嘗試：如果是合法的 JSON 物件，直接 parse 並格式化（原生會轉掉 Unicode）
+          const json = JSON.parse(jsonInput.value);
+          jsonInput.value = JSON.stringify(json, null, 2);
         } catch {
-          document.getElementById("jsonInput").value = paste;
+          // 第二層保險：若不是合法 JSON 物件，強制用正則表達式把 \uXXXX 改為字元
+          jsonInput.value = decodeUnicode(pasteData);
         }
       }, 10);
     });
