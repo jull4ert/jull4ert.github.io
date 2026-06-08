@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大阪家庭旅遊手冊 6/13–6/17</title>
+<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1C1B18;
+  --paper: #FAF7F0;
+  --cream: #F2EDE0;
+  --stamp-red: #C0392B;
+  --stamp-blue: #1A3A6B;
+  --stamp-green: #1E6B45;
+  --stamp-orange: #C45E00;
+  --stamp-purple: #5B2A8C;
+  --gold: #B8860B;
+  --line: rgba(28,27,24,0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── COVER ── */
+.cover {
+  background: var(--stamp-blue);
+  padding: 30px 20px 24px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255,215,0,0.06) 0%, transparent 50%);
+}
+.cover-inner { position: relative; }
+.cover-top {
+  font-size: 0.65rem; letter-spacing: 4px;
+  color: rgba(255,255,255,0.5); margin-bottom: 10px; text-transform: uppercase;
+}
+.cover-title {
+  font-family: 'Kaisei Decol', serif;
+  font-size: 2rem; color: #fff;
+  line-height: 1.2; margin-bottom: 6px;
+}
+.cover-sub {
+  font-size: 0.78rem; color: rgba(255,255,255,0.7);
+  letter-spacing: 2px; margin-bottom: 18px;
+}
+.cover-dates {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 30px; padding: 8px 20px;
+  color: #fff; font-size: 0.82rem; font-weight: 700; letter-spacing: 1px;
+}
+.cover-dates .sep { color: rgba(255,255,255,0.4); }
+.family-tags {
+  display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+  margin-top: 14px;
+}
+.ftag {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.7rem; padding: 3px 10px; border-radius: 20px;
+}
+
+/* ── TABS ── */
+.tabs {
+  display: flex;
+  background: var(--ink);
+  position: sticky; top: 0; z-index: 100;
+}
+.tab-btn {
+  flex: 1; padding: 13px 2px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,0.5);
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.5px;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+.tab-btn.active { color: #FFD700; border-bottom-color: #FFD700; }
+.tab-btn:hover { color: rgba(255,255,255,0.85); }
+
+/* ── CONTENT ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── DAY CARDS ── */
+.day-section { padding: 0 14px 8px; }
+
+.day-header {
+  display: flex; align-items: center; gap: 0;
+  margin: 16px 0 10px; position: relative;
+}
+.day-label {
+  background: var(--stamp-blue);
+  color: #fff;
+  font-family: 'Kaisei Decol', serif;
+  font-size: 0.7rem; font-weight: 700;
+  padding: 5px 14px 5px 12px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%);
+  letter-spacing: 2px; white-space: nowrap;
+}
+.day-label.legoland { background: var(--stamp-red); }
+.day-label.usj      { background: var(--stamp-green); }
+.day-label.free     { background: var(--stamp-orange); }
+.day-label.fly      { background: var(--stamp-purple); }
+.day-date {
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-left: none;
+  padding: 5px 12px;
+  font-size: 0.72rem; color: #666; letter-spacing: 1px;
+  flex: 1;
+}
+
+.event-row {
+  display: flex; gap: 10px; margin-bottom: 8px; align-items: flex-start;
+  animation: slideIn 0.35s ease both;
+}
+@keyframes slideIn {
+  from { opacity:0; transform: translateX(-8px); }
+  to   { opacity:1; transform: translateX(0); }
+}
+
+.ev-time {
+  width: 48px; flex-shrink: 0; text-align: right;
+  font-size: 0.68rem; font-weight: 700; color: #999;
+  padding-top: 11px; line-height: 1.3;
+}
+.ev-dot-col {
+  width: 18px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
+}
+.ev-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  border: 2px solid var(--stamp-blue);
+  background: var(--paper); margin-top: 13px; flex-shrink: 0; z-index: 1;
+}
+.ev-dot.red    { border-color: var(--stamp-red); }
+.ev-dot.green  { border-color: var(--stamp-green); }
+.ev-dot.orange { border-color: var(--stamp-orange); }
+.ev-dot.purple { border-color: var(--stamp-purple); }
+.ev-line {
+  flex: 1; width: 1px; background: var(--line); margin-top: 2px;
+}
+.ev-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  position: relative; overflow: hidden;
+}
+.ev-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--stamp-blue);
+}
+.ev-card.red::before    { background: var(--stamp-red); }
+.ev-card.green::before  { background: var(--stamp-green); }
+.ev-card.orange::before { background: var(--stamp-orange); }
+.ev-card.purple::before { background: var(--stamp-purple); }
+.ev-card.gold::before   { background: var(--gold); }
+
+.ev-title {
+  font-size: 0.88rem; font-weight: 700; margin-bottom: 3px;
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+}
+.ev-body { font-size: 0.75rem; color: #555; line-height: 1.6; }
+.ev-body strong { color: var(--ink); font-weight: 700; }
+
+.tag {
+  font-size: 0.58rem; font-weight: 900; letter-spacing: 1px;
+  padding: 2px 6px; border-radius: 3px; text-transform: uppercase;
+}
+.tag.red    { background: var(--stamp-red); color: #fff; }
+.tag.blue   { background: var(--stamp-blue); color: #fff; }
+.tag.green  { background: var(--stamp-green); color: #fff; }
+.tag.orange { background: var(--stamp-orange); color: #fff; }
+.tag.purple { background: var(--stamp-purple); color: #fff; }
+.tag.gold   { background: var(--gold); color: #fff; }
+.tag.grey   { background: #999; color: #fff; }
+
+/* ticket block */
+.ticket-block {
+  background: linear-gradient(135deg, #FFF9E6, #FFF3CC);
+  border: 2px dashed var(--gold);
+  border-radius: 10px; padding: 12px 14px;
+  margin: 10px 14px;
+}
+.ticket-block h4 {
+  font-size: 0.78rem; font-weight: 900; color: var(--gold);
+  letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase;
+}
+.ticket-item {
+  display: flex; align-items: baseline; gap: 8px;
+  font-size: 0.78rem; margin-bottom: 5px;
+}
+.ticket-time {
+  font-weight: 900; color: var(--stamp-red);
+  width: 88px; flex-shrink: 0; font-size: 0.75rem;
+}
+.ticket-name { color: var(--ink); line-height: 1.4; }
+.ticket-note { font-size: 0.68rem; color: #888; }
+
+/* night stay bar */
+.stay-bar {
+  margin: 6px 14px 4px;
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 8px; padding: 9px 14px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 0.78rem;
+}
+.stay-icon { font-size: 1.1rem; }
+.stay-text strong { color: var(--stamp-blue); }
+
+/* divider */
+.day-divider {
+  height: 1px; background: var(--line);
+  margin: 8px 14px 0;
+}
+
+/* ── CHECKLIST ── */
+.checklist-wrap { padding: 14px 14px 40px; }
+
+.cl-section { margin-bottom: 16px; }
+.cl-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 0.82rem; font-weight: 900; letter-spacing: 1px;
+  margin-bottom: 8px; text-transform: uppercase;
+}
+.cl-head.blue   { background: #E8EFF8; color: var(--stamp-blue); }
+.cl-head.red    { background: #FAEAEA; color: var(--stamp-red); }
+.cl-head.green  { background: #E8F5EE; color: var(--stamp-green); }
+.cl-head.orange { background: #FFF0E0; color: var(--stamp-orange); }
+.cl-head.purple { background: #F2ECF9; color: var(--stamp-purple); }
+.cl-head.gold   { background: #FDF6DC; color: var(--gold); }
+
+.cl-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 9px 12px; margin-bottom: 5px;
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 8px; cursor: pointer;
+  transition: all 0.15s;
+}
+.cl-item:hover { border-color: #aaa; }
+.cl-item.done { opacity: 0.5; }
+.cl-item.done .cl-box { background: var(--stamp-green); border-color: var(--stamp-green); }
+.cl-item.done .cl-box::after { content: '✓'; color: #fff; font-size: 0.72rem; font-weight: 900; }
+
+.cl-box {
+  width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid #ccc; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px; transition: all 0.2s;
+}
+.cl-text { flex: 1; }
+.cl-text strong { font-size: 0.83rem; display: block; margin-bottom: 2px; }
+.cl-text span { font-size: 0.73rem; color: #666; line-height: 1.5; }
+.cl-text .warn { color: var(--stamp-red); font-weight: 700; }
+.cl-text .ok   { color: var(--stamp-green); font-weight: 700; }
+.cl-pri {
+  font-size: 0.58rem; font-weight: 900; padding: 2px 6px;
+  border-radius: 3px; flex-shrink: 0; margin-top: 2px;
+}
+.cl-pri.must { background: var(--stamp-red); color: #fff; }
+.cl-pri.imp  { background: var(--stamp-orange); color: #fff; }
+.cl-pri.opt  { background: #ddd; color: #555; }
+
+/* progress */
+.progress-bar-wrap {
+  position: sticky; top: 42px; z-index: 99;
+  background: var(--paper);
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.progress-label {
+  font-size: 0.68rem; color: #888; margin-bottom: 4px;
+  display: flex; justify-content: space-between;
+}
+.progress-track {
+  height: 6px; background: #e0ddd5; border-radius: 3px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%; background: linear-gradient(90deg, var(--stamp-green), #27ae60);
+  border-radius: 3px; transition: width 0.4s ease;
+  width: 0%;
+}
+
+/* ── NOTES TAB ── */
+.notes-wrap { padding: 14px 14px 40px; }
+.note-card {
+  background: #fff; border: 1px solid var(--line);
+  border-radius: 10px; padding: 14px;
+  margin-bottom: 12px; position: relative; overflow: hidden;
+}
+.note-card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+.note-card.red::before    { background: var(--stamp-red); }
+.note-card.blue::before   { background: var(--stamp-blue); }
+.note-card.green::before  { background: var(--stamp-green); }
+.note-card.orange::before { background: var(--stamp-orange); }
+.note-card.gold::before   { background: var(--gold); }
+.note-card h4 {
+  font-size: 0.85rem; font-weight: 900; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 6px;
+}
+.note-card ul { padding-left: 14px; }
+.note-card li {
+  font-size: 0.78rem; color: #444; margin-bottom: 5px; line-height: 1.6;
+}
+.note-card li strong { color: var(--ink); }
+.highlight {
+  background: #FFF9E0; border: 1px solid #FFD700;
+  border-radius: 6px; padding: 8px 12px;
+  font-size: 0.78rem; line-height: 1.7; margin-top: 8px;
+}
+.highlight .hl-title {
+  font-weight: 900; color: var(--gold); font-size: 0.72rem;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px;
+}
+
+footer {
+  background: var(--ink); color: rgba(255,255,255,0.4);
+  text-align: center; padding: 14px;
+  font-size: 0.68rem; letter-spacing: 1px;
+}
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-top">✈ Family Trip · Osaka · Japan</div>
+    <div class="cover-title">大阪家庭旅遊<br>完整手冊</div>
+    <div class="cover-sub">一家四口 · LEGOLAND & USJ</div>
+    <div class="cover-dates">
+      <span>2026年 6月13日</span>
+      <span class="sep">→</span>
+      <span>6月17日</span>
+    </div>
+    <div class="family-tags">
+      <span class="ftag">👨‍👩‍👦‍👦 四人家庭</span>
+      <span class="ftag">🎡 樂高探索中心</span>
+      <span class="ftag">🎢 環球影城</span>
+      <span class="ftag">🏨 難波住宿</span>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('itinerary',this)">📅 行程</button>
+  <button class="tab-btn" onclick="switchTab('checklist',this)">✅ 清單</button>
+  <button class="tab-btn" onclick="switchTab('transport',this)">🚉 交通</button>
+  <button class="tab-btn" onclick="switchTab('shopping',this)">🛍️ 購物</button>
+  <button class="tab-btn" onclick="switchTab('notes',this)">⚠️ 注意</button>
+</div>
+
+<!-- ═══════════ 行程 TAB ═══════════ -->
+<div id="tab-itinerary" class="tab-panel active">
+
+  <!-- DAY 1 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label fly">DAY 1 · 抵達</div>
+      <div class="day-date">6月13日（六）飛行日</div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">08:20</div>
+      <div class="ev-dot-col"><div class="ev-dot purple"></div><div class="ev-line"></div></div>
+      <div class="ev-card purple">
+        <div class="ev-title">✈️ 桃園 TPE 起飛 <span class="tag purple">去程</span></div>
+        <div class="ev-body">建議 <strong>06:00前</strong> 到機場辦理登機，攜帶四本護照。行動電源隨身帶，不可託運。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">12:10</div>
+      <div class="ev-dot-col"><div class="ev-dot green"></div><div class="ev-line"></div></div>
+      <div class="ev-card green">
+        <div class="ev-title">🛬 關西機場 KIX 降落</div>
+        <div class="ev-body">入境審查→領行李→海關。建議搭 <strong>南海電鐵特急Rapi:t</strong> 或 <strong>JR關西機場特急</strong> 前往難波（約35–40分）。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">14:00~</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div><div class="ev-line"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🏨 飯店入住 Check-in</div>
+        <div class="ev-body"><strong>ESLEAD HOTEL Namba East</strong> · 難波東<br>正常入住時間 15:00。若早到可先寄放行李，前往附近逛逛。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">15:00~</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🦀 抵達後自由活動</div>
+        <div class="ev-body">難波心齋橋商圈、黑門市場（海鮮串燒）、道頓堀拍大螃蟹招牌。輕鬆晃晃補充體力，隔天 LEGOLAND！</div>
+      </div>
+    </div>
+  </div>
+  <div class="stay-bar"><span class="stay-icon">🌙</span><span class="stay-text">住宿：<strong>ESLEAD HOTEL Namba East</strong>（6/13–6/17，共4晚）</span></div>
+  <div class="day-divider"></div>
+
+  <!-- DAY 2 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label legoland">DAY 2 · 樂高</div>
+      <div class="day-date">6月14日（日）LEGOLAND Discovery Center</div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">09:30</div>
+      <div class="ev-dot-col"><div class="ev-dot red"></div><div class="ev-line"></div></div>
+      <div class="ev-card red">
+        <div class="ev-title">🧱 出發前往 LEGOLAND</div>
+        <div class="ev-body">地點：<strong>天保山Marketplace</strong>（大阪港附近）。從難波搭地鐵中央線至大阪港站約15分。建議提早出發，預留排隊入場時間。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">10:30</div>
+      <div class="ev-dot-col"><div class="ev-dot red"></div><div class="ev-line"></div></div>
+      <div class="ev-card red">
+        <div class="ev-title">🎟️ LEGOLAND 入場 <span class="tag red">已訂 ×4</span></div>
+        <div class="ev-body">入場時間 <strong>10:30 AM</strong>，共4張票。出示票券 QR Code 入場。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">10:30~</div>
+      <div class="ev-dot-col"><div class="ev-dot red"></div><div class="ev-line"></div></div>
+      <div class="ev-card red">
+        <div class="ev-title">🏰 LEGOLAND 暢玩</div>
+        <div class="ev-body">室內主題樂園，設施包含：LEGO 4D 電影、Ninjago 體感遊戲、賽車跑道、城市建造體驗等。孩子12&15歲都合適！</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">下午</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🎡 附近延伸：海遊館（選）</div>
+        <div class="ev-body">LEGOLAND 旁邊就是世界級大阪海遊館，若孩子還有體力可順道參觀（需另購票）。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">晚上</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🍜 晚餐返回難波</div>
+        <div class="ev-body">推薦道頓堀章魚燒、金龍拉麵，或大阪燒體驗。</div>
+      </div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+
+  <!-- DAY 3 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label">DAY 3 · 大阪城</div>
+      <div class="day-date">6月15日（日）大阪城 + 心齋橋</div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">09:00</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div><div class="ev-line"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🚇 前往大阪城</div>
+        <div class="ev-body">從難波搭地鐵<strong>谷町線</strong>至「谷町四丁目站」或「天満橋站」，約10–15分。步行約10分抵達大阪城公園。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">09:30</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div><div class="ev-line"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🌳 大阪城公園散步</div>
+        <div class="ev-body">公園免費入場，面積廣大。先從<strong>大手門</strong>進入，沿護城河欣賞石垣，夏天綠意盎然。適合拍照！</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">10:00</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div><div class="ev-line"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🏯 大阪城天守閣 <span class="tag orange">付費</span></div>
+        <div class="ev-body">入場費 <strong>大人¥600、15歲以下免費</strong>（你們四人共¥1,200）。共8層樓，最頂層可360°眺望大阪全景！<br>內部有豐臣秀吉歷史展示，約1–1.5小時參觀。<br>⚠️ 夏天排隊人多，建議開門後盡早入場。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">12:00</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🍱 城附近午餐</div>
+        <div class="ev-body">公園內有 <strong>MIRAIZA OSAKA-JO</strong>（舊第四師团司令部，歐式建築改建的餐廳商場），環境超美。或返回市區用餐。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">13:30</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🛒 心齋橋 + 道頓堀逛街</div>
+        <div class="ev-body">返回難波商圈，DONKI 掃貨、心齋橋筋商店街逛藥妝。孩子可逛任天堂周邊店、Pokémon Center。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">17:00</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🍣 早點吃晚餐 + 備戰 USJ！</div>
+        <div class="ev-body">隔天就是 USJ，<strong>今晚務必早點休息</strong>。晚餐推薦輕食或迴轉壽司，不要吃太撐。準備好所有 QR Code！</div>
+      </div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+
+  <!-- DAY 4 USJ -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label usj">DAY 4 · USJ</div>
+      <div class="day-date">6月15日（一）環球影城</div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">08:30</div>
+      <div class="ev-dot-col"><div class="ev-dot green"></div><div class="ev-line"></div></div>
+      <div class="ev-card green">
+        <div class="ev-title">🚉 出發前往 USJ</div>
+        <div class="ev-body">難波→ JR 大阪環狀線→ユニバーサルシティ站，約20分。建議 <strong>09:00前</strong> 到達園門口等候開園。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">09:00</div>
+      <div class="ev-dot-col"><div class="ev-dot green"></div><div class="ev-line"></div></div>
+      <div class="ev-card green">
+        <div class="ev-title">🎟️ 入園 + 立刻抽任天堂號碼券 <span class="tag red">最重要</span></div>
+        <div class="ev-body">一入園就衝超級任天堂世界門口，抽「區域入場號碼券」。晚了就沒了！開 USJ APP 查各設施排隊時間。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">09:15</div>
+      <div class="ev-dot-col"><div class="ev-dot green"></div><div class="ev-line"></div></div>
+      <div class="ev-card green">
+        <div class="ev-title">🧙 哈利波特禁忌之旅</div>
+        <div class="ev-body">開園早人少，趁早攻略！360°魔法飛行。逛完喝奶油啤酒。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">10:30</div>
+      <div class="ev-dot-col"><div class="ev-dot green"></div><div class="ev-line"></div></div>
+      <div class="ev-card green">
+        <div class="ev-title">🎮 超級任天堂世界入場</div>
+        <div class="ev-body">依號碼券時段入場。購買能量手環（約¥4,000/人）互動打磚塊！瑪利歐賽車→咚奇剛礦車。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">12:30</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🍱 園內午餐</div>
+        <div class="ev-body">任天堂世界或侏羅紀公園餐廳用餐。買瑪利歐爆米花桶！</div>
+      </div>
+    </div>
+
+    <!-- ticket block -->
+    <div class="ticket-block">
+      <h4>🎫 快速通關券使用時刻表（已訂）</h4>
+      <div class="ticket-item">
+        <div class="ticket-time">13:50–14:10</div>
+        <div>
+          <div class="ticket-name">⚡ 咒術迴戰 The Real 4-D <span class="tag purple">Cool Japan</span></div>
+          <div class="ticket-note">出示 QR Code 於設施入口，快速入場</div>
+        </div>
+      </div>
+      <div class="ticket-item">
+        <div class="ticket-time">14:50–15:20</div>
+        <div>
+          <div class="ticket-name">🎢 好萊塢美夢－逆轉版 <span class="tag red">刺激</span></div>
+          <div class="ticket-note">Backdrop = 逆向版本，速度感更強</div>
+        </div>
+      </div>
+      <div class="ticket-item">
+        <div class="ticket-time">選一</div>
+        <div>
+          <div class="ticket-name">☆ 哈利波特禁忌之旅 <em>或</em> 飛天翼龍 <span class="tag blue">擇一</span></div>
+          <div class="ticket-note">兩個都很熱門，建議選早上沒玩到的那個</div>
+        </div>
+      </div>
+      <div class="ticket-item">
+        <div class="ticket-time">16:50–17:20</div>
+        <div>
+          <div class="ticket-name">🦅 Flight of the Hippogriff（巨鷹飛行）</div>
+          <div class="ticket-note">哈利波特園區內的小型過山車，親子款</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">17:30</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div><div class="ev-line"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">💦 水世界表演秀</div>
+        <div class="ev-body">前排會全身濕透，後排安全觀賞。請備好替換衣物。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">18:30</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">💛 小小兵 + 夜間補玩</div>
+        <div class="ev-body">小小兵射擊設施、夜間人潮減少可補玩喜愛設施。</div>
+      </div>
+    </div>
+
+    <div class="event-row">
+      <div class="ev-time">19:30</div>
+      <div class="ev-dot-col"><div class="ev-dot gold"></div></div>
+      <div class="ev-card gold">
+        <div class="ev-title">🛍️ 紀念品採購 → 離園</div>
+        <div class="ev-body">任天堂周邊、哈利波特魔法棒、咚奇剛香蕉商品。返回難波晚餐。</div>
+      </div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+
+  <!-- DAY 5 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label">DAY 5 · 購物</div>
+      <div class="day-date">6月16日（二）自由＋採購</div>
+    </div>
+    <div class="event-row">
+      <div class="ev-time">全天</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🛒 大阪採購日</div>
+        <div class="ev-body">心齋橋 SHINSAIBASHI、美國村、<strong>難波Parks</strong>、<strong>DONKI 驚安殿堂</strong>掃貨。<br>退稅商品記得確認是否超過 ¥5,000！晚上整理行李，明天就回台灣了。</div>
+      </div>
+    </div>
+    <div class="event-row">
+      <div class="ev-time">晚上</div>
+      <div class="ev-dot-col"><div class="ev-dot orange"></div></div>
+      <div class="ev-card orange">
+        <div class="ev-title">🍣 最後晚餐 + 整理行李</div>
+        <div class="ev-body">黑門市場、壽司店或燒肉作為大阪最終章。明天 <strong>Check-out 須在 11:00前</strong>，行李打包好再出發。</div>
+      </div>
+    </div>
+  </div>
+  <div class="day-divider"></div>
+
+  <!-- DAY 6 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-label fly">DAY 6 · 回程</div>
+      <div class="day-date">6月17日（三）返台日</div>
+    </div>
+    <div class="event-row">
+      <div class="ev-time">08:00</div>
+      <div class="ev-dot-col"><div class="ev-dot purple"></div><div class="ev-line"></div></div>
+      <div class="ev-card purple">
+        <div class="ev-title">🏨 飯店 Check-out</div>
+        <div class="ev-body">退房時間通常 11:00前。提早準備，大件行李可先寄放，或直接帶去機場。</div>
+      </div>
+    </div>
+    <div class="event-row">
+      <div class="ev-time">10:00~</div>
+      <div class="ev-dot-col"><div class="ev-dot"></div><div class="ev-line"></div></div>
+      <div class="ev-card">
+        <div class="ev-title">🚉 前往關西機場</div>
+        <div class="ev-body">難波→ KIX 約35–50分。建議 <strong>11:00前</strong> 出發，起飛前2小時到機場（11:10到）。</div>
+      </div>
+    </div>
+    <div class="event-row">
+      <div class="ev-time">13:10</div>
+      <div class="ev-dot-col"><div class="ev-dot purple"></div><div class="ev-line"></div></div>
+      <div class="ev-card purple">
+        <div class="ev-title">✈️ KIX 關西機場起飛 <span class="tag purple">回程</span></div>
+        <div class="ev-body">預計抵達桃園 <strong>15:05</strong>。辛苦了，滿載回憶平安返家！</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end itinerary -->
+
+<!-- ═══════════ 清單 TAB ═══════════ -->
+<div id="tab-checklist" class="tab-panel">
+  <div class="progress-bar-wrap">
+    <div class="progress-label">
+      <span>出發準備進度</span>
+      <span id="progress-text">0 / 0</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <div class="checklist-wrap">
+
+    <div class="cl-section">
+      <div class="cl-head red">🛂 必備證件與票券</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>護照 × 4（全家每人一本）</strong><span><span class="warn">⚠️ 台灣身分證無法入境日本！</span>確認有效期至少6個月以上（2026/12以後才到期）。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>機票電子票（截圖備份）</strong><span>去程 08:20 TPE / 回程 13:10 KIX，截圖存手機相簿備用。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>飯店訂房確認信</strong><span>ESLEAD HOTEL Namba East，6/13–6/17。截圖備份，入境卡填住宿地址用。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>LEGOLAND 票券 QR Code × 4</strong><span>6/14 10:30入場。截圖備份，確保無網路也能出示。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>USJ 門票 + 快速通關 QR Code × 4</strong><span>6/15入場。<span class="warn">注意：QR Code 不得修改，建議截圖本地儲存。</span>園內網路不穩，不要只存雲端。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>旅遊保險（含醫療）× 4</strong><span>日本醫療費用極貴，全家都要投保，確認含急難救助服務。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head blue">💴 現金與金融</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>日幣現金</strong><span>建議每人備¥5,000–¥10,000，USJ / LEGOLAND 多數可刷卡，但小店、自動販賣機、部分交通需現金。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>信用卡（Visa / Mastercard）</strong><span>確認有開通海外刷卡功能，知道海外手續費率。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head green">📱 3C 與通訊</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>日本 eSIM 啟用確認</strong><span>已購買「每日吃到飽」eSIM（Softbank）。出發前確認安裝與啟用方式，落地後記得開啟。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>行動電源（10,000 mAh以上）× 每人</strong><span><span class="warn">⚠️ 必須隨身攜帶，不可放託運行李！</span>整天玩耗電快，建議每人一個。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>充電線（全家設備適用）</strong><span>日本插座兩腳扁型，台灣電器可直插（電壓100V，多數電器相容）。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>下載 USJ 官方 APP</strong><span>可即時查各設施等待時間，出發前預先下載。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head orange">👕 穿著與日用品</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>舒適運動鞋（每人）</strong><span>全天步行 10,000步以上，絕對不能穿新鞋或硬底鞋。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>替換衣物（USJ 水世界用）</strong><span>水世界表演坐前排 = 全身濕透。備一套快乾替換衣，或穿快乾衣物出門。</span></div>
+        <div class="cl-pri must">必備</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>折疊雨衣 × 每人</strong><span>園內禁止撐傘搭設施，雨衣比雨傘實用。輕便款放背包即可。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>防曬乳 SPF50 + 帽子</strong><span>6月日本紫外線強，戶外設施多。帽子選可收納式，搭設施時放背包。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>薄外套 × 每人</strong><span>室內設施冷氣強，早晚溫差大。可折疊放入背包的薄外套最方便。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>小背包 × 每人</strong><span>方便放水瓶、雨衣、手機等。進設施前有置物櫃可寄放大包。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>項鍊 / 飾品注意</strong><span><span class="ok">✅ 可以帶出國！</span>但搭乘刺激設施前建議取下收好，避免掉落或勾傷。過機場安檢會觸發金屬偵測器，屬正常現象。</span></div>
+        <div class="cl-pri opt">注意</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head purple">💊 健康與醫藥</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>暈車藥（搭設施前服用）</strong><span>哈利波特禁忌之旅、美夢乘車遊容易暈。建議搭乘前30分鐘服用。</span></div>
+        <div class="cl-pri imp">推薦</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>常備藥（腸胃藥、感冒藥、退燒）</strong><span>日本藥局語言障礙，從台灣自備較安心。</span></div>
+        <div class="cl-pri imp">推薦</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>OK繃 + 消毒棉片</strong><span>長時間走路可能磨腳起水泡，小孩也易摔跤。</span></div>
+        <div class="cl-pri opt">選配</div>
+      </div>
+    </div>
+
+    <div class="cl-section">
+      <div class="cl-head gold">💡 其他小細節</div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>緊急聯絡卡 × 給孩子</strong><span>卡片寫上爸媽手機、飯店名稱地址，放孩子口袋備用。</span></div>
+        <div class="cl-pri imp">推薦</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>退稅確認（¥5,000以上）</strong><span>消費合計滿¥5,000可辦退稅，需出示護照。大型百貨、藥妝店均可辦理。</span></div>
+        <div class="cl-pri opt">建議</div>
+      </div>
+      <div class="cl-item" onclick="toggleItem(this)">
+        <div class="cl-box"></div>
+        <div class="cl-text"><strong>截圖重要資訊到手機相簿</strong><span>所有票券 QR Code、飯店地址、緊急電話，截圖存到相簿。無網路也能查看。</span></div>
+        <div class="cl-pri imp">重要</div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- end checklist -->
+
+<!-- ═══════════ 交通 TAB ═══════════ -->
+<div id="tab-transport" class="tab-panel">
+  <div class="notes-wrap">
+
+    <div class="note-card blue">
+      <h4>✈️ 機場往返難波</h4>
+      <ul>
+        <li><strong>南海電鐵特急 Rapi:t（推薦）</strong>：KIX → 難波，約35分，¥1,450/人，有固定座位最舒適，適合帶行李。</li>
+        <li><strong>JR 關空特急はるか</strong>：KIX → 大阪，約50分，¥2,060/人，可用 ICOCA。</li>
+        <li><strong>利木津巴士</strong>：KIX → 難波約50分，¥1,600/人，四人¥6,400，適合行李多時。</li>
+        <li>⚡ 回程建議提早1.5小時出發，出境安檢留充裕時間。</li>
+      </ul>
+    </div>
+
+    <div class="note-card green">
+      <h4>🚇 ICOCA 卡（強烈推薦）</h4>
+      <ul>
+        <li>類似台灣悠遊卡，可搭 JR、地鐵、巴士，多數便利商店也可刷。</li>
+        <li>於 <strong>KIX 機場 JR 站</strong>或難波 JR 站購買，押金¥500，建議每人充值¥2,000–¥3,000。</li>
+        <li>離日可退卡（退押金¥500，手續費¥220）；或留著下次用。</li>
+        <li>四人共4張，方便各自刷卡，不需等待購票。</li>
+      </ul>
+    </div>
+
+    <div class="note-card orange">
+      <h4>🗺️ 各景點交通路線（從難波出發）</h4>
+      <ul>
+        <li>🧱 <strong>LEGOLAND（天保山）</strong>：地鐵中央線「難波」→「大阪港」，約15分，¥280/人</li>
+        <li>🏯 <strong>大阪城</strong>：地鐵谷町線「谷町九丁目」→「谷町四丁目」，約10分，¥230/人。或步行+轉乘。</li>
+        <li>🎢 <strong>USJ（環球影城）</strong>：JR 大阪環狀線至「西九条」，轉 JR 夢咲線至「ユニバーサルシティ」，全程約20分，¥400/人</li>
+        <li>✈️ <strong>KIX 機場</strong>：南海電鐵特急 Rapi:t，難波→KIX，約35分，¥1,450/人</li>
+        <li>🗼 <strong>通天閣（新世界）</strong>：地鐵堺筋線「日本橋」→「恵美須町」，約5分，¥230/人</li>
+        <li>🏙️ <strong>梅田（天空之城）</strong>：地鐵御堂筋線「なんば」→「梅田」，約10分，¥280/人</li>
+      </ul>
+    </div>
+
+    <div class="note-card red">
+      <h4>⚠️ 交通注意事項</h4>
+      <ul>
+        <li>日本電車非常準時，務必注意<strong>末班車時間</strong>（通常24:00前）。</li>
+        <li>行李大件時請使用<strong>無障礙電梯</strong>，不要強行搬上電扶梯。</li>
+        <li>電車內<strong>禁止通話</strong>，請將手機調靜音。</li>
+        <li>搭車時<strong>先下後上</strong>，不要擋住車門。</li>
+        <li>Google Maps 在日本交通導航非常準確，建議使用。</li>
+        <li>計程車費用高，只建議深夜或行李極多時使用。</li>
+      </ul>
+    </div>
+
+    <div class="note-card gold">
+      <h4>📱 實用 APP</h4>
+      <ul>
+        <li><strong>Google Maps</strong>：交通路線查詢，選「大眾運輸」模式</li>
+        <li><strong>乗換案内（Jorudan）</strong>：日本交通專用 APP，更詳細</li>
+        <li><strong>USJ 官方 APP</strong>：設施等待時間即時查詢</li>
+        <li><strong>Google 翻譯</strong>：相機拍菜單即時翻譯，非常實用</li>
+      </ul>
+    </div>
+
+  </div>
+</div><!-- end transport -->
+
+<!-- ═══════════ 購物 TAB ═══════════ -->
+<div id="tab-shopping" class="tab-panel">
+  <div class="notes-wrap">
+
+    <div class="note-card blue">
+      <h4>🏬 難波必逛購物地點</h4>
+      <ul>
+        <li><strong>心齋橋筋商店街</strong>：室內拱廊型商店街，藥妝、服飾、雜貨一條龍，全天候逛街首選。</li>
+        <li><strong>DONKI 驚安殿堂（道頓堀店）</strong>：24小時，藥妝、零食、生活用品最低價，退稅方便。旋轉摩天輪是地標！</li>
+        <li><strong>難波 Parks</strong>：中高端商場，餐廳豐富，屋頂花園很美。</li>
+        <li><strong>なんばCITY / NAMBA WALK</strong>：地下街，涼爽好逛，品牌齊全。</li>
+        <li><strong>黑門市場</strong>：海鮮、和牛、水果串燒，邊走邊吃最大阪！</li>
+      </ul>
+    </div>
+
+    <div class="note-card green">
+      <h4>💊 藥妝採購清單（推薦）</h4>
+      <ul>
+        <li><strong>眼藥水</strong>：Rohto、參天系列，在台灣賣很貴，這邊便宜</li>
+        <li><strong>面膜</strong>：KOSE、肌研、米肌，品質好且價格實惠</li>
+        <li><strong>痠痛貼布</strong>：久走必備，帶回台灣也實用</li>
+        <li><strong>腸胃藥 / 整腸劑</strong>：太田胃散、ビオフェルミン</li>
+        <li><strong>防曬乳</strong>：ANESSA、BIORE，日本品質一流</li>
+        <li><strong>孩子用品</strong>：日本嬰幼兒藥妝選擇多，比台灣便宜</li>
+        <li>推薦藥妝店：<strong>松本清 Matsumoto Kiyoshi</strong>、<strong>AINZ&TULPE</strong></li>
+      </ul>
+    </div>
+
+    <div class="note-card red">
+      <h4>🎮 孩子一定要逛（15歲＋12歲）</h4>
+      <ul>
+        <li><strong>Pokémon Center Osaka</strong>（心齋橋附近）：皮卡丘周邊大本營</li>
+        <li><strong>任天堂 TOKYO / 難波周邊任天堂商店</strong>：USJ 內有更多獨家商品</li>
+        <li><strong>animate 難波店</strong>：動漫周邊、咒術迴戰、鬼滅等最齊全</li>
+        <li><strong>GEO / Book Off</strong>：二手遊戲、漫畫、Switch 遊戲卡帶，超便宜</li>
+        <li><strong>超級馬力歐爆米花桶</strong>（USJ限定）：帶回台灣必曬的紀念品</li>
+      </ul>
+    </div>
+
+    <div class="note-card orange">
+      <h4>🍬 零食伴手禮推薦</h4>
+      <ul>
+        <li><strong>大阪限定 POCKY / Pretz</strong>：章魚燒口味、大阪燒口味，獨特</li>
+        <li><strong>自由軒咖哩餅乾</strong>：大阪百年老店限定</li>
+        <li><strong>551 蓬萊豬肉包</strong>：現買現吃最好，冷凍版可帶回台灣（需冰袋）</li>
+        <li><strong>ROYCE 巧克力</strong>：機場免稅店購買最方便</li>
+        <li><strong>白い恋人 / 東京バナナ</strong>：知名伴手禮，在機場也買得到</li>
+        <li>零食類在 <strong>DONKI、全家、7-11</strong> 買最齊全</li>
+      </ul>
+    </div>
+
+    <div class="note-card gold">
+      <h4>🧾 退稅攻略</h4>
+      <ul>
+        <li>消費同一店家合計 <strong>¥5,000以上</strong>（未稅）即可辦退稅，稅率10%，省不少！</li>
+        <li>辦退稅需出示<strong>護照正本</strong>，記得隨身攜帶。</li>
+        <li><strong>退稅商品不得在日本境內開封使用</strong>，海關可能抽查。</li>
+        <li>大型百貨（高島屋、大丸）、藥妝、DONKI 均可辦理。</li>
+        <li>建議在<strong>同一天、同一家店</strong>集中購買，一次達到門檻。</li>
+        <li>部分店家退稅後會在袋子上封條，開封視同放棄退稅。</li>
+      </ul>
+    </div>
+
+    <div class="note-card blue">
+      <h4>📦 行李重量控管提醒</h4>
+      <ul>
+        <li>購物前確認航班<strong>行李額度</strong>（通常20kg or 23kg/人）。</li>
+        <li>建議帶一個<strong>可摺疊空行李袋</strong>，滿載時升級為第二件行李。</li>
+        <li>液體類（藥妝、飲料）放<strong>託運行李</strong>，單瓶100ml以上不可手提登機。</li>
+        <li>退稅商品袋子封條完整，放入行李箱最安全。</li>
+      </ul>
+    </div>
+
+  </div>
+</div><!-- end shopping -->
+
+<!-- ═══════════ 注意事項 TAB ═══════════ -->
+<div id="tab-notes" class="tab-panel">
+  <div class="notes-wrap">
+
+    <div class="note-card red">
+      <h4>🛂 出入境重要事項</h4>
+      <ul>
+        <li><strong>護照是唯一入境文件</strong>：台灣身分證無法入境日本，每人都要帶護照。</li>
+        <li>入境時需填<strong>日本入境卡</strong>（機上發放），填寫住宿飯店名稱和地址。</li>
+        <li>攜帶肉類、蔬果等食品<strong>禁止帶入日本</strong>，違者重罰。</li>
+        <li>回台時，個人免稅額為 <strong>NT$20,000</strong>，超出需申報繳稅。</li>
+        <li>行動電源、鋰電池<strong>一律隨身攜帶</strong>，不得放入託運行李。</li>
+      </ul>
+    </div>
+
+    <div class="note-card gold">
+      <h4>🎫 USJ 快速通關使用說明（重要）</h4>
+      <div class="highlight">
+        <div class="hl-title">已訂購券別：快速通關 4-D & Backdrop</div>
+        使用日期：<strong>2026/06/15（一）</strong>｜詢問編號：<strong>USJ-P1X000000B8LA9</strong><br>
+        票價：¥11,800（含稅）× 1人份（共4張）
+      </div>
+      <ul style="margin-top:10px">
+        <li><strong>13:50–14:10</strong>：咒術迴戰 The Real 4-D → 出示 QR Code 於設施入口</li>
+        <li><strong>14:50–15:20</strong>：好萊塢美夢 Backdrop（逆向版）→ 出示 QR Code</li>
+        <li><strong>☆ 擇一</strong>：哈利波特禁忌之旅 OR 飛天翼龍 → 擇一使用</li>
+        <li><strong>16:50–17:20</strong>：Flight of the Hippogriff（巨鷹飛行）</li>
+        <li>⚠️ <strong>QR Code 不得截圖修改</strong>，建議本地截圖儲存，不要只存雲端。</li>
+        <li>⚠️ 票券<strong>不可轉讓、不可退票</strong>，遺失不補發。</li>
+        <li>⚠️ 進入設施時<strong>須出示整個畫面</strong>，確保工作人員能看到完整螢幕。</li>
+        <li>入場需另備<strong>基本 Studio Pass 門票</strong>（快速通關不含入場券）。</li>
+      </ul>
+    </div>
+
+    <div class="note-card blue">
+      <h4>🎢 USJ 設施身高與注意事項</h4>
+      <ul>
+        <li>飛天翼龍、哈利波特禁忌之旅：<strong>122cm以上</strong>（孩子12&15歲通常沒問題）</li>
+        <li>進入刺激設施前，<strong>鬆動飾品、眼鏡、帽子</strong>需收入置物袋或免費置物櫃</li>
+        <li>禁止攜帶自拍棒入場設施；建議用<strong>手機或胸前固定 GoPro</strong></li>
+        <li>水世界前排<strong>全身濕透</strong>，請備替換衣物或雨衣</li>
+        <li>部分設施禁止孕婦、高血壓、心臟病患者乘坐，出發前確認</li>
+        <li>超級任天堂世界需<strong>區域入場號碼券</strong>，一入園就去抽！</li>
+      </ul>
+    </div>
+
+    <div class="note-card green">
+      <h4>💴 日本消費與交通</h4>
+      <ul>
+        <li>搭 JR 或地鐵建議購買 <strong>ICOCA 卡</strong>（類似悠遊卡，難波任一JR站購買）</li>
+        <li>難波 → USJ：JR 大阪環狀線至 <strong>ユニバーサルシティ站</strong>，約20分</li>
+        <li>難波 → KIX：南海電鐵特急 <strong>Rapi:t</strong>，約35分，¥1,450</li>
+        <li>難波 → 大阪港（LEGOLAND）：地鐵中央線約15分</li>
+        <li>退稅：消費滿¥5,000可辦，需出示護照，<strong>退稅品不能在日本開封使用</strong></li>
+        <li>大多數便利商店、餐廳可使用信用卡或 PayPay</li>
+      </ul>
+    </div>
+
+    <div class="note-card orange">
+      <h4>🏨 飯店資訊</h4>
+      <ul>
+        <li>飯店：<strong>ESLEAD HOTEL Namba East</strong></li>
+        <li>入住：6/13（六）｜退房：6/17（三）｜共4晚</li>
+        <li>Check-in 通常 15:00，Check-out 通常 <strong>11:00</strong></li>
+        <li>行李抵達時若未能入住，可先寄放行李至前台（免費）</li>
+        <li>6/17 退房後，行李可寄放至出發時間</li>
+      </ul>
+    </div>
+
+    <div class="note-card blue">
+      <h4>🚨 緊急聯絡資訊</h4>
+      <ul>
+        <li>日本警察：<strong>110</strong>｜消防救護：<strong>119</strong></li>
+        <li>外交部急難救助（海外）：<strong>+886-800-085-095</strong></li>
+        <li>遺失護照：前往<strong>大阪台灣辦事處</strong>申請補發</li>
+        <li>旅遊保險緊急電話：出發前確認保險公司急難號碼並截圖</li>
+      </ul>
+    </div>
+
+  </div>
+</div><!-- end notes -->
+
+<footer>
+  手動整理 by Claude AI｜行程依實際票券資訊製作｜2026年6月 大阪之旅 🌸
+</footer>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function toggleItem(el) {
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const all = document.querySelectorAll('.cl-item');
+  const done = document.querySelectorAll('.cl-item.done');
+  const pct = all.length ? (done.length / all.length * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = done.length + ' / ' + all.length;
+}
+updateProgress();
+</script>
+</body>
+</html>
