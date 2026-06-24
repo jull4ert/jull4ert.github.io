@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Untitled Document.md</title>
+  <style>
+  @import url("https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha2/katex.min.css");
+
+  body {
+    font-family: Georgia, Cambria, serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #373D49;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 600;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  h1 { font-size: 2em; }
+  h2 { font-size: 1.5em; }
+  h3 { font-size: 1.25em; }
+  a { color: #35D7BB; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: "Ubuntu Mono", Monaco, monospace;
+    background: #F5F7FA;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  pre {
+    background: #F5F7FA;
+    padding: 1em;
+    border-radius: 3px;
+    overflow-x: auto;
+  }
+  .hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 0;
+    color: #333;
+  }
+  pre code { background: none; padding: 0; }
+  blockquote {
+    border-left: 3px solid #A0AABF;
+    padding-left: 1em;
+    margin-left: 0;
+    font-style: italic;
+    color: #666;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #E8E8E8;
+    padding: 0.5em;
+    text-align: left;
+  }
+  th {
+    background: #F5F7FA;
+    font-weight: 600;
+  }
+  #preview .table {
+    width: auto;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+</style>
+</head>
+<body id="preview">
+<h1 class="code-line has-line-data" data-line-start="0" data-line-end="1"><a id="Fed_0"></a>聯準會（Fed）貨幣決策完全指南：核心與輔助指標判定矩陣</h1>
+<p class="has-line-data" data-line-start="2" data-line-end="3">美國聯準會（Federal Reserve）在進行利率決策時，高度依賴**「數據導向」（Data-dependent）**的模式。聯準會內部的「聯邦公開市場委員會（FOMC）」每年召開 8 次例行會議，核心任務就是評估宏觀與微觀經濟指標，以調整聯邦基金利率（Federal Funds Rate）與資產負債表。</p>
+<p class="has-line-data" data-line-start="4" data-line-end="5">為了超前部署，聯準會除了看通膨與就業兩大「落後指標」外，還會結合多項「領先與金融壓力指標」來綜合研判。</p>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="8" data-line-end="9"><a id="_8"></a>一、 聯準會決策核心：兩大法定使命指標</h2>
+<p class="has-line-data" data-line-start="10" data-line-end="11">聯準會的法定職責為「穩定物價」與「促進最大就業」。以下是兩大支柱的核心數據解讀：</p>
+<h3 class="code-line has-line-data" data-line-start="12" data-line-end="13"><a id="1_Inflation_Metrics_12"></a>1. 通膨數據（Inflation Metrics）：判定物價是否過高</h3>
+<ul>
+<li class="has-line-data" data-line-start="13" data-line-end="14"><strong>個人消費支出物價指數（PCE）與核心 PCE：</strong> 由美國經濟分析局（BEA）發布。其中**「核心 PCE（Core PCE）」<strong>扣除了價格波動劇烈的食品與能源，是</strong>聯準會最青睞的通膨衡量標準**。目標值設定在 <strong>2%</strong>。</li>
+<li class="has-line-data" data-line-start="14" data-line-end="16"><strong>消費者物價指數（CPI）與核心 CPI：</strong> 由美國勞工統計局（BLS）發布，反映城鎮居民的購買力變動，其住房（Shelter）權重高於 PCE。</li>
+</ul>
+<blockquote>
+<p class="has-line-data" data-line-start="16" data-line-end="19"><strong>📊 最新數據來源實證（2026年6月最新會議）：</strong><br>
+根據美國密西根州議會財政局（HFA）與 Morningstar 於 2026 年 6 月發布的經濟快報，美國 2026 年 5 月的 <strong>CPI 年增率反彈至 4.2%</strong>，核心 CPI 為 2.9%；而聯準會最看重的<strong>核心 PCE 年增率預估仍高達 3.3%</strong>。<br>
+由於數據顯著高於 2% 的常態目標，FOMC 在 2026 年 6 月的會議中表現出明顯的「鷹派修正」，宣布將基準利率維持在 <strong>3.50% - 3.75%</strong> 的高檔，並將 2026 年底的核心 PCE 預期大幅上修至 3.3%（引自：<em>J.P. Morgan Asset Management / Bondsavvy 2026</em>）。</p>
+</blockquote>
+<h3 class="code-line has-line-data" data-line-start="20" data-line-end="21"><a id="2_Labor_Market_20"></a>2. 就業市場數據（Labor Market）：衡量薪資通膨螺旋</h3>
+<ul>
+<li class="has-line-data" data-line-start="21" data-line-end="22"><strong>非農就業人數（NFP）：</strong> 每月第一個星期五由 BLS 發布，代表美國非農業部門創造的就業機會。每月新增 <strong>10 萬至 15 萬人</strong> 屬於健康的勞動力平衡點。</li>
+<li class="has-line-data" data-line-start="22" data-line-end="24"><strong>失業率（Unemployment Rate）：</strong> 根據 2026 年 6 月 FOMC 最新「經濟預測摘要（SEP）」，聯準會官員普遍預期長期平衡的自然失業率應落在 <strong>4.0% 到 4.3%</strong> 之間。</li>
+</ul>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="26" data-line-end="27"><a id="Fed_Core_Data_Matrix_26"></a>二、 核心數據判定與政策方向矩陣（Fed Core Data Matrix）</h2>
+<p class="has-line-data" data-line-start="28" data-line-end="29">聯準會如何將上述核心數據轉化為具體的貨幣政策？以下表格梳理了三大經濟情境下的數據判定基準與政策動作：</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th style="text-align:left">經濟情境</th>
+<th style="text-align:left">核心數據判定基準</th>
+<th style="text-align:left">聯準會的政策動作</th>
+<th style="text-align:left">實體經濟與全球市場影響</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>經濟過熱與通膨失控</strong> <br><em>(例如: 2026 年中通膨反彈)</em></td>
+<td style="text-align:left">• 核心 PCE / CPI <strong>&gt; 3.0%</strong><br>• 非農就業 <strong>&gt; 20 萬人</strong><br>• 失業率 <strong>&lt; 3.8%</strong> (極度緊缺)</td>
+<td style="text-align:left"><strong>【緊縮貨幣政策】</strong><br>• 持續升息或<strong>維持高利率</strong><br>• 啟動或加速<strong>縮表 (QT)</strong></td>
+<td style="text-align:left">• 民眾與企業借貸成本居高不下<br>• 壓抑消費與投資需求以冷卻物價<br>• 全球資產（股市、房市）面臨估值修正</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>黃金女孩經濟 (Goldilocks)</strong> <br><em>(理想的溫和成長狀態)</em></td>
+<td style="text-align:left">• 核心 PCE 穩定維持在 <strong>2.0% 附近</strong><br>• 非農就業維持 <strong>10 - 15 萬人</strong><br>• 失業率落在 <strong>4.0% - 4.3%</strong></td>
+<td style="text-align:left"><strong>【中性貨幣政策】</strong><br>• 維持基準利率不變（凍結利率）<br>• 依計劃微調資產負債表</td>
+<td style="text-align:left">• 經濟良性擴張，薪資與物價溫和增長<br>• 金融市場波動度低，企業穩定規劃投資</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>經濟衰退與通縮風險</strong> <br><em>(例如: 2020 疫情剛爆發時期)</em></td>
+<td style="text-align:left">• 核心 PCE <strong>&lt; 1.5%</strong> (面臨通縮)<br>• 非農就業 <strong>&lt; 5 萬人</strong> (甚至負成長)<br>• 失業率 <strong>&gt; 4.5% 且快速攀升</strong></td>
+<td style="text-align:left"><strong>【寬鬆貨幣政策】</strong><br>• 快速<strong>降息</strong>（啟動降息循環）<br>• 啟動<strong>量化寬鬆 (QE)</strong> 印鈔買債</td>
+<td style="text-align:left">• 融資成本大幅降低，市場流動性氾濫<br>• 刺激民眾消費與企業貸款意願<br>• 容易推升全球股票、加密貨幣等資產泡沫</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="38" data-line-end="39"><a id="_38"></a>三、 超前部署：聯準會常用的四大類輔助與前瞻指標</h2>
+<p class="has-line-data" data-line-start="40" data-line-end="41">由於通膨和失業率屬於「落後指標」，聯準會內部會密切關注以下輔助指數，用來捕捉實體經濟、信貸市場與消費者心態的微小轉變：</p>
+<h3 class="code-line has-line-data" data-line-start="42" data-line-end="43"><a id="1_ISM_PMI_42"></a>1. 前瞻景氣類：ISM 採購經理人指數（PMI）</h3>
+<ul>
+<li class="has-line-data" data-line-start="43" data-line-end="45">由美國供應管理協會（ISM）每月發布。<strong>50% 是景氣榮枯線</strong>。若製造業與服務業 PMI 連續數月跌破 50%（特別是掉到 45% 以下），即使當下失業率還很低，聯準會也會預期景氣即將反轉，進而停止升息。</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="45" data-line-end="46"><a id="2_NFCI_45"></a>2. 金融壓力類：芝加哥聯準會國家金融狀況指數（NFCI）</h3>
+<ul>
+<li class="has-line-data" data-line-start="46" data-line-end="47">綜合了貨幣市場、股市與信貸風險等 105 個指標。<strong>以 0 為歷史平均水平</strong>。</li>
+<li class="has-line-data" data-line-start="47" data-line-end="49">若 NFCI 顯著大於 0（正數），代表銀行放款意願低落、信貸緊縮（Credit Crunch）。此時金融體系面臨窒息風險（如 2023 年矽谷銀行事件），會迫使聯準會降息或向市場注入流動性。</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="49" data-line-end="50"><a id="3_5_49"></a>3. 心理預期類：密西根大學 5 年期通膨預期</h3>
+<ul>
+<li class="has-line-data" data-line-start="50" data-line-end="51">聯準會高度重視「通膨預期自證預言」。如果民眾預期未來物價會大漲，就會提前消費並要求大幅加薪，導致通膨真的失控。</li>
+<li class="has-line-data" data-line-start="51" data-line-end="53">若 5 年期長期通膨預期<strong>失控飆向 3.5% 以上</strong>，即便當下 CPI 正在降溫，聯準會也可能採取「預防性升息」以捍衛央行公信力。</li>
+</ul>
+<h3 class="code-line has-line-data" data-line-start="53" data-line-end="54"><a id="4_JOLTS_53"></a>4. 就業微觀類：JOLTS 職位空缺比與每小時薪資年增率</h3>
+<ul>
+<li class="has-line-data" data-line-start="54" data-line-end="55"><strong>JOLTS 職位空缺數：</strong> 理想的「職缺與失業人口比例」是 <strong>1:1</strong>。如果比例大於 1.5（即一個失業人口對應 1.5 個以上的職缺），代表缺工嚴重，企業會被迫加薪。</li>
+<li class="has-line-data" data-line-start="55" data-line-end="57"><strong>每小時平均薪資年增率：</strong> 增幅維持在 <strong>3.0% - 3.5%</strong> 最符合 2% 通膨目標。若薪資增速大於 4.5%，代表「薪資—物價」惡性螺旋持續，聯準會將難以放鬆貨幣政策。</li>
+</ul>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="59" data-line-end="60"><a id="Fed_Auxiliary_Indicators_Matrix_59"></a>四、 輔助指標決策判定矩陣（Fed Auxiliary Indicators Matrix）</h2>
+<p class="has-line-data" data-line-start="61" data-line-end="62">以下梳理當這些輔助與前瞻指標「集體轉向」時，如何干預聯準會的天平：</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th style="text-align:left">輔助指標群</th>
+<th style="text-align:left">具體指標名稱</th>
+<th style="text-align:left">緊縮訊號區間（支持高利率/升息）</th>
+<th style="text-align:left">寬鬆訊號區間（支持降息/救市）</th>
+<th style="text-align:left">聯準會內部的解讀邏輯</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>前瞻景氣</strong></td>
+<td style="text-align:left">ISM 製造業 / 服務業 PMI</td>
+<td style="text-align:left">持續 <strong>&gt; 55%</strong></td>
+<td style="text-align:left">持續 <strong>&lt; 45%</strong></td>
+<td style="text-align:left">高於 55% 代表企業訂單滿載，實體需求強勁；低於 45% 預示技術性衰退將至。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>金融壓力</strong></td>
+<td style="text-align:left">芝加哥聯準會 NFCI 指數</td>
+<td style="text-align:left">顯著 <strong>&lt; 0</strong> (負數，資金寬鬆)</td>
+<td style="text-align:left">顯著 <strong>&gt; 0</strong> (正數，信貸緊縮)</td>
+<td style="text-align:left">正數越高代表金融市場面臨斷鏈風險，此時聯準會必須優先防範系統性金融危機。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>心理預期</strong></td>
+<td style="text-align:left">密西根大學 5年期通膨預期</td>
+<td style="text-align:left">突破 <strong>&gt; 3.3%</strong></td>
+<td style="text-align:left">持續 <strong>&lt; 2.0%</strong></td>
+<td style="text-align:left">高於 3.3% 代表通膨預期「失去錨定」（Unanchored），必須透過強硬升息來打壓公眾預期。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>就業微觀</strong></td>
+<td style="text-align:left">JOLTS 職缺與失業人口比</td>
+<td style="text-align:left">突破 <strong>&gt; 1.5 倍</strong></td>
+<td style="text-align:left">跌破 <strong>&lt; 1.0 倍</strong></td>
+<td style="text-align:left">超過 1.5 倍代表勞動力市場極度緊繃，企業加薪搶人會源源不絕地為服務業通膨提供燃料。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>就業微觀</strong></td>
+<td style="text-align:left">每小時平均薪資年增率</td>
+<td style="text-align:left">增幅 <strong>&gt; 4.5%</strong></td>
+<td style="text-align:left">增幅 <strong>&lt; 2.5%</strong></td>
+<td style="text-align:left">薪資增幅若無法降至 3.5% 以下，服務業物價就很難徹底回到聯準會 2% 的終極目標。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 class="code-line has-line-data" data-line-start="73" data-line-end="74"><a id="_73"></a>五、 決策如何左右全球經濟？</h2>
+<p class="has-line-data" data-line-start="75" data-line-end="76">當 FOMC 委員綜合解讀完上述「核心 + 輔助」指標後，其做出的利率決策會透過兩大管道震撼全球：</p>
+<ol>
+<li class="has-line-data" data-line-start="77" data-line-end="78"><strong>全球資本大回流（美元計價效應）：</strong> 當數據支持美聯準維持高利率時，美債殖利率維持高檔，全球資金會大舉出走新興市場，換回美元存入美國。這會導致**「強勢美元」**成形，非美貨幣集體貶值，全球被迫進口昂貴的美元計價原物料（如石油），引發全球通膨。</li>
+<li class="has-line-data" data-line-start="78" data-line-end="80"><strong>被迫擴散的信貸收緊：</strong> 為了防止資本過度外逃與匯率崩潰，全球央行（如歐洲央行、台灣央行）即使自身經濟不夠強勁，通常也<strong>不得不跟進聯準會的腳步維持高利率</strong>，進而導致全球信貸集體收縮，全球股市與房市面臨資產泡沫重估。</li>
+</ol>
+<hr>
+<h3 class="code-line has-line-data" data-line-start="82" data-line-end="83"><a id="_82"></a>📄 參考文獻與數據來源</h3>
+<ol>
+<li class="has-line-data" data-line-start="83" data-line-end="84"><strong>美國通膨與基準利率現況：</strong> <em>Economic Snapshot: June 2026 Inflation and Interest Rates</em>, Michigan House Fiscal Agency (Published June 16, 2026).</li>
+<li class="has-line-data" data-line-start="84" data-line-end="85"><strong>核心 PCE 數據與市場預測：</strong> <em>May PCE Expected to Show Rising Inflation</em>, Morningstar Economy Report (Published June 23, 2026).</li>
+<li class="has-line-data" data-line-start="85" data-line-end="86"><strong>FOMC 官方經濟預測與通膨預期：</strong> <em>Summary of Economic Projections (SEP)</em>, Board of Governors of the Federal Reserve System (Released June 17, 2026 via FRED / J.P. Morgan Asset Management).</li>
+</ol>
+
+</body>
+</html>
