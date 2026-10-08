@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src * data:; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none';">
+  <title>2026-10-08-Character-profiling - Markdown Export</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      /* RTL fallback faces are system-local only; keep in sync with
+         RTL_FONT_FALLBACK in src/utils/fonts.ts (exporter CSS is
+         hand-assembled and mirrors runtime values as literals). */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Geeza Pro', 'Arial Hebrew', 'Noto Naskh Arabic', 'Noto Sans Hebrew', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background: white;
+    }
+
+    .markdown-body {
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 24px 0 16px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+    h5 { font-size: 0.875em; }
+    h6 { font-size: 0.85em; color: #6a737d; }
+
+    p { margin: 0 0 16px; }
+
+    a { color: #4f6fe8; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+    a:hover { text-decoration-thickness: 2px; }
+
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    /* <mark> (==text==) and <ins> (++text++) — mirror src/styles/content/markdown-extended.css.
+       Palette tokens are resolved per-theme via resolveCSSVariables() + css-themes.ts.
+       The :not() exclusions prevent this default from overriding annotation highlight
+       colors — live DOM uses .markview-annotation-highlight (stripped during export),
+       and the export path wraps annotations in .markview-export-highlight. */
+    mark:not(.markview-annotation-highlight):not(.markview-export-highlight) {
+      background-color: rgba(234, 179, 8, 0.28);
+      color: #713f12;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+
+    ins {
+      text-decoration: none;
+      background-color: rgba(16, 185, 129, 0.24);
+      color: #064e3b;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+
+    code {
+      padding: 0.2em 0.4em;
+      margin: 0;
+      font-size: 85%;
+      background-color: #f6f8fa;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+      color: #5a6fd6;
+    }
+
+    pre {
+      padding: 16px;
+      overflow: auto;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.45;
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      margin: 0 0 16px;
+    }
+
+    pre code {
+      display: inline;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      font-size: 1em;
+      line-height: inherit;
+      background-color: transparent;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 16px 0;
+    }
+
+    /* Sync-drift pair: src/styles/content/markdown-base.css blockquote.
+       Logical property — the bar must follow the block's dir attribute. */
+    blockquote {
+      padding: 0 1em;
+      color: #6a737d;
+      border-inline-start: 0.25em solid #dfe2e5;
+      margin: 0 0 16px;
+    }
+
+    /* Sync-drift pair: src/styles/content/markdown-base.css ul/ol.
+       Logical property — marker side follows the list's dir attribute. */
+    ul, ol {
+      padding-inline-start: 2em;
+      margin: 0 0 16px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 0 16px;
+      display: block;
+      overflow-x: auto;
+    }
+
+    thead, tbody, tfoot { display: table-row-group; }
+    tr { display: table-row; }
+    th, td { display: table-cell; }
+
+    th, td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+
+    th { background-color: #f6f8fa; font-weight: 600; }
+
+    hr {
+      height: 0;
+      margin: 24px 0;
+      padding: 0;
+      border: none;
+      border-top: 1px solid #dfe2e5;
+    }
+
+    /* ========== Task Lists ========== */
+    /* Sync-drift pair: src/styles/content/markdown-base.css task-list
+       checkbox. Logical margin — gap sits between checkbox and label text. */
+    input[type="checkbox"] {
+      margin-inline-end: 0.5em;
+      vertical-align: middle;
+    }
+
+    /* Export-only marker pull (no live counterpart — the live rule relies
+       on the list's padding-inline-start). Logical margin so the checkbox
+       pulls into the list padding on the marker side in both directions. */
+    li.task-list-item {
+      list-style-type: none;
+      margin-inline-start: -1.5em;
+    }
+
+    /* ========== Details/Summary ========== */
+    details {
+      margin: 16px 0;
+      padding: 8px 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 8px 0;
+    }
+
+    details[open] summary {
+      margin-bottom: 8px;
+    }
+
+    /* ========== Footnotes ========== */
+    .footnotes {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #eaecef;
+      font-size: 0.9em;
+    }
+
+    /* Logical padding — the footnote shell carries dir from the chained
+       footnote_block_open rule (markdown.ts), so the list indents from the
+       reading-start side. */
+    .footnotes ol {
+      padding-inline-start: 1.5em;
+    }
+
+    .footnote-ref {
+      font-size: 0.75em;
+      vertical-align: super;
+    }
+
+  
+    
+    /* Inline code styling */
+    code {
+      background: #f6f8fa !important;
+      padding: 0.2em 0.4em !important;
+      border-radius: 4px !important;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+      font-size: 85% !important;
+      color: #5a6fd6 !important;
+    }
+
+    /* Reset code styles inside pre blocks — must undo inline-code overrides */
+    pre code {
+      background: transparent !important;
+      padding: 0 !important;
+      font-size: 1em !important;
+      color: #24292e !important;
+    }
+
+    /* Link styling */
+    a {
+      color: #4f6fe8 !important;
+      text-decoration: underline !important;
+      text-underline-offset: 2px !important;
+      text-decoration-thickness: 1px !important;
+    }
+
+    a:hover {
+      color: #4f6fe8 !important;
+      text-decoration-thickness: 2px !important;
+    }
+
+    /* Code block wrapper with gray background */
+    .markview-code-block-wrapper {
+      position: relative;
+      margin: 1em 0;
+      background: #f6f8fa;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      padding: 16px;
+      overflow-x: auto;
+    }
+
+    .markview-code-block-wrapper pre {
+      margin: 0;
+      background: transparent;
+      border: none;
+      overflow-x: auto;
+    }
+
+    .markview-code-block-wrapper code {
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+      font-size: 14px !important;
+      white-space: pre;
+      word-wrap: normal;
+      overflow-wrap: normal;
+    }
+
+    /* Syntax Highlighting - Resolved for light theme */
+    .hljs {
+      display: block;
+      overflow-x: auto;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace !important;
+      font-size: 14px !important;
+      color: #24292e !important;
+      background: transparent !important;
+      white-space: pre;
+    }
+
+    /* Comments */
+    .hljs-comment, .hljs-quote {
+      color: #6a737d !important;
+      font-style: italic;
+    }
+
+    /* Keywords */
+    .hljs-keyword {
+      color: #6f42c1 !important;
+    }
+
+    /* Built-ins and special keywords */
+    .hljs-built_in, .hljs-selector-tag {
+      color: #6f42c1 !important;
+    }
+
+    /* Types and classes */
+    .hljs-type, .hljs-class {
+      color: #005cc5 !important;
+    }
+
+    /* Strings */
+    .hljs-string, .hljs-attribute {
+      color: #d73a49 !important;
+    }
+
+    /* Template strings */
+    .hljs-template-tag, .hljs-template-variable, .hljs-subst {
+      color: #d73a49 !important;
+    }
+
+    /* Numbers and literals */
+    .hljs-number, .hljs-literal {
+      color: #22863a !important;
+    }
+
+    /* Functions */
+    .hljs-function, .hljs-title.function_, .hljs-title.function {
+      color: #0366d6 !important;
+    }
+
+    /* Class names */
+    .hljs-title.class_, .hljs-class .hljs-title {
+      color: #005cc5 !important;
+    }
+
+    /* Properties and attributes */
+    .hljs-property, .hljs-attr {
+      color: #005cc5 !important;
+    }
+
+    /* Variables */
+    .hljs-variable, .hljs-params {
+      color: #24292e !important;
+    }
+
+    /* Special variables (this, self) */
+    .hljs-variable.language_ {
+      color: #6f42c1 !important;
+    }
+
+    /* Operators */
+    .hljs-operator {
+      color: #6f42c1 !important;
+    }
+
+    /* Punctuation */
+    .hljs-punctuation {
+      color: #24292e !important;
+    }
+
+    /* Symbols */
+    .hljs-symbol, .hljs-bullet {
+      color: #0366d6 !important;
+    }
+
+    /* HTML tags */
+    .hljs-tag, .hljs-name {
+      color: #0366d6 !important;
+    }
+
+    /* Titles and sections */
+    .hljs-title, .hljs-section {
+      color: #0366d6 !important;
+    }
+
+    /* Links */
+    .hljs-link {
+      color: #005cc5 !important;
+      text-decoration: underline;
+    }
+
+    /* Regex */
+    .hljs-regexp, .hljs-selector-attr, .hljs-selector-pseudo {
+      color: #d73a49 !important;
+    }
+
+    /* Meta and annotations */
+    .hljs-meta, .hljs-meta .hljs-keyword {
+      color: #6f42c1 !important;
+    }
+
+    .hljs-meta .hljs-string {
+      color: #d73a49 !important;
+    }
+
+    /* Doctags */
+    .hljs-doctag {
+      color: #005cc5 !important;
+    }
+
+    /* Diff additions */
+    .hljs-addition {
+      background-color: rgba(34, 134, 58, 0.15);
+      color: #22863a !important;
+    }
+
+    /* Diff deletions */
+    .hljs-deletion {
+      background-color: rgba(215, 58, 73, 0.15);
+      color: #d73a49 !important;
+    }
+
+    /* Emphasis */
+    .hljs-emphasis {
+      font-style: italic;
+    }
+
+    /* Strong */
+    .hljs-strong {
+      font-weight: 700;
+    }
+
+    /* ========== Blockquote Styles ========== */
+    /* Sync-drift pair: src/styles/content/markdown-base.css blockquote.
+       Logical property — the bar must follow the block's dir attribute. */
+    blockquote {
+      margin: 16px 0;
+      padding: 0 1em;
+      color: #57606a;
+      border-inline-start: 4px solid #e1e4e8;
+      background: rgba(208, 215, 222, 0.1);
+      border-radius: 3px;
+    }
+
+    blockquote > :first-child {
+      margin-top: 0;
+    }
+
+    blockquote > :last-child {
+      margin-bottom: 0;
+    }
+
+    /* ========== Typography Spacing ========== */
+    p {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 24px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h1 {
+      padding-bottom: 0.3em;
+      font-size: 2em;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    h2 {
+      padding-bottom: 0.3em;
+      font-size: 1.5em;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    h3 {
+      font-size: 1.25em;
+    }
+
+    h4 {
+      font-size: 1em;
+    }
+
+    h5 {
+      font-size: 0.875em;
+    }
+
+    h6 {
+      font-size: 0.85em;
+      color: #57606a;
+    }
+
+    /* Sync-drift pair: src/styles/content/markdown-base.css ul/ol.
+       Logical property — marker side follows the list's dir attribute. */
+    ul, ol {
+      margin-top: 0;
+      margin-bottom: 16px;
+      padding-inline-start: 2em;
+    }
+
+    li + li {
+      margin-top: 0.25em;
+    }
+
+    hr {
+      height: 0.25em;
+      padding: 0;
+      margin: 24px 0;
+      background-color: #e1e4e8;
+      border: 0;
+    }
+    
+    
+    /* ========== Table Styles ========== */
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+      margin: 16px 0;
+      overflow: auto;
+      display: block;
+      color: #24292e;
+    }
+
+    table thead {
+      background: #f6f8fa;
+    }
+
+    /* text-align: start, not left — the renderer remaps explicit cell
+       alignment to start/end (markdown.ts th_open/td_open chain) and this
+       default must agree so RTL header cells align on the reading-start side. */
+    table th {
+      font-weight: 600;
+      padding: 6px 13px;
+      border: 1px solid #e1e4e8;
+      text-align: start;
+      color: #24292e;
+    }
+
+    table td {
+      padding: 6px 13px;
+      border: 1px solid #e1e4e8;
+      color: #24292e;
+    }
+
+    table tr {
+      background: #ffffff;
+      border-top: 1px solid #e1e4e8;
+    }
+
+    table tr:nth-child(2n) {
+      background: #f6f8fa;
+    }
+  
+    /* KaTeX CSS omitted - no math equations */
+    
+    @media print {
+      /* Reset body for print */
+      body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+        color: black !important;
+      }
+
+      /* Container optimization */
+      .markdown-body {
+        max-width: none !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 15px !important;
+        background: white !important;
+        color: black !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Page setup */
+      @page {
+        size: A4;
+        margin: 15mm 10mm;
+      }
+
+      /* Table optimization */
+      table {
+        display: table !important;
+        table-layout: auto !important;
+        width: calc(100% - 4px) !important;
+        max-width: 100% !important;
+        page-break-inside: auto;
+        box-sizing: border-box !important;
+      }
+
+      table thead { page-break-after: avoid; }
+      table tr { page-break-inside: avoid; }
+
+      table th, table td {
+        padding: 4px 6px !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
+        border: 1px solid #dfe2e5 !important;
+      }
+
+      /* Code block optimization */
+      .markview-code-block-wrapper {
+        page-break-inside: auto;
+        overflow: visible !important;
+        border: 1px solid #e1e4e8 !important;
+        background: #f6f8fa !important;
+        padding: 12px !important;
+        margin: 0.5em 0 !important;
+        width: auto !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .markview-code-block-wrapper pre {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        font-size: 10px !important;
+      }
+
+      .markview-code-block-wrapper code,
+      pre code {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        font-size: 10px !important;
+      }
+
+      /* Standalone pre (not in wrapper) */
+      pre:not(.markview-code-block-wrapper pre) {
+        border: 1px solid #e1e4e8 !important;
+        background: #f6f8fa !important;
+        font-size: 10px !important;
+        padding: 12px !important;
+        page-break-inside: auto;
+        overflow: visible !important;
+      }
+
+      /* Image optimization */
+      img {
+        max-width: 100%;
+        page-break-inside: avoid;
+      }
+
+      /* Remove effects */
+      * {
+        box-shadow: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
+      /* Hide UI elements */
+      .markview-copy-button,
+      .markview-external-link-indicator,
+      .markview-language-label {
+        display: none !important;
+      }
+
+      /* Remove link underlines for print */
+      a {
+        text-decoration: none !important;
+      }
+    }
+  
+    
+    /* On-screen rendering for the exported TOC block. Subdued so the TOC
+       feels like document front matter, not a primary navigation widget. */
+    #markview-container .markview-print-toc {
+      margin: 0 0 2em 0;
+      padding: 1em 1.25em;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #f9f9fb;
+      color: #24292e;
+    }
+    #markview-container .markview-print-toc-title {
+      margin: 0 0 0.75em 0;
+      padding: 0 0 0.5em 0;
+      font-size: 1.25em;
+      font-weight: 700;
+      border-bottom: 1px solid #e1e4e8;
+    }
+    #markview-container .markview-print-toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      columns: 1;
+    }
+    #markview-container .markview-print-toc-list li {
+      margin: 0 0 0.2em 0;
+      padding: 0;
+      list-style: none;
+    }
+    /* Level-based indentation ladder. Sync-drift pair with
+       src/styles/content/print.css .markview-print-toc-list — logical
+       padding on both sides now, so RTL headings indent from the right. */
+    #markview-container .markview-print-toc-list li[data-level='1'] {
+      padding-inline-start: 0;
+      font-weight: 600;
+      margin-top: 0.5em;
+    }
+    #markview-container .markview-print-toc-list li[data-level='2'] { padding-inline-start: 1.5em; }
+    #markview-container .markview-print-toc-list li[data-level='3'] { padding-inline-start: 3em; }
+    #markview-container .markview-print-toc-list li[data-level='4'] { padding-inline-start: 4.5em; }
+    #markview-container .markview-print-toc-list li[data-level='5'] { padding-inline-start: 6em; }
+    #markview-container .markview-print-toc-list li[data-level='6'] { padding-inline-start: 7.5em; }
+    #markview-container .markview-print-toc-list a {
+      color: #24292e !important;
+      text-decoration: none !important;
+    }
+    #markview-container .markview-print-toc-list a:hover {
+      text-decoration: underline !important;
+      text-decoration-thickness: 1px !important;
+    }
+
+    @media print {
+      /* Print rendering mirrors src/styles/content/print.css (.markview-print-toc*).
+         Keep in sync. */
+      #markview-container .markview-print-toc {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: white !important;
+        page-break-after: always;
+        break-after: page;
+        color: black !important;
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+      #markview-container .markview-print-toc-title {
+        margin: 0 0 12pt 0 !important;
+        padding: 0 0 6pt 0 !important;
+        font-size: 18pt !important;
+        font-weight: 700 !important;
+        color: black !important;
+        border-bottom: 1px solid #e1e4e8 !important;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      #markview-container .markview-print-toc-list {
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        columns: 1 !important;
+      }
+      #markview-container .markview-print-toc-list li {
+        margin: 0 0 2pt 0 !important;
+        padding: 0 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        list-style: none !important;
+      }
+      /* Same logical ladder as the on-screen block above (sync-drift pair
+         with print.css). */
+      #markview-container .markview-print-toc-list li[data-level='1'] {
+        padding-inline-start: 0 !important;
+        font-weight: 600 !important;
+        margin-top: 6pt !important;
+      }
+      #markview-container .markview-print-toc-list li[data-level='2'] { padding-inline-start: 1.5em !important; }
+      #markview-container .markview-print-toc-list li[data-level='3'] { padding-inline-start: 3em !important; }
+      #markview-container .markview-print-toc-list li[data-level='4'] { padding-inline-start: 4.5em !important; }
+      #markview-container .markview-print-toc-list li[data-level='5'] { padding-inline-start: 6em !important; }
+      #markview-container .markview-print-toc-list li[data-level='6'] { padding-inline-start: 7.5em !important; }
+      #markview-container .markview-print-toc-list a {
+        color: black !important;
+        text-decoration: none !important;
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+    }
+  
+    
+    /* Code Block Display Mode Styles */
+    #markview-container.code-block-wrap pre code {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-x: visible !important;
+    }
+
+    #markview-container.code-block-scroll pre code {
+      white-space: pre !important;
+      overflow-x: auto !important;
+    }
+    
+    
+    /* GitHub Alerts CSS omitted - no alerts */
+    /* Custom Containers CSS omitted - no custom containers */
+    /* Definition Lists CSS omitted - no definition lists */
+    /* Mintlify CSS omitted - no Mintlify components */
+    /* Front Matter Card CSS omitted - no front matter */
+    
+  </style>
+</head>
+<body class="markdown-export" data-theme="light">
+  <div id="markview-container" class="markdown-body code-block-scroll" style="max-width:1631px">
+    <h1 dir="auto" id="2026-10-08-人物側寫">2026-10-08 人物側寫</h1>
+<h2 dir="auto" id="一整體定位">一、整體定位</h2>
+<blockquote dir="ltr">
+<p dir="auto"><strong>中高階 .NET / Full Stack Developer</strong>，偏企業系統、API、微服務與系統整合，同時具備 DevOps、Cloud、Database 與 AI/LLM 架構思維。</p>
+</blockquote>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">項目</th>
+<th dir="auto">說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">技術角色</td>
+<td dir="auto">Senior .NET Full Stack / Solution Developer，明顯偏 Backend / Architecture</td>
+</tr>
+<tr>
+<td dir="auto">能力概括</td>
+<td dir="auto">企業系統開發 + 架構設計 + 系統整合 + DevOps + 自動化</td>
+</tr>
+<tr>
+<td dir="auto">前端定位</td>
+<td dir="auto">企業系統型 Full Stack，非前端框架導向的 Frontend Engineer</td>
+</tr>
+<tr>
+<td dir="auto">運維定位</td>
+<td dir="auto">Application Developer + 部署 / K8s 維運能力，非純 DevOps Engineer</td>
+</tr>
+<tr>
+<td dir="auto">目前方向</td>
+<td dir="auto">企業系統 + LLM / AI Architecture（與原技術棧高度銜接）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="二技能熟悉度總覽">二、技能熟悉度總覽</h2>
+<h3 dir="auto" id="1-程式語言">1. 程式語言</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">技術</th>
+<th dir="auto">熟悉度</th>
+<th dir="auto">判斷依據</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">C#</td>
+<td dir="auto">⭐⭐⭐⭐⭐</td>
+<td dir="auto"><a href="http://ASP.NET" target="_blank" rel="noopener noreferrer">ASP.NET</a> Core、EF Core、Middleware、DI、Attribute、HttpClient、GraphQL</td>
+</tr>
+<tr>
+<td dir="auto">SQL</td>
+<td dir="auto">⭐⭐⭐⭐⭐</td>
+<td dir="auto">MSSQL / PostgreSQL、UPDATE、JOIN、Migration、Index、Transaction</td>
+</tr>
+<tr>
+<td dir="auto">jQuery</td>
+<td dir="auto">⭐⭐⭐⭐⭐</td>
+<td dir="auto">UI / AJAX / Plugin / DOM 操作</td>
+</tr>
+<tr>
+<td dir="auto">Batch / BAT</td>
+<td dir="auto">⭐⭐⭐⭐⭐</td>
+<td dir="auto">多支 Windows 自動化腳本</td>
+</tr>
+<tr>
+<td dir="auto">JSON</td>
+<td dir="auto">⭐⭐⭐⭐⭐</td>
+<td dir="auto">API、Postman、Dynamic Object、設定檔</td>
+</tr>
+<tr>
+<td dir="auto">JavaScript</td>
+<td dir="auto">⭐⭐⭐⭐</td>
+<td dir="auto">jQuery、AJAX、Postman Script、ES Module、前端元件</td>
+</tr>
+<tr>
+<td dir="auto">HTML / CSS</td>
+<td dir="auto">⭐⭐⭐⭐</td>
+<td dir="auto">Bootstrap、Swagger UI、自訂 UI</td>
+</tr>
+<tr>
+<td dir="auto">YAML</td>
+<td dir="auto">⭐⭐⭐⭐</td>
+<td dir="auto">Docker / Kubernetes / Helm / Azure 部署</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="2-各領域熟悉度">2. 各領域熟悉度</h3>
+<table data-fit="true">
+<thead><tr><th>分類</th><th>領域</th><th>熟悉度</th></tr></thead>
+<tbody>
+<tr><td rowspan="5"><b>後端</b></td><td>C# / .NET</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>ASP.NET Core</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>EF Core</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>REST API</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td>GraphQL</td><td>⭐⭐⭐</td></tr>
+<tr><td rowspan="2"><b>前端 / 元件</b></td><td>jQuery / Bootstrap</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>JavaScript</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td rowspan="1"><b>資料庫</b></td><td>SQL Server</td><td>⭐⭐⭐⭐⭐</td></tr>
+<tr><td rowspan="4"><b>架構</b></td><td>Microservices</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>Distributed System</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>Redis / Cache</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>RabbitMQ / Service Bus</td><td>⭐⭐⭐</td></tr>
+<tr><td rowspan="4"><b>DevOps</b></td><td>Docker</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>Kubernetes / AKS</td><td>⭐⭐⭐</td></tr>
+<tr><td>Git / CI/CD</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>IIS / Windows</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td rowspan="2"><b>雲端</b></td><td>Azure</td><td>⭐⭐⭐⭐</td></tr>
+<tr><td>AWS</td><td>⭐⭐～⭐⭐⭐</td></tr>
+<tr><td rowspan="3"><b>AI</b></td><td>AI / LLM Architecture</td><td>⭐⭐⭐（快速成長中）</td></tr>
+<tr><td>Prompt Engineering</td><td>⭐⭐⭐</td></tr>
+<tr><td>RAG / Vector DB</td><td>⭐⭐～⭐⭐⭐</td></tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="三後端與架構">三、後端與架構</h2>
+<h3 dir="auto" id="3-net--aspnet-core最核心領域">3. .NET / <a href="http://ASP.NET" target="_blank" rel="noopener noreferrer">ASP.NET</a> Core（最核心領域）</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">版本</td>
+<td dir="auto">.NET 6 / 8 / 9，關注 .NET 10</td>
+</tr>
+<tr>
+<td dir="auto">框架</td>
+<td dir="auto"><a href="http://ASP.NET" target="_blank" rel="noopener noreferrer">ASP.NET</a> Core MVC、Web API</td>
+</tr>
+<tr>
+<td dir="auto">核心機制</td>
+<td dir="auto">Dependency Injection、Middleware、Filters / Attributes、Model Binding、Configuration、Options Pattern</td>
+</tr>
+<tr>
+<td dir="auto">HTTP 相關</td>
+<td dir="auto">IHttpContextAccessor、IHttpClientFactory</td>
+</tr>
+<tr>
+<td dir="auto">關注的架構議題</td>
+<td dir="auto">共用 Middleware、ApiAccessMonitoringAttribute、Controller / GraphQL 共用監控、Identity Header propagation、Named HttpClient、Handler、Service Layer、Shared Module</td>
+</tr>
+<tr>
+<td dir="auto">評價</td>
+<td dir="auto">問題層次已非「怎麼用」，而是「怎麼抽象化、共用化、避免耦合」，架構設計相當熟</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="4-orm--資料庫">4. ORM / 資料庫</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">EF Core 版本</td>
+<td dir="auto">EF Core 6 / 8</td>
+</tr>
+<tr>
+<td dir="auto">EF Core 實務</td>
+<td dir="auto">Migration、ApplyConfigurationsFromAssembly、<code dir="ltr">IEntityTypeConfiguration&lt;T&gt;</code>、Composite Unique Index、Enum → String、HiLo、Migration Class Library、EF Tools / Runtime 版本不一致、Transaction、DbContext、LINQ</td>
+</tr>
+<tr>
+<td dir="auto">EF Core 層次</td>
+<td dir="auto">關注「大型專案如何組織」，而非單純 CRUD</td>
+</tr>
+<tr>
+<td dir="auto">SQL Server（主力）</td>
+<td dir="auto">JOIN、UPDATE FROM、SELECT → UPDATE、Transaction、Index / Constraint、Migration、DateTimeOffset、Timezone（+00:00 → +08:00）</td>
+</tr>
+<tr>
+<td dir="auto">進階議題</td>
+<td dir="auto">高併發、Distributed Lock、DB-based Lock、多 Service / 多 Pod、OrganizationId / Multi-Tenant 資料</td>
+</tr>
+<tr>
+<td dir="auto">PostgreSQL</td>
+<td dir="auto">具備實務經驗 / 架構需求</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="5-web-api-與系統整合">5. Web API 與系統整合</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">技術</td>
+<td dir="auto">REST API、HTTP GET / POST、HttpClient、IHttpClientFactory、Named HttpClient、DelegatingHandler、Middleware、Header propagation、JSON、Authentication / Identity Header</td>
+</tr>
+<tr>
+<td dir="auto">文件 / 測試工具</td>
+<td dir="auto">Swagger / OpenAPI、Postman</td>
+</tr>
+<tr>
+<td dir="auto">典型架構</td>
+<td dir="auto"><code dir="ltr">Controller → Middleware / Filter → Service → HttpClient → Other Service</code></td>
+</tr>
+<tr>
+<td dir="auto">身分傳遞</td>
+<td dir="auto"><code dir="ltr">IdentityInfo → HTTP Header → Service A → Service B</code></td>
+</tr>
+<tr>
+<td dir="auto">評價</td>
+<td dir="auto">典型企業微服務整合思維</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="6-microservices--graphql--訊息佇列">6. Microservices / GraphQL / 訊息佇列</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">主題</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Microservices</td>
+<td dir="auto">多服務、Service-to-Service HTTP、Identity propagation、Middleware、Shared Module、Multi-DB、Multi-Tenant、Kubernetes Pod、API Gateway 概念</td>
+<td dir="auto">有實際維護 / 開發微服務系統的經驗</td>
+</tr>
+<tr>
+<td dir="auto">GraphQL</td>
+<td dir="auto">HotChocolate、Query Resolver、DataLoader、DataAdapterViewModel、Dynamic Object / JSON、Resolver 監控、Controller / GraphQL 共用架構</td>
+<td dir="auto">系統應為 REST + GraphQL 並存</td>
+</tr>
+<tr>
+<td dir="auto">Message Queue</td>
+<td dir="auto">RabbitMQ、Azure Service Bus；Service 間通訊、非同步處理、Queue、Event、Retry、Background Processing</td>
+<td dir="auto">具一定 Event-driven architecture 經驗</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="7-快取與分散式系統">7. 快取與分散式系統</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">主題</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Cache</td>
+<td dir="auto">Redis、IMemoryCache；自製 <code dir="ltr">PersonProfileHelper</code>（<code dir="ltr">GetOrAddAsync&lt;T&gt;()</code>、<code dir="ltr">QueryOrAddListAsync&lt;T&gt;()</code>、<code dir="ltr">SemaphoreSlim</code>）</td>
+<td dir="auto">思考 Cache Miss 時避免大量 Request 同時打 DB（Cache Stampede / Concurrent Request / Lock）</td>
+</tr>
+<tr>
+<td dir="auto">Distributed Lock</td>
+<td dir="auto">以 DB Table（OrganizationId、Name、ExpireTime）實作；考量多 Pod / 多 Service / 多 DB、Retry、Wait、Expiration、高併發；比較 DB Table Lock vs SQL Server <code dir="ltr">sp_getapplock</code></td>
+<td dir="auto">最能代表技術程度的一塊，屬典型 Distributed System Engineering</td>
+</tr>
+<tr>
+<td dir="auto">Background Job</td>
+<td dir="auto">Hangfire：Background / Scheduled Job、Retry、Job Dashboard、Server</td>
+<td dir="auto">有實際使用 / 設計需求</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="四前端與工具">四、前端與工具</h2>
+<h3 dir="auto" id="8-frontend">8. Frontend</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">主要技術</td>
+<td dir="auto">jQuery（非常熟）、Bootstrap 5（大量使用）、jQuery UI 1.13.2（DatePicker、Dropdown、Custom UI）</td>
+</tr>
+<tr>
+<td dir="auto">日期處理</td>
+<td dir="auto">Day.js、ROC / 台灣日期、自訂 DateTimePicker</td>
+</tr>
+<tr>
+<td dir="auto">自製元件</td>
+<td dir="auto"><code dir="ltr">dateTimePickerTw</code>、<code dir="ltr">hierarchyThreeLayers</code>、<code dir="ltr">hierarchyTwoLayers</code>、<code dir="ltr">fileUploadUI</code>、<code dir="ltr">uiVerifier</code></td>
+</tr>
+<tr>
+<td dir="auto">評價</td>
+<td dir="auto">應有自己的 Frontend Shared Component / JS Utility Library</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="9-api-文件與測試">9. API 文件與測試</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">工具</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Swagger / OpenAPI</td>
+<td dir="auto">修改 Swagger UI、API Version、Endpoint、Dropdown、Token Check、自訂 UI、Download URL、Version URL（如 <code dir="ltr">/identity/swagger/index.html</code>、<code dir="ltr">/identity/swagger/V1.1-MinTai21/index.html</code>）</td>
+<td dir="auto">能客製 Swagger UI / OpenAPI 導航與企業內部 API 文件系統</td>
+</tr>
+<tr>
+<td dir="auto">Postman</td>
+<td dir="auto">Request、After Response Script、JavaScript、Console、JSON parsing、Sort、日期計算（如「最後更新時間」「幾分鐘前」）</td>
+<td dir="auto">日常 API 開發工具之一</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="10-文件pdf檔案與通知">10. 文件、PDF、檔案與通知</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">技術</th>
+<th dir="auto">內容 / 範疇</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Excel / Office</td>
+<td dir="auto">NPOI、MiniExcel、OpenXML、Telerik（RadFlowDocument、RadRichTextBox）</td>
+<td dir="auto">Excel 匯入匯出、資料處理、Office 文件操作、企業文件產生 / Office Automation</td>
+</tr>
+<tr>
+<td dir="auto">PDF / 瀏覽器</td>
+<td dir="auto">PuppeteerSharp、WebView2、wkhtmltopdf</td>
+<td dir="auto">HTML → PDF、Browser Rendering、Automated Browser</td>
+</tr>
+<tr>
+<td dir="auto">檔案傳輸</td>
+<td dir="auto">FluentFTP</td>
+<td dir="auto">FTP / SFTP 類需求、檔案上傳下載、自動化檔案交換</td>
+</tr>
+<tr>
+<td dir="auto">推播通知</td>
+<td dir="auto">Azure Notification Hubs、APNs（.p8）、FCM V1</td>
+<td dir="auto">Device Token、Push Notification、Badge、NavigateType、NavigateKey、Custom Action；偏向直接 Device Token Push，而非單純 Broadcast</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="11-開發工具">11. 開發工具</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">工具</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">IDE / 編輯器</td>
+<td dir="auto">Visual Studio 2022、VS Code</td>
+</tr>
+<tr>
+<td dir="auto">API 工具</td>
+<td dir="auto">Postman、Swagger UI</td>
+</tr>
+<tr>
+<td dir="auto">版本控制</td>
+<td dir="auto">TortoiseGit、Git for Windows</td>
+</tr>
+<tr>
+<td dir="auto">容器 / 排程</td>
+<td dir="auto">Docker Desktop、Windows Task Scheduler</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="12-其他接觸過的技術">12. 其他接觸過的技術</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">類別</th>
+<th dir="auto">技術</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">設計模式 / 函式庫</td>
+<td dir="auto">MediatR、Autofac、Mapster</td>
+</tr>
+<tr>
+<td dir="auto">多語系</td>
+<td dir="auto">IStringLocalizer、Localization</td>
+</tr>
+<tr>
+<td dir="auto">即時通訊</td>
+<td dir="auto">SignalR</td>
+</tr>
+<tr>
+<td dir="auto">通知</td>
+<td dir="auto">Azure Notification Hubs、APNs、FCM</td>
+</tr>
+<tr>
+<td dir="auto">檔案 / 文件</td>
+<td dir="auto">FluentFTP、Telerik、PuppeteerSharp、WebView2、wkhtmltopdf</td>
+</tr>
+<tr>
+<td dir="auto">基礎設施</td>
+<td dir="auto">Redis、RabbitMQ、Azure Service Bus、Qdrant</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="五雲端與-devops">五、雲端與 DevOps</h2>
+<h3 dir="auto" id="13-cloud">13. Cloud</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">平台</th>
+<th dir="auto">熟悉度</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Azure</td>
+<td dir="auto">⭐⭐⭐⭐（實際接觸程度高）</td>
+<td dir="auto">App Service、Container Registry（ACR，如 <code dir="ltr">ghg2acr.azurecr.io</code>）、AKS、Service Bus、Notification Hubs、Azure DevOps、Helm；AKS namespace: <code dir="ltr">qa</code>、nodeSelector</td>
+</tr>
+<tr>
+<td dir="auto">AWS</td>
+<td dir="auto">⭐⭐～⭐⭐⭐（低於 Azure）</td>
+<td dir="auto">EC2；Public IP 於 Restart 後改變、AWS Hostname、固定 DNS / Host、與 App Service 類服務比較</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="14-容器與-kubernetes">14. 容器與 Kubernetes</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">主題</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">Docker</td>
+<td dir="auto">Docker、Docker Compose；環境含 Qdrant、MSSQL、RabbitMQ、Redis、API Containers</td>
+<td dir="auto">非看過教學而已，形成 <code dir="ltr">Dev Environment → Docker Compose → Multiple Services</code></td>
+</tr>
+<tr>
+<td dir="auto">Kubernetes</td>
+<td dir="auto">AKS、Helm、Pod、namespace（qa）、nodeSelector（<code dir="ltr">ghg-pod: yes</code>）</td>
+<td dir="auto">具 Application Developer + Deployment / K8s 維運能力</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="15-部署版控與自動化">15. 部署、版控與自動化</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">主題</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">IIS / Windows Server</td>
+<td dir="auto">IIS、IIS Express、Windows Server、<a href="http://ASP.NET" target="_blank" rel="noopener noreferrer">ASP.NET</a> Core Hosting、Windows VM、Application Pool、Web Hosting；近期考慮半封閉環境、內部 GitLab CI/CD 部署至 IIS VM</td>
+<td dir="auto">同時具備 Linux / Container + Windows / IIS 兩邊部署經驗</td>
+</tr>
+<tr>
+<td dir="auto">Git / CI/CD</td>
+<td dir="auto">Git、TortoiseGit、Git for Windows、Azure DevOps、GitLab；規劃 <code dir="ltr">GitLab → CI/CD → IIS VM</code></td>
+<td dir="auto">不只版控，而是 Source Control + CI/CD</td>
+</tr>
+<tr>
+<td dir="auto">Windows Automation</td>
+<td dir="auto">BAT、Task Scheduler、PowerShell / CLI；UTF-8（<code dir="ltr">chcp 65001</code>）、JSON、HTTP POST、檔案讀寫、日期、<code dir="ltr">%COMPUTERNAME%</code></td>
+<td dir="auto">非典型亮點：習慣把每天重複的事自動化</td>
+</tr>
+</tbody>
+</table>
+<p dir="auto"><strong>自動化流程範例</strong>（<code dir="ltr">D:\temp\claude</code>、<code dir="ltr">D:\src\jobLog</code>）：</p>
+<p dir="auto"><code dir="ltr">BAT → Claude → Git Log → 工作整理 → JANDI</code></p>
+<hr>
+<h2 dir="auto" id="六ai--llm">六、AI / LLM</h2>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">主題</th>
+<th dir="auto">內容</th>
+<th dir="auto">評價</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">AI / LLM</td>
+<td dir="auto">Claude、LLM、Prompt Engineering、AI Model Integration、Qdrant</td>
+<td dir="auto">最近快速增加的一塊</td>
+</tr>
+<tr>
+<td dir="auto">架構思維</td>
+<td dir="auto"><code dir="ltr">Application → Service → AI / LLM Service → Model Provider</code>；思考各家 AI Model 是否可像 Persistence Layer 一樣抽換，以及 Prompt / Content 應放哪一層</td>
+<td dir="auto">已進入 LLM Application Architecture，而非僅呼叫 API</td>
+</tr>
+<tr>
+<td dir="auto">Vector DB</td>
+<td dir="auto">Docker 環境含 Qdrant；Vector Database、Embedding、Semantic Search、RAG</td>
+<td dir="auto">正在建立實戰經驗，成熟度尚不及 C# / SQL</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="七技術架構圖">七、技術架構圖</h2>
+<div class="markview-code-block-wrapper"><pre dir="ltr"><code class="language-text">                         ┌─────────────────────┐
+                         │      AI / LLM       │
+                         │ Prompt / RAG / LLM  │
+                         │ Qdrant / Claude     │
+                         └──────────┬──────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────┐
+│                   Application                      │
+│                                                    │
+│       ASP.NET Core / MVC / Web API / GraphQL       │
+│                                                    │
+│    ┌─────────────── Service ────────────────┐      │
+│    │ Business Logic / MediatR / Mapster     │      │
+│    └─────────────────┬──────────────────────┘      │
+│                      │                             │
+└──────────────────────┼─────────────────────────────┘
+                       │
+          ┌────────────┼─────────────┐
+          ▼            ▼             ▼
+       EF Core      HttpClient     Cache
+          │            │             │
+          ▼            ▼             ▼
+      SQL Server    Microservice   Redis
+      PostgreSQL    REST / GraphQL  MemoryCache
+                       │
+          ┌────────────┼────────────┐
+          ▼            ▼            ▼
+      RabbitMQ     Azure Service   SignalR
+                      Bus
+
+──────────────────────────────────────────────────────
+
+              Infrastructure / DevOps
+
+ Docker → Compose → ACR → AKS → Helm
+    │                         │
+    └──── Local Dev            └── Azure
+
+ Git → Azure DevOps / GitLab → CI/CD → IIS / AKS
+
+ Windows → BAT → Task Scheduler → Automation
+</code></pre></div>
+<hr>
+<h2 dir="auto" id="八三大個人特色">八、三大個人特色</h2>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">#</th>
+<th dir="auto">特色</th>
+<th dir="auto">表現</th>
+<th dir="auto">代表性思維</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">1</td>
+<td dir="auto">不只是「寫程式」</td>
+<td dir="auto">從「這段 C# 怎麼寫」一路問到分層、抽象、共用、多 Service / 多 Pod / 高併發</td>
+<td dir="auto">架構 / SA / Senior Developer 思維</td>
+</tr>
+<tr>
+<td dir="auto">2</td>
+<td dir="auto">重視「共用與抽換」</td>
+<td dir="auto">Shared Module、Middleware、Handler、Service、Repository / Persistence、AI Model Provider；常想「未來換東西要不要整個重寫？」</td>
+<td dir="auto"><code dir="ltr">Business Service → AI Abstraction → OpenAI / Claude / Gemini</code>，與 Persistence Layer 思維一致</td>
+</tr>
+<tr>
+<td dir="auto">3</td>
+<td dir="auto">強烈的工程自動化傾向</td>
+<td dir="auto">每天重複的事 → BAT → Task Scheduler → Git Log → Claude → 整理 → JANDI</td>
+<td dir="auto">把重複工作流程化、自動化</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 dir="auto" id="九總結">九、總結</h2>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th dir="auto">項目</th>
+<th dir="auto">內容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td dir="auto">技術能力概括</td>
+<td dir="auto">企業系統開發 + 架構設計 + 系統整合 + DevOps + 自動化</td>
+</tr>
+<tr>
+<td dir="auto">未來方向</td>
+<td dir="auto">企業系統 + LLM / AI Architecture</td>
+</tr>
+</tbody>
+</table>
+
+  </div>
+  <script>
+    // Add minimal interactivity
+    
+    // Print functionality
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        window.print();
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    
+  
+  </script>
+</body>
+</html>
+
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+  ║                                  Exported with MarkView v3.0.4                                        ║
+  ╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                                       ║
+  ║  MarkView - Modern Markdown Viewer for Chrome & Edge                                                  ║
+  ║                                                                                                       ║
+  ║  🌐 Website:      https://getmarkview.com                                                             ║
+  ║  📦 Chrome Store: https://chromewebstore.google.com/detail/cfopbpknalachedpcddhgbgjoigklien           ║
+  ║  📦 Edge Add-ons: https://microsoftedge.microsoft.com/addons/detail/kpobglkjeapfinbaecjidahlnnohcaed  ║
+  ║  📖 What's New:   https://getmarkview.com/whats-new                                                   ║
+  ║  💬 Support:      https://getmarkview.com/support                                                     ║
+  ║                                                                                                       ║
+  ║  Export Date:     2026-10-08T07:57:57Z                                                                ║
+  ║                                                                                                       ║
+  ║  Features:                                                                                            ║
+  ║  • 180+ Programming Languages with Syntax Highlighting                                                ║
+  ║  • Mermaid Diagrams & Math Equations (KaTeX)                                                          ║
+  ║  • GitHub Alerts & Custom Containers                                                                  ║
+  ║  • Dark & Light Themes                                                                                ║
+  ║  • Export to HTML, PDF (via Print), & Word (DOCX)                                                     ║
+  ║  • Auto-Refresh & Live Preview                                                                        ║
+  ║  • Folder Browser & Bookmark Management                                                               ║
+  ║  • 19 Languages Support                                                                               ║
+  ║                                                                                                       ║
+  ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+-->
