@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src * data: blob:; font-src * data:; script-src 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none';">
+  <title>Taiwan_Dividend_Tax_and_NHI_Guide - Markdown Export</title>
+  <style>
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      /* RTL fallback faces are system-local only; keep in sync with
+         RTL_FONT_FALLBACK in src/utils/fonts.ts (exporter CSS is
+         hand-assembled and mirrors runtime values as literals). */
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'Geeza Pro', 'Arial Hebrew', 'Noto Naskh Arabic', 'Noto Sans Hebrew', Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background: white;
+    }
+
+    .markdown-body {
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 24px 0 16px;
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.5em; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+    h3 { font-size: 1.25em; }
+    h4 { font-size: 1em; }
+    h5 { font-size: 0.875em; }
+    h6 { font-size: 0.85em; color: #6a737d; }
+
+    p { margin: 0 0 16px; }
+
+    a { color: #4f6fe8; text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+    a:hover { text-decoration-thickness: 2px; }
+
+    strong { font-weight: 600; }
+    em { font-style: italic; }
+
+    /* <mark> (==text==) and <ins> (++text++) — mirror src/styles/content/markdown-extended.css.
+       Palette tokens are resolved per-theme via resolveCSSVariables() + css-themes.ts.
+       The :not() exclusions prevent this default from overriding annotation highlight
+       colors — live DOM uses .markview-annotation-highlight (stripped during export),
+       and the export path wraps annotations in .markview-export-highlight. */
+    mark:not(.markview-annotation-highlight):not(.markview-export-highlight) {
+      background-color: rgba(234, 179, 8, 0.28);
+      color: #713f12;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+
+    ins {
+      text-decoration: none;
+      background-color: rgba(16, 185, 129, 0.24);
+      color: #064e3b;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+
+    code {
+      padding: 0.2em 0.4em;
+      margin: 0;
+      font-size: 85%;
+      background-color: #f6f8fa;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+      color: #5a6fd6;
+    }
+
+    pre {
+      padding: 16px;
+      overflow: auto;
+      font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.45;
+      background-color: #f6f8fa;
+      border-radius: 6px;
+      margin: 0 0 16px;
+    }
+
+    pre code {
+      display: inline;
+      padding: 0;
+      margin: 0;
+      overflow: visible;
+      font-size: 1em;
+      line-height: inherit;
+      background-color: transparent;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 16px 0;
+    }
+
+    /* Sync-drift pair: src/styles/content/markdown-base.css blockquote.
+       Logical property — the bar must follow the block's dir attribute. */
+    blockquote {
+      padding: 0 1em;
+      color: #6a737d;
+      border-inline-start: 0.25em solid #dfe2e5;
+      margin: 0 0 16px;
+    }
+
+    /* Sync-drift pair: src/styles/content/markdown-base.css ul/ol.
+       Logical property — marker side follows the list's dir attribute. */
+    ul, ol {
+      padding-inline-start: 2em;
+      margin: 0 0 16px;
+    }
+
+    li { margin-bottom: 8px; }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 100%;
+      margin: 0 0 16px;
+      display: block;
+      overflow-x: auto;
+    }
+
+    thead, tbody, tfoot { display: table-row-group; }
+    tr { display: table-row; }
+    th, td { display: table-cell; }
+
+    th, td {
+      padding: 6px 13px;
+      border: 1px solid #dfe2e5;
+    }
+
+    th { background-color: #f6f8fa; font-weight: 600; }
+
+    hr {
+      height: 0;
+      margin: 24px 0;
+      padding: 0;
+      border: none;
+      border-top: 1px solid #dfe2e5;
+    }
+
+    /* ========== Task Lists ========== */
+    /* Sync-drift pair: src/styles/content/markdown-base.css task-list
+       checkbox. Logical margin — gap sits between checkbox and label text. */
+    input[type="checkbox"] {
+      margin-inline-end: 0.5em;
+      vertical-align: middle;
+    }
+
+    /* Export-only marker pull (no live counterpart — the live rule relies
+       on the list's padding-inline-start). Logical margin so the checkbox
+       pulls into the list padding on the marker side in both directions. */
+    li.task-list-item {
+      list-style-type: none;
+      margin-inline-start: -1.5em;
+    }
+
+    /* ========== Details/Summary ========== */
+    details {
+      margin: 16px 0;
+      padding: 8px 16px;
+      background: #f6f8fa;
+      border-radius: 6px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 8px 0;
+    }
+
+    details[open] summary {
+      margin-bottom: 8px;
+    }
+
+    /* ========== Footnotes ========== */
+    .footnotes {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid #eaecef;
+      font-size: 0.9em;
+    }
+
+    /* Logical padding — the footnote shell carries dir from the chained
+       footnote_block_open rule (markdown.ts), so the list indents from the
+       reading-start side. */
+    .footnotes ol {
+      padding-inline-start: 1.5em;
+    }
+
+    .footnote-ref {
+      font-size: 0.75em;
+      vertical-align: super;
+    }
+
+  
+    /* Syntax highlighting CSS omitted - no code blocks */
+    
+    /* ========== Table Styles ========== */
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      width: 100%;
+      margin: 16px 0;
+      overflow: auto;
+      display: block;
+      color: #24292e;
+    }
+
+    table thead {
+      background: #f6f8fa;
+    }
+
+    /* text-align: start, not left — the renderer remaps explicit cell
+       alignment to start/end (markdown.ts th_open/td_open chain) and this
+       default must agree so RTL header cells align on the reading-start side. */
+    table th {
+      font-weight: 600;
+      padding: 6px 13px;
+      border: 1px solid #e1e4e8;
+      text-align: start;
+      color: #24292e;
+    }
+
+    table td {
+      padding: 6px 13px;
+      border: 1px solid #e1e4e8;
+      color: #24292e;
+    }
+
+    table tr {
+      background: #ffffff;
+      border-top: 1px solid #e1e4e8;
+    }
+
+    table tr:nth-child(2n) {
+      background: #f6f8fa;
+    }
+  
+    @font-face{font-display:block;font-family:KaTeX_AMS;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_AMS-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_AMS-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_AMS-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Caligraphic;font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Bold.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Bold.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Bold.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Caligraphic;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Caligraphic-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Fraktur;font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Bold.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Bold.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Bold.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Fraktur;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Fraktur-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Main;font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Bold.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Bold.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Bold.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Main;font-style:italic;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-BoldItalic.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-BoldItalic.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-BoldItalic.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Main;font-style:italic;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Italic.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Italic.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Italic.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Main;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Main-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Math;font-style:italic;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-BoldItalic.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-BoldItalic.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-BoldItalic.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Math;font-style:italic;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-Italic.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-Italic.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Math-Italic.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_SansSerif;font-style:normal;font-weight:700;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Bold.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Bold.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Bold.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_SansSerif;font-style:italic;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Italic.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Italic.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Italic.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_SansSerif;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_SansSerif-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Script;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Script-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Script-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Script-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Size1;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size1-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size1-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size1-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Size2;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size2-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size2-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size2-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Size3;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size3-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size3-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size3-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Size4;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size4-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size4-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Size4-Regular.ttf) format("truetype")}@font-face{font-display:block;font-family:KaTeX_Typewriter;font-style:normal;font-weight:400;src:url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Typewriter-Regular.woff2) format("woff2"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Typewriter-Regular.woff) format("woff"),url(https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/fonts/KaTeX_Typewriter-Regular.ttf) format("truetype")}.katex{font: 1.21em KaTeX_Main,Times New Roman,serif;line-height:1.2;text-indent:0;text-rendering:auto}.katex *{-ms-high-contrast-adjust:none!important;border-color:currentColor}.katex .katex-version:after{content:"0.16.25"}.katex .katex-mathml{clip:rect(1px,1px,1px,1px);border:0;height:1px;overflow:hidden;padding:0;position:absolute;width:1px}.katex .katex-html>.newline{display:block}.katex .base{position:relative;white-space:nowrap;width:-webkit-min-content;width:-moz-min-content;width:min-content}.katex .base,.katex .strut{display:inline-block}.katex .textbf{font-weight:700}.katex .textit{font-style:italic}.katex .textrm{font-family:KaTeX_Main}.katex .textsf{font-family:KaTeX_SansSerif}.katex .texttt{font-family:KaTeX_Typewriter}.katex .mathnormal{font-family:KaTeX_Math;font-style:italic}.katex .mathit{font-family:KaTeX_Main;font-style:italic}.katex .mathrm{font-style:normal}.katex .mathbf{font-family:KaTeX_Main;font-weight:700}.katex .boldsymbol{font-family:KaTeX_Math;font-style:italic;font-weight:700}.katex .amsrm,.katex .mathbb,.katex .textbb{font-family:KaTeX_AMS}.katex .mathcal{font-family:KaTeX_Caligraphic}.katex .mathfrak,.katex .textfrak{font-family:KaTeX_Fraktur}.katex .mathboldfrak,.katex .textboldfrak{font-family:KaTeX_Fraktur;font-weight:700}.katex .mathtt{font-family:KaTeX_Typewriter}.katex .mathscr,.katex .textscr{font-family:KaTeX_Script}.katex .mathsf,.katex .textsf{font-family:KaTeX_SansSerif}.katex .mathboldsf,.katex .textboldsf{font-family:KaTeX_SansSerif;font-weight:700}.katex .mathitsf,.katex .mathsfit,.katex .textitsf{font-family:KaTeX_SansSerif;font-style:italic}.katex .mainrm{font-family:KaTeX_Main;font-style:normal}.katex .vlist-t{border-collapse:collapse;display:inline-table;table-layout:fixed}.katex .vlist-r{display:table-row}.katex .vlist{display:table-cell;position:relative;vertical-align:bottom}.katex .vlist>span{display:block;height:0;position:relative}.katex .vlist>span>span{display:inline-block}.katex .vlist>span>.pstrut{overflow:hidden;width:0}.katex .vlist-t2{margin-right:-2px}.katex .vlist-s{display:table-cell;font-size:1px;min-width:2px;vertical-align:bottom;width:2px}.katex .vbox{align-items:baseline;display:inline-flex;flex-direction:column}.katex .hbox{width:100%}.katex .hbox,.katex .thinbox{display:inline-flex;flex-direction:row}.katex .thinbox{max-width:0;width:0}.katex .msupsub{text-align:left}.katex .mfrac>span>span{text-align:center}.katex .mfrac .frac-line{border-bottom-style:solid;display:inline-block;width:100%}.katex .hdashline,.katex .hline,.katex .mfrac .frac-line,.katex .overline .overline-line,.katex .rule,.katex .underline .underline-line{min-height:1px}.katex .mspace{display:inline-block}.katex .clap,.katex .llap,.katex .rlap{position:relative;width:0}.katex .clap>.inner,.katex .llap>.inner,.katex .rlap>.inner{position:absolute}.katex .clap>.fix,.katex .llap>.fix,.katex .rlap>.fix{display:inline-block}.katex .llap>.inner{right:0}.katex .clap>.inner,.katex .rlap>.inner{left:0}.katex .clap>.inner>span{margin-left:-50%;margin-right:50%}.katex .rule{border:0 solid;display:inline-block;position:relative}.katex .hline,.katex .overline .overline-line,.katex .underline .underline-line{border-bottom-style:solid;display:inline-block;width:100%}.katex .hdashline{border-bottom-style:dashed;display:inline-block;width:100%}.katex .sqrt>.root{margin-left:.2777777778em;margin-right:-.5555555556em}.katex .fontsize-ensurer.reset-size1.size1,.katex .sizing.reset-size1.size1{font-size:1em}.katex .fontsize-ensurer.reset-size1.size2,.katex .sizing.reset-size1.size2{font-size:1.2em}.katex .fontsize-ensurer.reset-size1.size3,.katex .sizing.reset-size1.size3{font-size:1.4em}.katex .fontsize-ensurer.reset-size1.size4,.katex .sizing.reset-size1.size4{font-size:1.6em}.katex .fontsize-ensurer.reset-size1.size5,.katex .sizing.reset-size1.size5{font-size:1.8em}.katex .fontsize-ensurer.reset-size1.size6,.katex .sizing.reset-size1.size6{font-size:2em}.katex .fontsize-ensurer.reset-size1.size7,.katex .sizing.reset-size1.size7{font-size:2.4em}.katex .fontsize-ensurer.reset-size1.size8,.katex .sizing.reset-size1.size8{font-size:2.88em}.katex .fontsize-ensurer.reset-size1.size9,.katex .sizing.reset-size1.size9{font-size:3.456em}.katex .fontsize-ensurer.reset-size1.size10,.katex .sizing.reset-size1.size10{font-size:4.148em}.katex .fontsize-ensurer.reset-size1.size11,.katex .sizing.reset-size1.size11{font-size:4.976em}.katex .fontsize-ensurer.reset-size2.size1,.katex .sizing.reset-size2.size1{font-size:.8333333333em}.katex .fontsize-ensurer.reset-size2.size2,.katex .sizing.reset-size2.size2{font-size:1em}.katex .fontsize-ensurer.reset-size2.size3,.katex .sizing.reset-size2.size3{font-size:1.1666666667em}.katex .fontsize-ensurer.reset-size2.size4,.katex .sizing.reset-size2.size4{font-size:1.3333333333em}.katex .fontsize-ensurer.reset-size2.size5,.katex .sizing.reset-size2.size5{font-size:1.5em}.katex .fontsize-ensurer.reset-size2.size6,.katex .sizing.reset-size2.size6{font-size:1.6666666667em}.katex .fontsize-ensurer.reset-size2.size7,.katex .sizing.reset-size2.size7{font-size:2em}.katex .fontsize-ensurer.reset-size2.size8,.katex .sizing.reset-size2.size8{font-size:2.4em}.katex .fontsize-ensurer.reset-size2.size9,.katex .sizing.reset-size2.size9{font-size:2.88em}.katex .fontsize-ensurer.reset-size2.size10,.katex .sizing.reset-size2.size10{font-size:3.4566666667em}.katex .fontsize-ensurer.reset-size2.size11,.katex .sizing.reset-size2.size11{font-size:4.1466666667em}.katex .fontsize-ensurer.reset-size3.size1,.katex .sizing.reset-size3.size1{font-size:.7142857143em}.katex .fontsize-ensurer.reset-size3.size2,.katex .sizing.reset-size3.size2{font-size:.8571428571em}.katex .fontsize-ensurer.reset-size3.size3,.katex .sizing.reset-size3.size3{font-size:1em}.katex .fontsize-ensurer.reset-size3.size4,.katex .sizing.reset-size3.size4{font-size:1.1428571429em}.katex .fontsize-ensurer.reset-size3.size5,.katex .sizing.reset-size3.size5{font-size:1.2857142857em}.katex .fontsize-ensurer.reset-size3.size6,.katex .sizing.reset-size3.size6{font-size:1.4285714286em}.katex .fontsize-ensurer.reset-size3.size7,.katex .sizing.reset-size3.size7{font-size:1.7142857143em}.katex .fontsize-ensurer.reset-size3.size8,.katex .sizing.reset-size3.size8{font-size:2.0571428571em}.katex .fontsize-ensurer.reset-size3.size9,.katex .sizing.reset-size3.size9{font-size:2.4685714286em}.katex .fontsize-ensurer.reset-size3.size10,.katex .sizing.reset-size3.size10{font-size:2.9628571429em}.katex .fontsize-ensurer.reset-size3.size11,.katex .sizing.reset-size3.size11{font-size:3.5542857143em}.katex .fontsize-ensurer.reset-size4.size1,.katex .sizing.reset-size4.size1{font-size:.625em}.katex .fontsize-ensurer.reset-size4.size2,.katex .sizing.reset-size4.size2{font-size:.75em}.katex .fontsize-ensurer.reset-size4.size3,.katex .sizing.reset-size4.size3{font-size:.875em}.katex .fontsize-ensurer.reset-size4.size4,.katex .sizing.reset-size4.size4{font-size:1em}.katex .fontsize-ensurer.reset-size4.size5,.katex .sizing.reset-size4.size5{font-size:1.125em}.katex .fontsize-ensurer.reset-size4.size6,.katex .sizing.reset-size4.size6{font-size:1.25em}.katex .fontsize-ensurer.reset-size4.size7,.katex .sizing.reset-size4.size7{font-size:1.5em}.katex .fontsize-ensurer.reset-size4.size8,.katex .sizing.reset-size4.size8{font-size:1.8em}.katex .fontsize-ensurer.reset-size4.size9,.katex .sizing.reset-size4.size9{font-size:2.16em}.katex .fontsize-ensurer.reset-size4.size10,.katex .sizing.reset-size4.size10{font-size:2.5925em}.katex .fontsize-ensurer.reset-size4.size11,.katex .sizing.reset-size4.size11{font-size:3.11em}.katex .fontsize-ensurer.reset-size5.size1,.katex .sizing.reset-size5.size1{font-size:.5555555556em}.katex .fontsize-ensurer.reset-size5.size2,.katex .sizing.reset-size5.size2{font-size:.6666666667em}.katex .fontsize-ensurer.reset-size5.size3,.katex .sizing.reset-size5.size3{font-size:.7777777778em}.katex .fontsize-ensurer.reset-size5.size4,.katex .sizing.reset-size5.size4{font-size:.8888888889em}.katex .fontsize-ensurer.reset-size5.size5,.katex .sizing.reset-size5.size5{font-size:1em}.katex .fontsize-ensurer.reset-size5.size6,.katex .sizing.reset-size5.size6{font-size:1.1111111111em}.katex .fontsize-ensurer.reset-size5.size7,.katex .sizing.reset-size5.size7{font-size:1.3333333333em}.katex .fontsize-ensurer.reset-size5.size8,.katex .sizing.reset-size5.size8{font-size:1.6em}.katex .fontsize-ensurer.reset-size5.size9,.katex .sizing.reset-size5.size9{font-size:1.92em}.katex .fontsize-ensurer.reset-size5.size10,.katex .sizing.reset-size5.size10{font-size:2.3044444444em}.katex .fontsize-ensurer.reset-size5.size11,.katex .sizing.reset-size5.size11{font-size:2.7644444444em}.katex .fontsize-ensurer.reset-size6.size1,.katex .sizing.reset-size6.size1{font-size:.5em}.katex .fontsize-ensurer.reset-size6.size2,.katex .sizing.reset-size6.size2{font-size:.6em}.katex .fontsize-ensurer.reset-size6.size3,.katex .sizing.reset-size6.size3{font-size:.7em}.katex .fontsize-ensurer.reset-size6.size4,.katex .sizing.reset-size6.size4{font-size:.8em}.katex .fontsize-ensurer.reset-size6.size5,.katex .sizing.reset-size6.size5{font-size:.9em}.katex .fontsize-ensurer.reset-size6.size6,.katex .sizing.reset-size6.size6{font-size:1em}.katex .fontsize-ensurer.reset-size6.size7,.katex .sizing.reset-size6.size7{font-size:1.2em}.katex .fontsize-ensurer.reset-size6.size8,.katex .sizing.reset-size6.size8{font-size:1.44em}.katex .fontsize-ensurer.reset-size6.size9,.katex .sizing.reset-size6.size9{font-size:1.728em}.katex .fontsize-ensurer.reset-size6.size10,.katex .sizing.reset-size6.size10{font-size:2.074em}.katex .fontsize-ensurer.reset-size6.size11,.katex .sizing.reset-size6.size11{font-size:2.488em}.katex .fontsize-ensurer.reset-size7.size1,.katex .sizing.reset-size7.size1{font-size:.4166666667em}.katex .fontsize-ensurer.reset-size7.size2,.katex .sizing.reset-size7.size2{font-size:.5em}.katex .fontsize-ensurer.reset-size7.size3,.katex .sizing.reset-size7.size3{font-size:.5833333333em}.katex .fontsize-ensurer.reset-size7.size4,.katex .sizing.reset-size7.size4{font-size:.6666666667em}.katex .fontsize-ensurer.reset-size7.size5,.katex .sizing.reset-size7.size5{font-size:.75em}.katex .fontsize-ensurer.reset-size7.size6,.katex .sizing.reset-size7.size6{font-size:.8333333333em}.katex .fontsize-ensurer.reset-size7.size7,.katex .sizing.reset-size7.size7{font-size:1em}.katex .fontsize-ensurer.reset-size7.size8,.katex .sizing.reset-size7.size8{font-size:1.2em}.katex .fontsize-ensurer.reset-size7.size9,.katex .sizing.reset-size7.size9{font-size:1.44em}.katex .fontsize-ensurer.reset-size7.size10,.katex .sizing.reset-size7.size10{font-size:1.7283333333em}.katex .fontsize-ensurer.reset-size7.size11,.katex .sizing.reset-size7.size11{font-size:2.0733333333em}.katex .fontsize-ensurer.reset-size8.size1,.katex .sizing.reset-size8.size1{font-size:.3472222222em}.katex .fontsize-ensurer.reset-size8.size2,.katex .sizing.reset-size8.size2{font-size:.4166666667em}.katex .fontsize-ensurer.reset-size8.size3,.katex .sizing.reset-size8.size3{font-size:.4861111111em}.katex .fontsize-ensurer.reset-size8.size4,.katex .sizing.reset-size8.size4{font-size:.5555555556em}.katex .fontsize-ensurer.reset-size8.size5,.katex .sizing.reset-size8.size5{font-size:.625em}.katex .fontsize-ensurer.reset-size8.size6,.katex .sizing.reset-size8.size6{font-size:.6944444444em}.katex .fontsize-ensurer.reset-size8.size7,.katex .sizing.reset-size8.size7{font-size:.8333333333em}.katex .fontsize-ensurer.reset-size8.size8,.katex .sizing.reset-size8.size8{font-size:1em}.katex .fontsize-ensurer.reset-size8.size9,.katex .sizing.reset-size8.size9{font-size:1.2em}.katex .fontsize-ensurer.reset-size8.size10,.katex .sizing.reset-size8.size10{font-size:1.4402777778em}.katex .fontsize-ensurer.reset-size8.size11,.katex .sizing.reset-size8.size11{font-size:1.7277777778em}.katex .fontsize-ensurer.reset-size9.size1,.katex .sizing.reset-size9.size1{font-size:.2893518519em}.katex .fontsize-ensurer.reset-size9.size2,.katex .sizing.reset-size9.size2{font-size:.3472222222em}.katex .fontsize-ensurer.reset-size9.size3,.katex .sizing.reset-size9.size3{font-size:.4050925926em}.katex .fontsize-ensurer.reset-size9.size4,.katex .sizing.reset-size9.size4{font-size:.462962963em}.katex .fontsize-ensurer.reset-size9.size5,.katex .sizing.reset-size9.size5{font-size:.5208333333em}.katex .fontsize-ensurer.reset-size9.size6,.katex .sizing.reset-size9.size6{font-size:.5787037037em}.katex .fontsize-ensurer.reset-size9.size7,.katex .sizing.reset-size9.size7{font-size:.6944444444em}.katex .fontsize-ensurer.reset-size9.size8,.katex .sizing.reset-size9.size8{font-size:.8333333333em}.katex .fontsize-ensurer.reset-size9.size9,.katex .sizing.reset-size9.size9{font-size:1em}.katex .fontsize-ensurer.reset-size9.size10,.katex .sizing.reset-size9.size10{font-size:1.2002314815em}.katex .fontsize-ensurer.reset-size9.size11,.katex .sizing.reset-size9.size11{font-size:1.4398148148em}.katex .fontsize-ensurer.reset-size10.size1,.katex .sizing.reset-size10.size1{font-size:.2410800386em}.katex .fontsize-ensurer.reset-size10.size2,.katex .sizing.reset-size10.size2{font-size:.2892960463em}.katex .fontsize-ensurer.reset-size10.size3,.katex .sizing.reset-size10.size3{font-size:.337512054em}.katex .fontsize-ensurer.reset-size10.size4,.katex .sizing.reset-size10.size4{font-size:.3857280617em}.katex .fontsize-ensurer.reset-size10.size5,.katex .sizing.reset-size10.size5{font-size:.4339440694em}.katex .fontsize-ensurer.reset-size10.size6,.katex .sizing.reset-size10.size6{font-size:.4821600771em}.katex .fontsize-ensurer.reset-size10.size7,.katex .sizing.reset-size10.size7{font-size:.5785920926em}.katex .fontsize-ensurer.reset-size10.size8,.katex .sizing.reset-size10.size8{font-size:.6943105111em}.katex .fontsize-ensurer.reset-size10.size9,.katex .sizing.reset-size10.size9{font-size:.8331726133em}.katex .fontsize-ensurer.reset-size10.size10,.katex .sizing.reset-size10.size10{font-size:1em}.katex .fontsize-ensurer.reset-size10.size11,.katex .sizing.reset-size10.size11{font-size:1.1996142719em}.katex .fontsize-ensurer.reset-size11.size1,.katex .sizing.reset-size11.size1{font-size:.2009646302em}.katex .fontsize-ensurer.reset-size11.size2,.katex .sizing.reset-size11.size2{font-size:.2411575563em}.katex .fontsize-ensurer.reset-size11.size3,.katex .sizing.reset-size11.size3{font-size:.2813504823em}.katex .fontsize-ensurer.reset-size11.size4,.katex .sizing.reset-size11.size4{font-size:.3215434084em}.katex .fontsize-ensurer.reset-size11.size5,.katex .sizing.reset-size11.size5{font-size:.3617363344em}.katex .fontsize-ensurer.reset-size11.size6,.katex .sizing.reset-size11.size6{font-size:.4019292605em}.katex .fontsize-ensurer.reset-size11.size7,.katex .sizing.reset-size11.size7{font-size:.4823151125em}.katex .fontsize-ensurer.reset-size11.size8,.katex .sizing.reset-size11.size8{font-size:.578778135em}.katex .fontsize-ensurer.reset-size11.size9,.katex .sizing.reset-size11.size9{font-size:.6945337621em}.katex .fontsize-ensurer.reset-size11.size10,.katex .sizing.reset-size11.size10{font-size:.8336012862em}.katex .fontsize-ensurer.reset-size11.size11,.katex .sizing.reset-size11.size11{font-size:1em}.katex .delimsizing.size1{font-family:KaTeX_Size1}.katex .delimsizing.size2{font-family:KaTeX_Size2}.katex .delimsizing.size3{font-family:KaTeX_Size3}.katex .delimsizing.size4{font-family:KaTeX_Size4}.katex .delimsizing.mult .delim-size1>span{font-family:KaTeX_Size1}.katex .delimsizing.mult .delim-size4>span{font-family:KaTeX_Size4}.katex .nulldelimiter{display:inline-block;width:.12em}.katex .delimcenter,.katex .op-symbol{position:relative}.katex .op-symbol.small-op{font-family:KaTeX_Size1}.katex .op-symbol.large-op{font-family:KaTeX_Size2}.katex .accent>.vlist-t,.katex .op-limits>.vlist-t{text-align:center}.katex .accent .accent-body{position:relative}.katex .accent .accent-body:not(.accent-full){width:0}.katex .overlay{display:block}.katex .mtable .vertical-separator{display:inline-block;min-width:1px}.katex .mtable .arraycolsep{display:inline-block}.katex .mtable .col-align-c>.vlist-t{text-align:center}.katex .mtable .col-align-l>.vlist-t{text-align:left}.katex .mtable .col-align-r>.vlist-t{text-align:right}.katex .svg-align{text-align:left}.katex svg{fill:currentColor;stroke:currentColor;fill-rule:nonzero;fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;display:block;height:inherit;position:absolute;width:100%}.katex svg path{stroke:none}.katex img{border-style:none;max-height:none;max-width:none;min-height:0;min-width:0}.katex .stretchy{display:block;overflow:hidden;position:relative;width:100%}.katex .stretchy:after,.katex .stretchy:before{content:""}.katex .hide-tail{overflow:hidden;position:relative;width:100%}.katex .halfarrow-left{left:0;overflow:hidden;position:absolute;width:50.2%}.katex .halfarrow-right{overflow:hidden;position:absolute;right:0;width:50.2%}.katex .brace-left{left:0;overflow:hidden;position:absolute;width:25.1%}.katex .brace-center{left:25%;overflow:hidden;position:absolute;width:50%}.katex .brace-right{overflow:hidden;position:absolute;right:0;width:25.1%}.katex .x-arrow-pad{padding:0 .5em}.katex .cd-arrow-pad{padding:0 .55556em 0 .27778em}.katex .mover,.katex .munder,.katex .x-arrow{text-align:center}.katex .boxpad{padding:0 .3em}.katex .fbox,.katex .fcolorbox{border:.04em solid;box-sizing:border-box}.katex .cancel-pad{padding:0 .2em}.katex .cancel-lap{margin-left:-.2em;margin-right:-.2em}.katex .sout{border-bottom-style:solid;border-bottom-width:.08em}.katex .angl{border-right:.049em solid;border-top:.049em solid;box-sizing:border-box;margin-right:.03889em}.katex .anglpad{padding:0 .03889em}.katex .eqn-num:before{content:"(" counter(katexEqnNo) ")";counter-increment:katexEqnNo}.katex .mml-eqn-num:before{content:"(" counter(mmlEqnNo) ")";counter-increment:mmlEqnNo}.katex .mtr-glue{width:50%}.katex .cd-vert-arrow{display:inline-block;position:relative}.katex .cd-label-left{display:inline-block;position:absolute;right:calc(50% + .3em);text-align:left}.katex .cd-label-right{display:inline-block;left:calc(50% + .3em);position:absolute;text-align:right}.katex-display{display:block;margin:1em 0;text-align:center}.katex-display>.katex{display:block;text-align:center;white-space:nowrap}.katex-display>.katex>.katex-html{display:block;position:relative}.katex-display>.katex>.katex-html>.tag{position:absolute;right:0}.katex-display.leqno>.katex>.katex-html>.tag{left:0;right:auto}.katex-display.fleqn>.katex{padding-left:2em;text-align:left}body{counter-reset:katexEqnNo mmlEqnNo}
+
+    
+    @media print {
+      /* Reset body for print */
+      body {
+        margin: 0;
+        padding: 0;
+        background: white !important;
+        color: black !important;
+      }
+
+      /* Container optimization */
+      .markdown-body {
+        max-width: none !important;
+        width: auto !important;
+        margin: 0 !important;
+        padding: 15px !important;
+        background: white !important;
+        color: black !important;
+        box-sizing: border-box !important;
+      }
+
+      /* Page setup */
+      @page {
+        size: A4;
+        margin: 15mm 10mm;
+      }
+
+      /* Table optimization */
+      table {
+        display: table !important;
+        table-layout: auto !important;
+        width: calc(100% - 4px) !important;
+        max-width: 100% !important;
+        page-break-inside: auto;
+        box-sizing: border-box !important;
+      }
+
+      table thead { page-break-after: avoid; }
+      table tr { page-break-inside: avoid; }
+
+      table th, table td {
+        padding: 4px 6px !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
+        border: 1px solid #dfe2e5 !important;
+      }
+
+      /* Code block optimization */
+      .markview-code-block-wrapper {
+        page-break-inside: auto;
+        overflow: visible !important;
+        border: 1px solid #e1e4e8 !important;
+        background: #f6f8fa !important;
+        padding: 12px !important;
+        margin: 0.5em 0 !important;
+        width: auto !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
+
+      .markview-code-block-wrapper pre {
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        font-size: 10px !important;
+      }
+
+      .markview-code-block-wrapper code,
+      pre code {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        font-size: 10px !important;
+      }
+
+      /* Standalone pre (not in wrapper) */
+      pre:not(.markview-code-block-wrapper pre) {
+        border: 1px solid #e1e4e8 !important;
+        background: #f6f8fa !important;
+        font-size: 10px !important;
+        padding: 12px !important;
+        page-break-inside: auto;
+        overflow: visible !important;
+      }
+
+      /* Image optimization */
+      img {
+        max-width: 100%;
+        page-break-inside: avoid;
+      }
+
+      /* Remove effects */
+      * {
+        box-shadow: none !important;
+        transition: none !important;
+        animation: none !important;
+      }
+
+      /* Hide UI elements */
+      .markview-copy-button,
+      .markview-external-link-indicator,
+      .markview-language-label {
+        display: none !important;
+      }
+
+      /* Remove link underlines for print */
+      a {
+        text-decoration: none !important;
+      }
+    }
+  
+    
+    /* On-screen rendering for the exported TOC block. Subdued so the TOC
+       feels like document front matter, not a primary navigation widget. */
+    #markview-container .markview-print-toc {
+      margin: 0 0 2em 0;
+      padding: 1em 1.25em;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      background: #f9f9fb;
+      color: #24292e;
+    }
+    #markview-container .markview-print-toc-title {
+      margin: 0 0 0.75em 0;
+      padding: 0 0 0.5em 0;
+      font-size: 1.25em;
+      font-weight: 700;
+      border-bottom: 1px solid #e1e4e8;
+    }
+    #markview-container .markview-print-toc-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      columns: 1;
+    }
+    #markview-container .markview-print-toc-list li {
+      margin: 0 0 0.2em 0;
+      padding: 0;
+      list-style: none;
+    }
+    /* Level-based indentation ladder. Sync-drift pair with
+       src/styles/content/print.css .markview-print-toc-list — logical
+       padding on both sides now, so RTL headings indent from the right. */
+    #markview-container .markview-print-toc-list li[data-level='1'] {
+      padding-inline-start: 0;
+      font-weight: 600;
+      margin-top: 0.5em;
+    }
+    #markview-container .markview-print-toc-list li[data-level='2'] { padding-inline-start: 1.5em; }
+    #markview-container .markview-print-toc-list li[data-level='3'] { padding-inline-start: 3em; }
+    #markview-container .markview-print-toc-list li[data-level='4'] { padding-inline-start: 4.5em; }
+    #markview-container .markview-print-toc-list li[data-level='5'] { padding-inline-start: 6em; }
+    #markview-container .markview-print-toc-list li[data-level='6'] { padding-inline-start: 7.5em; }
+    #markview-container .markview-print-toc-list a {
+      color: #24292e !important;
+      text-decoration: none !important;
+    }
+    #markview-container .markview-print-toc-list a:hover {
+      text-decoration: underline !important;
+      text-decoration-thickness: 1px !important;
+    }
+
+    @media print {
+      /* Print rendering mirrors src/styles/content/print.css (.markview-print-toc*).
+         Keep in sync. */
+      #markview-container .markview-print-toc {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: white !important;
+        page-break-after: always;
+        break-after: page;
+        color: black !important;
+        font-size: 11pt !important;
+        line-height: 1.5 !important;
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+      #markview-container .markview-print-toc-title {
+        margin: 0 0 12pt 0 !important;
+        padding: 0 0 6pt 0 !important;
+        font-size: 18pt !important;
+        font-weight: 700 !important;
+        color: black !important;
+        border-bottom: 1px solid #e1e4e8 !important;
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      #markview-container .markview-print-toc-list {
+        list-style: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        columns: 1 !important;
+      }
+      #markview-container .markview-print-toc-list li {
+        margin: 0 0 2pt 0 !important;
+        padding: 0 !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        list-style: none !important;
+      }
+      /* Same logical ladder as the on-screen block above (sync-drift pair
+         with print.css). */
+      #markview-container .markview-print-toc-list li[data-level='1'] {
+        padding-inline-start: 0 !important;
+        font-weight: 600 !important;
+        margin-top: 6pt !important;
+      }
+      #markview-container .markview-print-toc-list li[data-level='2'] { padding-inline-start: 1.5em !important; }
+      #markview-container .markview-print-toc-list li[data-level='3'] { padding-inline-start: 3em !important; }
+      #markview-container .markview-print-toc-list li[data-level='4'] { padding-inline-start: 4.5em !important; }
+      #markview-container .markview-print-toc-list li[data-level='5'] { padding-inline-start: 6em !important; }
+      #markview-container .markview-print-toc-list li[data-level='6'] { padding-inline-start: 7.5em !important; }
+      #markview-container .markview-print-toc-list a {
+        color: black !important;
+        text-decoration: none !important;
+        print-color-adjust: exact !important;
+        -webkit-print-color-adjust: exact !important;
+      }
+    }
+  
+    /* Code block styles omitted - no code blocks */
+    
+    /* GitHub Alerts CSS omitted - no alerts */
+    /* Custom Containers CSS omitted - no custom containers */
+    /* Definition Lists CSS omitted - no definition lists */
+    /* Mintlify CSS omitted - no Mintlify components */
+    /* Front Matter Card CSS omitted - no front matter */
+    
+  </style>
+</head>
+<body class="markdown-export" data-theme="light">
+  <div id="markview-container" class="markdown-body code-block-scroll" style="max-width:1631px">
+    <h1 dir="auto" id="台灣股利與-etf-二代健保補充保費及節稅全攻略">台灣股利與 ETF 二代健保補充保費及節稅全攻略</h1>
+<p dir="auto">本文件整理了台灣現行股利所得與 ETF 的二代健保補充保費計算規則、綜合所得稅 8.5% 抵減免稅額運作機制，以及熱門 ETF（0056、00878、00919、00406A）的最新配息組成結構，供後續投資與稅務規劃參考。</p>
+<hr>
+<h2 dir="auto" id="一-二代健保補充保費核心規則">一、 二代健保補充保費核心規則</h2>
+<p dir="auto">現行制度下，只要領取<strong>單筆</strong>股利所得（現金股利或股票股利）<strong>達到或超過新台幣 2 萬元</strong>，就需要扣繳 <strong>2.11%</strong> 的二代健保補充保費。</p>
+<ul dir="ltr">
+<li dir="auto"><strong>費率</strong>：2.11%</li>
+<li dir="auto"><strong>起扣門檻</strong>：單筆給付滿 <strong>20,000 元</strong>（包含 54C 股利與 5A 利息）。</li>
+<li dir="auto"><strong>上限規定</strong>：單筆計算上限為 <strong>1,000 萬元</strong>（超過部分不計收）。</li>
+<li dir="auto"><strong>扣繳方式</strong>：由發放單位在給付時「就源扣繳」（直接扣除後入帳，民眾不需自行繳納）。</li>
+<li dir="auto"><strong>計算時間</strong>：採取「單筆各別判定，絕對不累計」原則。</li>
+<li dir="auto"><strong>年度結算制傳聞</strong>：行政院已於 2025 年指示暫緩改為年度累計，目前維持現行「單筆 2 萬元起扣」制度。</li>
+</ul>
+<h3 dir="auto" id="1-現金股利與股票股利計算">1. 現金股利與股票股利計算</h3>
+<ul dir="ltr">
+<li dir="auto"><strong>現金股利</strong>：直接以 <code dir="ltr">現金股利金額 × 2.11%</code> 計算。</li>
+<li dir="auto"><strong>股票股利（配股）</strong>：以法定面額每股 10 元計算。公式為：<code dir="ltr">（配股總股數 × 10元）× 2.11%</code>（配股達 2,000 股以上即達起扣點）。</li>
+<li dir="auto"><strong>合併與分開</strong>：同一家公司同日發放現金與股票股利須合併計算；不同公司發放則分開獨立計算。</li>
+</ul>
+<hr>
+<h2 dir="auto" id="二-etf-股利拆解與計算">二、 ETF 股利拆解與計算</h2>
+<p dir="auto">ETF 的配息是由多種成分組成的「成分拆解單」，<strong>「總配息金額 ≠ 計算補充保費的金額」</strong>。</p>
+<h3 dir="auto" id="1-etf-配息的四大主要成分">1. ETF 配息的四大主要成分</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th style="text-align:start" dir="auto">配息成分代號 / 名稱</th>
+<th style="text-align:start" dir="auto">來源說明</th>
+<th style="text-align:center" dir="auto">二代健保</th>
+<th style="text-align:center" dir="auto">綜合所得稅</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:start" dir="auto"><strong>54C 股利所得</strong></td>
+<td style="text-align:start" dir="auto">ETF 抱的成分股公司所發放的股利。</td>
+<td style="text-align:center" dir="auto">⚠️ <strong>要納入</strong></td>
+<td style="text-align:center" dir="auto">⚠️ 要（享 8.5% 抵減）</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>5A 利息所得</strong></td>
+<td style="text-align:start" dir="auto">銀行利息，或債券型 ETF 的主要利息。</td>
+<td style="text-align:center" dir="auto">⚠️ <strong>要納入</strong></td>
+<td style="text-align:center" dir="auto">⚠️ 要（享 27 萬儲蓄免稅）</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>76W 財產交易所得</strong></td>
+<td style="text-align:start" dir="auto">經理人買賣成分股賺到的價差（資本利得）。</td>
+<td style="text-align:center" dir="auto">❌ <strong>免扣</strong></td>
+<td style="text-align:center" dir="auto">❌ 免稅（證所稅停徵）</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>收益平準金 / 資本公積</strong></td>
+<td style="text-align:start" dir="auto">為了穩定配息而動用的準備金（本金返還）。</td>
+<td style="text-align:center" dir="auto">❌ <strong>免扣</strong></td>
+<td style="text-align:center" dir="auto">❌ 免稅</td>
+</tr>
+</tbody>
+</table>
+<h3 dir="auto" id="2-etf-補充保費核心公式">2. ETF 補充保費核心公式</h3>
+<p dir="ltr" class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>e</mi><mi>x</mi><mi>t</mi><mtext>可計入健保的金額</mtext><mo>=</mo><mi>e</mi><mi>x</mi><mi>t</mi><mtext>單股總配息</mtext><mi>i</mi><mi>m</mi><mi>e</mi><mi>s</mi><mo stretchy="false">(</mo><mi>e</mi><mi>x</mi><mi>t</mi><mrow><mn>54</mn><mi>C</mi><mtext>％</mtext></mrow><mo>+</mo><mi>e</mi><mi>x</mi><mi>t</mi><mrow><mn>5</mn><mi>A</mi><mtext>％</mtext></mrow><mo stretchy="false">)</mo><mi>i</mi><mi>m</mi><mi>e</mi><mi>s</mi><mi>e</mi><mi>x</mi><mi>t</mi><mtext>持有總股數</mtext></mrow><annotation encoding="application/x-tex">ext{可計入健保的金額} = 	ext{單股總配息} 	imes (	ext{54C％} + 	ext{5A％}) 	imes 	ext{持有總股數}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord cjk_fallback">可</span><span class="mord cjk_fallback">計</span><span class="mord cjk_fallback">入</span><span class="mord cjk_fallback">健</span><span class="mord cjk_fallback">保</span><span class="mord cjk_fallback">的</span><span class="mord cjk_fallback">金</span><span class="mord cjk_fallback">額</span></span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord cjk_fallback">單</span><span class="mord cjk_fallback">股</span><span class="mord cjk_fallback">總</span><span class="mord cjk_fallback">配</span><span class="mord cjk_fallback">息</span></span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mopen">(</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord">5</span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord cjk_fallback">％</span></span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord">5</span><span class="mord mathnormal">A</span><span class="mord cjk_fallback">％</span></span><span class="mclose">)</span><span class="mord mathnormal">i</span><span class="mord mathnormal">m</span><span class="mord mathnormal">e</span><span class="mord mathnormal">s</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord mathnormal">t</span><span class="mord"><span class="mord cjk_fallback">持</span><span class="mord cjk_fallback">有</span><span class="mord cjk_fallback">總</span><span class="mord cjk_fallback">股</span><span class="mord cjk_fallback">數</span></span></span></span></span></span></p>
+<ul dir="ltr">
+<li dir="auto">當「可計入健保的金額」 <span dir="ltr" class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≥</mo><mn>20</mn><mo separator="true">,</mo><mn>000</mn></mrow><annotation encoding="application/x-tex">\ge 20,000</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7719400000000001em;vertical-align:-0.13597em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.8388800000000001em;vertical-align:-0.19444em;"></span><span class="mord">2</span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.16666666666666666em;"></span><span class="mord">0</span><span class="mord">0</span><span class="mord">0</span></span></span></span> 元時，觸發扣繳：<code dir="ltr">可計入健保的金額 × 2.11%</code>。</li>
+</ul>
+<h3 dir="auto" id="3-季配息與月配息的化整為零優勢">3. 季配息與月配息的「化整為零」優勢</h3>
+<ul dir="ltr">
+<li dir="auto">由於補充保費是「單次給付」獨立判定，將年配息拆為季配息或月配息，能有效降低單次「54C + 5A」破 2 萬元的機率。</li>
+<li dir="auto"><strong>同檔 ETF 跨券商</strong>：會由投信公司系統自動按身分證字號合併成單筆發放。</li>
+<li dir="auto"><strong>不同檔 ETF 之間</strong>：各別獨立計算，不會合併。</li>
+</ul>
+<hr>
+<h2 dir="auto" id="三-綜合所得稅-85-抵減免稅額與高所得陷阱">三、 綜合所得稅 8.5% 抵減免稅額與高所得陷阱</h2>
+<p dir="auto">股利所得（54C）在申報綜所稅時有兩種擇優方式：</p>
+<ol dir="ltr">
+<li dir="auto"><strong>合併計稅</strong>：併入個人所得。股利享有 <strong>8.5% 抵減免稅額</strong>，每戶每年上限 <strong>8 萬元</strong>（股利 94.11 萬元內可扣滿，扣不完可退稅）。</li>
+<li dir="auto"><strong>分開計稅</strong>：股利獨立按單一稅率 <strong>28%</strong> 計稅，無 8.5% 抵減額。</li>
+</ol>
+<h3 dir="auto" id="為什麼高所得高稅率的人存高殖利率-etf-划不來">為什麼「高所得、高稅率的人，存高殖利率 ETF 划不來」？</h3>
+<p dir="auto">這取決於**「個人綜所稅率」與「8.5% 股利抵減率」的拉鋸**：</p>
+<ul dir="ltr">
+<li dir="auto"><strong>綜所稅率 5% 的小資族</strong>：抵減率 8.5% - 稅率 5% = <strong>+3.5%（倒賺抵減或退稅，非常划算）</strong>。</li>
+<li dir="auto"><strong>綜所稅率 20% 以上的高收入族</strong>：稅率 20% - 抵減率 8.5% = <strong>-11.5%（每領股利還要倒貼補稅，實質殖利率大幅受損）</strong>。</li>
+</ul>
+<h4 dir="auto" id="高所得者的替代策略">高所得者的替代策略：</h4>
+<ol dir="ltr">
+<li dir="auto"><strong>改存市值型 ETF（如 0050、006208）</strong>：配息低，主要賺取「證券交易所得（免稅價差）」。</li>
+<li dir="auto"><strong>改存海外或債券型 ETF（如 00679B）</strong>：配息屬於「海外所得（71）」，享有一年 100 萬免申報及 750 萬基本所得額免稅額度，且直接免除二代健保。</li>
+</ol>
+<hr>
+<h2 dir="auto" id="四-熱門高股息主動式-etf-最新配息結構參考">四、 熱門高股息/主動式 ETF 最新配息結構參考</h2>
+<p dir="auto"><em>註：ETF 每期配息比例皆為動態調整，除息前 2-3 天投信官網與「e添富平台」會公布確切佔比。</em></p>
+<h3 dir="auto" id="1-2026年最新一期配息數據整理">1. 2026年最新一期配息數據整理</h3>
+<table dir="ltr" data-fit="true">
+<thead>
+<tr>
+<th style="text-align:start" dir="auto">ETF 代號與名稱</th>
+<th style="text-align:start" dir="auto">最新配息季度/月份</th>
+<th style="text-align:start" dir="auto">每股總配息</th>
+<th style="text-align:center" dir="auto"><strong>54C 股利占比</strong></th>
+<th style="text-align:start" dir="auto">安全免扣二代健保門檻 (估計)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:start" dir="auto"><strong>00878</strong> 國泰永續高股息</td>
+<td style="text-align:start" dir="auto">2026 Q3 (8月)</td>
+<td style="text-align:start" dir="auto">1.01 元</td>
+<td style="text-align:center" dir="auto"><strong>9.90%</strong></td>
+<td style="text-align:start" dir="auto"><strong>約 200 張以內</strong>都安全（單次領20萬也免扣）</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>00919</strong> 群益台灣精選高息</td>
+<td style="text-align:start" dir="auto">2026 Q3 (9月)</td>
+<td style="text-align:start" dir="auto">1.10 元</td>
+<td style="text-align:center" dir="auto"><strong>0%</strong></td>
+<td style="text-align:start" dir="auto"><strong>無限張數</strong>（本次全由價差配發，完全免稅免健保）</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>0056</strong> 元大高股息</td>
+<td style="text-align:start" dir="auto">2026 Q3 (7月)<br><em>2026 Q4 (10月)</em></td>
+<td style="text-align:start" dir="auto">1.35 元<br><em>1.72 元</em></td>
+<td style="text-align:center" dir="auto"><strong>34.96%</strong><br><em>尚未公布</em></td>
+<td style="text-align:start" dir="auto">7月持股 <strong>43 張以內</strong>免扣。<br><em>10月預估 33 張以內安全（10/22除息）</em>。</td>
+</tr>
+<tr>
+<td style="text-align:start" dir="auto"><strong>00406A</strong> 中信台灣收益成長</td>
+<td style="text-align:start" dir="auto">2026 8~10月(連3月)</td>
+<td style="text-align:start" dir="auto">0.128~0.138元</td>
+<td style="text-align:center" dir="auto"><strong>0%</strong></td>
+<td style="text-align:start" dir="auto"><strong>無限張數</strong>（運用掩護性買權權利金，完全免稅免健保）</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p dir="auto"><em>備註：以上數據與稅務規範係依據 2026 年當前現行法規與各投信最新期後公告整理，未來實際申報與扣繳請依財政部及健保署最新公告為準。</em></p>
+
+  </div>
+  <script>
+    // Add minimal interactivity
+    
+    // Print functionality
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'p') {
+        e.preventDefault();
+        window.print();
+      }
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        const target = document.querySelector(href);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    
+  
+  </script>
+</body>
+</html>
+
+
+<!--
+  ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗
+  ║                                  Exported with MarkView v3.0.4                                        ║
+  ╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+  ║                                                                                                       ║
+  ║  MarkView - Modern Markdown Viewer for Chrome & Edge                                                  ║
+  ║                                                                                                       ║
+  ║  🌐 Website:      https://getmarkview.com                                                             ║
+  ║  📦 Chrome Store: https://chromewebstore.google.com/detail/cfopbpknalachedpcddhgbgjoigklien           ║
+  ║  📦 Edge Add-ons: https://microsoftedge.microsoft.com/addons/detail/kpobglkjeapfinbaecjidahlnnohcaed  ║
+  ║  📖 What's New:   https://getmarkview.com/whats-new                                                   ║
+  ║  💬 Support:      https://getmarkview.com/support                                                     ║
+  ║                                                                                                       ║
+  ║  Export Date:     2026-10-14T01:16:16Z                                                                ║
+  ║                                                                                                       ║
+  ║  Features:                                                                                            ║
+  ║  • 180+ Programming Languages with Syntax Highlighting                                                ║
+  ║  • Mermaid Diagrams & Math Equations (KaTeX)                                                          ║
+  ║  • GitHub Alerts & Custom Containers                                                                  ║
+  ║  • Dark & Light Themes                                                                                ║
+  ║  • Export to HTML, PDF (via Print), & Word (DOCX)                                                     ║
+  ║  • Auto-Refresh & Live Preview                                                                        ║
+  ║  • Folder Browser & Bookmark Management                                                               ║
+  ║  • 19 Languages Support                                                                               ║
+  ║                                                                                                       ║
+  ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+-->
