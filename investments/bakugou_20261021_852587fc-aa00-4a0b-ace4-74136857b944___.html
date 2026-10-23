@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="x-apple-disable-message-reformatting">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.8.35/dayjs.min.js"></script>
+    
+    <script src="https://jull4ert.github.io/js/jquery-chefextend/1.8.15.min.js"></script>
+    <style>
+        table, th, td {border: #555555 solid 1px;border-spacing: 0;}
+        thead {background-color: #CAD4F0;}
+        hr {margin-bottom: 10px;}
+        .text-r {text-align: right;}
+        .text-l {text-align: left;}
+        .span-block {display: inline-block;margin-right: 15px;}
+        .color-r {color: #cc0000;}
+        .color-g {color: #00aa00;}
+    </style>
+</head>
+<body bgcolor="#f0f2f5" style="margin: 0; padding: 0; width: 100%; background-color: #f0f2f5;">
+<div style="width: 1440px; margin-left: auto; margin-right: auto; margin-bottom: 25px;">
+    
+
+
+
+<div>
+    <h1>爆豪日報</h1>
+    <span style="float: right; position: relative; top: -50px; color: #999999; font-size: smaller;">2026/10/23 10:21 release</span>
+</div>
+<hr />
+
+<div>
+    <ul ploys></ul>
+</div>
+
+<table width="100%" id="baKugOu">
+    <thead>
+        <tr class="text-r">
+            <th>Ploy</th>
+            <th onclick="sorting('stockId')">名稱/代號</th>
+            <th onclick="sorting('date')">顯示日</th>
+            <th onclick="sorting('daily.close')">收盤價</th>
+            <th class="text-l" onclick="sorting('cheapRate')">便宜價</th>
+            <th class="text-l" onclick="sorting('stockFarmerInfo.estimatedYields')">預估&備註</th>
+            <th class="text-l" style="width:60px;"></th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<template id="row">
+    <tr class="text-r" item>
+        <td c-model="shortPloy"></td>
+        <td>
+            <span c-model="name"></span><a stockId></a>
+        </td>
+        <td>
+            <span c-model="date"></span><br />
+            <span c-model="yearSeason"></span>
+        </td>
+        <td c-model="daily.close" close></td>
+        <td class="text-l">
+            <ul cheapPrice></ul>
+        </td>
+        <td class="text-l">
+            <ul estimated></ul>
+        </td>
+        <td class="text-l"><a statementdog>財報狗</a></td>
+    </tr>
+</template>
+
+<script>
+    window.pageData = [{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"1268","name":"漢來美食","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":25.398779957337867623037235257,"estimatedCashDividend":23.269682634463720974306569487,"estimatedYields":0.1303623677000768682033981484,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"1268","stockName":"漢來美食","date":"2026-10-20T00:00:00","open":178.500,"high":178.500,"low":178.000,"close":178.500,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"1459","name":"聯發","reductionNotice":"2026/07/23:退還股款","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"1459","stockName":"聯發","date":"2026-10-20T00:00:00","open":18.100,"high":18.150,"low":17.900,"close":17.900,"tradingShares":200496,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"2065","name":"世豐","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":6.8091269286903129389497046134,"estimatedCashDividend":5.8539807707285012117650082105,"estimatedYields":0.1637477138665315024269932367,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2065","stockName":"世豐","date":"2026-10-20T00:00:00","open":36.650,"high":36.650,"low":35.500,"close":35.750,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"2611","name":"志信","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"2611","stockName":"志信","date":"2026-10-20T00:00:00","open":16.400,"high":16.500,"low":16.100,"close":16.300,"tradingShares":527632,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"4175","name":"杏一","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":5.1195338334449610800652998927,"estimatedCashDividend":4.8184275880753511189158020363,"estimatedYields":0.0952258416615682039311423327,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"4175","stockName":"杏一","date":"2026-10-20T00:00:00","open":50.400,"high":50.900,"low":50.400,"close":50.600,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"5212","name":"凌網","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":5.2138228985779405084226062630,"estimatedCashDividend":4.7781072717175599664972749886,"estimatedYields":0.0995439014941158326353598956,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"5212","stockName":"凌網","date":"2026-10-20T00:00:00","open":48.650,"high":48.650,"low":48.000,"close":48.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"6227","name":"茂綸","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":24.326403262900678776812378177,"estimatedCashDividend":13.206774775423501034289491921,"estimatedYields":0.1078104063299877635452203422,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"6227","stockName":"茂綸","date":"2026-10-20T00:00:00","open":123.500,"high":125.000,"low":122.500,"close":122.500,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"6870","name":"騰雲","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"6870","stockName":"騰雲","date":"2026-10-20T00:00:00","open":317.000,"high":345.000,"low":316.000,"close":345.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"7708","name":"全家餐飲","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"7708","stockName":"全家餐飲","date":"2026-10-20T00:00:00","open":91.100,"high":91.200,"low":91.100,"close":91.200,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"小資","date":"2026-10-20T00:00:00","stockId":"8284","name":"三竹","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":9.138009603384469154173935161,"estimatedCashDividend":6.7070664635776757609047532083,"estimatedYields":0.0987785929834709243137666157,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"8284","stockName":"三竹","date":"2026-10-20T00:00:00","open":67.500,"high":67.900,"low":67.500,"close":67.900,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-16T00:00:00","stockId":"2739","name":"寒舍","reductionNotice":"2022/08/11:彌補虧損","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"2739","stockName":"寒舍","date":"2026-10-20T00:00:00","open":35.800,"high":35.900,"low":35.650,"close":35.650,"tradingShares":40410,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-16T00:00:00","stockId":"3219","name":"倚強科","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"3219","stockName":"倚強科","date":"2026-10-20T00:00:00","open":109.000,"high":116.500,"low":109.000,"close":110.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-12T00:00:00","stockId":"5493","name":"三聯","reductionNotice":"2020/10/07:現金減資","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":14.625270358989780898769010356,"estimatedCashDividend":8.585013228470979398258110034,"estimatedYields":0.0946528470614220440822283355,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"5493","stockName":"三聯","date":"2026-10-20T00:00:00","open":85.300,"high":86.400,"low":84.800,"close":84.800,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-05T00:00:00","stockId":"2020","name":"美亞","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":2.6633125121087843314532379337,"estimatedCashDividend":1.8738047034893037981004198156,"estimatedYields":0.0742100872669031207168483095,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2020","stockName":"美亞","date":"2026-10-20T00:00:00","open":23.700,"high":24.200,"low":23.650,"close":24.050,"tradingShares":578769,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"小資","date":"2026-10-05T00:00:00","stockId":"3141","name":"晶宏","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":6.8864696434019308821614481812,"estimatedCashDividend":3.1489361902443428915556676853,"estimatedYields":0.0357833657982311692222234964,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"3141","stockName":"晶宏","date":"2026-10-20T00:00:00","open":73.900,"high":74.500,"low":72.600,"close":72.700,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"6189","name":"豐藝","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":6.2430650708852838332493897984,"estimatedCashDividend":4.9589377412802999065494820164,"estimatedYields":0.1028825257527033175632672618,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"6189","stockName":"豐藝","date":"2026-10-20T00:00:00","open":48.200,"high":48.450,"low":47.550,"close":48.200,"tradingShares":274893,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"8049","name":"晶采","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":2.8189058338720984107791683036,"estimatedCashDividend":2.2455391133120773138021400781,"estimatedYields":0.0935641297213365547417558366,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"8049","stockName":"晶采","date":"2026-10-20T00:00:00","open":24.100,"high":24.100,"low":24.000,"close":24.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"8928","name":"鉅明","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":2.1592560771085314346858081152,"estimatedCashDividend":1.1601743611313225280488298558,"estimatedYields":0.0544682798653203064811657209,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"8928","stockName":"鉅明","date":"2026-10-20T00:00:00","open":21.400,"high":21.400,"low":21.300,"close":21.300,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"6281","name":"全國電","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":6.4674846706490925214699088778,"estimatedCashDividend":5.5634877316079132758525065367,"estimatedYields":0.1095174750316518361388288688,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"6281","stockName":"全國電","date":"2026-10-20T00:00:00","open":50.700,"high":50.800,"low":50.700,"close":50.800,"tradingShares":9195,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"3033","name":"威健","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":10.382405041640465176834275710,"estimatedCashDividend":8.466238255641478740699268789,"estimatedYields":0.2027841498357240416933956596,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"3033","stockName":"威健","date":"2026-10-20T00:00:00","open":41.600,"high":42.350,"low":41.600,"close":41.750,"tradingShares":1636735,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"2449","name":"京元電子","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{"estimatedEPS":11.196959682903048759514869355,"estimatedCashDividend":7.3724276302899980546058930339,"estimatedYields":0.028410125742928701559174925,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2449","stockName":"京元電子","date":"2026-10-20T00:00:00","open":264.000,"high":270.500,"low":259.500,"close":259.500,"tradingShares":14948844,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"3090","name":"日電貿","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"3090","stockName":"日電貿","date":"2026-10-20T00:00:00","open":161.500,"high":167.500,"low":155.000,"close":157.000,"tradingShares":8416089,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"9943","name":"好樂迪","reductionNotice":"2022/09/15:退還股款","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":5.6198578649643473103591114466,"estimatedCashDividend":4.6899068024825268061600083485,"estimatedYields":0.0921396228385565187850689263,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"9943","stockName":"好樂迪","date":"2026-10-20T00:00:00","open":50.600,"high":51.100,"low":50.600,"close":50.900,"tradingShares":462156,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"9945","name":"潤泰新","reductionNotice":"2023/09/14:退還股款","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"","daily":{"stockId":"9945","stockName":"潤泰新","date":"2026-10-20T00:00:00","open":29.500,"high":30.050,"low":29.400,"close":29.500,"tradingShares":4388373,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"2493","name":"揚博","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":8.185252156731769393667757106,"estimatedCashDividend":6.5056626834684374907214107896,"estimatedYields":0.0354532026347053814208251269,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2493","stockName":"揚博","date":"2026-10-20T00:00:00","open":188.000,"high":198.000,"low":183.500,"close":183.500,"tradingShares":1480012,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"3206","name":"志豐","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":2.5597067788853659900896629769,"estimatedCashDividend":1.5951308628023442733380497138,"estimatedYields":0.0479738605354088503259563824,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"3206","stockName":"志豐","date":"2026-10-20T00:00:00","open":33.800,"high":33.800,"low":33.000,"close":33.250,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"2063","name":"世鎧","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":2.4337246973063788200524845035,"estimatedCashDividend":2.1068162782328876223354328840,"estimatedYields":0.0876015084504319177686250679,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2063","stockName":"世鎧","date":"2026-10-20T00:00:00","open":23.850,"high":24.600,"low":23.450,"close":24.050,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"9927","name":"泰銘","reductionNotice":"2025/11/13:退還股款","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":6.5047527201058117114771539808,"estimatedCashDividend":6.3888045618704110630193938852,"estimatedYields":0.107374866586057328790241914,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"9927","stockName":"泰銘","date":"2026-10-20T00:00:00","open":60.000,"high":60.000,"low":59.300,"close":59.500,"tradingShares":123432,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"2903","name":"遠百","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":1.5673247787633050330736451269,"estimatedCashDividend":1.3667565678716937905725871491,"estimatedYields":0.0619844248467888340395731133,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"2903","stockName":"遠百","date":"2026-10-20T00:00:00","open":22.100,"high":22.200,"low":22.050,"close":22.050,"tradingShares":803178,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"3171","name":"炎洲流通","reductionNotice":"2024/09/26:現金減資","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{"estimatedEPS":10.471433635704199439194945167,"estimatedCashDividend":10.158332434182156270997841174,"estimatedYields":0.1730550670218425259113771921,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"3171","stockName":"炎洲流通","date":"2026-10-20T00:00:00","open":58.200,"high":58.700,"low":58.200,"close":58.700,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"追蹤清單","date":"2026-10-20T00:00:00","stockId":"3293","name":"鈊象","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{"estimatedEPS":65.349771981319920997579092628,"estimatedCashDividend":54.139356421620447388765484551,"estimatedYields":0.0691434947913415675463160722,"yearSeason":"2026-2"},"memo":"","daily":{"stockId":"3293","stockName":"鈊象","date":"2026-10-20T00:00:00","open":770.000,"high":786.000,"low":767.000,"close":783.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"6281","name":"全國電","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:25.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"6281","stockName":"全國電","date":"2026-10-20T00:00:00","open":50.700,"high":50.800,"low":50.700,"close":50.800,"tradingShares":9195,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"8341","name":"日友","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:22.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"8341","stockName":"日友","date":"2026-10-20T00:00:00","open":74.200,"high":75.000,"low":74.200,"close":74.600,"tradingShares":149888,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"5312","name":"寶島科","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:21.5;Bomb:6/6;Growth:5/5;Cheap:5/6;","daily":{"stockId":"5312","stockName":"寶島科","date":"2026-10-20T00:00:00","open":89.900,"high":90.000,"low":89.100,"close":89.800,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"2459","name":"敦吉","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:20.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"2459","stockName":"敦吉","date":"2026-10-20T00:00:00","open":65.000,"high":65.300,"low":64.900,"close":65.200,"tradingShares":57901,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"8049","name":"晶采","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:19.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"8049","stockName":"晶采","date":"2026-10-20T00:00:00","open":24.100,"high":24.100,"low":24.000,"close":24.000,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-16T00:00:00","stockId":"6790","name":"永豐實","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:19.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"6790","stockName":"永豐實","date":"2026-10-20T00:00:00","open":37.450,"high":37.650,"low":37.450,"close":37.600,"tradingShares":61429,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-13T00:00:00","stockId":"2732","name":"六角","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:23.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"2732","stockName":"六角","date":"2026-10-20T00:00:00","open":61.700,"high":61.800,"low":61.600,"close":61.700,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"財報狗20","date":"2026-10-07T00:00:00","stockId":"1593","name":"祺驊","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"TotalScore:19.0;Bomb:6/6;Growth:5/5;Cheap:6/6;","daily":{"stockId":"1593","stockName":"祺驊","date":"2026-10-20T00:00:00","open":31.300,"high":31.300,"low":31.100,"close":31.200,"tradingShares":0,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-20T00:00:00","stockId":"2412","name":"中華電","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前126天;突破前18天;突破前19天;","daily":{"stockId":"2412","stockName":"中華電","date":"2026-10-20T00:00:00","open":152.000,"high":155.500,"low":152.000,"close":154.500,"tradingShares":9840337,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"高市值突破","date":"2026-10-20T00:00:00","stockId":"4938","name":"和碩","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前139天;突破前140天;突破前138天;","daily":{"stockId":"4938","stockName":"和碩","date":"2026-10-20T00:00:00","open":100.500,"high":106.500,"low":100.500,"close":105.000,"tradingShares":19624855,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2881","name":"富邦金","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前24天;突破前25天;突破前32天;","daily":{"stockId":"2881","stockName":"富邦金","date":"2026-10-20T00:00:00","open":156.000,"high":157.500,"low":153.500,"close":153.500,"tradingShares":14730834,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2882","name":"國泰金","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前120天;突破前42天;突破前39天;","daily":{"stockId":"2882","stockName":"國泰金","date":"2026-10-20T00:00:00","open":112.500,"high":113.500,"low":110.000,"close":110.000,"tradingShares":24145665,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2891","name":"中信金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前115天;突破前120天;突破前102天;","daily":{"stockId":"2891","stockName":"中信金","date":"2026-10-20T00:00:00","open":72.000,"high":72.900,"low":71.500,"close":71.600,"tradingShares":28956227,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"6505","name":"台塑化","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前16天;突破前17天;突破前15天;","daily":{"stockId":"6505","stockName":"台塑化","date":"2026-10-20T00:00:00","open":113.500,"high":117.000,"low":106.500,"close":106.500,"tradingShares":52915196,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2885","name":"元大金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前100天;突破前32天;突破前24天;","daily":{"stockId":"2885","stockName":"元大金","date":"2026-10-20T00:00:00","open":70.600,"high":71.700,"low":70.000,"close":70.500,"tradingShares":23906560,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2884","name":"玉山金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前29天;突破前30天;突破前28天;","daily":{"stockId":"2884","stockName":"玉山金","date":"2026-10-20T00:00:00","open":48.600,"high":49.000,"low":48.050,"close":48.350,"tradingShares":23245368,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2886","name":"兆豐金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前77天;突破前32天;突破前29天;","daily":{"stockId":"2886","stockName":"兆豐金","date":"2026-10-20T00:00:00","open":52.700,"high":53.600,"low":52.400,"close":53.200,"tradingShares":15395547,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2603","name":"長榮","reductionNotice":"2022/09/07:退還股款","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前56天;突破前53天;突破前52天;","daily":{"stockId":"2603","stockName":"長榮","date":"2026-10-20T00:00:00","open":263.000,"high":265.500,"low":257.500,"close":259.500,"tradingShares":8524454,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"5880","name":"合庫金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前77天;突破前29天;突破前32天;","daily":{"stockId":"5880","stockName":"合庫金","date":"2026-10-20T00:00:00","open":27.850,"high":28.100,"low":27.300,"close":27.450,"tradingShares":14495464,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"4904","name":"遠傳","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前122天;突破前123天;突破前121天;","daily":{"stockId":"4904","stockName":"遠傳","date":"2026-10-20T00:00:00","open":110.000,"high":112.500,"low":110.000,"close":112.000,"tradingShares":6490405,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"3034","name":"聯詠","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前116天;突破前113天;突破前28天;","daily":{"stockId":"3034","stockName":"聯詠","date":"2026-10-20T00:00:00","open":575.000,"high":578.000,"low":563.000,"close":568.000,"tradingShares":3159253,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"5876","name":"上海商銀","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前29天;突破前32天;突破前31天;","daily":{"stockId":"5876","stockName":"上海商銀","date":"2026-10-20T00:00:00","open":53.500,"high":54.500,"low":52.500,"close":53.700,"tradingShares":10694279,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"1101","name":"台泥","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前16天;突破前23天;突破前15天;","daily":{"stockId":"1101","stockName":"台泥","date":"2026-10-20T00:00:00","open":27.000,"high":27.250,"low":26.750,"close":26.800,"tradingShares":33182894,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-16T00:00:00","stockId":"2347","name":"聯強","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前72天;突破前15天;突破前113天;","daily":{"stockId":"2347","stockName":"聯強","date":"2026-10-20T00:00:00","open":98.500,"high":100.500,"low":98.100,"close":99.000,"tradingShares":3140672,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-15T00:00:00","stockId":"2880","name":"華南金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前28天;突破前27天;突破前29天;","daily":{"stockId":"2880","stockName":"華南金","date":"2026-10-20T00:00:00","open":47.450,"high":48.400,"low":47.450,"close":48.100,"tradingShares":14244275,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-15T00:00:00","stockId":"2892","name":"第一金","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前28天;突破前29天;突破前23天;","daily":{"stockId":"2892","stockName":"第一金","date":"2026-10-20T00:00:00","open":40.450,"high":41.000,"low":40.450,"close":40.750,"tradingShares":13321114,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-15T00:00:00","stockId":"1301","name":"台塑","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前44天;突破前43天;突破前36天;","daily":{"stockId":"1301","stockName":"台塑","date":"2026-10-20T00:00:00","open":77.500,"high":77.800,"low":74.400,"close":74.900,"tradingShares":59865818,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-15T00:00:00","stockId":"3045","name":"台灣大","reductionNotice":"","ma20Comment":"月線之上;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前24天;突破前29天;突破前27天;","daily":{"stockId":"3045","stockName":"台灣大","date":"2026-10-20T00:00:00","open":128.500,"high":131.000,"low":128.500,"close":130.500,"tradingShares":7463254,"tempDecimal":0.0},"dailyColor":"#000000"},{"shortPloy":"高市值突破","date":"2026-10-15T00:00:00","stockId":"3044","name":"健鼎","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前119天;突破前120天;突破前115天;","daily":{"stockId":"3044","stockName":"健鼎","date":"2026-10-20T00:00:00","open":572.000,"high":586.000,"low":563.000,"close":567.000,"tradingShares":2832087,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-13T00:00:00","stockId":"1303","name":"南亞","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前33天;突破前43天;突破前22天;","daily":{"stockId":"1303","stockName":"南亞","date":"2026-10-20T00:00:00","open":303.000,"high":319.000,"low":295.000,"close":296.000,"tradingShares":103990891,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-13T00:00:00","stockId":"1326","name":"台化","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前42天;突破前41天;突破前36天;","daily":{"stockId":"1326","stockName":"台化","date":"2026-10-20T00:00:00","open":75.000,"high":76.300,"low":73.200,"close":73.800,"tradingShares":28140198,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-12T00:00:00","stockId":"3711","name":"日月光投控","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前102天;突破前103天;突破前19天;","daily":{"stockId":"3711","stockName":"日月光投控","date":"2026-10-20T00:00:00","open":669.000,"high":680.000,"low":655.000,"close":660.000,"tradingShares":12383382,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-12T00:00:00","stockId":"6213","name":"聯茂","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前47天;突破前45天;突破前46天;","daily":{"stockId":"6213","stockName":"聯茂","date":"2026-10-20T00:00:00","open":779.000,"high":792.000,"low":740.000,"close":749.000,"tradingShares":16549736,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-07T00:00:00","stockId":"2330","name":"台積電","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前107天;突破前98天;突破前106天;","daily":{"stockId":"2330","stockName":"台積電","date":"2026-10-20T00:00:00","open":2400.000,"high":2415.000,"low":2395.000,"close":2405.000,"tradingShares":22402430,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-07T00:00:00","stockId":"3189","name":"景碩","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前41天;突破前51天;突破前40天;","daily":{"stockId":"3189","stockName":"景碩","date":"2026-10-20T00:00:00","open":977.000,"high":1010.000,"low":941.000,"close":945.000,"tradingShares":12630519,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"3037","name":"欣興","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前39天;突破前40天;突破前48天;","daily":{"stockId":"3037","stockName":"欣興","date":"2026-10-20T00:00:00","open":1100.000,"high":1125.000,"low":1050.000,"close":1055.000,"tradingShares":14027579,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"3017","name":"奇鋐","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前31天;突破前25天;突破前35天;","daily":{"stockId":"3017","stockName":"奇鋐","date":"2026-10-20T00:00:00","open":3290.000,"high":3420.000,"low":3270.000,"close":3325.000,"tradingShares":2742376,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"3443","name":"創意","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前18天;突破前21天;突破前25天;","daily":{"stockId":"3443","stockName":"創意","date":"2026-10-20T00:00:00","open":7800.000,"high":8020.000,"low":7710.000,"close":7745.000,"tradingShares":1406787,"tempDecimal":0.0},"dailyColor":"#ff7777"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"3653","name":"健策","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前35天;突破前34天;突破前31天;","daily":{"stockId":"3653","stockName":"健策","date":"2026-10-20T00:00:00","open":6475.000,"high":6720.000,"low":6475.000,"close":6650.000,"tradingShares":898611,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"8046","name":"南電","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":true,"stockFarmerInfo":{},"memo":"突破前82天;突破前52天;突破前75天;","daily":{"stockId":"8046","stockName":"南電","date":"2026-10-20T00:00:00","open":1365.000,"high":1385.000,"low":1290.000,"close":1305.000,"tradingShares":8840743,"tempDecimal":0.0},"dailyColor":"#65B206"},{"shortPloy":"高市值突破","date":"2026-10-05T00:00:00","stockId":"2395","name":"研華","reductionNotice":"","ma20Comment":"月線之下;","hasFuture":false,"stockFarmerInfo":{},"memo":"突破前31天;突破前34天;突破前53天;","daily":{"stockId":"2395","stockName":"研華","date":"2026-10-20T00:00:00","open":676.000,"high":689.000,"low":672.000,"close":684.000,"tradingShares":1792467,"tempDecimal":0.0},"dailyColor":"#65B206"}];
+    window.sortingSet = { column: "date", dir: 1 };
+    window.showPloys = [];
+
+    $(function () {
+        bindCheckboxes();
+        bindData();
+    });
+
+    function bindCheckboxes() {
+        var ploys = window.pageData.map(x => x.shortPloy).filter((i, index, self) => index === self.indexOf(i));
+        window.showPloys = ploys;
+
+        $("ul[ploys]").empty();
+
+        ploys.map(p => {
+            $("ul[ploys]").append(`<li><input type="checkbox" id="${p}" value="${p}" onchange="changeShowPloys(this);" checked/><label for="${p}">${p}<label></li>`);
+        });
+    }
+
+    function changeShowPloys(obj) {
+        var $input = $(obj);
+
+        if ($input.prop("checked")) {
+            window.showPloys.push($input.val());
+        } else {
+            window.showPloys = window.showPloys.filter(x => x !== $input.val());
+        }
+
+        bindData();
+    }
+
+    function sorting(column) {
+        window.sortingSet.column = column;
+        bindData();
+        window.sortingSet.dir = window.sortingSet.dir * -1;
+    }
+
+    function bindData() {
+
+        var temp = window.pageData
+            .filter(x => window.showPloys.indexOf(x.shortPloy) > -1)
+            .map(x => {
+                var cheapPriceBase = x.stockFarmerInfo?.cheapPriceWhatIf ?? x.stockFarmerInfo?.cheapPrice ?? 9999;
+                x.cheapRate = x.daily.close / cheapPriceBase;
+                return x;
+            })
+            .sort(sortRule);
+
+        $("tbody")
+            .empty()
+            .models(temp,
+                $("#row").template(),
+                ($self, setter) => {
+
+                    $self.find("a[stockId]")
+                        .html(setter.stockId)
+                        .attr("href", `https://www.wantgoo.com/stock/${setter.stockId}/technical-chart`);
+
+                    $self.find("a[statementdog]")
+                        .attr("href", `https://statementdog.com/analysis/${setter.stockId}/stock-health-check`);
+
+                    $self.model("date", dayjs(setter.date).format("MM/DD"));
+
+                    $self.find("td[close]").css("color", setter.dailyColor);
+
+                    var stockFarmerInfo = setter.stockFarmerInfo;
+                    if (stockFarmerInfo) {
+                        if (stockFarmerInfo.estimatedYields) {
+                            var prices = [
+                                {
+                                    title: "價A",
+                                    price: stockFarmerInfo.cheapPrice || 0,
+                                }, {
+                                    title: "價B",
+                                    price: stockFarmerInfo.cheapPriceWhatIf || 0,
+                                }
+                            ].map(x => {
+                                x.color = x.price > setter.daily.close ? "#FF7777" : "#000000";
+                                return x;
+                            });
+
+                            prices.filter(x => x.price > 0).map(x => {
+                                $self.find("ul[cheapPrice]")
+                                    .append(`<li>${x.title}<span style="color:${x.color}">${x.price.toFixed(2)}<span></li>`);
+                            });
+
+                            var estimateds = [
+                                `預估股息:${stockFarmerInfo.estimatedCashDividend.toFixed(2)}`,
+                                `預估EPS:${stockFarmerInfo.estimatedEPS.toFixed(2)}`,
+                                `預估YR:${(stockFarmerInfo.estimatedYields * 100).toFixed(2)}%`,
+                            ];
+
+                            if (stockFarmerInfo.hasFuture) estimateds.push("股期");
+
+                            if (stockFarmerInfo.reductionNotice) estimateds.push(stockFarmerInfo.reductionNotice);
+
+                            estimateds.map(x => { $self.find("ul[estimated]").append(`<li>${x}</li>`); });
+                        }
+                    }
+
+                    if (setter.memo) {
+                        $self.find("ul[estimated]").append(`<li>${setter.memo}</li>`);
+                    }
+                });
+
+        $("tr[item]").on("click", highLight);
+
+        $("tbody li").css("float", "left").css("display", "block").css("padding-right", "12px");//.css("width", "140px");
+    }
+
+    function highLight() {
+        $(this).siblings().css("background-color", "#f0f2f5");
+        $(this).css("background-color", "#f0d0d0");
+    }
+
+    function sortRule(a, b) {
+
+        var keys = window.sortingSet.column.split('.');
+
+        try {
+            switch (keys.length) {
+                case 1:
+                    return (a[keys[0]] - b[keys[0]]) * window.sortingSet.dir;
+                case 2:
+                    return (a[keys[0]][keys[1]] - b[keys[0]][keys[1]]) * window.sortingSet.dir;
+            }
+
+        } catch (e) {}
+
+        return 0;
+    }
+</script>
+
+
+</div>
+</body>
+
+</html>
