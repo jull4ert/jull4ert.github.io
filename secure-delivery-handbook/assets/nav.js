@@ -77,9 +77,9 @@
     var cs = document.createElement("script"); cs.src = root + "assets/checklist.js"; document.body.appendChild(cs);
   }
 
-  // 外部連結（參考出處等）一律另開分頁；站內相對連結維持原分頁
-  document.querySelectorAll("main a[href], footer a[href]").forEach(function (a) {
-    if (/^(https?:)?\/\//i.test(a.getAttribute("href"))) { a.target = "_blank"; a.rel = "noopener noreferrer"; }
+  // 「參考出處」的連結另開分頁；其餘連結（含子頁面、站內連結、內文中的外部連結）維持原分頁
+  document.querySelectorAll(".refs a[href]").forEach(function (a) {
+    a.target = "_blank"; a.rel = "noopener noreferrer";
   });
 
   // 名詞：縮寫提示與「本頁名詞」
