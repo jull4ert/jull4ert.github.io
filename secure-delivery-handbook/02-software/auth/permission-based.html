@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>以權限為基礎的授權（自訂角色）｜資安知識庫</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>以權限為基礎的授權（自訂角色）</h1>
+  <p class="sub">端點由程式碼定義權限，角色由客戶自訂並對應權限：角色與權限分離的做法與實作。</p>
+</header>
+<main class="page">
+<p>嚴格權限控管的系統常見需求：<b>API 端點由開發者在程式碼中定義，但「有哪些角色」「每個角色能用哪些 API」由客戶自行設定</b>。做法是把「角色」與「權限」分開，端點只認權限，角色與權限的對應存在資料庫。</p><div class="note">與 <a href="authorization.html">授權與存取控制</a> 的關係：該頁講原則與基本寫法（固定角色）；本頁處理角色可由客戶自訂的情境。身分如何還原見 <a href="session-jwt.html">Session 與 JWT</a>。</div><h2>核心觀念：角色與權限分開</h2><table><tr><th></th><th>角色（Role）</th><th>權限（Permission）</th></tr><tr><td>誰定義</td><td>客戶在後台建立、改名、勾選</td><td>開發者在程式碼定義</td></tr><tr><td>存放位置</td><td>資料庫</td><td>程式碼（enum 或常數），並同步一份到資料庫</td></tr><tr><td>例子</td><td>「業務主管」「客服」「稽核」</td><td>Orders.Read、Orders.Approve、Users.Manage</td></tr><tr><td>變動頻率</td><td>隨時，不需重新部署</td><td>隨版本發佈</td></tr><tr><td>端點檢查什麼</td><td>不檢查</td><td>只檢查權限</td></tr></table><h2>資料模型</h2><table><tr><th>資料表</th><th>欄位</th><th>說明</th></tr><tr><td>Roles</td><td>Id、Name、IsSystem</td><td>角色；系統內建角色（如 ADMIN）不可刪除</td></tr><tr><td>Permissions</td><td>Code</td><td>權限清單，啟動時由程式碼同步</td></tr><tr><td>RolePermissions</td><td>RoleId、PermissionCode、DataScope（可選）</td><td>角色擁有哪些權限；資料範圍可放這裡，見下方</td></tr><tr><td>UserRoles</td><td>UserId、RoleId</td><td>使用者屬於哪些角色（可多個，取權限聯集）</td></tr></table><h2>運作流程</h2><ol><li>請求進來，驗證流程還原使用者身分。</li><li>授權層看到端點標示的權限（如 Orders.Approve）。</li><li>查「使用者 → 角色 → 權限」（有快取）。</li><li>權限集合包含此項才放行，否則回 403。</li><li>客戶在後台改角色時，清除快取，下一個請求即生效。</li></ol><h2>設計原則</h2><ul><li><b>預設拒絕</b>：沒標權限的端點視為錯誤，用預設政策與自動測試防止漏標。</li><li><b>權限粒度</b>：以「功能＋動作」為單位，不要以 URL 或過粗的角色名稱為單位；太細會讓客戶難以設定，太粗則失去控管意義。</li><li><b>系統角色受保護</b>：ADMIN 自動擁有所有權限（含未來新增），不可被刪除或移除權限。</li><li><b>權限程式碼為準</b>：客戶不能新增權限，只能組合既有權限成為角色。</li><li><b>資料範圍另外處理</b>：權限決定「能不能呼叫」，資料能看到哪些（本人、部門、全部）可存在 RolePermissions 的 DataScope 欄位，再於查詢層過濾。</li><li><b>變更要即時且可稽核</b>：角色與權限的每次修改都記錄誰、何時、改了什麼；修改後清除快取。</li><li><b>前端只做顯示</b>：提供「目前使用者的權限清單」API 讓前端隱藏按鈕，但後端授權才是真正防線。</li><li><b>提供範本角色</b>：先給幾個預設範本讓客戶複製修改，避免從空白開始而設錯。</li></ul><h2>權限放在哪裡：兩種取捨</h2><table><tr><th>做法</th><th>優點</th><th>缺點</th></tr><tr><td>簽進 JWT 的 Claims</td><td>不用每次查資料庫</td><td>權限多時 Token 很大；修改後要等 Token 到期才生效</td></tr><tr><td>每次查資料庫並快取（建議）</td><td>修改可即時生效，Token 小</td><td>要設計快取失效機制</td></tr></table><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法；指令與選項會隨版本、廠商調整，實作前請對照官方文件，並先在測試環境驗證。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><h3>ASP.NET Core：權限授權的完整實作</h3><p>共七個步驟。每段程式碼後面的「備註」說明該項目的作用。</p><h3>步驟 1　在程式碼定義權限</h3><pre><code>public enum Permission
+{
+    OrdersRead,
+    OrdersWrite,
+    OrdersApprove,
+    UsersManage,
+    ReportsView
+}</code></pre><div class="note"><b>備註：權限清單</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>Permission</code></td><td>系統所有「可被授權的功能」清單，由開發者在程式碼定義，客戶不能新增或刪除</td></tr><tr><td>命名方式</td><td>「資源＋動作」，例如 <code>OrdersApprove</code>；以功能為單位而不是 URL，因為 URL 會變、功能不會</td></tr><tr><td>資料庫儲存</td><td>存 enum 的<b>名稱字串</b>而不是數字，避免日後調整順序或插入項目時對應錯位</td></tr></table><h3>步驟 2　用屬性標在端點上</h3><pre><code>public class HasPermissionAttribute : AuthorizeAttribute
+{
+    public const string Prefix = "Permission:";
+
+    public HasPermissionAttribute(Permission permission) : base(Prefix + permission)
+    {
+    }
+}
+
+[HasPermission(Permission.OrdersApprove)]
+[HttpPost("orders/{id}/approve")]
+public IActionResult Approve(int id) =&gt; this.Ok();
+
+app.MapPost("/orders/{id}/approve", (int id) =&gt; Results.Ok())
+   .RequireAuthorization(new HasPermissionAttribute(Permission.OrdersApprove));</code></pre><div class="note"><b>備註：端點宣告</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>HasPermissionAttribute</code></td><td>自訂屬性，繼承 <code>AuthorizeAttribute</code>，讓端點用 <code>[HasPermission(...)]</code> 宣告所需權限，可讀性高且編譯期就能檢查拼字</td></tr><tr><td><code>Prefix</code></td><td>把權限包成 Policy 名稱（如 <code>Permission:OrdersApprove</code>），讓授權系統知道要交給哪個提供者處理</td></tr><tr><td>Controller 寫法</td><td>標在 Controller 或 Action 上；沒標權限的端點會被預設政策擋下（見後面的設定）</td></tr><tr><td>Minimal API 寫法</td><td>用 <code>RequireAuthorization</code> 傳入同一個屬性，兩種寫法共用同一套機制</td></tr></table><h3>步驟 3　Requirement 與動態 Policy 提供者</h3><pre><code>public class PermissionRequirement : IAuthorizationRequirement
+{
+    public PermissionRequirement(Permission permission) =&gt; this.Permission = permission;
+
+    public Permission Permission { get; }
+}
+
+public class PermissionPolicyProvider : DefaultAuthorizationPolicyProvider
+{
+    public PermissionPolicyProvider(IOptions&lt;AuthorizationOptions&gt; options) : base(options)
+    {
+    }
+
+    public override async Task&lt;AuthorizationPolicy?&gt; GetPolicyAsync(string policyName)
+    {
+        var prefix = HasPermissionAttribute.Prefix;
+        if (policyName.StartsWith(prefix) &amp;&amp; Enum.TryParse&lt;Permission&gt;(policyName[prefix.Length..], out var p))
+        {
+            return new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .AddRequirements(new PermissionRequirement(p))
+                .Build();
+        }
+
+        return await base.GetPolicyAsync(policyName);
+    }
+}</code></pre><div class="note"><b>備註：動態 Policy</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>PermissionRequirement</code></td><td>一個「條件」物件，只記錄這個端點需要哪一項權限，真正的判斷交給 Handler</td></tr><tr><td><code>PermissionPolicyProvider</code></td><td>當框架拿到 <code>Permission:xxx</code> 這種 Policy 名稱時，動態建出對應的 Policy。好處是不必為每個權限逐一註冊 Policy</td></tr><tr><td><code>RequireAuthenticatedUser</code></td><td>先要求已登入；未登入回 401，而不是進到權限判斷</td></tr><tr><td><code>base.GetPolicyAsync</code></td><td>不是權限類的名稱就交回預設行為，原本的一般 Policy 不受影響</td></tr></table><h3>步驟 4　查詢權限與判斷（含快取）</h3><pre><code>public interface IPermissionStore
+{
+    Task&lt;IReadOnlySet&lt;Permission&gt;&gt; GetPermissionsAsync(string userId);
+}
+
+public class PermissionStore : IPermissionStore
+{
+    private static CancellationTokenSource reset = new();
+
+    private readonly AppDbContext db;
+    private readonly IMemoryCache cache;
+
+    public PermissionStore(AppDbContext db, IMemoryCache cache)
+    {
+        this.db = db;
+        this.cache = cache;
+    }
+
+    public static void InvalidateAll()
+    {
+        Interlocked.Exchange(ref reset, new CancellationTokenSource()).Cancel();
+    }
+
+    public async Task&lt;IReadOnlySet&lt;Permission&gt;&gt; GetPermissionsAsync(string userId)
+    {
+        return (await this.cache.GetOrCreateAsync($"perm:{userId}", async entry =&gt;
+        {
+            entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5);
+            entry.AddExpirationToken(new CancellationChangeToken(reset.Token));
+
+            var codes = await (from ur in this.db.UserRoles
+                               where ur.UserId == userId
+                               join rp in this.db.RolePermissions on ur.RoleId equals rp.RoleId
+                               select rp.PermissionCode).Distinct().ToListAsync();
+
+            return codes.Select(c =&gt; Enum.TryParse&lt;Permission&gt;(c, out var p) ? (Permission?)p : null)
+                        .Where(p =&gt; p.HasValue).Select(p =&gt; p!.Value).ToHashSet();
+        }))!;
+    }
+}
+
+public class PermissionHandler : AuthorizationHandler&lt;PermissionRequirement&gt;
+{
+    private readonly ICurrentUser user;
+    private readonly IPermissionStore store;
+
+    public PermissionHandler(ICurrentUser user, IPermissionStore store)
+    {
+        this.user = user;
+        this.store = store;
+    }
+
+    protected override async Task HandleRequirementAsync(
+        AuthorizationHandlerContext context, PermissionRequirement requirement)
+    {
+        var granted = await this.store.GetPermissionsAsync(this.user.UserId);
+        if (granted.Contains(requirement.Permission))
+        {
+            context.Succeed(requirement);
+        }
+    }
+}</code></pre><div class="note"><b>備註：Handler 與快取</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>PermissionStore</code></td><td>依「使用者 → 角色 → 權限」取出此人所有權限的聯集（一人多角色時取聯集）</td></tr><tr><td>快取 5 分鐘</td><td>每個請求都會授權，不快取會造成大量資料庫查詢</td></tr><tr><td><code>InvalidateAll()</code></td><td>客戶在後台修改角色權限後呼叫，讓所有快取立即失效，變更即時生效</td></tr><tr><td><code>Enum.TryParse</code> 過濾</td><td>資料庫中若有已被移除的舊權限名稱，直接忽略而不報錯</td></tr><tr><td><code>PermissionHandler</code></td><td>真正的判斷點：有此權限就 <code>Succeed</code>；沒有就什麼都不做，結果為拒絕（預設拒絕）</td></tr><tr><td><code>ICurrentUser</code></td><td>使用者身分由前一頁「Session 與 JWT」的驗證流程建立，這裡只取用 <code>UserId</code></td></tr></table><h3>步驟 5　註冊與預設政策</h3><pre><code>builder.Services.AddMemoryCache();
+builder.Services.AddScoped&lt;IPermissionStore, PermissionStore&gt;();
+builder.Services.AddSingleton&lt;IAuthorizationPolicyProvider, PermissionPolicyProvider&gt;();
+builder.Services.AddScoped&lt;IAuthorizationHandler, PermissionHandler&gt;();
+
+builder.Services.AddAuthorizationBuilder()
+    .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
+
+app.UseAuthentication();
+app.UseAuthorization();</code></pre><div class="note"><b>備註：Program.cs 設定</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>IAuthorizationPolicyProvider</code></td><td>換成自訂提供者，才能動態產生權限 Policy</td></tr><tr><td><code>IAuthorizationHandler</code></td><td>註冊 Handler，框架評估 Requirement 時會呼叫它</td></tr><tr><td><code>SetFallbackPolicy</code></td><td>沒有任何授權屬性的端點，預設至少要登入。避免漏標變成公開 API</td></tr><tr><td>公開端點</td><td>需要匿名存取的端點（登入、健康檢查）要明確標 <code>[AllowAnonymous]</code></td></tr><tr><td><code>UseAuthentication</code> → <code>UseAuthorization</code></td><td>順序不可對調：先還原身分，再判斷權限</td></tr></table><h3>步驟 6　啟動時同步權限並授予 ADMIN</h3><pre><code>public class PermissionSyncService : IHostedService
+{
+    private readonly IServiceScopeFactory scopes;
+
+    public PermissionSyncService(IServiceScopeFactory scopes) =&gt; this.scopes = scopes;
+
+    public async Task StartAsync(CancellationToken ct)
+    {
+        using var scope = this.scopes.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService&lt;AppDbContext&gt;();
+
+        var codes = Enum.GetNames&lt;Permission&gt;();
+        var existing = await db.Permissions.Select(p =&gt; p.Code).ToListAsync(ct);
+        foreach (var code in codes.Except(existing))
+        {
+            db.Permissions.Add(new PermissionEntity { Code = code });
+        }
+
+        var admin = await db.Roles.SingleAsync(r =&gt; r.IsSystem &amp;&amp; r.Name == "ADMIN", ct);
+        var granted = await db.RolePermissions.Where(rp =&gt; rp.RoleId == admin.Id)
+                              .Select(rp =&gt; rp.PermissionCode).ToListAsync(ct);
+        foreach (var code in codes.Except(granted))
+        {
+            db.RolePermissions.Add(new RolePermission { RoleId = admin.Id, PermissionCode = code });
+        }
+
+        await db.SaveChangesAsync(ct);
+        PermissionStore.InvalidateAll();
+    }
+
+    public Task StopAsync(CancellationToken ct) =&gt; Task.CompletedTask;
+}</code></pre><div class="note"><b>備註：權限同步</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>IHostedService</code></td><td>應用程式啟動時自動執行一次，不需要人工維護權限表</td></tr><tr><td>同步權限清單</td><td>把程式碼裡新增的權限寫進資料庫，後台的角色設定畫面就會自動出現新選項。程式碼是唯一來源（source of truth）</td></tr><tr><td>自動授予 ADMIN</td><td>新權限自動給系統角色，所以不需要在 Handler 裡寫「若是 admin 一律放行」的特例</td></tr><tr><td><code>IsSystem</code></td><td>標記系統內建角色，後台要禁止刪除或移除其權限，避免客戶把自己鎖在系統外</td></tr><tr><td><code>InvalidateAll()</code></td><td>同步後讓舊快取失效</td></tr></table><h3>步驟 7　用測試防止漏標</h3><pre><code>[Fact]
+public void Every_endpoint_declares_permission_or_allows_anonymous()
+{
+    using var factory = new WebApplicationFactory&lt;Program&gt;();
+    var source = factory.Services.GetRequiredService&lt;EndpointDataSource&gt;();
+
+    var missing = source.Endpoints.OfType&lt;RouteEndpoint&gt;()
+        .Where(e =&gt; e.Metadata.GetMetadata&lt;HasPermissionAttribute&gt;() is null
+                    &amp;&amp; e.Metadata.GetMetadata&lt;IAllowAnonymous&gt;() is null)
+        .Select(e =&gt; e.DisplayName)
+        .ToList();
+
+    Assert.Empty(missing);
+}</code></pre><div class="note"><b>備註：自動化測試</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>EndpointDataSource</code></td><td>取得應用程式註冊的所有端點，包含 Controller 與 Minimal API</td></tr><tr><td>檢查條件</td><td>每個端點必須有 <code>HasPermission</code> 或明確 <code>AllowAnonymous</code>，兩者都沒有就是漏標</td></tr><tr><td>放進 CI</td><td>新增 API 忘記標權限時，在合併前測試就會失敗，比上線後才發現安全</td></tr></table></div><div class="tech" data-tech="node"><h3>Node.js（Express）</h3><pre><code>const requirePermission = (code) =&gt; async (req, res, next) =&gt; {
+  const granted = await permissionStore.get(req.user.id);   // 快取的「使用者 → 權限集合」
+  return granted.has(code) ? next() : res.sendStatus(403);
+};
+
+app.post('/orders/:id/approve', requirePermission('Orders.Approve'), approveHandler);</code></pre><div class="note"><b>備註：路由檢查</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>requirePermission</code></td><td>路由層級的檢查函式，傳入該端點需要的權限代碼</td></tr><tr><td><code>permissionStore.get</code></td><td>查使用者所有角色的權限聯集，需加快取並在後台修改時清除</td></tr><tr><td><code>403</code></td><td>已登入但權限不足；未登入應在更前面的驗證 middleware 回 401</td></tr></table></div><div class="tech" data-tech="java"><h3>Java／Spring Security</h3><pre><code>@PreAuthorize("hasAuthority('ORDERS_APPROVE')")
+@PostMapping("/orders/{id}/approve")
+public void approve(@PathVariable Long id) { ... }</code></pre><div class="note"><b>備註：方法層授權</b></div><table><tr><th>項目</th><th>作用</th></tr><tr><td><code>@PreAuthorize</code></td><td>Spring Security 的方法層授權，需啟用 <code>@EnableMethodSecurity</code></td></tr><tr><td><code>hasAuthority</code></td><td>檢查登入者的 Authority；請在 <code>UserDetailsService</code> 載入時，把使用者所有角色的權限轉成 <code>GrantedAuthority</code></td></tr><tr><td>用 Authority 而非 Role</td><td><code>hasRole</code> 預設加 <code>ROLE_</code> 前綴，權限制請一律用 <code>hasAuthority</code> 以免混淆</td></tr></table></div><div class="tech" data-tech="python"><h3>Python（Django）</h3><p>Django 內建 <code>Permission</code> 與 <code>Group</code> 模型，可在後台由管理者建立群組並指派權限。端點以 <code>@permission_required('app.approve_order')</code> 或 DRF 的 <code>DjangoModelPermissions</code> 檢查。客戶自訂角色對應到 Group 即可。</p></div><div class="tech" data-tech="php"><h3>PHP（Laravel）</h3><p>常用套件 <code>spatie/laravel-permission</code>：提供角色、權限模型與 <code>permission:orders.approve</code> middleware。權限在程式碼建立（seeder），角色由後台管理。</p></div><h2>什麼時候考慮現成方案</h2><table><tr><th>需求</th><th>選項</th></tr><tr><td>規則更複雜（屬性、關係、跨租戶、委派）</td><td><a href="https://casbin.org/">Casbin</a>、<a href="https://openfga.dev/">OpenFGA</a></td></tr><tr><td>需要完整的身分與授權管理</td><td><a href="https://www.keycloak.org/">Keycloak</a>、Auth0、Duende IdentityServer</td></tr></table><p>多數「客戶自訂角色、程式碼定義權限」的需求，用本頁的自建方式即可，維護成本最低。</p><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 每個端點都宣告所需權限，或明確標示允許匿名</label></li><li><label><input type="checkbox"> 預設政策至少要求登入，並有測試掃描漏標的端點</label></li><li><label><input type="checkbox"> 角色與權限的對應存在資料庫，權限清單由程式碼同步</label></li><li><label><input type="checkbox"> 系統內建角色（ADMIN）不可刪除且自動擁有新增的權限</label></li><li><label><input type="checkbox"> 一人多角色時取權限聯集，且資料範圍取最寬的一組</label></li><li><label><input type="checkbox"> 角色與權限變更後快取即時失效，且有稽核紀錄</label></li><li><label><input type="checkbox"> 權限以名稱字串儲存，不以 enum 數字儲存</label></li><li><label><input type="checkbox"> 前端隱藏按鈕不當作授權，後端一律再檢查</label></li><li><label><input type="checkbox"> 角色管理介面本身受權限保護（誰能改角色）</label></li></ul><div class="note">本頁依公開資料與一般實務整理；框架 API 與版本會變動，實作前請對照官方文件並在測試環境驗證。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://learn.microsoft.com/aspnet/core/security/authorization/policies">Microsoft：Policy-based authorization</a></li><li><a href="https://learn.microsoft.com/aspnet/core/security/authorization/iauthorizationpolicyprovider">Microsoft：自訂 Authorization Policy Provider</a></li><li><a href="https://learn.microsoft.com/aspnet/core/security/authorization/resourcebased">Microsoft：Resource-based authorization</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li><li><a href="https://csrc.nist.gov/projects/role-based-access-control">NIST：Role Based Access Control</a></li><li><a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Spring Security：Method Security</a></li><li><a href="https://docs.djangoproject.com/en/stable/topics/auth/default/#permissions-and-authorization">Django：Permissions</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

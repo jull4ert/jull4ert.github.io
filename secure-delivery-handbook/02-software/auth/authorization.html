@@ -41,6 +41,7 @@ public function update(User $user, Post $post): bool {
 }
 // Controller
 $this-&gt;authorize('update', $post);</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 每個 API 都有功能層授權</label></li><li><label><input type="checkbox"> 存取單一資源時檢查擁有權（水平越權）</label></li><li><label><input type="checkbox"> 管理功能檢查角色（垂直越權）</label></li><li><label><input type="checkbox"> 測試案例涵蓋「用 A 帳號存取 B 的資料」</label></li><li><label><input type="checkbox"> 授權失敗會記錄日誌</label></li></ul>
+<h2 id="x-ref">延伸閱讀</h2><ul><li><a href="./permission-based.html">以權限為基礎的授權（客戶可自訂角色時）</a></li></ul>
 <section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html">OWASP IDOR Prevention Cheat Sheet</a></li><li><a href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction">Microsoft — ASP.NET Core 授權</a></li><li><a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Spring Security — 方法安全</a></li><li><a href="https://laravel.com/docs/authorization">Laravel — Authorization</a></li></ul></section>
 </main>
 <footer></footer>
