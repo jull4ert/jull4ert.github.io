@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>雲端身分、儲存與日誌｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>雲端身分、儲存與日誌</h1>
+  <p class="sub">雲端事故最常見的三件事：權限過大、儲存公開、沒有紀錄。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>根帳號／全域管理員：啟用 MFA、不日常使用、不建立長期存取金鑰。</li><li>人員用單一登入與角色，不用長期金鑰；服務用<b>受管理身分／角色</b>。</li><li>權限最小化，定期用工具檢視過度授權。</li><li>儲存貯體／Blob 預設<b>禁止公開</b>，確有需要才例外並審核。</li><li>啟用組織層級的稽核日誌，保存到獨立且受保護的位置。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法；指令與選項會隨版本、廠商調整，實作前請對照官方文件，並先在測試環境驗證。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="aws"><pre><code># 阻擋 S3 貯體公開
+aws s3api put-public-access-block --bucket &lt;bucket&gt; \
+  --public-access-block-configuration BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true
+
+# 啟用多區域 CloudTrail
+aws cloudtrail create-trail --name org-trail --s3-bucket-name &lt;log-bucket&gt; --is-multi-region-trail
+aws cloudtrail start-logging --name org-trail</code></pre></div><div class="tech" data-tech="azure"><pre><code># 儲存帳戶禁止匿名公開存取
+az storage account update --name &lt;account&gt; --resource-group &lt;rg&gt; --allow-blob-public-access false
+
+# 以角色指派授予最小權限（範例為唯讀）
+az role assignment create --assignee &lt;principal-id&gt; --role "Reader" \
+  --scope /subscriptions/&lt;sub&gt;/resourceGroups/&lt;rg&gt;</code></pre><p>活動記錄（Activity Log）請設定診斷設定，匯出到 Log Analytics 或儲存體以長期保存。</p></div><div class="tech" data-tech="gcp"><pre><code># 儲存貯體啟用公開存取防護
+gcloud storage buckets update gs://&lt;bucket&gt; --public-access-prevention
+
+# 授予最小權限角色
+gcloud projects add-iam-policy-binding &lt;project&gt; \
+  --member="user:&lt;email&gt;" --role="roles/viewer"</code></pre><p>Cloud Audit Logs 的管理活動日誌預設啟用；資料存取日誌需視需求另外開啟。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 根帳號有 MFA 且無長期金鑰</label></li><li><label><input type="checkbox"> 人員用 SSO 與角色，服務用受管理身分</label></li><li><label><input type="checkbox"> 無公開的儲存貯體（或有核准紀錄）</label></li><li><label><input type="checkbox"> 稽核日誌已集中、受保護、保存期限符合需求</label></li><li><label><input type="checkbox"> 已用工具掃描過度授權與設定錯誤</label></li></ul><div class="note">指令與設定為最小示意，會隨版本與廠商而異，請在測試環境驗證並對照官方文件後再用於正式環境。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html">AWS IAM 最佳實務</a></li><li><a href="https://learn.microsoft.com/en-us/azure/role-based-access-control/best-practices">Azure RBAC 最佳實務</a></li><li><a href="https://cloud.google.com/iam/docs/using-iam-securely">Google Cloud IAM 安全使用</a></li><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

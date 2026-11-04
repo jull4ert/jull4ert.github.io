@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OWASP API Security Top 10 對照｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>OWASP API Security Top 10 對照</h1>
+  <p class="sub">針對 API 的十大風險與對應的防護方式。</p>
+</header>
+<main class="page">
+<div class="note">此為 OWASP API Security Top 10 2023 版的類別；若有新版請以官網為準。</div><table><tr><th>編號</th><th>風險</th><th>防護重點</th></tr><tr><td>API1</td><td>物件層級授權失效（BOLA）</td><td>每次存取資源檢查擁有權，見 <a href="../auth/authorization.html">授權</a></td></tr><tr><td>API2</td><td>驗證失效</td><td>成熟的驗證機制、限制嘗試、MFA、token 驗證完整</td></tr><tr><td>API3</td><td>物件屬性層級授權失效</td><td>回應只含呼叫者可見欄位；更新時用 DTO 白名單，防大量賦值（mass assignment）</td></tr><tr><td>API4</td><td>無限制的資源消耗</td><td>速率限制、分頁上限、請求大小與逾時，見 <a href="./rate-limiting.html">速率限制</a></td></tr><tr><td>API5</td><td>功能層級授權失效（BFLA）</td><td>管理類端點檢查角色，預設拒絕</td></tr><tr><td>API6</td><td>敏感商業流程無限制存取</td><td>對搶購、註冊、領券等流程加防自動化機制</td></tr><tr><td>API7</td><td>伺服器端請求偽造（SSRF）</td><td>對外請求目的地白名單，禁止內網與中繼資料位址</td></tr><tr><td>API8</td><td>安全設定錯誤</td><td>移除除錯、關閉預設設定、一致的 TLS／標頭／CORS</td></tr><tr><td>API9</td><td>資產管理不當</td><td>API 清單、版本管理、下線舊版與測試端點</td></tr><tr><td>API10</td><td>不安全地使用其他 API</td><td>第三方回應當作不可信輸入驗證、設逾時與重試上限</td></tr></table><h2>防止大量賦值（Mass Assignment）</h2><ul><li>輸入使用專用 DTO／請求模型，只包含允許修改的欄位。</li><li>不要把請求本文直接綁定到資料庫實體（避免使用者改到 <code>isAdmin</code>、<code>price</code> 等欄位）。</li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/">OWASP API Security Top 10 2023</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html">OWASP REST Security Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Mass_Assignment_Cheat_Sheet.html">OWASP Mass Assignment Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

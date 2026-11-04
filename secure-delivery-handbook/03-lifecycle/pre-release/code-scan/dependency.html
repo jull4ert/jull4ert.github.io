@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>第三方依賴與 SBOM｜資安交付手冊</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>第三方依賴與 SBOM</h1>
+  <p class="sub">網站大部分程式碼其實來自套件。檢查它們有無已知漏洞，並留存清單。</p>
+</header>
+<main class="page">
+
+<h2>要做什麼</h2>
+<ol>
+  <li><b>盤點</b>：列出直接與間接依賴（前端 npm、後端 NuGet／Maven／pip 等），鎖定版本（lock file）。</li>
+  <li><b>比對漏洞資料庫</b>：以工具比對 CVE／GHSA 等資料。</li>
+  <li><b>評估可利用性</b>：弱點的函式是否真的被呼叫？是否在正式環境套件中（而非僅開發用）？</li>
+  <li><b>升級或緩解</b>：升版、替換套件，或以設定／WAF 暫時緩解。</li>
+  <li><b>產出 SBOM</b>：隨版本存檔，日後出現新漏洞時能快速回答「我們有沒有用到」。</li>
+</ol>
+
+<h2>工具範例</h2>
+<table>
+  <tr><th>工具</th><th>用途</th></tr>
+  <tr><td>OWASP Dependency-Check</td><td>多語言依賴漏洞掃描</td></tr>
+  <tr><td>OSV-Scanner</td><td>以 OSV 資料庫比對</td></tr>
+  <tr><td>Dependabot／Renovate</td><td>自動提出升版 PR</td></tr>
+  <tr><td><code>npm audit</code>、<code>dotnet list package --vulnerable</code></td><td>各生態系內建指令</td></tr>
+  <tr><td>CycloneDX／SPDX</td><td>SBOM 格式</td></tr>
+</table>
+
+<h2>前端特別注意</h2>
+<ul>
+  <li>CDN 引入的第三方腳本，加上 Subresource Integrity（<code>integrity</code> 屬性）並固定版本。</li>
+  <li>避免引入無人維護或下載量極低的套件（供應鏈攻擊與 typosquatting 風險）。</li>
+</ul>
+
+<h2>檢查清單</h2>
+<ul class="check">
+  <li><label><input type="checkbox"> 有 lock file 且已提交版控</label></li>
+  <li><label><input type="checkbox"> CI 內有依賴漏洞掃描，高風險會阻擋</label></li>
+  <li><label><input type="checkbox"> 已產生 SBOM 並隨版本存檔</label></li>
+  <li><label><input type="checkbox"> 已啟用自動升版通知</label></li>
+  <li><label><input type="checkbox"> CDN 腳本已加 SRI 並固定版本</label></li>
+</ul>
+
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../../02-software/devops/ci-pipeline.html">CI 安全管線</a></li></ul>
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://owasp.org/www-project-dependency-check/">OWASP Dependency-Check</a></li>
+    <li><a href="https://osv.dev/">OSV — Open Source Vulnerabilities</a></li>
+    <li><a href="https://cyclonedx.org/">CycloneDX（SBOM 標準）</a></li>
+    <li><a href="https://spdx.dev/">SPDX</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity">MDN — Subresource Integrity</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/nav.js"></script>
+</body>
+</html>

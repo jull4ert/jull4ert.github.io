@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>威脅概況｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>威脅概況</h1>
+  <p class="sub">誰會攻擊、為什麼、從哪裡進來，以及一次典型攻擊怎麼走。</p>
+</header>
+<main class="page">
+<h2>攻擊者類型</h2><table><tr><th>類型</th><th>動機</th><th>典型手法</th><th>對客戶網站的影響</th></tr><tr><td>自動化掃描與機器人</td><td>撿便宜、大量</td><td>掃描已知漏洞與弱密碼、暴力破解</td><td>最常見；未更新的元件與預設帳密最先中標</td></tr><tr><td>詐欺與犯罪集團</td><td>金錢</td><td>盜取帳號與信用卡、勒索軟體、釣魚</td><td>會員資料外洩、服務中斷、被勒索</td></tr><tr><td>駭客行動主義者</td><td>政治、聲量</td><td>網站置換、DDoS</td><td>形象受損、服務中斷</td></tr><tr><td>內部人員</td><td>不滿、利益或疏忽</td><td>濫用權限、誤刪、帶走資料</td><td>離職帳號、過大權限是主因</td></tr><tr><td>供應鏈攻擊者</td><td>影響面大</td><td>污染套件、入侵第三方服務或外包</td><td>依賴的套件、CDN、第三方腳本</td></tr><tr><td>針對性攻擊（APT）</td><td>情報、長期潛伏</td><td>客製釣魚、零時差漏洞</td><td>多見於政府與關鍵基礎設施客戶</td></tr></table><h2>常見攻擊面</h2><table><tr><th>攻擊面</th><th>例子</th><th>對應頁面</th></tr><tr><td>對外網站與 API</td><td>注入、XSS、授權缺陷、API 濫用</td><td><a href="../02-software/index.html">02 軟體</a></td></tr><tr><td>身分與帳號</td><td>弱密碼、憑證填充、釣魚、離職帳號</td><td><a href="../02-software/auth/index.html">認證與授權</a></td></tr><tr><td>基礎設施組態</td><td>開放的管理埠、公開的儲存桶、預設設定</td><td><a href="../01-hardware/index.html">01 硬體</a></td></tr><tr><td>軟體供應鏈</td><td>過期套件、被污染的相依、洩漏的金鑰</td><td><a href="../03-lifecycle/pre-release/code-scan/dependency.html">依賴與 SBOM</a></td></tr><tr><td>人員與流程</td><td>社交工程、不當的變更、無人看日誌</td><td><a href="../03-lifecycle/operations/index.html">營運</a></td></tr></table><h2>典型攻擊鏈</h2><ol><li>偵察：找出網域、技術、員工資訊</li><li>取得入口：漏洞、被盜帳號、釣魚</li><li>站穩腳跟：植入後門、建立持久存取</li><li>提權與橫向移動：擴大到其他系統</li><li>達成目的：竊資料、加密勒索、破壞</li><li>掩蓋痕跡：清日誌（所以日誌要集中保存）</li></ol><p>防禦的關鍵是在鏈上的多個點都有偵測與阻擋：越早阻斷損害越小。事故發生時照 <a href="../06-incident/index.html">事故應變</a> 處理。</p><h2>延伸工具</h2><ul><li><a href="https://attack.mitre.org/">MITRE ATT&CK</a>：攻擊手法的通用分類，適合用在威脅建模與偵測規則。</li><li><a href="../03-lifecycle/design/threat-modeling.html">威脅建模</a>：把上述類型轉成針對你專案的威脅清單。</li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://attack.mitre.org/">MITRE ATT&CK</a></li><li><a href="https://www.verizon.com/business/resources/reports/dbir/">Verizon DBIR</a></li><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

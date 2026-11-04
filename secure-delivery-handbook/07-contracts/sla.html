@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SLA／SLO｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>SLA／SLO</h1>
+  <p class="sub">把「穩定」與「回應速度」變成可量測的指標，並說清楚什麼情況不算。</p>
+</header>
+<main class="page">
+<h2>名詞</h2><table><tr><th>名詞</th><th>意義</th></tr><tr><td>SLI</td><td>實際量測的指標，如成功請求比例、延遲</td></tr><tr><td>SLO</td><td>內部目標，如每月 99.9% 可用</td></tr><tr><td>SLA</td><td>對客戶的合約承諾與未達時的補償</td></tr></table><p>SLA 應略低於內部 SLO，留緩衝，避免一次小事故就違約。</p><h2>可用性對照</h2><table><tr><th>可用性</th><th>每月可停機</th><th>每年可停機</th></tr><tr><td>99%</td><td>約 7.2 小時</td><td>約 3.65 天</td></tr><tr><td>99.5%</td><td>約 3.6 小時</td><td>約 1.8 天</td></tr><tr><td>99.9%</td><td>約 43.8 分鐘</td><td>約 8.76 小時</td></tr><tr><td>99.95%</td><td>約 21.9 分鐘</td><td>約 4.38 小時</td></tr><tr><td>99.99%</td><td>約 4.4 分鐘</td><td>約 52.6 分鐘</td></tr></table><p>越高越貴：每多一個 9 通常需要多可用區、自動切換與更嚴格的變更流程。依客戶需求與預算約定，不要預設一律最高。</p><h2>建議納入的指標</h2><table><tr><th>指標</th><th>怎麼定義</th><th>備註</th></tr><tr><td>可用性</td><td>（總時間 − 非排除的停機）÷ 總時間；說明量測位置與頻率</td><td>計畫性維護與客戶端造成的中斷通常排除</td></tr><tr><td>事件回應時間</td><td>依嚴重度：從通報到開始處理</td><td>對應 <a href="../06-incident/classification.html">事故分級</a></td></tr><tr><td>事件解決／恢復時間</td><td>依嚴重度的目標</td><td>多為目標而非保證</td></tr><tr><td>漏洞修補時限</td><td>依 CVSS 或內部分級：高危 N 日、中危 N 日</td><td>需與變更管理搭配</td></tr><tr><td>備份</td><td>頻率、保存期、還原演練頻率</td><td>對應 RPO</td></tr><tr><td>RTO／RPO</td><td>災難時恢復時間與可接受的資料遺失</td><td><a href="../01-hardware/backup-dr/dr-plan.html">DR 計畫</a></td></tr><tr><td>維護時段</td><td>固定視窗與通知時間</td><td>緊急修補例外</td></tr><tr><td>報告</td><td>月報內容與時點（可用性、事件、修補、弱掃）</td><td><a href="audit-delivery.html">交付與稽核</a></td></tr></table><h2>需要明確的排除項</h2><ul><li>客戶或其他第三方造成的中斷（自行變更、未依建議升級）</li><li>第三方服務故障（雲端、金流、簡訊）：我方不保證其 SLA，但負責處理與通知</li><li>不可抗力與計畫性維護</li><li>DDoS 與攻擊：說明是否在範圍內及上限，常見做法為「盡力處理，不保證不中斷」</li><li>客戶未購買或拒絕建議的措施（如備援、WAF）</li></ul><h2>違約補償</h2><ul><li>常見做法是服務抵用金（月費的百分比），並設上限；說明申請方式與期限。</li><li>明定抵用金是未達 SLA 的唯一救濟，避免與損害賠償重疊（與 <a href="liability.html">責任範圍</a> 一致）。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 每個指標都有明確定義、量測方式與資料來源</label></li><li><label><input type="checkbox"> SLA 低於內部 SLO 並留有緩衝</label></li><li><label><input type="checkbox"> 排除項已明確列出</label></li><li><label><input type="checkbox"> 補償方式與上限已約定</label></li><li><label><input type="checkbox"> 客戶提出的更高等級需求有對應的架構與報價</label></li><li><label><input type="checkbox"> 月報內容已約定</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://sre.google/sre-book/service-level-objectives/">Google SRE：服務水準目標</a></li><li><a href="https://sre.google/workbook/implementing-slos/">Google SRE Workbook：SLO 實作</a></li><li><a href="https://aws.amazon.com/legal/service-level-agreements/">AWS SLA 範例</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

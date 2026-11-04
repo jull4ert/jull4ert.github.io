@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>帳號遭盜用｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>帳號遭盜用</h1>
+  <p class="sub">使用者或管理者帳號被他人登入或操作。</p>
+</header>
+<main class="page">
+<div class="note">通用流程見 <a href="../../06-incident/response-process.html">應變流程</a>。本頁是這個情境的補充重點。</div><h2>徵兆</h2><ul><li>異常的登入地點、時間或裝置</li><li>非本人操作的訂單、設定或權限變更</li><li>大量失敗登入後突然成功（憑證填充）</li><li>客戶回報被盜、被改信箱或電話</li></ul><h2>最先做</h2><ol><li>確認是單一帳號還是大量；若是管理者帳號，視為 P1／P2</li><li>保存登入與操作日誌</li><li>停用或鎖定受影響帳號</li></ol><h2>遏止</h2><ul><li>強制登出所有工作階段、撤銷權杖與 API 金鑰</li><li>要求改密碼並重新綁定 MFA</li><li>檢查是否有被新增的備用信箱、轉寄規則、OAuth 授權、API 金鑰</li></ul><h2>根除</h2><ul><li>查明密碼是如何被取得（外洩資料庫重用、釣魚、惡意軟體、弱密碼）</li><li>若屬大量憑證填充，啟用速率限制、CAPTCHA、洩漏密碼檢查與 MFA</li><li>檢查是否有權限提升或資料被匯出</li></ul><h2>復原</h2><ul><li>還原被未授權變更的資料</li><li>通知受影響使用者並說明如何自保</li><li>對管理者帳號強制 MFA</li></ul><h2>通報判斷</h2><ul><li>若帳號被用來存取個資，依 <a href="data-breach.html">資料外洩</a> 判斷</li><li>涉及金流或交易時通知金流與客戶</li></ul><h2>常見錯誤</h2><ul><li>只重設密碼卻未撤銷既有工作階段與權杖</li><li>沒有檢查帳號被加上的後門設定</li></ul><h2>相關頁面</h2><ul><li><a href="../../06-incident/forensics.html">鑑識與證據保全</a></li><li><a href="../../06-incident/notification.html">通報與溝通</a></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">OWASP Authentication Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

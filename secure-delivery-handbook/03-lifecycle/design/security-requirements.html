@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安全需求｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>安全需求</h1>
+  <p class="sub">把「要安全」寫成可驗證的需求，才能在驗收時逐項檢查。</p>
+</header>
+<main class="page">
+<h2>好的安全需求</h2><ul><li>可驗證：能用測試或檢查明確判定通過與否。</li><li>具體：有數值或明確行為。</li><li>可追溯：對應到風險或法規。</li></ul><h2>寫法對照</h2><table><tr><th>不好的寫法</th><th>較好的寫法</th></tr><tr><td>系統要安全</td><td>所有對外連線強制 HTTPS，僅啟用 TLS 1.2 以上</td></tr><tr><td>密碼要夠強</td><td>密碼至少 12 字元，不得出現於常見洩漏密碼清單，以 Argon2id 或 bcrypt 雜湊儲存</td></tr><tr><td>要記錄操作</td><td>所有登入、權限變更、資料匯出皆寫入稽核日誌，保存 N 個月，且一般管理者無法修改</td></tr><tr><td>防止越權</td><td>每個資料存取 API 在伺服器端驗證呼叫者對該資源的權限，測試案例涵蓋橫向越權</td></tr></table><h2>需求來源</h2><ul><li><b>OWASP ASVS</b>：分 L1／L2／L3 三個驗證等級，可作為需求清單的起點，並與風險分級對應。</li><li>客戶合約與法規條文。</li><li>威脅模型產出的緩解項目。</li></ul><div class="note">建議對應：<a href="../pre-sales/risk-classification.html">風險 L2</a> 取 ASVS L1 為底再補強；L3、L4 以 ASVS L2 以上為目標。此為經驗建議，並非 ASVS 本身規定。</div>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/auth/password-storage.html">密碼儲存</a></li><li><a href="../../02-software/logging/structured-logging.html">結構化日誌</a></li><li><a href="../../02-software/api/api-top10.html">OWASP API Top 10 對照</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></li><li><a href="https://github.com/OWASP/ASVS">OWASP ASVS GitHub</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP Password Storage Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

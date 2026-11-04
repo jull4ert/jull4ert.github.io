@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>勒索軟體｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>勒索軟體</h1>
+  <p class="sub">檔案被加密並要求付款以取得解密金鑰。</p>
+</header>
+<main class="page">
+<div class="note">通用流程見 <a href="../../06-incident/response-process.html">應變流程</a>。本頁是這個情境的補充重點。</div><h2>徵兆</h2><ul><li>大量檔案副檔名被改、無法開啟</li><li>桌面或目錄出現贖金說明檔</li><li>備份或資料庫被刪除或加密</li><li>短時間內大量檔案寫入的告警</li></ul><h2>最先做</h2><ol><li>立即<b>隔離</b>受影響主機與網段（拔網路、關交換器連接埠），但<b>不要關機</b>以保留記憶體</li><li>確認備份是否安全：立即把備份系統與主環境斷開</li><li>拍照或記錄贖金訊息、檔案名稱樣式；樣本只放在隔離環境</li></ol><h2>遏止</h2><ul><li>停用共用帳號、網域帳號與雲端存取金鑰；限制管理通道</li><li>封鎖已知惡意 IP 與網域</li><li>確認是否有資料被先竊取（雙重勒索）</li></ul><h2>根除</h2><ul><li>找出入口（常見：暴露的遠端桌面／VPN、釣魚、未修補漏洞、被盜帳密）並封閉</li><li>重建受影響系統；不要「清除」後直接使用</li><li>輪替全部憑證，包含網域管理員、服務帳號、雲端金鑰</li></ul><h2>復原</h2><ul><li>從離線或不可變且<b>已確認未被感染</b>的備份還原，先還原到隔離網段驗證</li><li>依重要性分批恢復，並加強監控</li><li>複查是否留有持久後門</li></ul><h2>通報判斷</h2><ul><li>是否付款由客戶管理層與法務決定：我方不建議也不替客戶決定；付款不保證能還原，且可能涉及法規</li><li>若有資料被竊，依 <a href="data-breach.html">資料外洩</a> 通報</li><li>通報警察或調查單位並保存證據</li></ul><h2>常見錯誤</h2><ul><li>在受感染主機上登入管理帳號作業（憑證會被竊）</li><li>太早重建而失去判斷入口的證據</li><li>沒驗證備份就覆蓋</li></ul><h2>相關頁面</h2><ul><li><a href="../../06-incident/forensics.html">鑑識與證據保全</a></li><li><a href="../../06-incident/notification.html">通報與溝通</a></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://www.cisa.gov/stopransomware">CISA #StopRansomware</a></li><li><a href="https://www.nomoreransom.org/">No More Ransom</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

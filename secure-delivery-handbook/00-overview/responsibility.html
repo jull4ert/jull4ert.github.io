@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>責任分界｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>責任分界</h1>
+  <p class="sub">我方、客戶、雲端或主機商各負責什麼。邊界不清楚，事故時就會變成互相推諉。</p>
+</header>
+<main class="page">
+<div class="note">下表是常見的預設切分，只是起點。實際分界必須寫進合約（見 <a href="../07-contracts/liability.html">責任範圍</a>）並在簽約前與客戶確認。</div><h2>依層級的責任（以我方開發並維運為例）</h2><table><tr><th>層級</th><th>我方</th><th>客戶</th><th>雲端／主機商</th></tr><tr><td>實體機房與硬體</td><td>—</td><td>—</td><td>負責</td></tr><tr><td>虛擬化與基礎網路</td><td>—</td><td>—</td><td>負責</td></tr><tr><td>作業系統與平台</td><td>有維運合約時負責：修補、加固</td><td>自管主機時負責</td><td>託管服務時負責</td></tr><tr><td>網站與 API 程式碼</td><td>負責：安全開發、掃描、修補</td><td>驗收、提供需求</td><td>—</td></tr><tr><td>第三方套件與外掛</td><td>負責盤點與更新（合約範圍內）</td><td>自行安裝的外掛自負</td><td>—</td></tr><tr><td>資料與其分類</td><td>依指示處理、保護</td><td>負責：決定蒐集什麼、保存多久、取得當事人同意</td><td>—</td></tr><tr><td>帳號與權限</td><td>我方人員帳號、系統管理帳號</td><td>客戶端人員帳號與其密碼管理</td><td>雲端主帳號依持有人</td></tr><tr><td>網域、DNS、憑證</td><td>依約代管者負責續約與設定</td><td>自持有者負責續約</td><td>—</td></tr><tr><td>備份與還原</td><td>依合約範圍執行並演練</td><td>確認需求（RPO／RTO）、驗證可用</td><td>提供基礎設施功能</td></tr><tr><td>事故通報</td><td>我方範圍內事故通知客戶</td><td>對當事人與主管機關通報（控管者）</td><td>通知其平台層事件</td></tr></table><h2>RACI：關鍵活動</h2><table><tr><th>活動</th><th>我方</th><th>客戶</th><th>備註</th></tr><tr><td>風險分級與安全需求確認</td><td>R</td><td>A</td><td>客戶最終核可</td></tr><tr><td>安全開發與程式碼檢測</td><td>R、A</td><td>I</td><td></td></tr><tr><td>弱掃與滲透測試</td><td>R</td><td>A（核可範圍與時間）</td><td>第三方資產需另行授權</td></tr><tr><td>上線核可（Go／No-Go）</td><td>R</td><td>A</td><td>見 <a href="../03-lifecycle/pre-release/acceptance.html">驗收</a></td></tr><tr><td>系統修補</td><td>R、A（合約範圍內）</td><td>I</td><td>重大變更需客戶同意</td></tr><tr><td>事故處理</td><td>R</td><td>A、C</td><td>見 <a href="../06-incident/index.html">事故應變</a></td></tr><tr><td>對外通報（主管機關、當事人）</td><td>C</td><td>R、A</td><td>我方提供事實與技術資料</td></tr><tr><td>終止後資料返還與銷毀</td><td>R</td><td>A</td><td>見 <a href="../03-lifecycle/handover/index.html">交付與終止</a></td></tr></table><p>R＝執行、A＝最終負責、C＝被諮詢、I＝被告知。</p><h2>常見灰色地帶</h2><ul><li>客戶自己改了主機設定或上傳了外掛，之後出問題算誰的？要在合約寫明「客戶自行變更不在保固範圍」。</li><li>客戶提供的帳號密碼太弱或多人共用：我方要書面提醒並留下紀錄。</li><li>雲端帳單與權限是客戶的帳號，我方只拿到委派權限時，責任以委派範圍為準。</li><li>第三方服務（金流、簡訊、地圖）故障：我方負責整合，不保證其可用性。</li></ul><h2>確認清單</h2><ul class="check"><li><label><input type="checkbox"> 已用本頁的表格與客戶逐項確認責任歸屬並留存紀錄</label></li><li><label><input type="checkbox"> 合約載明主機、網域、憑證、備份、事故通報各由誰負責</label></li><li><label><input type="checkbox"> 客戶自行變更的範圍與後果已書面說明</label></li><li><label><input type="checkbox"> 第三方服務的可用性與責任限制已告知客戶</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/">AWS 共同責任模型</a></li><li><a href="https://learn.microsoft.com/azure/security/fundamentals/shared-responsibility">Microsoft Azure 共同責任</a></li><li><a href="https://cloud.google.com/architecture/framework/security/shared-responsibility-shared-fate">Google Cloud 共同命運</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

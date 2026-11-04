@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>人員帳號與權限檢查表｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>人員帳號與權限檢查表</h1>
+  <p class="sub">新進、異動、離職三種情境的帳號與權限處理。</p>
+</header>
+<main class="page">
+<div class="note">離職檢查是最常漏掉的環節，建議由人資通知觸發，並留存逐項確認紀錄。相關說明見 <a href="../03-lifecycle/handover/index.html">交付與終止</a>。</div><h2>新進人員</h2><ul class="check"><li><label><input type="checkbox"> 建立個人帳號（不共用），依角色給最小權限</label></li><li><label><input type="checkbox"> 啟用多因素驗證（MFA）</label></li><li><label><input type="checkbox"> 簽署保密協議與資安政策</label></li><li><label><input type="checkbox"> 裝置符合筆電安全基準（全碟加密、更新、端點防護）</label></li><li><label><input type="checkbox"> 完成資安教育訓練</label></li><li><label><input type="checkbox"> 加入資產清單與權限清冊</label></li></ul><h2>職務異動</h2><ul class="check"><li><label><input type="checkbox"> 移除舊角色專屬的權限</label></li><li><label><input type="checkbox"> 依新職務重新授權並經主管核可</label></li><li><label><input type="checkbox"> 重新審查對正式環境與客戶資料的存取</label></li><li><label><input type="checkbox"> 更新權限清冊</label></li></ul><h2>離職或合作終止</h2><ul class="check"><li><label><input type="checkbox"> 當日停用單一登入／目錄帳號</label></li><li><label><input type="checkbox"> 停用 VPN 與遠端連線帳號</label></li><li><label><input type="checkbox"> 移除版本控制、CI/CD、監控與協作工具的權限</label></li><li><label><input type="checkbox"> 移除雲端主控台與 IAM 權限，撤銷其存取金鑰</label></li><li><label><input type="checkbox"> 移除資料庫與伺服器帳號（含 SSH 金鑰）</label></li><li><label><input type="checkbox"> 重設其知悉的共用帳號與服務帳號密碼</label></li><li><label><input type="checkbox"> 輪替其接觸過的 API 金鑰、Token、憑證</label></li><li><label><input type="checkbox"> 檢查第三方服務（金流、簡訊、郵件、網域、DNS、CDN）的管理者身分並轉移</label></li><li><label><input type="checkbox"> 收回裝置與外接媒體並遠端抹除</label></li><li><label><input type="checkbox"> 移轉其郵件、共享資料夾與文件的擁有權</label></li><li><label><input type="checkbox"> 留存逐項確認紀錄與日期</label></li></ul><h2>定期</h2><ul class="check"><li><label><input type="checkbox"> 每月盤點閒置帳號與過度授權</label></li><li><label><input type="checkbox"> 每季由資料擁有者確認權限仍合理</label></li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

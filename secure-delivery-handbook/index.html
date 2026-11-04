@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>軟體公司資安交付手冊｜導覽</title>
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>軟體公司資安交付手冊</h1>
+  <p class="sub">客戶網站（前後端）服務的資安要點、交付前後規格與檢查清單。由粗到細、逐步擴充。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--hw)"></i>硬體 / 基礎設施</span>
+    <span><i class="dot" style="background:var(--sw)"></i>軟體 / 應用程式</span>
+    <span><i class="dot" style="background:var(--proc)"></i>流程 / 治理</span>
+    <span><span class="tag done">已完成</span> <span class="tag">規劃中</span></span>
+  </div>
+</header>
+
+<main>
+
+<h2>怎麼讀這份手冊</h2>
+<div class="card">
+  <ul>
+    <li><b>第 1 層（粗）</b>：本頁，六大區塊總覽。</li>
+    <li><b>第 2 層</b>：每個區塊的 <span class="path">index.html</span>，列出主題與重點。</li>
+    <li><b>第 3 層（細）</b>：單一主題頁，含規格、檢查項目、範例設定。</li>
+    <li>所有連結皆為相對路徑，可直接放在 GitHub Pages 或本機開啟。</li>
+  </ul>
+</div>
+
+<h2>一、基礎觀念（先讀）</h2>
+<div class="grid">
+  <div class="card proc">
+    <h3><a href="./00-overview/index.html">00 總覽與責任分界</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./00-overview/</p>
+    <ul>
+      <li><a href="./00-overview/threat-landscape.html">威脅概況：誰會攻擊、攻擊什麼</a></li>
+      <li><a href="./00-overview/principles.html">CIA 三要素、縱深防禦、最小權限</a></li>
+      <li><a href="./00-overview/responsibility.html">我方 vs 客戶 vs 雲端商的責任分界</a></li>
+      <li><a href="./00-overview/glossary.html">名詞表</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2>二、硬體 / 基礎設施</h2>
+<div class="grid">
+  <div class="card hw">
+    <h3><a href="./01-hardware/index.html">01 硬體與基礎設施</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./01-hardware/</p>
+    <ul>
+      <li><b><a href="./01-hardware/physical/index.html">physical</a></b> 機房、門禁、環境、設備報廢</li>
+      <li><b><a href="./01-hardware/server/index.html">server</a></b> 韌體/BIOS、TPM、磁碟加密、BMC</li>
+      <li><b><a href="./01-hardware/network/index.html">network</a></b> 防火牆、VLAN、VPN、WAF/IPS 設備</li>
+      <li><b><a href="./01-hardware/endpoint/index.html">endpoint</a></b> 開發筆電、MDM、USB 管控</li>
+      <li><b><a href="./01-hardware/cloud/index.html">cloud</a></b> IaaS 共同責任、帳號與網路隔離</li>
+      <li><b><a href="./01-hardware/backup-dr/index.html">backup-dr</a></b> 3-2-1 備份、異地、還原演練</li>
+    </ul>
+  </div>
+</div>
+
+<h2>三、軟體 / 應用程式</h2>
+<div class="grid">
+  <div class="card sw">
+    <h3><a href="./02-software/index.html">02 軟體與應用程式</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./02-software/</p>
+    <ul>
+      <li><b><a href="./02-software/frontend/index.html">frontend</a></b> XSS、CSP、CORS、第三方腳本、Cookie 旗標</li>
+      <li><b><a href="./02-software/backend/index.html">backend</a></b> 輸入驗證、注入、反序列化、SSRF、錯誤處理</li>
+      <li><b><a href="./02-software/api/index.html">api</a></b> 驗證授權、速率限制、版本與資料暴露</li>
+      <li><b><a href="./02-software/auth/index.html">auth</a></b> 密碼、MFA、Session/JWT、OAuth/OIDC、RBAC</li>
+      <li><b><a href="./02-software/database/index.html">database</a></b> 權限、加密、遮罩、備份、SQL 注入防護</li>
+      <li><b><a href="./02-software/platform/index.html">platform</a></b> OS 加固、容器/K8s、TLS、標頭設定</li>
+      <li><b><a href="./02-software/devops/index.html">devops</a></b> CI/CD、金鑰管理、依賴與供應鏈、SBOM</li>
+      <li><b><a href="./02-software/logging/index.html">logging</a></b> 日誌、稽核軌跡、監控告警</li>
+    </ul>
+  </div>
+</div>
+
+<h2>四、服務前後的規格與檢查（核心）</h2>
+<div class="grid">
+  <div class="card proc">
+    <h3><a href="./03-lifecycle/index.html">03 服務生命週期</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./03-lifecycle/</p>
+    <ul>
+      <li><b><a href="./03-lifecycle/pre-sales/index.html">pre-sales</a></b> 簽約前：需求、範圍、風險評估、NDA</li>
+      <li><b><a href="./03-lifecycle/design/index.html">design</a></b> 設計期：威脅建模、安全需求</li>
+      <li><b><a href="./03-lifecycle/development/index.html">development</a></b> 開發期：安全編碼、Code Review、SAST</li>
+      <li><b><a href="./03-lifecycle/pre-release/index.html">pre-release</a></b> 上線前：弱掃、滲透、DAST、依賴掃描、驗收</li>
+      <li><b><a href="./03-lifecycle/go-live/index.html">go-live</a></b> 上線當下：變更管理、回滾、金鑰輪替</li>
+      <li><b><a href="./03-lifecycle/operations/index.html">operations</a></b> 上線後：修補、監控、定期弱掃、備份演練</li>
+      <li><b><a href="./03-lifecycle/handover/index.html">handover</a></b> 交付/終止：權限回收、資料移交與銷毀</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./04-checklists/index.html">04 檢查清單</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./04-checklists/</p>
+    <ul>
+      <li><a href="./04-checklists/lifecycle/pre-release.html">上線前檢查表</a>（可列印、可勾選）</li>
+      <li><a href="./04-checklists/recurring.html">每月/每季維運檢查表</a></li>
+      <li><a href="./04-checklists/accounts.html">新人/離職帳號權限檢查表</a></li>
+      <li><a href="./04-checklists/report-template.html">客戶驗收用資安報告範本</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2>五、標準、法規與事故</h2>
+<div class="grid">
+  <div class="card proc">
+    <h3><a href="./05-standards/index.html">05 標準與法規</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./05-standards/</p>
+    <ul>
+      <li><a href="./05-standards/owasp.html">OWASP Top 10 / ASVS / API Security</a></li>
+      <li><a href="./05-standards/iso-27001.html">ISO/CNS 27001</a>、<a href="./05-standards/cis.html">CIS Benchmarks</a></li>
+      <li><a href="./05-standards/regulations/index.html">個資法、資通安全管理法、GDPR</a></li>
+      <li><a href="./05-standards/regulations/pci-dss.html">PCI DSS（金流類客戶）</a></li><li><a href="./05-standards/stage-matrix.html">階段 × 規範對照表</a></li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./06-incident/index.html">06 事故應變</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./06-incident/</p>
+    <ul>
+      <li><a href="./06-incident/classification.html">事故分級</a>、<a href="./06-incident/preparation.html">準備工作</a></li>
+      <li><a href="./06-incident/response-process.html">遏止、復原</a>、<a href="./06-incident/forensics.html">鑑識保全</a>、<a href="./06-incident/playbooks/index.html">情境手冊</a></li>
+      <li><a href="./06-incident/notification.html">客戶溝通與法遵通報時限</a></li>
+      <li><a href="./06-incident/postmortem.html">事後檢討（Postmortem）範本</a></li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./07-contracts/index.html">07 合約與 SLA</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./07-contracts/</p>
+    <ul>
+      <li><a href="./07-contracts/security-clauses.html">資安條款</a>、<a href="./07-contracts/sla.html">SLA</a>、<a href="./07-contracts/liability.html">責任範圍、保固</a></li>
+      <li><a href="./07-contracts/data-processing.html">個資委外</a>、<a href="./07-contracts/subcontracting.html">委外與分包管理</a></li>
+      <li><a href="./07-contracts/audit-delivery.html">稽核配合與報告交付</a></li>
+    </ul>
+  </div>
+</div>
+
+<h2>目錄結構</h2>
+<div class="tree">secure-delivery-handbook/
+├─ index.html                 ← 本頁
+├─ assets/style.css
+├─ 00-overview/
+│  └─ principles  threat-landscape  responsibility  glossary
+├─ 01-hardware/
+│  ├─ physical/  server/  network/
+│  └─ endpoint/  cloud/   backup-dr/
+├─ 02-software/
+│  ├─ frontend/  backend/  api/  auth/
+│  └─ database/  platform/ devops/ logging/
+├─ 03-lifecycle/
+│  ├─ pre-sales/  design/  development/
+│  └─ pre-release/  go-live/  operations/  handover/
+├─ 04-checklists/
+├─ 05-standards/
+├─ 06-incident/
+│  └─ playbooks/  classification  notification  forensics ...
+└─ 07-contracts/
+   └─ sla  liability  data-processing ...</div>
+
+<h2>維護與擴充</h2>
+<div class="card">
+  <ul>
+    <li>新增頁面：建立檔案 → 在 <code>assets/sitemap.js</code> 登記並加入父層 <code>c</code>。</li>
+    <li>修改任何頁面的勾選項目後，執行 <code>python _build/build_checklists.py</code> 重新產生 04 彙整清單。</li>
+    <li>各頁的法規、版本與連結請定期對照官方來源。</li>
+  </ul>
+</div>
+
+</main>
+<footer>secure-delivery-handbook 資安交付手冊 · 建立於 2026-11-03</footer>
+<script src="./assets/sitemap.js"></script>
+<script src="./assets/nav.js"></script>
+</body>
+</html>

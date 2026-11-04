@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CSRF 與 CORS｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>CSRF 與 CORS</h1>
+  <p class="sub">避免使用者在不知情下被別的網站觸發操作，並正確設定跨來源存取。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>使用 Cookie 驗證的網站才有 CSRF 風險；純以 <code>Authorization</code> 標頭帶 token 的 API 通常不受影響。</li><li>多層防護：<code>SameSite=Lax/Strict</code> Cookie ＋ CSRF token（或自訂標頭）＋ 變更狀態的操作不用 GET。</li><li>CORS 只決定「瀏覽器是否讓別的來源讀回應」，<b>不是</b>授權機制，也擋不住 CSRF。</li></ul><h2>CORS 設定</h2><table><tr><th>做法</th><th>風險</th></tr><tr><td><code>Access-Control-Allow-Origin: *</code> 搭配憑證</td><td>瀏覽器不允許，且代表設計有問題</td></tr><tr><td>把請求的 Origin 原樣回填</td><td>等同允許所有來源，風險高</td></tr><tr><td>白名單明列允許的來源</td><td>建議做法</td></tr><tr><td>預檢（OPTIONS）快取過久</td><td>設定變更後不易生效</td></tr></table><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><h2>前端：送出請求時帶 token</h2><div class="tech" data-tech="vanilla"><pre><code>fetch('/api/orders', {
+  method: 'POST',
+  credentials: 'same-origin',
+  headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': csrfToken },
+  body: JSON.stringify(data)
+});</code></pre></div><div class="tech" data-tech="vue"><p>使用 axios 時，同源請求預設會讀取名為 <code>XSRF-TOKEN</code> 的 Cookie，並放入 <code>X-XSRF-TOKEN</code> 標頭；後端需配合發放與驗證。</p></div><div class="tech" data-tech="react"><p>同 Vue：若使用 axios 即適用上述預設行為；使用 fetch 時需自行讀取並加入標頭。</p></div><div class="tech" data-tech="angular"><p><code>HttpClient</code> 內建此機制：從 <code>XSRF-TOKEN</code> Cookie 讀值，對同源的變更請求加上 <code>X-XSRF-TOKEN</code> 標頭。</p><pre><code>provideHttpClient(withXsrfConfiguration({
+  cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN'
+}))</code></pre></div><h2>後端：驗證 token</h2><div class="tech" data-tech="dotnet"><pre><code>builder.Services.AddControllersWithViews(o =&gt;
+    o.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));</code></pre></div><div class="tech" data-tech="node"><p><code>csurf</code> 已停止維護，請改用仍在維護的套件（如 <code>csrf-csrf</code>），或採 SameSite Cookie ＋ 自訂標頭的作法，並確認套件的最新狀態。</p></div><div class="tech" data-tech="java"><p>Spring Security 對一般 Servlet 應用預設啟用 CSRF 防護；給 SPA 讀取 token 時：</p><pre><code>http.csrf(csrf -&gt; csrf
+    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));</code></pre></div><div class="tech" data-tech="python"><p>Django 預設啟用 <code>CsrfViewMiddleware</code>；表單使用 <code>{% csrf_token %}</code>，AJAX 於標頭帶 <code>X-CSRFToken</code>。</p></div><div class="tech" data-tech="php"><p>Laravel 預設啟用 CSRF 中介層；表單使用 <code>@csrf</code>，AJAX 於標頭帶 <code>X-CSRF-TOKEN</code>。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> Session Cookie 設定 SameSite（Lax 或 Strict）</label></li><li><label><input type="checkbox"> 變更狀態的請求都驗證 CSRF token 或自訂標頭</label></li><li><label><input type="checkbox"> 沒有以 GET 執行變更操作</label></li><li><label><input type="checkbox"> CORS 為白名單，非萬用字元，也未回填任意 Origin</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP CSRF Prevention Cheat Sheet</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">MDN — CORS</a></li><li><a href="https://angular.dev/best-practices/security#http-level-vulnerabilities">Angular — HttpClient 的 XSRF 防護</a></li><li><a href="https://axios-http.com/docs/req_config">axios 文件</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>階段 × 規範對照表｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>階段 × 規範對照表</h1>
+  <p class="sub">從服務生命週期的某階段，查該引用哪些規範；橫向捲動可看全部欄位。</p>
+</header>
+<main class="page">
+<table><tr><th>階段</th><th>OWASP</th><th>NIST</th><th>ISO 27001（2022）</th><th>CIS Controls</th><th>法規</th></tr><tr><td><a href="../03-lifecycle/pre-sales/index.html">簽約前</a></td><td>ASVS 等級選擇</td><td>CSF 2.0 治理</td><td>5.19–5.23 供應商關係</td><td>15 服務供應商管理</td><td>個資法、GDPR、PCI DSS、資安法</td></tr><tr><td><a href="../03-lifecycle/design/index.html">設計期</a></td><td>ASVS、SAMM、威脅建模 CS</td><td>SSDF PW.1、SP 800-63</td><td>8.26、8.27</td><td>16 應用程式軟體安全</td><td>GDPR 第 25 條</td></tr><tr><td><a href="../03-lifecycle/development/index.html">開發期</a></td><td>Top 10、Cheat Sheets、Code Review Guide</td><td>SSDF PW.5、PW.7</td><td>8.28、8.30、8.31</td><td>16、14</td><td>—</td></tr><tr><td><a href="../03-lifecycle/pre-release/index.html">上線前</a></td><td>WSTG、ASVS、API Top 10</td><td>SP 800-115、SSDF PW.8</td><td>8.29、8.8</td><td>7、18、16</td><td>PCI DSS 要求 6、11</td></tr><tr><td><a href="../03-lifecycle/go-live/index.html">上線當下</a></td><td>Secrets Management CS</td><td>SP 800-128</td><td>8.32、8.9</td><td>4 安全組態</td><td>—</td></tr><tr><td><a href="../03-lifecycle/operations/index.html">上線後營運</a></td><td>Logging CS</td><td>SP 800-40、800-92、800-34</td><td>8.8、8.13、8.15</td><td>7、8、11、17</td><td>個資法第 12 條、GDPR 第 33 條、資安法事件通報</td></tr><tr><td><a href="../03-lifecycle/handover/index.html">交付與終止</a></td><td>—</td><td>SP 800-88</td><td>5.18、8.10</td><td>5 帳號管理、3 資料保護</td><td>個資法、GDPR 第 17 條</td></tr></table><h2>怎麼用</h2><ul><li>客戶要求某規範時，從欄位反查「哪些階段要產出哪些證據」。</li><li>控制編號依各標準現行版本整理，作為檢索起點；正式對照請以標準原文為準。</li></ul><div class="note">本頁依公開資料整理，標準與法規會修訂；條文編號、版本與數字請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></li><li><a href="https://www.cisecurity.org/controls">CIS Controls</a></li><li><a href="https://csrc.nist.gov/projects/ssdf">NIST SSDF</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

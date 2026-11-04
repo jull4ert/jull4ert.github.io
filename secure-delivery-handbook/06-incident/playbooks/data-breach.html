@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料外洩｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>資料外洩</h1>
+  <p class="sub">確認或疑似個資、機敏資料被未授權存取或取走。</p>
+</header>
+<main class="page">
+<div class="note">通用流程見 <a href="../../06-incident/response-process.html">應變流程</a>。本頁是這個情境的補充重點。</div><h2>徵兆</h2><ul><li>資料出現在暗網、貼文或第三方通報</li><li>資料庫或儲存桶異常大量讀取、匯出</li><li>公開的儲存桶、備份檔或 API 可無認證取得資料</li><li>員工誤寄、誤傳資料給外部</li></ul><h2>最先做</h2><ol><li>升級為 P1 並通知客戶窗口與法務</li><li>確認外洩資料的類型、筆數、時間範圍與可識別性</li><li>保存存取日誌與證據，記錄時間線</li></ol><h2>遏止</h2><ul><li>封閉暴露點：設為私有、移除公開連結、停用被濫用的金鑰與權杖</li><li>強制登出相關工作階段並重設受影響帳號密碼</li><li>對外洩出去的憑證立即輪替</li></ul><h2>根除</h2><ul><li>找出入口與根因，修補漏洞或錯誤設定</li><li>確認資料是否被複製到其他位置，必要時要求第三方下架</li></ul><h2>復原</h2><ul><li>提供受影響使用者的補救措施（改密碼、留意釣魚）</li><li>加強監控並持續檢視一段時間</li></ul><h2>通報判斷</h2><ul><li>依 <a href="../../06-incident/notification.html">通報規則</a> 判斷是否需通知當事人與主管機關；時限從「知悉」起算</li><li>我方儘速提供完整事實給客戶（客戶多為控管者），由客戶決定通報內容</li><li>保存所有通報紀錄</li></ul><h2>常見錯誤</h2><ul><li>在確認前就對外說「沒有外洩」</li><li>延遲通知客戶，等調查完才說</li><li>只修補而沒確認其他資料是否已被取走</li></ul><h2>相關頁面</h2><ul><li><a href="../../06-incident/forensics.html">鑑識與證據保全</a></li><li><a href="../../06-incident/notification.html">通報與溝通</a></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

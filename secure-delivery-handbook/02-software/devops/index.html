@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DevOps｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>DevOps</h1>
+  <p class="sub">建置、部署流程本身也是攻擊目標：供應鏈與密鑰是重點。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>管線帳號與權限最小化；正式環境部署需核准。</li><li>第三方 Action／套件／映像固定版本（最好以 commit SHA 或 digest）。</li><li>密鑰不進版控，由密鑰管理服務在執行期注入。</li><li>產出物可追溯：簽章、SBOM、建置紀錄。</li></ul><h2>子主題</h2><div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html">OWASP CI/CD Security Cheat Sheet</a></li><li><a href="https://slsa.dev/">SLSA</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HTTP 安全標頭與 Cookie｜資安交付手冊</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>HTTP 安全標頭與 Cookie</h1>
+  <p class="sub">用回應標頭告訴瀏覽器啟用哪些防護，降低 XSS、點擊劫持等風險。</p>
+</header>
+<main class="page">
+
+<h2>建議標頭</h2>
+<table>
+  <tr><th>標頭</th><th>作用</th><th>範例</th></tr>
+  <tr><td>Content-Security-Policy</td><td>限制可載入的腳本／資源來源，XSS 的重要第二道防線</td><td><code>default-src 'self'; object-src 'none'; frame-ancestors 'none'</code></td></tr>
+  <tr><td>X-Content-Type-Options</td><td>禁止瀏覽器猜測內容類型</td><td><code>nosniff</code></td></tr>
+  <tr><td>Referrer-Policy</td><td>控制 Referer 洩漏的資訊量</td><td><code>strict-origin-when-cross-origin</code></td></tr>
+  <tr><td>Permissions-Policy</td><td>關閉用不到的瀏覽器功能</td><td><code>camera=(), microphone=(), geolocation=()</code></td></tr>
+  <tr><td>防嵌入（點擊劫持）</td><td>禁止被他站 iframe 嵌入</td><td>CSP 的 <code>frame-ancestors</code>（舊瀏覽器可加 <code>X-Frame-Options: DENY</code>）</td></tr>
+  <tr><td>Strict-Transport-Security</td><td>強制 HTTPS</td><td>見 <a href="./tls.html">TLS 設定</a></td></tr>
+</table>
+<div class="note">CSP 若直接上最嚴格設定，容易讓既有頁面壞掉。建議先以 <code>Content-Security-Policy-Report-Only</code> 觀察違規報告，修正後再正式啟用。</div>
+
+<h2>移除洩漏資訊的標頭</h2>
+<p>隱藏 <code>Server</code>、<code>X-Powered-By</code>、<code>X-AspNet-Version</code> 等版本資訊，避免攻擊者精準比對漏洞。這只是減少資訊暴露，不能取代修補。</p>
+
+<h2>Cookie 旗標</h2>
+<table>
+  <tr><th>屬性</th><th>作用</th></tr>
+  <tr><td><code>Secure</code></td><td>只透過 HTTPS 傳送</td></tr>
+  <tr><td><code>HttpOnly</code></td><td>JavaScript 無法讀取，降低 XSS 竊取 Session</td></tr>
+  <tr><td><code>SameSite</code></td><td><code>Lax</code> 或 <code>Strict</code> 降低 CSRF；跨站需求才用 <code>None</code>（且需 Secure）</td></tr>
+  <tr><td>名稱前綴 <code>__Host-</code></td><td>強制 Secure、Path=/、不帶 Domain，防止子網域覆寫</td></tr>
+  <tr><td>有效期</td><td>Session Cookie 設合理逾時，登出時伺服器端同步失效</td></tr>
+</table>
+<pre><code>Set-Cookie: __Host-session=...; Path=/; Secure; HttpOnly; SameSite=Lax</code></pre>
+
+<h2>CORS</h2>
+<ul>
+  <li>不要在帶憑證的 API 使用 <code>Access-Control-Allow-Origin: *</code>。</li>
+  <li>以白名單列出允許的來源，不要把請求的 Origin 原樣回填。</li>
+</ul>
+
+<h2>檢查清單</h2>
+<ul class="check">
+  <li><label><input type="checkbox"> CSP 已啟用（或已有 Report-Only 觀察計畫）</label></li>
+  <li><label><input type="checkbox"> nosniff、Referrer-Policy、Permissions-Policy 已設定</label></li>
+  <li><label><input type="checkbox"> 已禁止被嵌入，或僅允許指定來源</label></li>
+  <li><label><input type="checkbox"> Session Cookie 具 Secure、HttpOnly、SameSite</label></li>
+  <li><label><input type="checkbox"> 版本資訊標頭已移除</label></li>
+  <li><label><input type="checkbox"> CORS 為白名單，非萬用字元</label></li>
+</ul>
+
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../../02-software/platform/web-server-config.html">網頁伺服器設定</a></li><li><a href="../../../02-software/frontend/xss-csp.html">XSS 與內容安全政策（CSP）</a></li><li><a href="../../../02-software/frontend/csrf-cors.html">CSRF 與 CORS</a></li><li><a href="../../../02-software/auth/session-jwt.html">Session 與 JWT</a></li></ul>
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://owasp.org/www-project-secure-headers/">OWASP Secure Headers Project</a></li>
+    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html">OWASP HTTP Headers Cheat Sheet</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP">MDN — Content Security Policy</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">MDN — HTTP Cookies</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">MDN — CORS</a></li>
+    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">OWASP Session Management Cheat Sheet</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>法規與產業要求｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>法規與產業要求</h1>
+  <p class="sub">軟體公司最常遇到的四項：個資法、資通安全管理法、GDPR、PCI DSS。</p>
+</header>
+<main class="page">
+<h2>總覽</h2><table><tr><th>法規／要求</th><th>適用對象</th><th>與軟體公司的關係</th></tr><tr><td><a href="pdpa.html">個人資料保護法（台灣）</a></td><td>蒐集、處理、利用個資的公務與非公務機關</td><td>客戶多為蒐集者，我方通常是受託處理者；需合約與安全措施</td></tr><tr><td><a href="cybersecurity-act.html">資通安全管理法（台灣）</a></td><td>公務機關與特定非公務機關</td><td>承接政府或關鍵基礎設施專案時，契約會要求遵循</td></tr><tr><td><a href="gdpr.html">GDPR（歐盟）</a></td><td>處理歐盟居民個資者，含域外適用</td><td>客戶服務歐盟使用者時，需設計與契約配合</td></tr><tr><td><a href="pci-dss.html">PCI DSS</a></td><td>儲存、處理、傳輸持卡人資料的實體</td><td>電商與金流專案；以架構縮小範圍</td></tr></table><h2>通用做法</h2><ul><li>先釐清<b>誰是資料的控管者、誰是受託處理者</b>，並寫入合約。</li><li>資料盤點：蒐集哪些、存在哪、誰能存取、保存多久、如何刪除。</li><li>技術措施對應到 <a href="../../02-software/index.html">02-software</a> 與 <a href="../../01-hardware/index.html">01-hardware</a>。</li><li>事故通報時限要寫入應變流程與合約。</li></ul><h2>子頁面</h2><div id="children"></div><div class="note">本頁依公開資料整理，標準與法規會修訂；條文編號、版本與數字請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<h2 id="x-ref">延伸閱讀</h2><ul><li><a href="../../06-incident/notification.html">事故通報與溝通</a></li><li><a href="../../07-contracts/data-processing.html">個資委外合約</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://law.moj.gov.tw/">全國法規資料庫</a></li><li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR（EUR-Lex）</a></li><li><a href="https://www.pcisecuritystandards.org/">PCI SSC</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>速率限制｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>速率限制</h1>
+  <p class="sub">限制單一來源的請求量，防止暴力破解、爬取與資源耗盡。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>分層：邊界（CDN／WAF／API 閘道）擋大流量，應用層針對登入、簡訊、搜尋等敏感端點細部限制。</li><li>限制維度：IP、帳號、API 金鑰；登入端點同時限制帳號與來源。</li><li>超過限制回 <code>429 Too Many Requests</code> 並附 <code>Retry-After</code>。</li><li>在反向代理後面時，取得<b>真實</b>來源 IP（正確設定受信任的代理），否則會誤把所有人視為同一個來源。</li><li>多執行個體部署時，計數需使用共享儲存（如 Redis）。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>builder.Services.AddRateLimiter(o =&gt; {
+    o.RejectionStatusCode = 429;
+    o.AddFixedWindowLimiter("login", c =&gt; {
+        c.PermitLimit = 5; c.Window = TimeSpan.FromMinutes(1);
+    });
+});
+app.UseRateLimiter();
+// 端點：[EnableRateLimiting("login")] 或 .RequireRateLimiting("login")</code></pre></div><div class="tech" data-tech="node"><pre><code>import rateLimit from 'express-rate-limit';
+app.use('/login', rateLimit({ windowMs: 60_000, limit: 5 }));
+// 舊版本的選項名稱為 max；多執行個體請搭配共享 store</code></pre></div><div class="tech" data-tech="java"><p>Spring 沒有內建的通用速率限制：可使用 API 閘道（如 Spring Cloud Gateway 的 RequestRateLimiter 搭配 Redis）或函式庫（如 Bucket4j）。</p></div><div class="tech" data-tech="python"><pre><code># Django：django-ratelimit
+from django_ratelimit.decorators import ratelimit
+@ratelimit(key='ip', rate='5/m', block=True)
+def login(request): ...</code></pre></div><div class="tech" data-tech="php"><pre><code>// Laravel
+Route::post('/login', [AuthController::class, 'login'])-&gt;middleware('throttle:5,1');</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 登入、重設密碼、簡訊／Email 發送端點有限制</label></li><li><label><input type="checkbox"> 回應 429 並附 Retry-After</label></li><li><label><input type="checkbox"> 真實 IP 取得方式正確</label></li><li><label><input type="checkbox"> 分頁與批次查詢有上限</label></li><li><label><input type="checkbox"> 多實例使用共享計數</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">OWASP Denial of Service Cheat Sheet</a></li><li><a href="https://learn.microsoft.com/en-us/aspnet/core/performance/rate-limit">Microsoft — ASP.NET Core 速率限制</a></li><li><a href="https://github.com/express-rate-limit/express-rate-limit">express-rate-limit</a></li><li><a href="https://laravel.com/docs/rate-limiting">Laravel — Rate Limiting</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc6585">RFC 6585（429 狀態碼）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

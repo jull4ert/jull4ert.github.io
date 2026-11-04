@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>簽約前｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>簽約前</h1>
+  <p class="sub">在報價與簽約階段就把資安範圍、責任與風險講清楚，避免事後爭議。</p>
+</header>
+<main class="page">
+<h2>目標</h2><ul><li>判斷客戶資料的敏感度，決定資安投入等級。</li><li>盤點適用法規與客戶的合規要求。</li><li>明確劃分責任：哪些是我方、哪些是客戶、哪些是雲端或第三方。</li><li>報價中寫清楚資安項目的「含」與「不含」。</li></ul><h2>向客戶確認的問題</h2><table><tr><th>面向</th><th>要問的問題</th></tr><tr><td>資料</td><td>會處理哪些資料？是否含個資、金流、健康、未成年人資料？大約多少筆？</td></tr><tr><td>法規</td><td>客戶是否為受監管產業？是否有資安稽核、合規要求（個資法、資通安全管理法、PCI DSS、GDPR 等）？</td></tr><tr><td>使用者</td><td>對內員工、對外會員、還是公開訪客？是否有海外使用者？</td></tr><tr><td>環境</td><td>部署在客戶機房、雲端、還是我方代管？誰擁有管理權限？</td></tr><tr><td>整合</td><td>是否串接金流、第三方登入、客戶既有系統？</td></tr><tr><td>服務水準</td><td>可用性要求、備份保存期、事故通報時限？</td></tr><tr><td>既有狀況</td><td>是否為接手舊系統？過去有無資安事件？是否已有弱點報告？</td></tr></table><h2>簽約前資安工作項目</h2><table><tr><th>項目</th><th>說明</th></tr><tr><td>保密協議（NDA）</td><td>涵蓋雙方資料與測試期間取得的資訊</td></tr><tr><td>風險分級</td><td>依資料敏感度分級，決定後續必做項目，見 <a href="./risk-classification.html">客戶風險分級</a></td></tr><tr><td>責任分界</td><td>以表格列出各項資安工作由誰負責（我方／客戶／雲端商）</td></tr><tr><td>報價範圍</td><td>弱掃、滲透、修補、監控、日誌保存期等是否含在內；超出範圍如何計價</td></tr><tr><td>資安條款</td><td>漏洞修補期限、事故通報時限、稽核配合、責任上限（詳見 07-contracts 規劃區塊）</td></tr><tr><td>人員與分包</td><td>誰能存取客戶資料？是否有分包商？分包商是否受同等保密與資安要求</td></tr></table><h2>子主題</h2><div id="children"></div><h2>出口條件</h2><ul class="check"><li><label><input type="checkbox"> 已完成風險分級並與客戶確認</label></li><li><label><input type="checkbox"> NDA 已簽署</label></li><li><label><input type="checkbox"> 責任分界表已雙方確認</label></li><li><label><input type="checkbox"> 報價與合約明列資安項目與範圍</label></li><li><label><input type="checkbox"> 已知法規與合規要求已列入需求</label></li></ul>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>風險分級與合規盤點</td><td>—（以流程為主；分級結果決定後續各階段必做項目）</td><td><a href="https://law.moj.gov.tw/">個人資料保護法（全國法規資料庫）</a>、<a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR</a>、<a href="https://www.pcisecuritystandards.org/">PCI DSS</a></td></tr><tr><td>資安管理要求</td><td>—</td><td><a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a>、<a href="https://www.nist.gov/cyberframework">NIST Cybersecurity Framework</a></td></tr><tr><td>安全等級對應</td><td><a href="./risk-classification.html">客戶風險分級</a></td><td><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a>（L1／L2／L3 驗證等級概念）</td></tr></table>
+<h2 id="x-ref">延伸閱讀</h2><ul><li><a href="../../00-overview/responsibility.html">責任分界（我方／客戶／雲端商）</a></li><li><a href="../../07-contracts/index.html">合約與 SLA</a></li></ul>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/pre-sales.html">簽約前檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://law.moj.gov.tw/">個人資料保護法（全國法規資料庫）</a></li><li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj">GDPR 官方條文（EUR-Lex）</a></li><li><a href="https://www.pcisecuritystandards.org/">PCI Security Standards Council</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

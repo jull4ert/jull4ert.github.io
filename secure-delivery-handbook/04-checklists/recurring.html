@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>定期維運檢查表｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>定期維運檢查表</h1>
+  <p class="sub">依頻率分組的例行工作；每個週期開始前按「重設本頁」重新勾選。</p>
+</header>
+<main class="page">
+<div class="note">週期與工作內容的依據見 <a href="../03-lifecycle/operations/index.html">上線後營運</a>。</div><h2>每日</h2><ul class="check"><li><label><input type="checkbox"> 檢視告警與異常登入</label></li><li><label><input type="checkbox"> 檢視依賴漏洞自動掃描結果</label></li><li><label><input type="checkbox"> 確認備份作業成功</label></li><li><label><input type="checkbox"> 確認監控與日誌收集正常</label></li></ul><h2>每週</h2><ul class="check"><li><label><input type="checkbox"> 評估廠商安全公告與新漏洞（含 CISA KEV）</label></li><li><label><input type="checkbox"> 處理待修補項目並更新進度</label></li><li><label><input type="checkbox"> 檢視 WAF 與存取日誌的異常趨勢</label></li><li><label><input type="checkbox"> 確認憑證到期日（未來 30 天內）</label></li></ul><h2>每月</h2><ul class="check"><li><label><input type="checkbox"> 執行弱點掃描並處理結果</label></li><li><label><input type="checkbox"> 盤點帳號與權限（離職、停用、閒置帳號）</label></li><li><label><input type="checkbox"> 提交修補進度報告</label></li><li><label><input type="checkbox"> 檢視雲端公開資源與過度授權</label></li><li><label><input type="checkbox"> 確認各系統時間同步與日誌保存空間</label></li></ul><h2>每季</h2><ul class="check"><li><label><input type="checkbox"> 執行備份還原演練並記錄實際耗時（RTO）</label></li><li><label><input type="checkbox"> 複查 TLS 與安全標頭設定</label></li><li><label><input type="checkbox"> 檢討日誌與告警規則（誤報與漏報）</label></li><li><label><input type="checkbox"> 審閱防火牆與安全群組規則並清理過期項目</label></li><li><label><input type="checkbox"> 桌面推演事故應變流程</label></li></ul><h2>每年</h2><ul class="check"><li><label><input type="checkbox"> 滲透測試（依風險分級）並完成複測</label></li><li><label><input type="checkbox"> 事故應變演練</label></li><li><label><input type="checkbox"> 災難復原演練（依服務等級）</label></li><li><label><input type="checkbox"> 整體資安檢討與風險評鑑更新</label></li><li><label><input type="checkbox"> 金鑰與憑證輪替檢查</label></li><li><label><input type="checkbox"> 供應商與雲端商的驗證報告查證</label></li><li><label><input type="checkbox"> 人員資安教育訓練</label></li><li><label><input type="checkbox"> 合約與責任分界表更新</label></li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

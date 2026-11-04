@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>輸入驗證與檔案上傳｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>輸入驗證與檔案上傳</h1>
+  <p class="sub">在邊界處以結構化方式驗證每一筆輸入，並嚴格處理上傳檔案。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li><b>白名單</b>優於黑名單：定義允許的型別、長度、格式、範圍。</li><li>在信任邊界（API 入口）驗證，並在伺服器端執行；失敗就拒絕，不要試圖修正。</li><li>限制請求大小、欄位數量、巢狀深度，防止資源耗盡。</li><li>驗證不是跳脫：驗證後輸出仍需依情境編碼。</li></ul><h2>檔案上傳</h2><ul class="check"><li><label><input type="checkbox"> 限制副檔名與 MIME，並檢查檔案內容（魔術位元組）而非只看副檔名</label></li><li><label><input type="checkbox"> 限制大小與數量</label></li><li><label><input type="checkbox"> 以隨機檔名儲存，不使用使用者提供的檔名或路徑</label></li><li><label><input type="checkbox"> 存放於網站可執行目錄之外，或獨立的物件儲存</label></li><li><label><input type="checkbox"> 不允許上傳後被當成程式執行</label></li><li><label><input type="checkbox"> 對可預覽的檔案（圖片、PDF）視需求重新編碼或掃描惡意程式</label></li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>public record CreateUserRequest(
+    [property: Required, StringLength(50, MinimumLength = 2)] string Name,
+    [property: Required, EmailAddress] string Email);
+// 搭配 [ApiController]，驗證失敗自動回 400</code></pre></div><div class="tech" data-tech="node"><pre><code>import { z } from 'zod';
+const CreateUser = z.object({
+  name: z.string().min(2).max(50),
+  email: z.string().email(),
+});
+const data = CreateUser.parse(req.body); // 不合法會丟出例外</code></pre></div><div class="tech" data-tech="java"><pre><code>public record CreateUserRequest(
+    @NotBlank @Size(min = 2, max = 50) String name,
+    @NotBlank @Email String email) {}
+
+@PostMapping("/users")
+ResponseEntity&lt;?&gt; create(@Valid @RequestBody CreateUserRequest req) { ... }</code></pre></div><div class="tech" data-tech="python"><pre><code>from pydantic import BaseModel, EmailStr, Field
+class CreateUser(BaseModel):
+    name: str = Field(min_length=2, max_length=50)
+    email: EmailStr   # 需安裝 email-validator</code></pre></div><div class="tech" data-tech="php"><pre><code>$data = $request-&gt;validate([
+    'name'  =&gt; 'required|string|min:2|max:50',
+    'email' =&gt; 'required|email',
+]);</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 所有 API 入口皆有結構化驗證</label></li><li><label><input type="checkbox"> 已設定請求大小與速率上限</label></li><li><label><input type="checkbox"> 上傳功能符合上方檢查項目</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html">OWASP Input Validation Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/File_Upload_Cheat_Sheet.html">OWASP File Upload Cheat Sheet</a></li><li><a href="https://zod.dev/">Zod</a></li><li><a href="https://docs.pydantic.dev/">Pydantic</a></li><li><a href="https://laravel.com/docs/validation">Laravel — Validation</a></li><li><a href="https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation">Microsoft — ASP.NET Core 模型驗證</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

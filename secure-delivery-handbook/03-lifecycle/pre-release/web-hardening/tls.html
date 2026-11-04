@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TLS／HTTPS 設定｜資安交付手冊</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>TLS／HTTPS 設定</h1>
+  <p class="sub">傳輸加密的基準：協定版本、憑證、HSTS。</p>
+</header>
+<main class="page">
+
+<h2>基準</h2>
+<table>
+  <tr><th>項目</th><th>建議</th></tr>
+  <tr><td>協定版本</td><td>啟用 TLS 1.2 與 1.3；停用 SSLv3、TLS 1.0、1.1</td></tr>
+  <tr><td>加密套件</td><td>使用具前向保密（ECDHE）的現代套件；請以 Mozilla 設定產生器的 Modern／Intermediate 為準</td></tr>
+  <tr><td>憑證</td><td>由受信任 CA 簽發、網域名稱相符、未過期；設定到期提醒與自動續期</td></tr>
+  <tr><td>HTTP 轉址</td><td>所有 HTTP 請求 301 轉到 HTTPS</td></tr>
+  <tr><td>HSTS</td><td>啟用 <code>Strict-Transport-Security</code>，先小 max-age 驗證再拉長</td></tr>
+  <tr><td>內部連線</td><td>前後端、後端到資料庫也建議加密，不只對外</td></tr>
+</table>
+
+<h2>HSTS 範例</h2>
+<pre><code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code></pre>
+<div class="note"><code>preload</code> 與 <code>includeSubDomains</code> 一旦推行很難回頭：所有子網域都必須支援 HTTPS。上線初期建議先用短 max-age 觀察。</div>
+
+<h2>檢查清單</h2>
+<ul class="check">
+  <li><label><input type="checkbox"> 僅啟用 TLS 1.2／1.3</label></li>
+  <li><label><input type="checkbox"> SSL Labs 評等 A 以上（或客戶約定等級）</label></li>
+  <li><label><input type="checkbox"> 憑證有效期已加入監控，且有續期機制</label></li>
+  <li><label><input type="checkbox"> HTTP 一律轉 HTTPS，無混合內容（mixed content）</label></li>
+  <li><label><input type="checkbox"> 已啟用 HSTS</label></li>
+</ul>
+
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../../02-software/platform/web-server-config.html">網頁伺服器設定</a></li></ul>
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://wiki.mozilla.org/Security/Server_Side_TLS">Mozilla Server Side TLS 建議</a></li>
+    <li><a href="https://ssl-config.mozilla.org/">Mozilla SSL Configuration Generator</a></li>
+    <li><a href="https://www.ssllabs.com/ssltest/">Qualys SSL Labs</a></li>
+    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Transport_Layer_Security_Cheat_Sheet.html">OWASP TLS Cheat Sheet</a></li>
+    <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security">MDN — Strict-Transport-Security</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/nav.js"></script>
+</body>
+</html>

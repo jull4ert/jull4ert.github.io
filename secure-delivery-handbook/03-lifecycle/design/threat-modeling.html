@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>威脅建模｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>威脅建模</h1>
+  <p class="sub">系統性地回答「會被怎麼攻擊」，而不是憑感覺列清單。</p>
+</header>
+<main class="page">
+<h2>四個核心問題</h2><ol><li>我們在做什麼？（畫架構圖／資料流圖）</li><li>可能出什麼錯？（用 STRIDE 等方法找威脅）</li><li>我們要怎麼處理？（緩解、轉移、接受、避免）</li><li>做得夠好嗎？（驗證並回頭檢討）</li></ol><h2>STRIDE 分類</h2><table><tr><th>字母</th><th>威脅</th><th>破壞的性質</th><th>常見緩解</th></tr><tr><td>S</td><td>偽冒（Spoofing）</td><td>身分驗證</td><td>強認證、MFA、簽章</td></tr><tr><td>T</td><td>竄改（Tampering）</td><td>完整性</td><td>輸入驗證、簽章、存取控制</td></tr><tr><td>R</td><td>否認（Repudiation）</td><td>不可否認性</td><td>稽核日誌、時間戳</td></tr><tr><td>I</td><td>資訊洩漏（Information disclosure）</td><td>機密性</td><td>加密、授權檢查、最小回傳欄位</td></tr><tr><td>D</td><td>阻斷服務（Denial of service）</td><td>可用性</td><td>速率限制、資源配額、快取、DDoS 防護</td></tr><tr><td>E</td><td>權限提升（Elevation of privilege）</td><td>授權</td><td>最小權限、伺服器端授權檢查</td></tr></table><h2>範例：登入功能</h2><table><tr><th>威脅</th><th>類別</th><th>緩解</th></tr><tr><td>攻擊者以字典檔暴力猜密碼</td><td>S</td><td>登入失敗次數限制、延遲、MFA、異常告警</td></tr><tr><td>Session 被竊取後冒用</td><td>S／I</td><td>HttpOnly／Secure Cookie、綁定風險訊號、登出即失效</td></tr><tr><td>以他人 ID 呼叫 API 取得資料（IDOR）</td><td>I／E</td><td>每次請求在伺服器端檢查資源擁有權</td></tr><tr><td>錯誤訊息洩漏帳號是否存在</td><td>I</td><td>登入與忘記密碼回應訊息一致</td></tr><tr><td>大量請求登入端點拖垮服務</td><td>D</td><td>速率限制、驗證碼、WAF</td></tr></table><h2>實務建議</h2><ul><li>範圍小而頻繁：每個新功能或重大變更就做一次，不必一次完成全系統。</li><li>輸出為可追蹤項目：每個威脅對應一個緩解措施與負責人。</li><li>邀請開發、維運、資安一起，而非資安獨自完成。</li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.threatmodelingmanifesto.org/">Threat Modeling Manifesto</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Threat_Modeling_Cheat_Sheet.html">OWASP Threat Modeling Cheat Sheet</a></li><li><a href="https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats">Microsoft — STRIDE 威脅建模</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

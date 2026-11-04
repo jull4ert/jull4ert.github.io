@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Session 與 JWT｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Session 與 JWT</h1>
+  <p class="sub">登入後如何維持身分：伺服器端 Session 與無狀態 token 的取捨。</p>
+</header>
+<main class="page">
+<h2>比較</h2><table><tr><th></th><th>伺服器端 Session（Cookie）</th><th>JWT（Bearer token）</th></tr><tr><td>撤銷</td><td>容易：伺服器刪除即可</td><td>困難：需短效期＋刷新輪替或黑名單</td></tr><tr><td>擴充性</td><td>需共享儲存</td><td>無狀態，易水平擴充</td></tr><tr><td>主要風險</td><td>CSRF（用 SameSite＋token）</td><td>存放位置：放 localStorage 會被 XSS 竊取</td></tr><tr><td>適合</td><td>傳統網站、同網域</td><td>跨服務 API、行動 App</td></tr></table><h2>原則</h2><ul><li>網站優先使用 HttpOnly、Secure、SameSite 的 Session Cookie。</li><li>JWT 驗證務必檢查：<b>簽章演算法白名單</b>、<code>iss</code>、<code>aud</code>、<code>exp</code>；不接受 <code>alg: none</code>。</li><li>Access token 短效（分鐘級）；Refresh token 輪替並可撤銷，儲存於 HttpOnly Cookie 或安全儲存區。</li><li>登出與密碼變更時使 Session／refresh token 失效。</li><li>JWT 內不放敏感資料（內容只是 Base64，不是加密）。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+  .AddJwtBearer(o =&gt; {
+    o.Authority = "https://login.example.com/";   // 由 OIDC metadata 取得簽章金鑰
+    o.TokenValidationParameters = new TokenValidationParameters {
+      ValidateIssuer = true,
+      ValidateAudience = true, ValidAudience = "my-api",
+      ValidateLifetime = true,
+      ValidateIssuerSigningKey = true,
+      ValidAlgorithms = new[] { SecurityAlgorithms.RsaSha256 }
+    };
+  });</code></pre></div><div class="tech" data-tech="node"><pre><code>import jwt from 'jsonwebtoken';
+const payload = jwt.verify(token, publicKey, {
+  algorithms: ['RS256'],            // 明確限制演算法
+  issuer: 'https://login.example.com/',
+  audience: 'my-api',
+});</code></pre></div><div class="tech" data-tech="java"><p>Spring Security 作為 Resource Server：</p><pre><code># application.properties
+spring.security.oauth2.resourceserver.jwt.issuer-uri=https://login.example.com/
+
+// SecurityFilterChain
+http.oauth2ResourceServer(o -&gt; o.jwt(Customizer.withDefaults()));</code></pre></div><div class="tech" data-tech="python"><pre><code>import jwt  # PyJWT
+payload = jwt.decode(
+    token, public_key,
+    algorithms=["RS256"],
+    audience="my-api",
+    issuer="https://login.example.com/",
+)</code></pre></div><div class="tech" data-tech="php"><p>Laravel 常見做法是使用內建的 Session Cookie（網站）或 Sanctum／Passport（API token）。若自行驗證 JWT，使用成熟函式庫（如 <code>firebase/php-jwt</code>），並明確指定允許的演算法與驗證 <code>iss</code>／<code>aud</code>／<code>exp</code>。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> Session Cookie 具 Secure、HttpOnly、SameSite</label></li><li><label><input type="checkbox"> JWT 驗證含演算法白名單、iss、aud、exp</label></li><li><label><input type="checkbox"> access token 短效，refresh token 可撤銷並輪替</label></li><li><label><input type="checkbox"> 登出與改密碼會使憑證失效</label></li><li><label><input type="checkbox"> token 不存放於 localStorage（或已評估 XSS 風險）</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html">OWASP Session Management Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html">OWASP JSON Web Token Cheat Sheet</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc8725">RFC 8725 JWT 最佳實務</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc9700">RFC 9700 OAuth 2.0 安全最佳實務</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

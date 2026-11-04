@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>責任範圍、保固與賠償｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>責任範圍、保固與賠償</h1>
+  <p class="sub">出事時的責任與金額上限，以及「保固」與「維運」的差別。</p>
+</header>
+<main class="page">
+<h2>核心議題</h2><table><tr><th>議題</th><th>常見做法</th><th>注意</th></tr><tr><td>責任上限</td><td>以合約金額、已付費用或固定金額為上限</td><td>資料外洩與資安事件的成本可能遠高於合約金額，需與客戶說明並考慮保險</td></tr><tr><td>間接損害</td><td>排除利潤損失、商譽、間接與衍生損失</td><td>個資事件的罰款、通知成本、訴訟如何歸屬需明確</td></tr><tr><td>故意或重大過失</td><td>通常不得以合約排除</td><td>各法域不同，請法務確認</td></tr><tr><td>保固範圍</td><td>交付後一段期間內，修復我方造成的缺陷</td><td>不包含客戶變更、需求變更、新發現的外部依賴漏洞（另行約定）</td></tr><tr><td>保固 vs 維運</td><td>保固只修缺陷；持續修補與監控屬維運合約</td><td>合約寫清：保固期結束後，漏洞修補是否仍有人負責</td></tr><tr><td>客戶自行變更</td><td>不在保固與責任範圍</td><td>要求變更通知；紀錄現況（見交付文件）</td></tr><tr><td>第三方元件與服務</td><td>我方負責選型與整合，不保證其無漏洞或持續可用</td><td>高風險元件要提醒並留紀錄</td></tr><tr><td>保險</td><td>網路安全險、專業責任險</td><td>確認承保範圍與除外責任</td></tr></table><h2>維運合約應明寫</h2><ul><li>修補範圍：作業系統、框架、第三方套件各由誰負責與時限。</li><li>監控與告警：誰收到、多久回應。</li><li>不在範圍的項目：功能新增、客戶發起的大改版、第三方付費授權費用。</li><li>終止維運後：我方是否仍負責已知漏洞？通常是否定，須書面通知客戶風險。</li></ul><h2>留證習慣</h2><ul><li>重要建議（升級、備援、WAF、MFA）以書面提出，客戶拒絕也要留紀錄。</li><li>變更與核可保留紀錄。</li><li>交付時提供驗收報告與殘餘風險接受書（見 <a href="../04-checklists/report-template.html">報告範本</a>）。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 責任上限與例外已明確且客戶理解</label></li><li><label><input type="checkbox"> 保固期間與範圍已寫明，與維運的界線清楚</label></li><li><label><input type="checkbox"> 客戶自行變更與第三方服務的責任已排除</label></li><li><label><input type="checkbox"> 網路安全險或專業責任險的需求已評估</label></li><li><label><input type="checkbox"> 殘餘風險有書面接受</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://law.moj.gov.tw/">全國法規資料庫（民法與相關條文）</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/161/r1/final">NIST SP 800-161 Rev.1</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

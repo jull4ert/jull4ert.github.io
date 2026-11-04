@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>基本原則｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>基本原則</h1>
+  <p class="sub">整份手冊反覆套用的幾個觀念；遇到沒寫到的情境，也能靠這些原則判斷。</p>
+</header>
+<main class="page">
+<h2>CIA 三要素</h2><table><tr><th>要素</th><th>意思</th><th>破壞的例子</th><th>常見對策</th></tr><tr><td>機密性 Confidentiality</td><td>只有被授權者看得到</td><td>資料庫外洩、設定檔含金鑰被公開</td><td>加密、存取控制、機敏資訊管理</td></tr><tr><td>完整性 Integrity</td><td>資料與程式不被未授權竄改</td><td>網頁被置換、訂單金額被改</td><td>輸入驗證、簽章、稽核紀錄、權限最小化</td></tr><tr><td>可用性 Availability</td><td>需要時能正常使用</td><td>DDoS、勒索軟體、硬碟損毀</td><td>備援、備份、容量規劃、防護與監控</td></tr></table><p>設計時先問：這個資產最怕哪一項被破壞？不同系統的優先順序不同，例如形象官網偏重完整性與可用性，會員資料庫偏重機密性。</p><h2>設計原則</h2><table><tr><th>原則</th><th>說明</th><th>在本手冊的對應</th></tr><tr><td>縱深防禦</td><td>不依賴單一防線；一層被突破，下一層仍能擋或能偵測</td><td><a href="../01-hardware/network/index.html">網路</a>、<a href="../02-software/index.html">應用層</a></td></tr><tr><td>最小權限</td><td>人與程式只拿到完成工作所需的最小權限，且有期限</td><td><a href="../02-software/auth/authorization.html">授權</a>、<a href="../04-checklists/accounts.html">帳號檢查</a></td></tr><tr><td>預設安全</td><td>預設值就是安全的；放寬需要明確動作</td><td><a href="../01-hardware/server/os-hardening.html">加固</a></td></tr><tr><td>不信任輸入</td><td>所有來自外部的資料（含客戶端、第三方 API）都先驗證</td><td><a href="../02-software/backend/input-validation.html">輸入驗證</a></td></tr><tr><td>職責分離</td><td>重要操作需要兩人或兩個角色，避免單點濫用</td><td><a href="../03-lifecycle/go-live/change-management.html">變更管理</a></td></tr><tr><td>失敗時安全</td><td>出錯時預設拒絕而不是放行，且不洩漏內部細節</td><td><a href="../02-software/backend/index.html">後端</a></td></tr><tr><td>零信任</td><td>不因為在內網就信任；每次存取都驗證身分與裝置</td><td><a href="../01-hardware/network/vpn-remote.html">VPN 與遠端存取</a></td></tr><tr><td>可稽核</td><td>重要行為留下不可竄改、可追溯的紀錄</td><td><a href="../02-software/logging/index.html">日誌</a></td></tr></table><h2>風險思維</h2><ul><li>風險 ≈ 發生可能性 × 衝擊。資源有限，先處理「高可能性且高衝擊」的。</li><li>處理方式只有四種：降低、轉移（保險、委外）、接受（需書面核可）、避免（不做該功能）。</li><li>沒有零風險；目標是讓風險明確、被決策、被監控。見 <a href="../03-lifecycle/pre-sales/risk-classification.html">風險分級</a>。</li></ul><h2>自我檢視</h2><ul class="check"><li><label><input type="checkbox"> 能說出專案中三項最重要的資產，以及各自最怕 CIA 的哪一項</label></li><li><label><input type="checkbox"> 重要資料與功能至少有兩層以上的防護</label></li><li><label><input type="checkbox"> 殘餘風險有人以書面接受</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/207/final">NIST SP 800-207 Zero Trust Architecture</a></li><li><a href="https://owasp.org/www-project-secure-by-design-framework/">OWASP Secure by Design Framework</a></li><li><a href="https://www.nist.gov/cyberframework">NIST CSF 2.0</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

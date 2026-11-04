@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SAST 靜態分析｜資安交付手冊</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>原始碼靜態分析（SAST）</h1>
+  <p class="sub">在不執行程式的情況下，掃描原始碼中的不安全寫法。</p>
+</header>
+<main class="page">
+
+<h2>能抓與不能抓</h2>
+<table>
+  <tr><th>較能抓到</th><th>較難抓到</th></tr>
+  <tr><td>SQL／命令注入的危險寫法、寫死的密碼、弱雜湊演算法、不安全的反序列化</td><td>授權邏輯缺陷、商業邏輯錯誤、僅在執行期與設定組合下才出現的問題</td></tr>
+</table>
+
+<h2>工具範例</h2>
+<table>
+  <tr><th>工具</th><th>特點</th></tr>
+  <tr><td>Semgrep</td><td>多語言、規則易寫、可自訂團隊規則</td></tr>
+  <tr><td>CodeQL</td><td>GitHub 原生，以查詢語言做資料流分析</td></tr>
+  <tr><td>SonarQube</td><td>程式品質與安全合併呈現，可設品質閘門</td></tr>
+</table>
+<p class="sub">依你的技術棧選擇即可（例如 .NET 專案可用 CodeQL 或 SonarQube）。</p>
+
+<h2>落地建議</h2>
+<ul>
+  <li>先對<b>新增／修改的程式碼</b>設阻擋，舊債另外排程，避免一開始就被數百筆告警淹沒。</li>
+  <li>每筆誤報要標註原因，避免同一問題反覆審查。</li>
+  <li>規則集以 OWASP Top 10 對應為起點，再依專案補強。</li>
+</ul>
+
+<h2>檢查清單</h2>
+<ul class="check">
+  <li><label><input type="checkbox"> SAST 已納入 CI，PR 會自動執行</label></li>
+  <li><label><input type="checkbox"> 嚴重／高風險告警會阻擋合併</label></li>
+  <li><label><input type="checkbox"> 誤報有記錄與核可流程</label></li>
+  <li><label><input type="checkbox"> 掃描報告隨版本留存</label></li>
+</ul>
+
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../../02-software/backend/injection.html">注入防護</a></li><li><a href="../../../02-software/devops/ci-pipeline.html">CI 安全管線</a></li></ul>
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://owasp.org/www-community/Source_Code_Analysis_Tools">OWASP Source Code Analysis Tools</a></li>
+    <li><a href="https://semgrep.dev/">Semgrep</a></li>
+    <li><a href="https://codeql.github.com/">CodeQL</a></li>
+    <li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series（各類弱點的正確寫法）</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/nav.js"></script>
+</body>
+</html>

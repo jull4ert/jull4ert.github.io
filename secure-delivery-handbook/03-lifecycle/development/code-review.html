@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>程式碼審查（資安面向）｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>程式碼審查（資安面向）</h1>
+  <p class="sub">人工審查補足自動化工具抓不到的邏輯與授權問題。</p>
+</header>
+<main class="page">
+<h2>審查重點</h2><ul class="check"><li><label><input type="checkbox"> 新增或修改的 API／頁面是否有認證與授權檢查？</label></li><li><label><input type="checkbox"> 是否有使用者可控的輸入進入 SQL、命令、檔案路徑、URL？</label></li><li><label><input type="checkbox"> 是否有新增依賴？來源可信、版本固定？</label></li><li><label><input type="checkbox"> 是否有金鑰、帳密、個資出現在程式碼、日誌或錯誤訊息？</label></li><li><label><input type="checkbox"> 錯誤處理是否在失敗時安全（預設拒絕）？</label></li><li><label><input type="checkbox"> 新增的設定預設值是否安全？</label></li><li><label><input type="checkbox"> 是否影響認證、授權、金流、檔案上傳等高風險功能？</label></li></ul><h2>何時需要資安人員參與</h2><ul><li>認證、授權、Session 機制變更。</li><li>金流、個資處理、加密相關程式碼。</li><li>新增對外 API 或第三方整合。</li><li>架構調整，例如新增服務或資料流。</li></ul><h2>自動化與人工分工</h2><table><tr><th>自動化（CI）</th><th>人工審查</th></tr><tr><td>已知弱點模式、過期依賴、機敏資訊、格式與規範</td><td>授權邏輯、商業邏輯、設計是否合理、威脅模型是否被落實</td></tr></table>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/auth/authorization.html">授權與存取控制</a></li><li><a href="../../02-software/backend/injection.html">注入防護</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/www-project-code-review-guide/">OWASP Code Review Guide</a></li><li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>應變流程｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>應變流程</h1>
+  <p class="sub">偵測 → 分析 → 遏止 → 根除 → 復原。每一步都要記錄時間與動作。</p>
+</header>
+<main class="page">
+<h2>步驟</h2><table><tr><th>步驟</th><th>要做</th><th>別做</th></tr><tr><td>1 偵測與確認</td><td>核實告警；收集初步事實（時間、系統、現象）；開紀錄表；分級</td><td>在沒有紀錄下就動手改系統</td></tr><tr><td>2 保全證據</td><td>先快照主機／磁碟、匯出日誌、截圖；詳見 <a href="forensics.html">鑑識</a></td><td>直接重開機、重灌、刪除可疑檔案</td></tr><tr><td>3 遏止（短期）</td><td>隔離受影響主機（切斷網路而非關機）、停用被盜帳號、封鎖惡意 IP、暫時下線功能</td><td>只修表面症狀而攻擊者仍在內</td></tr><tr><td>4 根除</td><td>找出入口（漏洞、被盜帳密、錯誤設定）並修補；移除後門與惡意程式；輪替所有可能外洩的憑證與金鑰</td><td>只重設單一密碼而不查是怎麼進來的</td></tr><tr><td>5 復原</td><td>用乾淨的來源重建或還原；驗證完整性；逐步恢復並加強監控；確認攻擊者不再存取</td><td>用被入侵時間點之後的備份還原</td></tr><tr><td>6 通報與溝通</td><td>全程按 <a href="notification.html">通報規則</a> 更新客戶與相關單位</td><td>各人自己對外說不同版本</td></tr><tr><td>7 檢討</td><td>於事後 1–2 週內開 <a href="postmortem.html">檢討會</a></td><td>只修復就結案</td></tr></table><h2>遏止策略的取捨</h2><table><tr><th>做法</th><th>優點</th><th>風險</th></tr><tr><td>立刻下線</td><td>最快止血</td><td>服務中斷；攻擊者可能察覺並銷毀痕跡</td></tr><tr><td>隔離但保持運作</td><td>保留現場，利於觀察</td><td>損害可能持續擴大</td></tr><tr><td>先觀察再收網</td><td>弄清範圍與手法</td><td>需要有經驗並與客戶共同決策；不適合有個資持續外流時</td></tr></table><p>預設選擇是優先保護資料與使用者；任何會影響營運的決策，由事故指揮官與客戶共同決定並記錄。</p><h2>復原前的驗證</h2><ul class="check"><li><label><input type="checkbox"> 入口已被修補或封閉，並由另一人複核</label></li><li><label><input type="checkbox"> 所有可能外洩的密碼、金鑰、權杖、憑證已輪替</label></li><li><label><input type="checkbox"> 還原所用的備份已確認不含入侵後的變更</label></li><li><label><input type="checkbox"> 重建後主機已套用最新修補與加固基準</label></li><li><label><input type="checkbox"> 已加上針對本次手法的偵測或告警</label></li><li><label><input type="checkbox"> 已觀察至少數日確認無再次入侵跡象</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://www.sans.org/white-papers/33901/">SANS Incident Handler's Handbook</a></li><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

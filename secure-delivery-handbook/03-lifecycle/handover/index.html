@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>交付與終止｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>交付與終止</h1>
+  <p class="sub">專案結案、轉交或終止合約時，確保權限與資料乾淨移交，不留後門與殘留資料。</p>
+</header>
+<main class="page">
+<h2>權限回收</h2><ul class="check"><li><label><input type="checkbox"> 我方人員在正式環境、雲端主控台、資料庫、網域註冊商、DNS、CDN 的帳號已移除或轉交</label></li><li><label><input type="checkbox"> 共用帳號與服務帳號密碼已重設</label></li><li><label><input type="checkbox"> API 金鑰、Token、憑證、SSH 金鑰已輪替或撤銷</label></li><li><label><input type="checkbox"> 版控、CI/CD、監控與協作工具的權限已回收</label></li><li><label><input type="checkbox"> 第三方服務帳號（金流、簡訊、郵件、地圖等）的擁有權已轉移給客戶</label></li><li><label><input type="checkbox"> VPN 與遠端連線帳號已停用</label></li><li><label><input type="checkbox"> 分包商的存取權限已回收</label></li></ul><h2>資產與知識交付</h2><ul class="check"><li><label><input type="checkbox"> 原始碼、建置腳本、基礎設施設定已交付</label></li><li><label><input type="checkbox"> 架構圖、資料流圖、部署與還原文件已交付</label></li><li><label><input type="checkbox"> 最新的 SBOM、弱掃與滲透測試報告與殘餘風險清單已交付</label></li><li><label><input type="checkbox"> 金鑰與憑證清單及到期日已交付</label></li><li><label><input type="checkbox"> 維運手冊與事故聯絡窗口已交付</label></li></ul><h2>資料移交與銷毀</h2><ul><li>確認資料所有權與移交格式，使用加密傳輸，並與客戶核對筆數與完整性。</li><li>移交完成後依合約銷毀我方持有的客戶資料，包含備份、測試資料、日誌與本機副本。</li><li>採用符合標準的媒體清除方式，並取得書面銷毀證明。</li><li>合約若要求保留期限（如稽核或法規），保留期滿後再銷毀。</li></ul><h2>結案文件</h2><ul><li>交付確認書：列明交付項目與日期。</li><li>資料銷毀證明。</li><li>殘餘風險與已知問題清單，及責任歸屬。</li><li>保固期間與後續支援條件，若有的話。</li></ul><div class="note">終止後我方仍可能以舊帳號登入客戶系統，這是常見的事後爭議來源。建議以「帳號清單逐項打勾＋客戶確認」的方式留下證據。</div>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>密鑰與憑證移轉／輪替</td><td><a href="../../02-software/devops/secrets-management.html">密鑰管理</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a></td></tr><tr><td>資料庫帳號回收</td><td><a href="../../02-software/database/access-encryption.html">資料庫權限與加密</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html">OWASP Database Security Cheat Sheet</a></td></tr><tr><td>資料銷毀</td><td>—（依媒體類型選擇清除方式並取得證明）</td><td><a href="https://csrc.nist.gov/pubs/sp/800/88/r1/final">NIST SP 800-88 Rev.1</a></td></tr><tr><td>法遵保留與刪除</td><td>—</td><td><a href="https://law.moj.gov.tw/">個人資料保護法（全國法規資料庫）</a>、<a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></td></tr></table>
+<h2 id="hw-ref">相關硬體與基礎設施</h2><ul><li><a href="../../01-hardware/physical/equipment-disposal.html">設備與媒體報廢（Clear／Purge／Destroy）</a></li></ul>
+<h2 id="x-ref">延伸閱讀</h2><ul><li><a href="../../07-contracts/data-processing.html">個資委外與終止後資料處理</a></li><li><a href="../../07-contracts/audit-delivery.html">稽核配合與報告交付</a></li></ul>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/handover.html">交付與終止檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/88/r1/final">NIST SP 800-88 Rev.1 媒體清除指南</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

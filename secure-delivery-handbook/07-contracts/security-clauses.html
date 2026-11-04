@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資安條款｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>資安條款</h1>
+  <p class="sub">常見需要寫進合約的資安承諾與配合事項，附條款思路。</p>
+</header>
+<main class="page">
+<h2>條款清單</h2><table><tr><th>主題</th><th>我方承諾（示意）</th><th>客戶配合（示意）</th></tr><tr><td>安全開發</td><td>遵循約定的安全開發規範；依 <a href="../03-lifecycle/development/index.html">開發期</a> 做程式碼審查與掃描</td><td>及時確認需求與驗收</td></tr><tr><td>測試與驗證</td><td>上線前完成約定的弱掃、SAST、依賴檢查；滲透測試依範圍執行並提供報告</td><td>提供測試環境與授權；第三方資產另行授權</td></tr><tr><td>漏洞修補</td><td>高風險漏洞在約定時間內修補（見 SLA）；重大變更需客戶同意</td><td>核可維護時段</td></tr><tr><td>存取控制</td><td>最小權限、人員離職即時撤銷、重要操作留紀錄</td><td>管理客戶端帳號、避免共用</td></tr><tr><td>機密與資料保護</td><td>依分類加密傳輸與儲存；不使用真實個資於測試</td><td>決定資料分類與保存期限</td></tr><tr><td>日誌與監控</td><td>依約保存日誌並提供查詢</td><td>提供必要資訊以利調查</td></tr><tr><td>事故通報</td><td>知悉後於約定時間內通知客戶並提供事實資料（見 <a href="../06-incident/notification.html">通報</a>）</td><td>指定窗口、負責對外與法定通報</td></tr><tr><td>變更管理</td><td>變更經核可、可還原、有紀錄</td><td>指定核可人</td></tr><tr><td>分包與人員</td><td>分包需先通知或同意；人員簽保密</td><td>—</td></tr><tr><td>稽核</td><td>於合理通知下配合稽核並提供證據</td><td>稽核範圍與頻率合理、遵守保密</td></tr><tr><td>終止</td><td>終止後依約返還或銷毀資料並出具證明</td><td>及時指示、確認</td></tr></table><h2>條款撰寫要點</h2><ul><li>寫<b>可驗證的行為與期限</b>，而不是「採取適當安全措施」這種空泛字眼；例如「高風險漏洞於確認後 7 日內修補」。</li><li>引用標準時指定版本（如 OWASP ASVS 4.0.3 L2），避免標準更新造成爭議。</li><li>區分「盡力義務」與「結果保證」。多數情況我方不應承諾「絕不會被入侵」。</li><li>客戶的配合義務同樣要寫，未配合造成的後果由客戶承擔。</li><li>資安要求應在報價階段就被估入，避免事後以「應有之義」為由增加範圍。</li></ul><h2>示意條文</h2><pre><code>乙方（我方）應於正式上線前完成下列檢測並提供報告：
+ (1) 原始碼靜態分析；(2) 相依套件漏洞掃描；(3) 網站弱點掃描；
+ (4) 約定範圍之滲透測試。
+ 嚴重度為「高」以上之弱點，應於上線前修補或經甲方書面接受殘餘風險。
+
+乙方發現可能影響甲方資料之資安事件，應於知悉後 {X} 小時內通知甲方
+指定窗口，並持續提供調查資訊。對主管機關及當事人之通報由甲方負責。</code></pre><div class="note">上述僅為示意，數字與詞句需依專案風險與雙方協商調整，並由法務審閱。</div><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/161/r1/final">NIST SP 800-161 供應鏈風險管理</a></li><li><a href="https://law.moj.gov.tw/">全國法規資料庫</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

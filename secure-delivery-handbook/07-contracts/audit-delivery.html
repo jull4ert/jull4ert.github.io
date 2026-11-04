@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>稽核配合與報告交付｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>稽核配合與報告交付</h1>
+  <p class="sub">客戶或其主管機關會要求證據：要事先約定交付什麼，並在專案中持續累積。</p>
+</header>
+<main class="page">
+<h2>交付物清單</h2><table><tr><th>交付物</th><th>內容</th><th>來源／對應</th></tr><tr><td>資安驗收報告</td><td>範圍、檢查結果、弱點統計、殘餘風險、結論與簽核</td><td><a href="../04-checklists/report-template.html">報告範本</a></td></tr><tr><td>檢測報告</td><td>SAST、依賴／SBOM、弱掃、滲透測試報告</td><td><a href="../03-lifecycle/pre-release/index.html">上線前</a></td></tr><tr><td>修補與例外紀錄</td><td>已修補項目、經核可的殘餘風險與原因</td><td><a href="../03-lifecycle/pre-release/acceptance.html">驗收</a></td></tr><tr><td>架構與資料流圖</td><td>系統元件、網路、資料流與邊界</td><td><a href="../03-lifecycle/design/threat-modeling.html">威脅建模</a></td></tr><tr><td>組態與變更紀錄</td><td>部署組態、變更單、核可</td><td><a href="../03-lifecycle/go-live/change-management.html">變更管理</a></td></tr><tr><td>營運報告</td><td>月報：可用性、事件、修補、告警</td><td><a href="sla.html">SLA</a></td></tr><tr><td>事故報告</td><td>發生事故時的時間線、根因與改善</td><td><a href="../06-incident/postmortem.html">事後檢討</a></td></tr><tr><td>資料銷毀證明</td><td>終止後的刪除與媒體銷毀</td><td><a href="../03-lifecycle/handover/index.html">交付與終止</a></td></tr></table><h2>稽核配合</h2><ul><li>合約約定通知期間、頻率、範圍與保密，避免任意稽核影響其他客戶。</li><li>稽核由誰付費、結果如何處理（改善期限）也要約定。</li><li>準備好證據包：政策、紀錄、截圖、報告索引。對照 <a href="../05-standards/stage-matrix.html">階段 × 規範對照表</a> 找各階段應有的證據。</li><li>不直接交付含其他客戶資訊的資料；提供經遮蔽或專案範圍內的證據。</li></ul><h2>客戶問卷</h2><p>客戶常寄來資安問卷。建議維護一份經法務與資安負責人審閱過的標準答覆，並附上證據連結，每年更新，避免每次重新回答與前後不一致。</p><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 合約載明各階段交付的報告與時點</label></li><li><label><input type="checkbox"> 專案過程中持續保存檢測報告與修補紀錄</label></li><li><label><input type="checkbox"> 稽核通知、頻率、範圍與保密已約定</label></li><li><label><input type="checkbox"> 已有標準答覆的資安問卷與證據索引</label></li><li><label><input type="checkbox"> 交付物已確認不含其他客戶機敏資訊</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></li><li><a href="https://cloudsecurityalliance.org/artifacts/consensus-assessments-initiative-questionnaire-v4">CSA CAIQ 問卷</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/53/a/r5/final">NIST SP 800-53A 評估</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

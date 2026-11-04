@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>修補管理｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>修補管理</h1>
+  <p class="sub">漏洞公布後，攻擊者通常很快開始利用，修補速度很重要。</p>
+</header>
+<main class="page">
+<h2>流程</h2><ol><li><b>盤點</b>：維護資產與軟體版本清單（含前端套件、框架、OS、容器基礎映像）。</li><li><b>情資</b>：訂閱廠商公告與漏洞資料庫（例如 CISA KEV、套件生態系公告）。</li><li><b>評估</b>：依嚴重度、是否已被利用、系統暴露程度排序。</li><li><b>測試</b>：先在預備環境驗證修補不破壞功能。</li><li><b>部署</b>：依變更管理執行，保留回滾。</li><li><b>驗證</b>：重新掃描確認已修補，並記錄。</li></ol><h2>處理時限</h2><p>建議時限見 <a href="../pre-release/vulnerability-scan.html#severity">弱點掃描 › 嚴重度與處理時限</a>。已被實際利用的漏洞（列入 CISA KEV）應優先處理。</p><h2>不能立即修補時的緩解</h2><ul><li>以 WAF 規則、關閉功能或限制來源 IP 暫時阻擋利用路徑。</li><li>加強對該系統的監控。</li><li>記錄風險接受與預計修補日期，並取得客戶核可。</li></ul><h2>終止支援（EOL）</h2><ul><li>追蹤作業系統、執行環境、框架的支援終止日期，提前規劃升級。</li><li>已無安全更新的元件視為持續性風險，需列入風險清單。</li></ul>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/devops/ci-pipeline.html">CI 安全管線</a></li><li><a href="../../02-software/platform/container-hardening.html">容器與編排加固</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/40/r4/final">NIST SP 800-40 Rev.4 企業修補管理</a></li><li><a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV Catalog</a></li><li><a href="https://endoflife.date/">endoflife.date（各產品支援終止日期）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

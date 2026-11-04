@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>結構化日誌｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>結構化日誌</h1>
+  <p class="sub">用參數化訊息記錄事件，避免字串拼接造成日誌注入與格式混亂。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>使用<b>訊息範本＋參數</b>，不要用字串插值拼訊息。</li><li>每筆含：時間、等級、事件名稱、使用者／來源 IP、關聯 ID（Trace／Request ID）。</li><li>對可能含機敏資料的欄位做遮罩或排除。</li><li>使用者輸入若直接進入日誌，需處理換行字元（CRLF）以防偽造日誌行。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>// Serilog：具名屬性，保留結構
+Log.Warning("Login failed for {UserId} from {Ip}", userId, ip);
+// 避免：Log.Warning($"Login failed for {userId}")</code></pre></div><div class="tech" data-tech="node"><pre><code>// pino：物件在前、訊息在後
+logger.warn({ userId, ip, event: 'login_failed' }, 'login failed');</code></pre></div><div class="tech" data-tech="java"><pre><code>// SLF4J：參數化訊息（避免字串串接）
+log.warn("login failed user={} ip={}", userId, ip);</code></pre></div><div class="tech" data-tech="python"><pre><code>logger.warning("login failed user=%s ip=%s", user_id, ip)
+# 或使用 structlog 輸出 JSON</code></pre></div><div class="tech" data-tech="php"><pre><code>// Monolog
+$log-&gt;warning('login failed', ['user' =&gt; $userId, 'ip' =&gt; $ip]);</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 使用結構化日誌並含關聯 ID</label></li><li><label><input type="checkbox"> 日誌無密碼、token 與完整個資</label></li><li><label><input type="checkbox"> 認證與授權事件有記錄</label></li><li><label><input type="checkbox"> 使用者輸入進日誌時已處理換行</label></li><li><label><input type="checkbox"> 日誌送往集中儲存</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html">OWASP Logging Vocabulary Cheat Sheet</a></li><li><a href="https://serilog.net/">Serilog</a></li><li><a href="https://getpino.io/">pino</a></li><li><a href="https://www.slf4j.org/manual.html">SLF4J</a></li><li><a href="https://github.com/Seldaek/monolog">Monolog</a></li><li><a href="https://www.structlog.org/">structlog</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

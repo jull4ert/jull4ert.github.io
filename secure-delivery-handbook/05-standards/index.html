@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>標準與法規｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>標準與法規</h1>
+  <p class="sub">技術標準、管理體系與法規的整理：各自解決什麼問題、與軟體公司的關係、對應到手冊哪些頁面。</p>
+</header>
+<main class="page">
+<h2>四類規範</h2><table><tr><th>類型</th><th>代表</th><th>性質</th><th>頁面</th></tr><tr><td>應用安全標準</td><td>OWASP Top 10、ASVS、API Security</td><td>怎麼把網站與 API 做安全（技術面）</td><td><a href="owasp.html">OWASP</a></td></tr><tr><td>框架與指引</td><td>NIST CSF、SSDF、SP 800 系列</td><td>美國聯邦體系的框架，國際廣泛引用</td><td><a href="nist.html">NIST</a></td></tr><tr><td>管理體系（可驗證）</td><td>ISO/IEC 27001（CNS 27001）</td><td>組織層級的資安管理制度，可取得第三方驗證</td><td><a href="iso-27001.html">ISO／CNS 27001</a></td></tr><tr><td>組態與控制基準</td><td>CIS Controls、CIS Benchmarks</td><td>優先順序明確的控制項與逐項設定基準</td><td><a href="cis.html">CIS</a></td></tr><tr><td>法規與產業要求</td><td>個資法、資通安全管理法、GDPR、PCI DSS</td><td>具法律或合約強制力</td><td><a href="regulations/index.html">法規</a></td></tr></table><h2>依客戶類型選用（建議起點）</h2><table><tr><th>客戶類型</th><th>建議採用</th><th>說明</th></tr><tr><td>一般企業官網、會員網站</td><td>OWASP Top 10＋ASVS L1／L2、CIS 基準、個資法</td><td>以應用安全與基本合規為主</td></tr><tr><td>電商、金流</td><td>上列＋PCI DSS（範圍依金流串接方式而定）</td><td>盡量用第三方託管付款頁以縮小範圍</td></tr><tr><td>政府機關標案</td><td>資通安全管理法與資通系統防護基準、常被要求 ISO 27001</td><td>契約會載明資安要求，需對照委外條款</td></tr><tr><td>服務歐盟居民</td><td>上列＋GDPR</td><td>域外適用：不在歐盟也可能適用</td></tr><tr><td>金融、醫療等特定產業</td><td>上列＋該產業主管機關規範</td><td>本手冊尚未涵蓋產業專屬規範</td></tr></table><h2>快速入口</h2><ul><li><a href="stage-matrix.html">階段 × 規範對照表</a>：從生命週期的某個階段，查該引用哪些規範。</li><li>各頁底部皆附官方出處連結。</li></ul><h2>子頁面</h2><div id="children"></div><div class="note">本頁依公開資料整理，標準與法規會修訂；條文編號、版本與數字請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/">OWASP</a></li><li><a href="https://csrc.nist.gov/">NIST CSRC</a></li><li><a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></li><li><a href="https://www.cisecurity.org/">CIS</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>網站被竄改｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>網站被竄改</h1>
+  <p class="sub">首頁或內容被未授權改動、被植入惡意腳本或導向其他網站。</p>
+</header>
+<main class="page">
+<div class="note">通用流程見 <a href="../../06-incident/response-process.html">應變流程</a>。本頁是這個情境的補充重點。</div><h2>徵兆</h2><ul><li>首頁被置換、出現陌生內容或連結</li><li>搜尋結果顯示賭博、藥品等廣告（SEO 垃圾）</li><li>瀏覽器或防毒顯示網站有惡意程式</li><li>檔案修改時間異常、出現陌生檔案（webshell）</li></ul><h2>最先做</h2><ol><li>截圖並保存現狀，匯出 Web、FTP／SSH、管理後台日誌</li><li>快照主機或打包網站目錄與資料庫</li><li>必要時把網站切換成靜態維護頁（不是刪除現場）</li></ol><h2>遏止</h2><ul><li>隔離主機或限制對外存取，只留管理通道</li><li>停用所有管理與 FTP／SSH 帳號，包含應用層後台帳號</li><li>查看是否有新增的管理帳號、排程、後門檔案</li></ul><h2>根除</h2><ul><li>以日誌與檔案時間推斷入口（常見：過期外掛、檔案上傳、被盜的後台密碼、洩漏的金鑰）</li><li>從乾淨的程式碼來源重新部署，不要在受害主機上「清理後繼續用」</li><li>輪替所有密碼、API 金鑰、資料庫帳密、憑證</li></ul><h2>復原</h2><ul><li>以版本控制的乾淨版本與已驗證的備份還原</li><li>套用修補並加固，加入檔案完整性監控與 WAF 規則</li><li>若被搜尋引擎標為危險，向其申請重新審核</li></ul><h2>通報判斷</h2><ul><li>若資料庫可能被讀取，依 <a href="data-breach.html">資料外洩</a> 判斷</li><li>網站被用來攻擊他人時，要通知客戶並評估法律風險</li></ul><h2>常見錯誤</h2><ul><li>只刪除可疑檔案但沒找入口，幾天後又被改</li><li>直接覆蓋現場導致無法判斷範圍</li><li>只換網站密碼而不換資料庫與主機層密碼</li></ul><h2>相關頁面</h2><ul><li><a href="../../06-incident/forensics.html">鑑識與證據保全</a></li><li><a href="../../06-incident/notification.html">通報與溝通</a></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

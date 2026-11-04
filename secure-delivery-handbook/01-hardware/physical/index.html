@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>實體與機房安全｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>實體與機房安全</h1>
+  <p class="sub">沒人進得了機房，才談得上其他防護；託管或雲端時，改為查證廠商。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li><b>分區管制</b>：公共區、辦公區、機房、機櫃逐層加強。</li><li><b>最小進入</b>：只給需要的人、需要的時段；訪客全程陪同並登記。</li><li><b>留紀錄</b>：進出與監視影像保存，定期檢視。</li><li><b>環境可靠</b>：電力、空調、消防與水侵偵測有備援並定期測試。</li></ul><h2>控制項</h2><table><tr><th>面向</th><th>措施</th></tr><tr><td>門禁</td><td>多因素（卡＋密碼或生物辨識）、防尾隨（雙門）、離職與異動即時撤權、定期審閱授權名單</td></tr><tr><td>監視</td><td>出入口與機櫃走道覆蓋，影像保存期依合約與法規，防止遮蔽與竄改</td></tr><tr><td>機櫃與纜線</td><td>機櫃上鎖、鑰匙管理；未使用的網路孔位停用；標示清楚並有配線圖</td></tr><tr><td>電力</td><td>UPS 與發電機，定期負載測試；關鍵設備雙電源接不同迴路</td></tr><tr><td>空調與環控</td><td>溫濕度監測與告警、漏水偵測；高架地板下與天花板上也要納入</td></tr><tr><td>消防</td><td>偵煙與氣體滅火系統（避免水災損害設備），定期檢修與演練</td></tr><tr><td>訪客與廠商</td><td>登記、配戴識別證、陪同；維修人員作業需授權與紀錄</td></tr><tr><td>攜出入</td><td>設備與媒體攜出需核准與登記；禁止未經核准攜入儲存裝置</td></tr></table><h2>託管機房與雲端：查證代替自建</h2><ul><li>要求廠商提供 ISO/IEC 27001 證書、SOC 2 報告或同等證明，並確認<b>範圍涵蓋你使用的機房與服務</b>。</li><li>確認機房等級與可用性承諾（如 Uptime Institute Tier 分級、TIA-942），並寫入 SLA。</li><li>了解資料所在地（國家／區域），以符合法規與客戶要求。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 機房有分區與多因素門禁，並定期審閱名單</label></li><li><label><input type="checkbox"> 進出紀錄與監視影像依期限保存</label></li><li><label><input type="checkbox"> UPS、發電機、空調、消防已定期測試</label></li><li><label><input type="checkbox"> 訪客有登記與陪同</label></li><li><label><input type="checkbox"> 託管／雲端廠商的驗證與 SLA 已查證</label></li><li><label><input type="checkbox"> 設備報廢遵循報廢流程</label></li></ul><h2>子頁面</h2><div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53 PE（實體與環境保護）</a></li><li><a href="https://uptimeinstitute.com/tiers">Uptime Institute Tier</a></li><li><a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

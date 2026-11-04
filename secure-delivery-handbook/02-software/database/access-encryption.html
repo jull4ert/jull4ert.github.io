@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>權限與加密｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>權限與加密</h1>
+  <p class="sub">以各資料庫的指令落實最小權限與加密連線。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>區分帳號：應用程式帳號（DML）、遷移帳號（DDL，僅於部署時使用）、唯讀報表帳號。</li><li>只授權必要的物件與操作；避免授予整個資料庫的高權限角色。</li><li>連線強制 TLS 並驗證伺服器憑證，連線字串存放於密鑰管理（見 DevOps）。</li><li>需要列級或租戶隔離時使用資料庫原生功能（如 Row-Level Security）。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="mssql"><pre><code>CREATE LOGIN app_login WITH PASSWORD = '&lt;由密鑰管理產生&gt;';
+CREATE USER app_user FOR LOGIN app_login;
+GRANT SELECT, INSERT, UPDATE ON dbo.Orders TO app_user;   -- 不授 db_owner
+
+-- 連線字串：Encrypt=True;TrustServerCertificate=False
+-- 靜態加密：TDE；欄位層：Always Encrypted；列級：Row-Level Security</code></pre></div><div class="tech" data-tech="pgsql"><pre><code>CREATE ROLE app LOGIN PASSWORD '&lt;由密鑰管理產生&gt;';
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+GRANT USAGE ON SCHEMA public TO app;
+GRANT SELECT, INSERT, UPDATE ON orders TO app;
+
+-- 連線：sslmode=verify-full
+-- 列級隔離：ALTER TABLE orders ENABLE ROW LEVEL SECURITY; + CREATE POLICY ...</code></pre></div><div class="tech" data-tech="mysql"><pre><code>CREATE USER 'app'@'10.0.%' IDENTIFIED BY '&lt;由密鑰管理產生&gt;';
+GRANT SELECT, INSERT, UPDATE ON shop.orders TO 'app'@'10.0.%';
+
+-- 連線強制加密：用戶端 ssl-mode=VERIFY_IDENTITY
+-- 帳號層：CREATE USER ... REQUIRE SSL</code></pre></div><h2>敏感資料處理</h2><table><tr><th>手段</th><th>適用情境</th></tr><tr><td>欄位層加密</td><td>身分證字號、卡號等，即使 DBA 也不應看到明文</td></tr><tr><td>遮罩／去識別化</td><td>測試與報表環境不使用真實個資</td></tr><tr><td>雜湊</td><td>只需比對、不需還原的值（如密碼，見密碼儲存）</td></tr><tr><td>最少蒐集與保存</td><td>不需要的資料不蒐集，到期即刪除</td></tr></table><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 應用程式帳號無 DDL 與管理權限</label></li><li><label><input type="checkbox"> 資料庫無公網暴露，來源限制在應用程式主機</label></li><li><label><input type="checkbox"> 連線啟用 TLS 並驗證憑證</label></li><li><label><input type="checkbox"> 靜態加密已啟用，備份已加密</label></li><li><label><input type="checkbox"> 預設帳號已停用或改密，無空密碼</label></li><li><label><input type="checkbox"> 測試環境無真實個資</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://learn.microsoft.com/en-us/sql/relational-databases/security/security-center-for-sql-server-database-engine-and-azure-sql-database">Microsoft — SQL Server 安全中心</a></li><li><a href="https://www.postgresql.org/docs/current/ddl-priv.html">PostgreSQL — 權限</a></li><li><a href="https://www.postgresql.org/docs/current/ddl-rowsecurity.html">PostgreSQL — Row Security Policies</a></li><li><a href="https://dev.mysql.com/doc/refman/8.4/en/access-control.html">MySQL — 存取控制與帳號管理</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html">OWASP Database Security Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

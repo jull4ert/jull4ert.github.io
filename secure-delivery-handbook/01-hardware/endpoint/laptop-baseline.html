@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>開發筆電安全基準｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>開發筆電安全基準</h1>
+  <p class="sub">給開發者與維運人員筆電的最低標準與檢查方式。</p>
+</header>
+<main class="page">
+<h2>基準項目</h2><table><tr><th>項目</th><th>要求</th></tr><tr><td>磁碟加密</td><td>BitLocker／FileVault／LUKS，復原金鑰集中保管</td></tr><tr><td>登入</td><td>強密碼或生物辨識；螢幕閒置自動鎖定</td></tr><tr><td>更新</td><td>作業系統與瀏覽器自動更新；重大漏洞限期修補</td></tr><tr><td>端點防護</td><td>防毒／EDR 已啟用並回報中央</td></tr><tr><td>權限</td><td>日常使用標準帳號；需要時才提升</td></tr><tr><td>防火牆</td><td>啟用主機防火牆</td></tr><tr><td>開發環境</td><td>SSH 與 Git 金鑰以密碼保護或硬體金鑰；密鑰不明文放在專案目錄（見<a href="../../02-software/devops/secrets-management.html">密鑰管理</a>）</td></tr><tr><td>USB／外接媒體</td><td>依政策限制或掃描</td></tr><tr><td>遺失處理</td><td>通報流程、遠端鎖定與抹除、撤銷憑證</td></tr></table><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法；指令與選項會隨版本、廠商調整，實作前請對照官方文件，並先在測試環境驗證。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="epwin"><pre><code>Get-BitLockerVolume
+Get-MpComputerStatus | Select-Object AMServiceEnabled, RealTimeProtectionEnabled
+Get-NetFirewallProfile | Select-Object Name, Enabled</code></pre></div><div class="tech" data-tech="epmac"><pre><code>fdesetup status                                          # FileVault
+spctl --status                                           # Gatekeeper
+/usr/libexec/ApplicationFirewall/socketfilterfw --getglobalstate</code></pre></div><div class="tech" data-tech="eplinux"><pre><code>lsblk -f                                  # 確認根分割區為 crypto_LUKS
+sudo ufw status verbose
+systemctl status unattended-upgrades</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 全碟加密已啟用且復原金鑰已保管</label></li><li><label><input type="checkbox"> 自動鎖定與強制更新已設定</label></li><li><label><input type="checkbox"> EDR／防毒已啟用</label></li><li><label><input type="checkbox"> 日常帳號非管理員</label></li><li><label><input type="checkbox"> 金鑰與憑證不明文放在專案</label></li><li><label><input type="checkbox"> 遺失或離職流程已演練</label></li></ul><div class="note">指令與設定為最小示意，會隨版本與廠商而異，請在測試環境驗證並對照官方文件後再用於正式環境。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks（Windows／macOS／Linux）</a></li><li><a href="https://support.apple.com/guide/security/welcome/web">Apple 平台安全</a></li><li><a href="https://learn.microsoft.com/en-us/mem/intune/protect/device-compliance-get-started">Microsoft — Intune 合規性</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

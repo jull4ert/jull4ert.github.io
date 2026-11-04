@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CIS Controls 與 Benchmarks｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>CIS Controls 與 Benchmarks</h1>
+  <p class="sub">有優先順序的控制項，與逐項可檢查的系統設定基準。</p>
+</header>
+<main class="page">
+<h2>兩個產品</h2><table><tr><th></th><th>CIS Controls</th><th>CIS Benchmarks</th></tr><tr><td>性質</td><td>18 項控制的優先順序清單</td><td>針對特定產品（OS、伺服器、雲端、資料庫、容器）的詳細設定指引</td></tr><tr><td>使用方式</td><td>規劃資安路線圖、評估成熟度，分 IG1／IG2／IG3 三個實作群組</td><td>逐項核對並產出差異；多數項目可用工具自動檢查</td></tr><tr><td>本手冊對應</td><td><a href="../03-lifecycle/operations/index.html">上線後營運</a></td><td><a href="../02-software/platform/index.html">平台加固</a>、<a href="../01-hardware/server/os-hardening.html">作業系統加固</a></td></tr></table><div class="note">IG1 為「基本資安衛生」，適合資源有限的中小企業先達成；之後再往 IG2、IG3 提升。</div><h2>CIS Controls v8 的 18 項</h2><table><tr><th>#</th><th>控制</th><th>本手冊對應</th></tr><tr><td>1</td><td>企業資產盤點</td><td><a href="../03-lifecycle/operations/patch-management.html">修補管理（資產清單）</a></td></tr><tr><td>2</td><td>軟體資產盤點</td><td><a href="../03-lifecycle/pre-release/code-scan/dependency.html">依賴與 SBOM</a></td></tr><tr><td>3</td><td>資料保護</td><td><a href="../02-software/database/access-encryption.html">資料庫權限與加密</a></td></tr><tr><td>4</td><td>企業資產與軟體的安全組態</td><td><a href="../01-hardware/server/os-hardening.html">作業系統加固</a></td></tr><tr><td>5</td><td>帳號管理</td><td><a href="../03-lifecycle/handover/index.html">權限回收</a></td></tr><tr><td>6</td><td>存取控制管理</td><td><a href="../02-software/auth/authorization.html">授權與存取控制</a></td></tr><tr><td>7</td><td>持續性弱點管理</td><td><a href="../03-lifecycle/operations/patch-management.html">修補管理</a></td></tr><tr><td>8</td><td>稽核日誌管理</td><td><a href="../02-software/logging/index.html">日誌與監控</a></td></tr><tr><td>9</td><td>電子郵件與網頁瀏覽器防護</td><td>—（企業內部資訊環境，視範圍）</td></tr><tr><td>10</td><td>惡意程式防禦</td><td><a href="../01-hardware/endpoint/laptop-baseline.html">終端基準</a></td></tr><tr><td>11</td><td>資料復原</td><td><a href="../01-hardware/backup-dr/index.html">備份與災難復原</a></td></tr><tr><td>12</td><td>網路基礎設施管理</td><td><a href="../01-hardware/network/index.html">網路</a></td></tr><tr><td>13</td><td>網路監控與防禦</td><td><a href="../01-hardware/network/waf-ddos.html">WAF 與 DDoS</a></td></tr><tr><td>14</td><td>資安意識與技能訓練</td><td><a href="../03-lifecycle/development/index.html">開發期（教育訓練）</a></td></tr><tr><td>15</td><td>服務供應商管理</td><td><a href="../01-hardware/cloud/shared-responsibility.html">雲端責任分界</a></td></tr><tr><td>16</td><td>應用程式軟體安全</td><td><a href="../02-software/index.html">軟體與應用程式</a></td></tr><tr><td>17</td><td>事件應變管理</td><td>06-incident（規劃中）</td></tr><tr><td>18</td><td>滲透測試</td><td><a href="../03-lifecycle/pre-release/pentest.html">滲透測試</a></td></tr></table><div class="note">本頁依公開資料整理，標準與法規會修訂；條文編號、版本與數字請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisecurity.org/controls">CIS Controls</a></li><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

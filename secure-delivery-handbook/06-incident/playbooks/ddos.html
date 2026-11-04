@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DDoS｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>DDoS</h1>
+  <p class="sub">大量流量或請求耗盡頻寬、連線或運算資源，使服務變慢或無法使用。</p>
+</header>
+<main class="page">
+<div class="note">通用流程見 <a href="../../06-incident/response-process.html">應變流程</a>。本頁是這個情境的補充重點。</div><h2>徵兆</h2><ul><li>流量或請求數異常飆升、CPU／連線數滿載</li><li>特定頁面（登入、搜尋、報表）被集中打</li><li>來源 IP 分散或有固定特徵（User-Agent、路徑）</li><li>勒索型 DDoS：收到威脅要打你，除非付款</li></ul><h2>最先做</h2><ol><li>確認是攻擊還是正常流量暴增（活動、爬蟲）</li><li>聯絡 CDN／雲端／主機商，啟用其防護或升級方案</li><li>記錄開始時間、流量曲線、攻擊特徵</li></ol><h2>遏止</h2><ul><li>啟用 CDN 與 WAF 的挑戰與速率限制，封鎖明顯惡意特徵</li><li>針對被打的昂貴端點設限流或暫時關閉</li><li>必要時調整 DNS 指向防護服務（需預先設定）</li><li>擴容只能延緩，要同時處理來源</li></ul><h2>根除</h2><ul><li>攻擊結束後檢視弱點：哪個端點太昂貴、原站 IP 是否被暴露</li><li>限制原站只接受 CDN／防護服務的來源</li></ul><h2>復原</h2><ul><li>流量恢復後逐步放寬規則並觀察</li><li>更新防護策略與預先備好的應變設定</li></ul><h2>通報判斷</h2><ul><li>勒索型 DDoS：不付款，通知客戶並保存勒索訊息</li><li>大規模或長時間攻擊時，通知客戶與可能受影響的第三方</li></ul><h2>常見錯誤</h2><ul><li>到事故當下才找防護廠商開通</li><li>把原站 IP 暴露在 DNS 紀錄或郵件標頭</li></ul><h2>相關頁面</h2><ul><li><a href="../../06-incident/forensics.html">鑑識與證據保全</a></li><li><a href="../../06-incident/notification.html">通報與溝通</a></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/resources-tools/resources/federal-government-cybersecurity-incident-and-vulnerability-response-playbooks">CISA 事故應變手冊</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://www.cisa.gov/resources-tools/resources/understanding-and-responding-distributed-denial-service-attacks">CISA DDoS 指引</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

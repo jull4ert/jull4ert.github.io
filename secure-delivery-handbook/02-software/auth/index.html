@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>驗證與授權｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>驗證與授權</h1>
+  <p class="sub">「你是誰」（驗證）與「你能做什麼」（授權）是兩件事，缺陷常見於授權。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>使用成熟的身分驗證框架或身分提供者（OIDC／OAuth 2.0），不要自行發明。</li><li>預設拒絕；每個請求在<b>伺服器端</b>檢查「這個人對這個資源」的權限。</li><li>管理者與敏感操作啟用 MFA。</li><li>登入、重設密碼、帳號是否存在的回應訊息一致，並限制嘗試次數。</li></ul><h2>子主題</h2><div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">OWASP Authentication Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

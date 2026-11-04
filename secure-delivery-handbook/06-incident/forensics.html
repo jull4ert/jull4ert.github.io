@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>鑑識與證據保全｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>鑑識與證據保全</h1>
+  <p class="sub">先保存，再處理。證據一旦被覆蓋，就無法知道攻擊者做了什麼，也無法在爭議時舉證。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li><b>先保全再修復</b>：能快照就先快照，之後在副本上分析。</li><li><b>依揮發性順序</b>收集：記憶體與連線狀態 → 程序 → 暫存檔 → 磁碟 → 遠端日誌 → 備份。</li><li><b>不要重開機</b>：重開會遺失記憶體內的證據。隔離網路即可。</li><li><b>記錄一切</b>：誰、何時、用什麼方法取得、存放在哪、雜湊值。</li><li><b>保管鏈</b>：證據轉手要簽收，避免日後被質疑遭竄改。</li></ul><h2>收集清單</h2><table><tr><th>來源</th><th>內容</th><th>備註</th></tr><tr><td>記憶體與運行狀態</td><td>程序清單、網路連線、已登入使用者、排程</td><td>需要時才做記憶體映像；先評估對現場的影響</td></tr><tr><td>磁碟或虛擬機快照</td><td>整體映像與雜湊</td><td>雲端用快照功能，保留於獨立帳號</td></tr><tr><td>應用程式日誌</td><td>Web／應用／資料庫日誌</td><td>匯出原始檔，不要只留截圖</td></tr><tr><td>系統與認證日誌</td><td>登入、sudo、系統事件</td><td>含時間同步狀態，方便對時</td></tr><tr><td>網路與邊界日誌</td><td>防火牆、WAF、負載平衡、DNS、CDN</td><td>常是判斷範圍的最佳來源</td></tr><tr><td>雲端稽核日誌</td><td>管理操作、存取金鑰使用</td><td>確認保存期間夠長</td></tr><tr><td>版本控制與 CI</td><td>推送紀錄、流水線設定與執行紀錄</td><td>供應鏈入侵時尤為重要</td></tr></table><h2>指令示例（Linux，唯讀與取證用途）</h2><pre><code># 先記錄時間與主機狀態（輸出存到外接或遠端，不要寫入受害磁碟）
+date -u; uname -a; uptime
+ps auxf; ss -tulpen; last -a; who
+# 對收集的檔案計算雜湊並記錄
+sha256sum auth.log access.log &gt; evidence.sha256
+# 以唯讀方式複製日誌
+cp -a --preserve=all /var/log /mnt/evidence/</code></pre><p>雲端環境請使用平台的磁碟快照與日誌匯出，不要在被入侵的主機上安裝工具。</p><h2>什麼時候找專業鑑識</h2><ul><li>涉及大量個資或金流資料、可能產生法律糾紛或訴訟。</li><li>客戶或主管機關要求第三方出具報告。</li><li>我方沒有能力判斷範圍或根因。</li><li>懷疑內部人員涉案。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 已保存快照或映像與雜湊，並放在獨立且受控的位置</label></li><li><label><input type="checkbox"> 日誌已匯出原始檔且已確認保存期間足夠</label></li><li><label><input type="checkbox"> 每份證據都有取得時間、人員、方法紀錄</label></li><li><label><input type="checkbox"> 被入侵的主機未被直接重灌或覆蓋就先完成保全</label></li><li><label><input type="checkbox"> 需要時已聯絡專業鑑識廠商</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.rfc-editor.org/rfc/rfc3227">RFC 3227 證據收集與保存指引</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/86/final">NIST SP 800-86 鑑識技術整合</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/92/final">NIST SP 800-92 日誌管理</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

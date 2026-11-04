@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>開發期檢查清單｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>開發期檢查清單</h1>
+  <p class="sub">彙整「開發期」階段的所有檢查項目（含子頁面），可勾選與列印。</p>
+</header>
+<main class="page">
+<div class="note">本頁由腳本從各來源頁面<b>自動彙整</b>，請到來源頁修改內容（點小節旁的「來源」）。勾選狀態依「專案」記錄在你的瀏覽器中，不會上傳。</div><h2>開發期<a class="cl-src" href="../../03-lifecycle/development/index.html">來源 ↗</a></h2><h3 class="cl-sec">出口條件</h3><ul class="check"><li><label><input type="checkbox"> 所有 PR 皆經審查並通過 CI 掃描</label></li><li><label><input type="checkbox"> 無未處理的嚴重／高風險掃描結果</label></li><li><label><input type="checkbox"> 安全需求對應的測試案例已通過</label></li><li><label><input type="checkbox"> 測試環境未使用真實個資（或已去識別化）</label></li></ul><h2>安全編碼<a class="cl-src" href="../../03-lifecycle/development/secure-coding.html">來源 ↗</a></h2><ul class="check"><li><label><input type="checkbox"> 所有資料庫存取皆為參數化</label></li><li><label><input type="checkbox"> 所有 API 皆有伺服器端授權檢查</label></li><li><label><input type="checkbox"> 輸出已依情境編碼</label></li><li><label><input type="checkbox"> 密碼以建議演算法雜湊</label></li><li><label><input type="checkbox"> 錯誤訊息不洩漏內部資訊</label></li><li><label><input type="checkbox"> 金鑰與密碼未寫入程式碼</label></li></ul><h2>程式碼審查（資安面向）<a class="cl-src" href="../../03-lifecycle/development/code-review.html">來源 ↗</a></h2><h3 class="cl-sec">審查重點</h3><ul class="check"><li><label><input type="checkbox"> 新增或修改的 API／頁面是否有認證與授權檢查？</label></li><li><label><input type="checkbox"> 是否有使用者可控的輸入進入 SQL、命令、檔案路徑、URL？</label></li><li><label><input type="checkbox"> 是否有新增依賴？來源可信、版本固定？</label></li><li><label><input type="checkbox"> 是否有金鑰、帳密、個資出現在程式碼、日誌或錯誤訊息？</label></li><li><label><input type="checkbox"> 錯誤處理是否在失敗時安全（預設拒絕）？</label></li><li><label><input type="checkbox"> 新增的設定預設值是否安全？</label></li><li><label><input type="checkbox"> 是否影響認證、授權、金流、檔案上傳等高風險功能？</label></li></ul>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

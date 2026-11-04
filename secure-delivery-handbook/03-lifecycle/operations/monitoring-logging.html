@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>監控與日誌｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>監控與日誌</h1>
+  <p class="sub">記錄做對了，事故才查得出來；告警做對了，才能及早發現。</p>
+</header>
+<main class="page">
+<h2>該記錄什麼</h2><table><tr><th>類別</th><th>內容</th></tr><tr><td>認證</td><td>登入成功／失敗、密碼重設、MFA 事件、帳號鎖定</td></tr><tr><td>授權</td><td>權限變更、存取被拒絕、嘗試越權</td></tr><tr><td>管理操作</td><td>管理者的設定變更、資料匯出、批次刪除</td></tr><tr><td>應用程式</td><td>輸入驗證失敗、例外錯誤、異常的請求量</td></tr><tr><td>系統</td><td>服務啟停、組態變更、憑證到期</td></tr></table><h2>日誌內容原則</h2><ul><li>必要欄位：時間（時區一致且同步）、使用者或來源 IP、動作、對象、結果。</li><li><b>不記錄</b>：密碼、完整 token、完整卡號與身分證字號等機敏資料。</li><li>防止日誌注入：對使用者輸入的內容做適當處理。</li></ul><h2>保存與保護</h2><ul><li>集中儲存於獨立位置，應用程式主機被入侵時日誌仍在。</li><li>限制寫入與刪除權限，必要時採不可變儲存。</li><li>保存期限依合約與法規，並定期確認可查詢。</li></ul><h2>告警範例</h2><table><tr><th>情境</th><th>觸發條件（範例）</th></tr><tr><td>暴力破解</td><td>同一來源或帳號短時間內大量登入失敗</td></tr><tr><td>異常登入</td><td>管理帳號從新國家／新裝置登入</td></tr><tr><td>資料外洩跡象</td><td>單一帳號短時間大量匯出或讀取</td></tr><tr><td>掃描行為</td><td>大量 404 或存取常見探測路徑</td></tr><tr><td>可用性</td><td>錯誤率、延遲、憑證即將到期</td></tr></table><div class="note">告警要有明確的負責人與回應時限，沒人處理的告警等同沒有告警。</div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 關鍵事件皆已記錄且時間同步</label></li><li><label><input type="checkbox"> 日誌中無機敏資料</label></li><li><label><input type="checkbox"> 日誌集中、受保護且保存期限符合合約</label></li><li><label><input type="checkbox"> 告警規則已建立並有值班安排</label></li><li><label><input type="checkbox"> 定期測試告警是否真的會送達</label></li></ul>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/logging/structured-logging.html">結構化日誌</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/92/final">NIST SP 800-92 日誌管理指南</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Vocabulary_Cheat_Sheet.html">OWASP Application Logging Vocabulary</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

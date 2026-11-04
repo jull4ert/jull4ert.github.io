@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>變更管理與回滾｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>變更管理與回滾</h1>
+  <p class="sub">每次變更都留下可追溯紀錄，並預先準備好退路。</p>
+</header>
+<main class="page">
+<h2>變更單內容</h2><table><tr><th>欄位</th><th>說明</th></tr><tr><td>變更內容與原因</td><td>改了什麼、為什麼</td></tr><tr><td>影響範圍</td><td>受影響的系統、使用者、相依服務</td></tr><tr><td>風險評估</td><td>可能的失敗模式與影響</td></tr><tr><td>時程與窗口</td><td>執行時間，建議避開尖峰</td></tr><tr><td>執行與驗證步驟</td><td>逐步指令與驗證方式</td></tr><tr><td>回滾計畫</td><td>觸發條件、步驟、預估時間</td></tr><tr><td>核准與執行人</td><td>申請人、核准人、執行人（盡量分屬不同人）</td></tr></table><h2>回滾要點</h2><ul><li>在上線前就決定「什麼情況下回滾」（例如錯誤率超過某閾值、核心流程失敗）。</li><li>資料庫變更要特別規劃：能否向下相容、是否可逆；避免只能前進的遷移。</li><li>保留上一版成品與設定，並確認可快速還原。</li><li>回滾後同樣要驗證與記錄。</li></ul><h2>金鑰與憑證輪替</h2><ul><li>正式環境金鑰在上線前重新產生，不沿用開發或測試值。</li><li>憑證到期日納入監控。</li><li>人員異動、疑似外洩時立即輪替。</li></ul><h2>緊急變更</h2><div class="note">緊急變更（例如修補已被利用的漏洞）可簡化流程，但仍須有核准人、執行紀錄，並於事後補齊變更單與檢討。</div>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/devops/secrets-management.html">密鑰管理</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/128/final">NIST SP 800-128</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

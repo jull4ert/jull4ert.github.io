@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WAF 與 DDoS 防護｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>WAF 與 DDoS 防護</h1>
+  <p class="sub">在邊界吸收與過濾惡意流量，作為應用安全的補充防線。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>WAF 是<b>補充</b>，不能取代修補與安全編碼；常用於暫時緩解已知漏洞（虛擬修補）。</li><li>先以<b>偵測／計數模式</b>觀察誤報，再切到阻擋。</li><li>託管規則集（如 OWASP Core Rule Set 衍生）加上針對自身應用的自訂規則與速率限制。</li><li>DDoS：優先使用 CDN／雲端商的流量清洗與任播；源站只接受來自 CDN／WAF 的流量，並隱藏真實 IP。</li><li>有容量規劃與緊急聯絡流程（含 ISP、CDN）。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法；指令與選項會隨版本、廠商調整，實作前請對照官方文件，並先在測試環境驗證。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="aws"><p>AWS WAF：套用託管規則群組（如 Core rule set）並加入<b>速率型規則</b>；AWS Shield Standard 對所有客戶自動提供基礎 DDoS 防護，進階防護另有 Shield Advanced。</p></div><div class="tech" data-tech="azure"><p>Azure Front Door 或 Application Gateway 的 WAF 可啟用預設規則集（含 OWASP 規則），並設定偵測／防止模式與速率限制；DDoS 防護另有網路層級方案。</p></div><div class="tech" data-tech="gcp"><p>Google Cloud Armor 搭配外部負載平衡器提供 WAF 規則、速率限制與 DDoS 防護，可先以預覽模式評估規則影響。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> WAF 已啟用並從偵測模式逐步轉阻擋</label></li><li><label><input type="checkbox"> 源站限制只接受 CDN／WAF 來源</label></li><li><label><input type="checkbox"> 登入等敏感端點有速率限制</label></li><li><label><input type="checkbox"> DDoS 緊急聯絡與流程已演練</label></li><li><label><input type="checkbox"> WAF 日誌納入集中監控</label></li></ul><div class="note">指令與設定為最小示意，會隨版本與廠商而異，請在測試環境驗證並對照官方文件後再用於正式環境。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://coreruleset.org/">OWASP Core Rule Set</a></li><li><a href="https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html">AWS WAF</a></li><li><a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/overview">Azure WAF</a></li><li><a href="https://cloud.google.com/armor/docs/cloud-armor-overview">Google Cloud Armor</a></li><li><a href="https://www.cisa.gov/resources-tools/resources/understanding-and-responding-distributed-denial-service-attacks">CISA DDoS 指引</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

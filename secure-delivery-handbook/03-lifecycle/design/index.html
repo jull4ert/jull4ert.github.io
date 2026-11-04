@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設計期｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>設計期</h1>
+  <p class="sub">在寫程式前先把安全設計好，修正成本最低。</p>
+</header>
+<main class="page">
+<h2>安全設計原則</h2><table><tr><th>原則</th><th>意思</th><th>網站範例</th></tr><tr><td>最小權限</td><td>只給完成工作所需的最低權限</td><td>資料庫帳號只給應用程式需要的表與操作，不用 sa／root</td></tr><tr><td>縱深防禦</td><td>多層防護，單層失守不致全盤皆輸</td><td>輸入驗證＋參數化查詢＋資料庫低權限＋WAF</td></tr><tr><td>預設安全</td><td>預設值即為安全設定</td><td>新帳號預設無管理權限；功能預設關閉</td></tr><tr><td>失效安全</td><td>出錯時回到拒絕</td><td>授權服務無回應時拒絕存取，而非放行</td></tr><tr><td>職責分離</td><td>關鍵操作不由單一人完成</td><td>部署與核准分屬不同人</td></tr><tr><td>不信任輸入</td><td>所有外部資料都須驗證</td><td>前端驗證僅為體驗，伺服器端一定要驗</td></tr></table><h2>架構審查清單</h2><ul class="check"><li><label><input type="checkbox"> 已畫出資料流圖，標示信任邊界（網際網路／DMZ／內網／資料庫）</label></li><li><label><input type="checkbox"> 已定義角色與權限模型（誰能看、改、刪什麼）</label></li><li><label><input type="checkbox"> 已做資料分類，並決定各類資料的加密（傳輸與儲存）與保存期限</label></li><li><label><input type="checkbox"> 認證方式已定（密碼政策、MFA、SSO），Session 機制已定</label></li><li><label><input type="checkbox"> 第三方服務與 API 整合已列出，並評估其風險</label></li><li><label><input type="checkbox"> 管理介面與正式資料庫不直接暴露於公網</label></li><li><label><input type="checkbox"> 日誌與監控需求已列入設計</label></li><li><label><input type="checkbox"> 備份、災難復原與可用性目標（RPO／RTO）已定義</label></li></ul><h2>子主題</h2><div id="children"></div><h2>出口條件</h2><ul class="check"><li><label><input type="checkbox"> 威脅模型已完成並評審</label></li><li><label><input type="checkbox"> 安全需求已列入需求清單並可驗證</label></li><li><label><input type="checkbox"> 架構審查缺失已排入開發或有書面接受</label></li></ul>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>威脅建模</td><td><a href="./threat-modeling.html">威脅建模</a>；工具：<a href="https://owasp.org/www-project-threat-dragon/">OWASP Threat Dragon</a>、<a href="https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool">Microsoft Threat Modeling Tool</a></td><td><a href="https://www.threatmodelingmanifesto.org/">Threat Modeling Manifesto</a>、STRIDE</td></tr><tr><td>安全需求</td><td><a href="./security-requirements.html">安全需求</a></td><td><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></td></tr><tr><td>認證授權設計</td><td><a href="../../02-software/auth/session-jwt.html">Session 與 JWT</a>、<a href="../../02-software/auth/authorization.html">授權與存取控制</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html">OWASP Authentication Cheat Sheet</a>、<a href="https://pages.nist.gov/800-63-3/sp800-63b.html">NIST SP 800-63B</a></td></tr><tr><td>資料與 API 設計</td><td><a href="../../02-software/database/access-encryption.html">資料庫權限與加密</a>、<a href="../../02-software/api/api-top10.html">OWASP API Top 10 對照</a></td><td><a href="https://owasp.org/API-Security/">OWASP API Security Top 10</a></td></tr><tr><td>設計階段總規範</td><td>—</td><td><a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SSDF（SP 800-218）</a>（PW.1 依安全需求設計）、<a href="https://owasp.org/www-project-samm/">OWASP SAMM</a></td></tr></table>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/design.html">設計期檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secure_Product_Design_Cheat_Sheet.html">OWASP Secure Product Design Cheat Sheet</a></li><li><a href="https://www.cisa.gov/resources-tools/resources/secure-by-design">Saltzer & Schroeder 設計原則（CISA Secure by Design）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

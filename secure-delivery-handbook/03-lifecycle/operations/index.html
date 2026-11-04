@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上線後營運｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>上線後營運</h1>
+  <p class="sub">上線不是結束：持續修補、監控、備份，才能維持安全。</p>
+</header>
+<main class="page">
+<h2>例行工作排程</h2><table><tr><th>頻率</th><th>工作</th></tr><tr><td>每日</td><td>檢視告警與異常登入；依賴漏洞自動掃描結果；備份是否成功</td></tr><tr><td>每週</td><td>安全公告與新漏洞評估；處理待修補項目</td></tr><tr><td>每月</td><td>弱點掃描；帳號與權限盤點（離職、停用）；修補進度報告</td></tr><tr><td>每季</td><td>備份還原演練；TLS／標頭設定複查；日誌與告警規則檢討</td></tr><tr><td>每年</td><td>滲透測試（依風險分級）；事故應變演練；整體資安檢討；合約與資產盤點更新</td></tr><tr><td>隨時</td><td>重大漏洞（如已被利用）緊急修補；功能變更觸發的重新評估</td></tr></table><h2>子主題</h2><div id="children"></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 資產清單（系統、版本、元件）是最新的</label></li><li><label><input type="checkbox"> 修補依嚴重度有時限並被追蹤</label></li><li><label><input type="checkbox"> 日誌集中保存且有人檢視告警</label></li><li><label><input type="checkbox"> 備份有定期還原驗證</label></li><li><label><input type="checkbox"> 離職與停用帳號已即時回收</label></li><li><label><input type="checkbox"> 事故聯絡窗口與流程是最新的</label></li></ul>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>日誌與監控</td><td><a href="../../02-software/logging/structured-logging.html">結構化日誌</a>、<a href="./monitoring-logging.html">監控與日誌</a></td><td><a href="https://csrc.nist.gov/pubs/sp/800/92/final">NIST SP 800-92</a>、<a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></td></tr><tr><td>修補與持續掃描</td><td><a href="./patch-management.html">修補管理</a>；<a href="../../02-software/devops/ci-pipeline.html">CI 安全管線</a></td><td><a href="https://csrc.nist.gov/pubs/sp/800/40/r4/final">NIST SP 800-40 Rev.4</a>、<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">CISA KEV</a></td></tr><tr><td>平台持續加固</td><td><a href="../../02-software/platform/web-server-config.html">網頁伺服器設定</a>、<a href="../../02-software/platform/container-hardening.html">容器與編排加固</a></td><td><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></td></tr><tr><td>流量與濫用防護</td><td><a href="../../02-software/api/rate-limiting.html">速率限制</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html">OWASP Denial of Service Cheat Sheet</a></td></tr><tr><td>備份與還原</td><td><a href="./backup-restore.html">備份與還原</a></td><td><a href="https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final">NIST SP 800-34</a>、<a href="https://www.cisa.gov/stopransomware">CISA StopRansomware</a></td></tr><tr><td>整體控制框架</td><td>—</td><td><a href="https://www.cisecurity.org/controls">CIS Critical Security Controls</a>、<a href="https://www.iso.org/standard/27001">ISO/IEC 27001</a></td></tr></table>
+<h2 id="hw-ref">相關硬體與基礎設施</h2><ul><li><a href="../../01-hardware/server/index.html">伺服器</a></li><li><a href="../../01-hardware/network/waf-ddos.html">WAF 與 DDoS 防護</a></li><li><a href="../../01-hardware/backup-dr/index.html">備份與災難復原</a></li></ul>
+<h2 id="x-ref">延伸閱讀</h2><ul><li><a href="../../06-incident/index.html">事故應變</a></li><li><a href="../../07-contracts/sla.html">SLA／SLO</a></li></ul>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/operations.html">上線後營運檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisecurity.org/controls">CIS Critical Security Controls</a></li><li><a href="https://www.nist.gov/cyberframework">NIST Cybersecurity Framework</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

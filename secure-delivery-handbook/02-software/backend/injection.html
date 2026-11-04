@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>注入防護｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>注入防護</h1>
+  <p class="sub">SQL、OS 命令、LDAP、NoSQL 等注入的共同根因：把資料當成指令。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>資料與指令分離：用<b>參數化查詢</b>或預備陳述式，不要字串串接。</li><li>無法參數化的部分（欄位名、排序方向、表名）用<b>白名單</b>對照。</li><li>避免呼叫 shell；必要時用參數陣列的 API，不經過 shell 解析。</li><li>資料庫帳號權限最小化，降低注入成功後的損害（見資料庫）。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>// Dapper
+var user = conn.QueryFirstOrDefault&lt;User&gt;(
+    "SELECT * FROM Users WHERE Email = @email", new { email });
+
+// EF Core：插值字串會被轉為參數
+var users = db.Users.FromSql($"SELECT * FROM Users WHERE Email = {email}").ToList();
+// 危險：FromSqlRaw 搭配字串串接</code></pre></div><div class="tech" data-tech="node"><pre><code>// pg
+await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+// mysql2
+await conn.execute('SELECT * FROM users WHERE email = ?', [email]);</code></pre></div><div class="tech" data-tech="java"><pre><code>PreparedStatement ps = conn.prepareStatement(
+    "SELECT * FROM users WHERE email = ?");
+ps.setString(1, email);
+
+// Spring Data JPA
+@Query("select u from User u where u.email = :email")
+User findByEmail(@Param("email") String email);</code></pre></div><div class="tech" data-tech="python"><pre><code># psycopg
+cur.execute("SELECT * FROM users WHERE email = %s", (email,))
+# sqlite3
+cur.execute("SELECT * FROM users WHERE email = ?", (email,))</code></pre></div><div class="tech" data-tech="php"><pre><code>$stmt = $pdo-&gt;prepare('SELECT * FROM users WHERE email = :email');
+$stmt-&gt;execute(['email' =&gt; $email]);
+// 建議連線時設定 PDO::ATTR_EMULATE_PREPARES =&gt; false</code></pre></div><h2>其他注入</h2><table><tr><th>類型</th><th>防護</th></tr><tr><td>OS 命令</td><td>不用 shell；使用參數陣列（如 .NET <code>ProcessStartInfo.ArgumentList</code>、Node <code>execFile</code>、Python <code>subprocess.run([...])</code> 且不開 <code>shell=True</code>）</td></tr><tr><td>NoSQL（如 MongoDB）</td><td>驗證輸入型別，避免把使用者物件直接當查詢條件（防止 <code>$ne</code> 等運算子注入）</td></tr><tr><td>LDAP</td><td>對特殊字元做 LDAP 專用跳脫</td></tr><tr><td>模板注入</td><td>不要把使用者輸入當成模板本身編譯</td></tr></table><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 全部資料庫存取為參數化或 ORM 的安全 API</label></li><li><label><input type="checkbox"> 動態欄位／排序以白名單處理</label></li><li><label><input type="checkbox"> 無 shell 拼接命令</label></li><li><label><input type="checkbox"> 資料庫帳號為最小權限</label></li><li><label><input type="checkbox"> SAST 規則涵蓋注入類別</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Query_Parameterization_Cheat_Sheet.html">OWASP Query Parameterization Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html">OWASP OS Command Injection Defense Cheat Sheet</a></li><li><a href="https://learn.microsoft.com/en-us/ef/core/querying/sql-queries">Microsoft — EF Core 原始 SQL 查詢</a></li><li><a href="https://www.php.net/manual/en/pdo.prepared-statements.php">PHP — PDO 預備陳述式</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

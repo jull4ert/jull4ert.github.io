@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設備與媒體報廢｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>設備與媒體報廢</h1>
+  <p class="sub">硬碟與備份媒體報廢、轉售或退租時，資料不能跟著出去。</p>
+</header>
+<main class="page">
+<h2>清除層級（NIST SP 800-88）</h2><table><tr><th>層級</th><th>意義</th><th>適用</th></tr><tr><td>Clear（清除）</td><td>以邏輯方式覆寫，抵擋一般還原手段</td><td>設備在組織內重新使用、低敏感資料</td></tr><tr><td>Purge（淨化）</td><td>以實體或邏輯方式使資料無法以實驗室手段還原（如加密抹除、安全抹除指令）</td><td>設備離開組織控制、中高敏感資料</td></tr><tr><td>Destroy（銷毀）</td><td>實體破壞媒體（粉碎、熔化等）</td><td>最高敏感度、或無法確認淨化成功</td></tr></table><h2>流程</h2><ol><li>盤點：從資產清單找出含資料的設備與媒體。</li><li>依資料敏感度與去向選擇清除層級。</li><li>執行並<b>驗證</b>（抽樣讀取確認）。</li><li>取得<b>銷毀或清除證明</b>（序號、日期、方式、經手人），與資產清單連結。</li><li>更新資產狀態，保留紀錄。</li></ol><h2>注意</h2><ul><li>SSD 與快閃儲存因耗損平均，單純格式化或覆寫不可靠，優先使用<b>加密抹除</b>（全碟加密且銷毀金鑰）或製造商的安全抹除指令。</li><li>雲端虛擬磁碟刪除後，資料保護依雲端商機制；敏感資料應先加密，再刪除金鑰。</li><li>退租、保固換件前同樣要處理；送修前優先移除儲存媒體。</li><li>全碟加密從一開始就啟用，可大幅降低報廢風險（見<a href="../../01-hardware/server/firmware-disk-encryption.html">磁碟加密</a>）。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 資產清單標示哪些設備含資料</label></li><li><label><input type="checkbox"> 報廢依敏感度選擇清除層級並驗證</label></li><li><label><input type="checkbox"> 有清除／銷毀證明並可追溯到序號</label></li><li><label><input type="checkbox"> 報廢、退租、送修前已移除或淨化媒體</label></li><li><label><input type="checkbox"> 合約終止時的資料銷毀證明已交付客戶</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/88/r1/final">NIST SP 800-88 Rev.1</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>備份與還原｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>備份與還原</h1>
+  <p class="sub">備份的價值在於「能還原」，且不能被攻擊者一起破壞。</p>
+</header>
+<main class="page">
+<h2>3-2-1 原則</h2><ul><li>至少 <b>3</b> 份資料副本。</li><li>存放在至少 <b>2</b> 種不同媒體或系統。</li><li>至少 <b>1</b> 份異地（或離線）保存。</li></ul><h2>防勒索</h2><ul><li>保留離線或不可變（immutable）備份，備份帳號與正式環境帳號分離。</li><li>備份儲存加密，金鑰另行保管。</li><li>備份系統本身也要修補與監控。</li></ul><h2>目標與演練</h2><table><tr><th>名詞</th><th>意義</th></tr><tr><td>RPO</td><td>可容忍的資料遺失時間（備份間隔須小於此值）</td></tr><tr><td>RTO</td><td>可容忍的服務中斷時間（還原須在此內完成）</td></tr></table><ul><li>依 RPO／RTO 決定備份頻率與還原方式，並寫入合約。</li><li><b>定期實際還原測試</b>，記錄實際耗時；沒有驗證過的備份不算備份。</li><li>還原文件放在正式環境以外也能取得的地方。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 備份排程與成功與否被監控</label></li><li><label><input type="checkbox"> 備份已加密且存取受限</label></li><li><label><input type="checkbox"> 至少一份異地或離線</label></li><li><label><input type="checkbox"> 每季完成還原演練並記錄 RTO</label></li><li><label><input type="checkbox"> 還原程序文件為最新</label></li></ul>
+<h2 id="hw-ref">相關硬體與基礎設施</h2><ul><li><a href="../../01-hardware/backup-dr/backup-strategy.html">備份策略與實作（含各資料庫與雲端範例）</a></li><li><a href="../../01-hardware/backup-dr/dr-plan.html">災難復原計畫</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisa.gov/stopransomware">CISA — Stop Ransomware</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/34/r1/upd1/final">NIST SP 800-34 Rev.1 營運持續與災難復原規劃</a></li><li><a href="https://www.cisa.gov/sites/default/files/publications/data_backup_options.pdf">US-CERT 3-2-1 備份建議（CISA）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

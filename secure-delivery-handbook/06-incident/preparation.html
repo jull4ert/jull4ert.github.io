@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>準備工作｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>準備工作</h1>
+  <p class="sub">事故發生時才找聯絡人與權限就太晚了。以下平常就備好。</p>
+</header>
+<main class="page">
+<h2>必備項目</h2><table><tr><th>項目</th><th>內容</th><th>備註</th></tr><tr><td>應變聯絡表</td><td>我方內部、客戶窗口、主機／雲端商、網域商、金流商、資安廠商、法務；含備援聯絡方式</td><td>離線也要有一份（網路壞時用）</td></tr><tr><td>資產與架構圖</td><td>主機、網域、資料庫、第三方服務清單與依賴</td><td>見 <a href="../03-lifecycle/handover/index.html">交付文件</a></td></tr><tr><td>日誌保存</td><td>足夠的種類與保存期間，且集中存放，管理員不能自行刪改</td><td><a href="../03-lifecycle/operations/monitoring-logging.html">監控與日誌</a></td></tr><tr><td>備份與還原驗證</td><td>離線或不可變的備份，定期還原演練</td><td><a href="../01-hardware/backup-dr/index.html">備份與 DR</a></td></tr><tr><td>緊急權限</td><td>封鎖帳號、輪替金鑰、下線站台所需權限已預先授權</td><td>寫進流程，避免事故中等簽核</td></tr><tr><td>金鑰輪替程序</td><td>資料庫密碼、API 金鑰、憑證可快速更換</td><td><a href="../02-software/devops/secrets-management.html">機敏資訊管理</a></td></tr><tr><td>通報範本</td><td>對客戶、使用者、主管機關的通知草稿</td><td><a href="notification.html">通報與溝通</a></td></tr><tr><td>事故紀錄表</td><td>時間線、決策、動作、證據清單</td><td>見下方欄位</td></tr></table><h2>事故紀錄表欄位</h2><ul><li>事故編號、發現時間、發現者、發現方式</li><li>受影響系統與資料、初步等級</li><li>時間線（時間／動作／執行者／結果）</li><li>已做的遏止措施、保存的證據（位置與雜湊）</li><li>通報紀錄（對象／時間／內容）</li><li>結案時間、根因、後續改善項目</li></ul><h2>演練</h2><ul><li>桌上演練：每半年一次，拿一個情境（如 <a href="playbooks/data-breach.html">資料外洩</a>）走完流程，不動系統，檢查誰不知道要做什麼。</li><li>還原演練：至少每季抽一份備份實際還原到隔離環境。</li><li>每次演練都要有紀錄與改善項目。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 應變聯絡表已建立，且在 6 個月內確認過</label></li><li><label><input type="checkbox"> 有離線版聯絡表與架構圖</label></li><li><label><input type="checkbox"> 日誌集中保存且保存期間符合合約與法規</label></li><li><label><input type="checkbox"> 緊急下線與金鑰輪替程序已文件化並有授權</label></li><li><label><input type="checkbox"> 通報範本已備妥</label></li><li><label><input type="checkbox"> 過去 12 個月做過至少一次桌上演練與一次還原演練</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://www.cisecurity.org/controls/incident-response-management">CIS Control 17 事件應變管理</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

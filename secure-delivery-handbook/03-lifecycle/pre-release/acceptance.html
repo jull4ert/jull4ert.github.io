@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>驗收與 Go/No-Go｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>驗收與 Go/No-Go</h1>
+  <p class="sub">彙整所有檢查結果，決定是否放行，並留下可追溯的簽核紀錄。</p>
+</header>
+<main class="page">
+
+<h2>放行條件（Gate）</h2>
+<table>
+  <tr><th>條件</th><th>必要</th></tr>
+  <tr><td>SAST、依賴、機敏資訊掃描無未處理的嚴重／高風險項目</td><td>是</td></tr>
+  <tr><td>弱點掃描無未修補的嚴重／高風險項目（或已書面風險接受）</td><td>是</td></tr>
+  <tr><td>TLS 與安全標頭設定符合基準</td><td>是</td></tr>
+  <tr><td>正式環境不含測試帳號、預設密碼、除錯模式</td><td>是</td></tr>
+  <tr><td>備份與還原已實際驗證</td><td>是</td></tr>
+  <tr><td>監控、日誌、告警已啟用並有人收</td><td>是</td></tr>
+  <tr><td>滲透測試完成並複測（依風險分級）</td><td>視風險</td></tr>
+</table>
+
+<h2>上線前總檢查清單</h2>
+<ul class="check">
+  <li><label><input type="checkbox"> 所有掃描報告已留存</label></li>
+  <li><label><input type="checkbox"> 正式環境的金鑰、資料庫密碼已與開發／測試環境分離並重新產生</label></li>
+  <li><label><input type="checkbox"> 除錯模式、範例頁、管理介面預設路徑已關閉或限制來源 IP</label></li>
+  <li><label><input type="checkbox"> 預設帳密已移除，管理帳號啟用 MFA</label></li>
+  <li><label><input type="checkbox"> 資料庫不對公網開放，僅允許應用程式主機連入</label></li>
+  <li><label><input type="checkbox"> 錯誤頁不洩漏堆疊與版本資訊</label></li>
+  <li><label><input type="checkbox"> 日誌不記錄密碼、token、完整個資</label></li>
+  <li><label><input type="checkbox"> 已備妥回滾計畫與事故聯絡窗口</label></li>
+  <li><label><input type="checkbox"> 已向客戶交付資安報告與已知殘餘風險清單</label></li>
+</ul>
+
+<h2>殘餘風險簽核</h2>
+<p>若有無法在上線前修補的項目，需記錄：</p>
+<table>
+  <tr><th>欄位</th><th>內容</th></tr>
+  <tr><td>弱點描述與嚴重度</td><td></td></tr>
+  <tr><td>無法修補的原因</td><td></td></tr>
+  <tr><td>補償措施</td><td>例如 WAF 規則、限制來源、加強監控</td></tr>
+  <tr><td>預計修補日期</td><td></td></tr>
+  <tr><td>風險接受人（客戶端）簽名與日期</td><td></td></tr>
+</table>
+
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SP 800-218 SSDF</a></li>
+    <li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

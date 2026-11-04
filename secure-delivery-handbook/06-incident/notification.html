@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>通報與溝通｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>通報與溝通</h1>
+  <p class="sub">什麼時候要通知誰、說什麼。時限有法定的，也有合約的，兩者要同時看。</p>
+</header>
+<main class="page">
+<h2>通報對象與時限（常見規定摘要）</h2><table><tr><th>對象</th><th>依據</th><th>時限（摘要）</th><th>誰負責通報</th></tr><tr><td>客戶</td><td>合約</td><td>依合約約定，常見為知悉後數小時至 24 小時內初報</td><td>我方</td></tr><tr><td>台灣個資法的當事人</td><td>個資法第 12 條</td><td>查明後以適當方式通知（個別產業辦法可能有更明確時限）</td><td>蒐集者（通常是客戶）</td></tr><tr><td>資通安全管理法的主管機關</td><td>資通安全事件通報及應變辦法</td><td>知悉後依辦法規定時限通報（常見為 1 小時內），並於規定時間內完成損害控制或復原；各等級時限不同</td><td>機關或特定非公務機關；委外廠商依契約協助</td></tr><tr><td>歐盟 GDPR 主管機關與當事人</td><td>GDPR 第 33、34 條</td><td>知悉後原則 72 小時內通報主管機關；高風險時通知當事人</td><td>控管者（客戶）；處理者須儘速通知控管者</td></tr><tr><td>PCI DSS 相關</td><td>與收單機構／卡組織的合約</td><td>依合約要求，通常需立即通知</td><td>商家與支付服務供應商</td></tr><tr><td>產業主管機關</td><td>各產業規範（金融、醫療等）</td><td>依各產業規定</td><td>依規定</td></tr></table><div class="note">本表只是摘要。時限、起算時點與通報管道會修訂，也因產業與機關等級而異，請核對 <a href="../05-standards/regulations/index.html">法規頁面</a> 與全國法規資料庫的現行條文，並由客戶法務或我方法務確認。<b>我方通常是受託者</b>：我們的義務是「儘速、完整地提供事實給客戶」，由客戶決定並執行對外通報，這點要寫進合約（見 <a href="../07-contracts/data-processing.html">個資委外</a>）。</div><h2>對客戶的溝通節奏</h2><table><tr><th>時間點</th><th>內容</th></tr><tr><td>初報（盡快）</td><td>發生了什麼（已知事實）、影響範圍（目前判斷）、已採取的措施、下次更新時間</td></tr><tr><td>進度更新（固定間隔）</td><td>新發現、已完成與進行中的動作、預估復原時間、需客戶配合的事項</td></tr><tr><td>結案報告</td><td>時間線、根因、影響、改善措施；通常在數日至兩週內</td></tr></table><h2>訊息原則</h2><ul><li>只說已確認的事實；推測要標明是推測。</li><li>不指責人或第三方，不過早下結論（例如「已確認無個資外洩」要等證據）。</li><li>單一窗口、同一版本；其他人不自行對外說明。</li><li>記錄每次通報的時間、對象、內容。</li><li>不在公開頻道（社群、公開群組）討論細節與漏洞。</li></ul><h2>初報範本</h2><pre><code>主旨：【資安事件通知】{系統名稱}｜等級 {P?}｜{日期時間}
+
+1. 發現時間與方式：
+2. 目前已知狀況（僅列已確認事實）：
+3. 可能影響的資料與使用者範圍（目前判斷，持續調查中）：
+4. 已採取的措施：
+5. 需要貴方協助或決策的事項：
+6. 下一次更新時間：{時間}
+7. 窗口：{姓名／電話／備援聯絡方式}</code></pre><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 已列出此客戶適用的所有通報義務與時限，放在聯絡表旁</label></li><li><label><input type="checkbox"> 合約載明我方通知客戶的時限與內容</label></li><li><label><input type="checkbox"> 有指定的對外溝通窗口與備援</label></li><li><label><input type="checkbox"> 每次通報都有紀錄</label></li><li><label><input type="checkbox"> 初報、更新、結案三種範本已備妥</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://gdpr-info.eu/art-33-gdpr/">GDPR 第 33 條</a></li><li><a href="https://gdpr-info.eu/art-34-gdpr/">GDPR 第 34 條</a></li><li><a href="https://law.moj.gov.tw/">全國法規資料庫</a></li><li><a href="https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-92022-personal-data-breach-notification-under_en">EDPB 資料外洩通報指引</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>後端｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>後端</h1>
+  <p class="sub">伺服器端程式的安全：輸入處理、資料存取、對外請求與錯誤處理。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>所有外部輸入（請求、檔案、第三方 API 回應）都視為不可信。</li><li>資料存取用參數化介面；任何拼接進 SQL、命令、路徑、URL 的值都要有白名單。</li><li>對外請求（SSRF）：目的地走白名單，禁止指向內網與雲端中繼資料位址。</li><li>錯誤對外通用、對內詳細；失敗時預設拒絕。</li></ul><h2>子主題</h2><div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html">OWASP Input Validation Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

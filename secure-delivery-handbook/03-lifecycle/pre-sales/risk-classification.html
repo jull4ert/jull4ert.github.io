@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>客戶風險分級｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>客戶風險分級</h1>
+  <p class="sub">依資料敏感度與影響範圍把專案分級，決定必做的資安項目。</p>
+</header>
+<main class="page">
+<div class="note">下表為建議基準，非法規規定。實際分級與必做項目請依客戶合約與適用法規調整。</div><h2>分級定義</h2><table><tr><th>等級</th><th>典型專案</th><th>資料特徵</th></tr><tr><td>L1 低</td><td>公司形象網站、活動頁</td><td>全為公開資訊，無登入</td></tr><tr><td>L2 一般</td><td>會員網站、內部管理系統</td><td>少量一般個資（姓名、Email、電話），有登入</td></tr><tr><td>L3 高</td><td>電商、預約、大量會員資料</td><td>大量個資或交易資料，涉及金流串接</td></tr><tr><td>L4 極高</td><td>醫療、金融、政府或關鍵基礎設施相關</td><td>特種個資、金融資料，或受主管機關監管</td></tr></table><h2>各等級建議必做項目</h2><table><tr><th>項目</th><th>L1</th><th>L2</th><th>L3</th><th>L4</th></tr><tr><td>TLS、安全標頭</td><td>●</td><td>●</td><td>●</td><td>●</td></tr><tr><td>依賴與機敏資訊掃描</td><td>●</td><td>●</td><td>●</td><td>●</td></tr><tr><td>SAST（CI）</td><td>○</td><td>●</td><td>●</td><td>●</td></tr><tr><td>上線前弱點掃描</td><td>●</td><td>●</td><td>●</td><td>●</td></tr><tr><td>滲透測試</td><td>—</td><td>○</td><td>●</td><td>●（獨立第三方）</td></tr><tr><td>管理端 MFA</td><td>●</td><td>●</td><td>●</td><td>●</td></tr><tr><td>稽核日誌與保存</td><td>—</td><td>●</td><td>●</td><td>●（集中、防竄改）</td></tr><tr><td>WAF／DDoS 防護</td><td>—</td><td>○</td><td>●</td><td>●</td></tr><tr><td>備份還原演練</td><td>○</td><td>●</td><td>●</td><td>●（含異地）</td></tr><tr><td>威脅建模</td><td>—</td><td>○</td><td>●</td><td>●</td></tr></table><p class="sub">● 必做　○ 建議　— 可省略</p><h2>升級判斷</h2><ul><li>同時符合多個等級特徵時，取較高者。</li><li>新增功能（例如加入金流）可能使等級上調，需重新評估。</li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS（驗證等級概念參考）</a></li><li><a href="https://www.pcisecuritystandards.org/document_library/">PCI DSS 文件庫</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

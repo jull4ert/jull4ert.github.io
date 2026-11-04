@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>授權與存取控制｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>授權與存取控制</h1>
+  <p class="sub">OWASP 排名居前的風險：驗證了身分，卻沒檢查「這個人能不能動這筆資料」。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li><b>預設拒絕</b>，明確授權才放行；授權邏輯集中管理，不散落在各處。</li><li>兩層檢查：功能層（角色可否呼叫此 API）＋資料層（此資源是否屬於呼叫者，防 IDOR／BOLA）。</li><li>不依賴前端隱藏按鈕或不可預測的 ID 當作授權。</li><li>模型選擇：RBAC（角色）為主；需要依屬性或情境判斷時用 ABAC／政策式。</li><li>授權失敗與可疑存取要寫入日誌。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="dotnet"><pre><code>[Authorize(Roles = "Admin")]
+public IActionResult Delete(int id) { ... }
+
+// 資源層：檢查此人能否編輯「這份」文件
+var result = await _authz.AuthorizeAsync(User, doc, "CanEditDocument");
+if (!result.Succeeded) return Forbid();</code></pre></div><div class="tech" data-tech="node"><pre><code>const requireRole = (role) =&gt; (req, res, next) =&gt;
+  req.user?.roles.includes(role) ? next() : res.sendStatus(403);
+
+// 資源層：查詢時就帶上擁有者條件
+const { rows } = await pool.query(
+  'SELECT * FROM docs WHERE id = $1 AND owner_id = $2', [id, req.user.id]);
+if (!rows.length) return res.sendStatus(404);</code></pre></div><div class="tech" data-tech="java"><pre><code>@PreAuthorize("hasRole('ADMIN')")
+public void delete(Long id) { ... }
+
+@PostAuthorize("returnObject.ownerId == authentication.name")
+public Doc get(Long id) { ... }</code></pre></div><div class="tech" data-tech="python"><pre><code># Django
+@permission_required('docs.delete_doc', raise_exception=True)
+def delete(request, pk): ...
+
+# Django REST Framework：物件層
+class IsOwner(BasePermission):
+    def has_object_permission(self, request, view, obj):
+        return obj.owner_id == request.user.id</code></pre></div><div class="tech" data-tech="php"><pre><code>// Laravel Policy
+public function update(User $user, Post $post): bool {
+    return $user-&gt;id === $post-&gt;user_id;
+}
+// Controller
+$this-&gt;authorize('update', $post);</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 每個 API 都有功能層授權</label></li><li><label><input type="checkbox"> 存取單一資源時檢查擁有權（水平越權）</label></li><li><label><input type="checkbox"> 管理功能檢查角色（垂直越權）</label></li><li><label><input type="checkbox"> 測試案例涵蓋「用 A 帳號存取 B 的資料」</label></li><li><label><input type="checkbox"> 授權失敗會記錄日誌</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html">OWASP IDOR Prevention Cheat Sheet</a></li><li><a href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/introduction">Microsoft — ASP.NET Core 授權</a></li><li><a href="https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html">Spring Security — 方法安全</a></li><li><a href="https://laravel.com/docs/authorization">Laravel — Authorization</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

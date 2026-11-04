@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>上線當下｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>上線當下</h1>
+  <p class="sub">上線是風險最集中的時刻，需要有計畫、有授權、能回滾。</p>
+</header>
+<main class="page">
+<h2>上線流程</h2><pre><code>1. 變更核准（變更單）
+2. 上線前確認（上線前檢查已通過、備份完成、回滾方案就緒）
+3. 在核准窗口內部署
+4. 冒煙測試（Smoke Test）：登入、核心流程、安全標頭、憑證
+5. 監控觀察（日誌、錯誤率、告警）
+6. 通過 → 結案；異常 → 依回滾條件執行回滾</code></pre><h2>子主題</h2><div id="children"></div><h2>上線當下檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 已有核准的變更單與變更窗口</label></li><li><label><input type="checkbox"> 上線前檢查（pre-release）已全數通過或有書面風險接受</label></li><li><label><input type="checkbox"> 資料庫與設定已備份，且確認可還原</label></li><li><label><input type="checkbox"> 正式環境使用獨立金鑰與憑證，並已輪替測試期使用過的值</label></li><li><label><input type="checkbox"> 部署帳號為專用最小權限帳號，部署過程可追溯</label></li><li><label><input type="checkbox"> 測試帳號、除錯端點、預設密碼已移除</label></li><li><label><input type="checkbox"> 冒煙測試涵蓋登入、授權、HTTPS 與標頭</label></li><li><label><input type="checkbox"> 監控與告警已啟用，並指定值班人員</label></li><li><label><input type="checkbox"> 回滾步驟已演練，並確認回滾條件</label></li></ul><h2>出口條件</h2><ul class="check"><li><label><input type="checkbox"> 冒煙測試通過</label></li><li><label><input type="checkbox"> 監控觀察期內無異常</label></li><li><label><input type="checkbox"> 變更結果已記錄並通知利害關係人</label></li></ul>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>正式環境密鑰與憑證</td><td><a href="../../02-software/devops/secrets-management.html">密鑰管理</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html">OWASP Secrets Management Cheat Sheet</a></td></tr><tr><td>部署環境加固</td><td><a href="../../02-software/platform/web-server-config.html">網頁伺服器設定</a>、<a href="../../02-software/platform/container-hardening.html">容器與編排加固</a></td><td><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></td></tr><tr><td>資料庫帳號與連線</td><td><a href="../../02-software/database/access-encryption.html">資料庫權限與加密</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Database_Security_Cheat_Sheet.html">OWASP Database Security Cheat Sheet</a></td></tr><tr><td>變更管理</td><td><a href="./change-management.html">變更管理與回滾</a></td><td><a href="https://csrc.nist.gov/pubs/sp/800/128/final">NIST SP 800-128 組態管理</a></td></tr></table>
+<h2 id="hw-ref">相關硬體與基礎設施</h2><ul><li><a href="../../01-hardware/server/os-hardening.html">作業系統加固</a></li><li><a href="../../01-hardware/network/segmentation-firewall.html">網路分段與防火牆</a></li><li><a href="../../01-hardware/cloud/iam-network.html">雲端身分、儲存與日誌</a></li></ul>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/go-live.html">上線當下檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/128/final">NIST SP 800-128 組態管理指南</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SP 800-218 SSDF</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

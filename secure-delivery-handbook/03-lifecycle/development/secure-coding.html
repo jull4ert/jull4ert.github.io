@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安全編碼｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>安全編碼</h1>
+  <p class="sub">針對網站前後端最常見弱點的正確寫法。</p>
+</header>
+<main class="page">
+<h2>弱點與做法對照</h2><table><tr><th>弱點</th><th>做法</th></tr><tr><td>SQL 注入</td><td>一律使用參數化查詢或 ORM，不用字串串接組 SQL</td></tr><tr><td>XSS</td><td>輸出時依情境編碼；使用框架預設的自動跳脫；避免 <code>innerHTML</code>；搭配 CSP</td></tr><tr><td>CSRF</td><td>SameSite Cookie 加 CSRF token；變更狀態的操作不用 GET</td></tr><tr><td>越權（IDOR／存取控制失效）</td><td>每次請求在伺服器端檢查呼叫者對資源的權限，不依賴前端隱藏按鈕或可預測 ID</td></tr><tr><td>認證缺陷</td><td>使用成熟的身分驗證框架；密碼以 Argon2id／bcrypt 雜湊；限制失敗次數；啟用 MFA</td></tr><tr><td>敏感資料暴露</td><td>只回傳必要欄位；機敏資料加密儲存；日誌不記密碼與 token</td></tr><tr><td>SSRF</td><td>伺服器代為請求外部網址時採白名單，禁止指向內網與中繼資料位址</td></tr><tr><td>不安全的反序列化／檔案上傳</td><td>限制型別與大小、檢查內容、儲存於網站目錄之外並重新命名</td></tr><tr><td>錯誤處理</td><td>對使用者顯示通用訊息，詳細錯誤只寫入伺服器日誌</td></tr><tr><td>加密</td><td>使用成熟函式庫，不自行發明演算法；金鑰不寫死在程式碼</td></tr></table><h2>範例：參數化查詢</h2><pre><code>// 不安全：字串串接
+var sql = "SELECT * FROM Users WHERE Email = '" + email + "'";
+
+// 安全：參數化（以 Dapper 為例）
+var user = connection.QueryFirstOrDefault&lt;User&gt;(
+    "SELECT * FROM Users WHERE Email = @email", new { email });</code></pre><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 所有資料庫存取皆為參數化</label></li><li><label><input type="checkbox"> 所有 API 皆有伺服器端授權檢查</label></li><li><label><input type="checkbox"> 輸出已依情境編碼</label></li><li><label><input type="checkbox"> 密碼以建議演算法雜湊</label></li><li><label><input type="checkbox"> 錯誤訊息不洩漏內部資訊</label></li><li><label><input type="checkbox"> 金鑰與密碼未寫入程式碼</label></li></ul>
+<h2 id="tech-spec">相關技術實作</h2><p class="sub">以下頁面提供各技術（語言／框架／工具）的實作範例：</p><ul><li><a href="../../02-software/backend/injection.html">注入防護</a></li><li><a href="../../02-software/backend/input-validation.html">輸入驗證與檔案上傳</a></li><li><a href="../../02-software/frontend/xss-csp.html">XSS 與內容安全政策（CSP）</a></li><li><a href="../../02-software/auth/password-storage.html">密碼儲存</a></li><li><a href="../../02-software/auth/authorization.html">授權與存取控制</a></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html">OWASP SQL Injection Prevention Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">OWASP XSS Prevention Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html">OWASP Authorization Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP Password Storage Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Server_Side_Request_Forgery_Prevention_Cheat_Sheet.html">OWASP SSRF Prevention Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

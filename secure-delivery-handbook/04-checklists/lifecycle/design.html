@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設計期檢查清單｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>設計期檢查清單</h1>
+  <p class="sub">彙整「設計期」階段的所有檢查項目（含子頁面），可勾選與列印。</p>
+</header>
+<main class="page">
+<div class="note">本頁由腳本從各來源頁面<b>自動彙整</b>，請到來源頁修改內容（點小節旁的「來源」）。勾選狀態依「專案」記錄在你的瀏覽器中，不會上傳。</div><h2>設計期<a class="cl-src" href="../../03-lifecycle/design/index.html">來源 ↗</a></h2><h3 class="cl-sec">架構審查清單</h3><ul class="check"><li><label><input type="checkbox"> 已畫出資料流圖，標示信任邊界（網際網路／DMZ／內網／資料庫）</label></li><li><label><input type="checkbox"> 已定義角色與權限模型（誰能看、改、刪什麼）</label></li><li><label><input type="checkbox"> 已做資料分類，並決定各類資料的加密（傳輸與儲存）與保存期限</label></li><li><label><input type="checkbox"> 認證方式已定（密碼政策、MFA、SSO），Session 機制已定</label></li><li><label><input type="checkbox"> 第三方服務與 API 整合已列出，並評估其風險</label></li><li><label><input type="checkbox"> 管理介面與正式資料庫不直接暴露於公網</label></li><li><label><input type="checkbox"> 日誌與監控需求已列入設計</label></li><li><label><input type="checkbox"> 備份、災難復原與可用性目標（RPO／RTO）已定義</label></li></ul><h3 class="cl-sec">出口條件</h3><ul class="check"><li><label><input type="checkbox"> 威脅模型已完成並評審</label></li><li><label><input type="checkbox"> 安全需求已列入需求清單並可驗證</label></li><li><label><input type="checkbox"> 架構審查缺失已排入開發或有書面接受</label></li></ul>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

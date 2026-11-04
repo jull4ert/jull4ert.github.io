@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>韌體、可信開機與磁碟加密｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>韌體、可信開機與磁碟加密</h1>
+  <p class="sub">保護開機鏈與靜態資料：設備遺失、被拆硬碟或報廢時仍安全。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>啟用 <b>UEFI Secure Boot</b> 與 <b>TPM</b>，BIOS／UEFI 設定密碼並限制開機順序。</li><li><b>韌體更新</b>：BIOS、BMC、網卡、RAID 韌體也要修補並追蹤公告。</li><li><b>全碟加密</b>：伺服器與筆電都啟用；金鑰與復原金鑰妥善保管（不與資料同處）。</li><li>BMC（如 iDRAC、iLO、IPMI）：改預設密碼、停用不用的功能、僅放管理網段。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法；指令與選項會隨版本、廠商調整，實作前請對照官方文件，並先在測試環境驗證。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="windows"><pre><code>Get-Tpm
+Confirm-SecureBootUEFI
+Get-BitLockerVolume
+Enable-BitLocker -MountPoint "D:" -EncryptionMethod XtsAes256 -RecoveryPasswordProtector
+# 復原金鑰請備份到安全位置（如 AD／Entra ID 或密鑰保管系統）</code></pre></div><div class="tech" data-tech="linux"><pre><code>mokutil --sb-state                        # 檢視 Secure Boot 狀態
+# LUKS 會清除資料：僅用於新磁碟，並先確認裝置名稱
+sudo cryptsetup luksFormat /dev/sdX
+sudo cryptsetup open /dev/sdX data
+sudo mkfs.ext4 /dev/mapper/data</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> Secure Boot 與 TPM 已啟用</label></li><li><label><input type="checkbox"> BIOS／UEFI 與 BMC 有強密碼，BMC 不對公網</label></li><li><label><input type="checkbox"> 韌體有更新流程與公告追蹤</label></li><li><label><input type="checkbox"> 磁碟已加密，復原金鑰已安全備份</label></li><li><label><input type="checkbox"> 報廢前以加密抹除或銷毀金鑰處理</label></li></ul><div class="note">指令與設定為最小示意，會隨版本與廠商而異，請在測試環境驗證並對照官方文件後再用於正式環境。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/147/final">NIST SP 800-147 BIOS 保護指引</a></li><li><a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/data-protection/bitlocker/">Microsoft — BitLocker</a></li><li><a href="https://gitlab.com/cryptsetup/cryptsetup">cryptsetup（LUKS）</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html">OWASP — Cryptographic Storage Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>檢查清單｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>檢查清單</h1>
+  <p class="sub">把分散在各頁的檢查項目彙整成可勾選、可記錄、可列印的清單。</p>
+</header>
+<main class="page">
+<h2>怎麼用</h2><ol><li>選擇<b>專案</b>（頁面頂端的工具列，可新增多個專案）。</li><li>依情境開啟對應清單，逐項勾選；進度會自動計算。</li><li>需要留存時按<b>列印</b>（另存 PDF），抬頭會帶上專案名稱與日期。</li><li>勾選狀態只存在你的瀏覽器，換瀏覽器或清除資料就會消失；重要紀錄請列印保存。</li></ol><h2>清單</h2><div id="children"></div><h2>內容來源與更新</h2><ul><li>階段與技術領域的清單由 <code>_build/build_checklists.py</code> 從來源頁面自動彙整，來源頁是唯一維護處。</li><li>新增或修改來源頁的檢查項目後，在專案根目錄執行 <code>python _build/build_checklists.py</code> 即可更新。</li><li>定期維運、人員帳號、報告範本為本區塊自有內容。</li></ul><div class="note">勾選以項目文字為依據：來源頁與彙整頁的同一句項目會同步勾選；修改項目文字後，該項的舊勾選紀錄會失效。</div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

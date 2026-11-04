@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>軟體與應用程式｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>軟體與應用程式</h1>
+  <p class="sub">依「關注點」分類，不綁定技術；每頁先講原則，再以技術分類切換各語言／框架／工具的實作。</p>
+</header>
+<main class="page">
+<h2>怎麼使用</h2><ol><li>先選<b>關注點</b>（前端、後端、驗證授權…）。</li><li>每頁上半是<b>技術無關的原則與檢查清單</b>。</li><li>每頁下半是<b>各技術實作</b>，用頁面頂端的分類篩選列選擇你用的技術，選擇會被記住並套用到其他頁。</li></ol><h2>關注點與 OWASP Top 10 對照</h2><div class="note">以下以 OWASP Top 10 2021 版類別為例；OWASP 會更新版本，類別名稱與排序請以官網最新版為準。</div><table><tr><th>關注點</th><th>主要對應的風險類別</th></tr><tr><td>前端</td><td>注入（XSS）、不安全設計、軟體與資料完整性（第三方腳本）</td></tr><tr><td>後端</td><td>注入、不安全設計、SSRF、安全設定錯誤</td></tr><tr><td>驗證與授權</td><td>存取控制失效、驗證與身分識別失敗、加密失敗</td></tr><tr><td>API</td><td>存取控制失效、安全設定錯誤、SSRF（另見 OWASP API Security Top 10）</td></tr><tr><td>資料庫</td><td>加密失敗、存取控制失效、注入</td></tr><tr><td>平台（伺服器／容器）</td><td>安全設定錯誤、易受攻擊與過時的元件</td></tr><tr><td>DevOps</td><td>軟體與資料完整性失敗、易受攻擊與過時的元件</td></tr><tr><td>日誌與監控</td><td>安全記錄與監控失敗</td></tr></table><h2>關注點</h2><div id="children"></div>
+<p id="cl-ref">📋 <a href="../04-checklists/technical/software.html">軟體與應用程式檢查清單（彙整）</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li><li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a></li><li><a href="https://cheatsheetseries.owasp.org/">OWASP Cheat Sheet Series</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+<script src="../assets/tech.js"></script>
+</body>
+</html>

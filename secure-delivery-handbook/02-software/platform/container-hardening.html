@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>容器與編排加固｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>容器與編排加固</h1>
+  <p class="sub">縮小映像、不用 root、限制能力，並以網路政策隔離。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>使用精簡且受信任的基底映像，固定版本（最好用 digest），並定期重建與掃描。</li><li>多階段建置，最終映像不含編譯工具與原始碼。</li><li>以<b>非 root</b> 使用者執行；檔案系統唯讀；移除不必要的 Linux capabilities。</li><li>密鑰不寫進映像或環境變數明文，改由密鑰管理注入（見 DevOps）。</li><li>編排層：限制 Pod 權限、設定資源上限、以網路政策限縮橫向移動。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="docker"><pre><code># 多階段：最終映像只含執行所需
+FROM &lt;build-image&gt;@sha256:&lt;digest&gt; AS build
+...
+FROM &lt;minimal-runtime-image&gt;@sha256:&lt;digest&gt;
+RUN useradd --uid 10001 --no-create-home app
+COPY --from=build /out /app
+USER 10001
+ENTRYPOINT ["/app/server"]
+
+# 執行時
+docker run --read-only --cap-drop ALL \
+  --security-opt no-new-privileges  myapp:1.0</code></pre></div><div class="tech" data-tech="k8s"><pre><code>securityContext:
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities: { drop: ["ALL"] }
+  seccompProfile: { type: RuntimeDefault }
+resources:
+  limits: { cpu: "500m", memory: "256Mi" }</code></pre><p>另需：NetworkPolicy 預設拒絕、套用 Pod Security Standards 的 <code>restricted</code> 等級、限制 ServiceAccount 權限、不使用 <code>latest</code> 標籤。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 映像固定版本並定期掃描（如 Trivy）</label></li><li><label><input type="checkbox"> 容器以非 root 執行、唯讀根檔案系統</label></li><li><label><input type="checkbox"> 已 drop 不必要的 capabilities</label></li><li><label><input type="checkbox"> 資源上限已設定</label></li><li><label><input type="checkbox"> 網路政策預設拒絕</label></li><li><label><input type="checkbox"> 映像內無密鑰與原始碼</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html">OWASP Docker Security Cheat Sheet</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Kubernetes_Security_Cheat_Sheet.html">OWASP Kubernetes Security Cheat Sheet</a></li><li><a href="https://kubernetes.io/docs/concepts/security/pod-security-standards/">Kubernetes — Pod Security Standards</a></li><li><a href="https://docs.docker.com/engine/security/">Docker — 安全</a></li><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

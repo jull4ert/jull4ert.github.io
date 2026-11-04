@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PCI DSS｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>PCI DSS</h1>
+  <p class="sub">保護信用卡持卡人資料的產業標準；做法重點是「盡量不碰卡號」。</p>
+</header>
+<main class="page">
+<h2>十二項主要要求（v4.x）</h2><table><tr><th>#</th><th>要求</th><th>本手冊對應</th></tr><tr><td>1</td><td>安裝並維護網路安全控制</td><td><a href="../../01-hardware/network/index.html">網路</a></td></tr><tr><td>2</td><td>對所有系統套用安全組態</td><td><a href="../../01-hardware/server/os-hardening.html">作業系統加固</a></td></tr><tr><td>3</td><td>保護儲存的帳戶資料</td><td><a href="../../02-software/database/access-encryption.html">資料庫加密</a></td></tr><tr><td>4</td><td>傳輸時以強加密保護持卡人資料</td><td><a href="../../03-lifecycle/pre-release/web-hardening/tls.html">TLS</a></td></tr><tr><td>5</td><td>保護系統免受惡意軟體危害</td><td><a href="../../01-hardware/endpoint/laptop-baseline.html">終端基準</a></td></tr><tr><td>6</td><td>開發並維護安全的系統與軟體</td><td><a href="../../02-software/index.html">02-software</a>、<a href="../../03-lifecycle/index.html">03-lifecycle</a></td></tr><tr><td>7</td><td>依業務需要限制存取</td><td><a href="../../02-software/auth/authorization.html">授權</a></td></tr><tr><td>8</td><td>識別使用者並驗證存取</td><td><a href="../../02-software/auth/index.html">驗證</a></td></tr><tr><td>9</td><td>限制對持卡人資料的實體存取</td><td><a href="../../01-hardware/physical/index.html">實體安全</a></td></tr><tr><td>10</td><td>記錄並監控所有存取</td><td><a href="../../02-software/logging/index.html">日誌</a></td></tr><tr><td>11</td><td>定期測試系統與網路安全</td><td><a href="../../03-lifecycle/pre-release/index.html">上線前檢查</a></td></tr><tr><td>12</td><td>以組織政策與方案支援資安</td><td>管理制度面</td></tr></table><h2>縮小範圍（建議做法）</h2><ul><li>使用第三方金流的<b>託管付款頁</b>或內嵌框架，讓卡號不經過自己的伺服器；僅儲存金流回傳的代碼（token）。</li><li>不儲存敏感驗證資料（如 CVV）。</li><li>範圍越小，需要自我評估與稽核的項目越少；實際適用的自評問卷類型依金流串接方式而定，請與金流商或合格評估機構確認。</li></ul><h2>與網站開發特別相關</h2><ul><li>對外網站需防範常見攻擊（要求 6）。</li><li>付款頁面的腳本需受管理並偵測竄改（v4.0 新增要求，包含腳本清單與完整性控管）。</li><li><a href="../../02-software/frontend/xss-csp.html">CSP 與 SRI</a>是常用的技術手段。</li></ul><div class="note">本頁依公開資料整理，標準與法規會修訂；條文編號、版本與數字請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.pcisecuritystandards.org/">PCI Security Standards Council</a></li><li><a href="https://www.pcisecuritystandards.org/document_library/">PCI DSS 文件庫</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

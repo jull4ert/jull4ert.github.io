@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>前端｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>前端</h1>
+  <p class="sub">瀏覽器端的安全：防止腳本注入、跨站請求偽造與不當的資源載入。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>前端<b>不可信</b>：任何驗證與授權都必須在伺服器端重做，前端檢查只是使用者體驗。</li><li>不要把機密（API 金鑰、內部網址、權限判斷）放進前端程式碼或打包產物。</li><li>第三方腳本等同給對方執行權限，需固定版本、加 SRI，並以 CSP 限制來源。</li><li>Session 憑證優先放 HttpOnly Cookie，避免放在 localStorage。</li></ul><h2>子主題</h2><div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li><li><a href="https://cheatsheetseries.owasp.org/cheatsheets/DOM_based_XSS_Prevention_Cheat_Sheet.html">OWASP DOM based XSS Prevention Cheat Sheet</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

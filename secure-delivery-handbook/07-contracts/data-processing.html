@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>個資委外與資料處理｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>個資委外與資料處理</h1>
+  <p class="sub">我方通常是受託處理者，合約要把處理範圍、安全措施、事故與終止後的資料處理講清楚。</p>
+</header>
+<main class="page">
+<h2>角色</h2><table><tr><th>角色</th><th>說明</th><th>常見對應</th></tr><tr><td>控管者／委託機關</td><td>決定為何、如何處理個資</td><td>客戶</td></tr><tr><td>處理者／受託者</td><td>依指示代為處理</td><td>我方（多數情況）</td></tr><tr><td>子處理者／再委託</td><td>我方再委託處理的第三方</td><td>雲端、簡訊、郵件、監控服務等</td></tr></table><p>角色以「誰決定處理目的與方式」為準，而非合約標題。我方若自行決定用途（如行銷分析），就可能成為控管者。詳見 <a href="../05-standards/regulations/pdpa.html">個資法</a>、<a href="../05-standards/regulations/gdpr.html">GDPR</a>。</p><h2>合約條款項目</h2><table><tr><th>項目</th><th>應載明</th></tr><tr><td>處理範圍</td><td>資料類型、當事人類型、處理目的、期間、處理方式</td></tr><tr><td>依指示處理</td><td>僅依客戶書面指示處理，不為自己的目的使用</td></tr><tr><td>保密</td><td>人員簽保密、最小存取、存取留紀錄</td></tr><tr><td>安全措施</td><td>引用具體措施或附件（加密、存取控制、日誌、備份，對應 <a href="../02-software/index.html">02 軟體</a> 與 <a href="../01-hardware/index.html">01 硬體</a>）</td></tr><tr><td>子處理者</td><td>清單、事前通知或同意機制、同等義務、我方對其負責</td></tr><tr><td>跨境傳輸</td><td>資料存放與存取位置（含雲端區域、支援人員所在地）</td></tr><tr><td>事故通知</td><td>知悉後通知時限、內容與配合（見 <a href="../06-incident/notification.html">通報</a>）</td></tr><tr><td>當事人權利協助</td><td>協助客戶回應查詢、更正、刪除請求（如 GDPR 第 17 條）</td></tr><tr><td>稽核與證明</td><td>提供證明或配合稽核</td></tr><tr><td>終止後</td><td>返還或銷毀、時限、證明文件、備份的處理（見 <a href="../03-lifecycle/handover/index.html">交付與終止</a>）</td></tr></table><h2>實務注意</h2><ul><li>開發與測試環境不使用真實個資；必須使用時要去識別化並限縮人員。</li><li>客戶提供的資料只存在約定位置，不放在個人電腦或私人雲端。</li><li>支援與除錯時如需查看個資，要有授權與紀錄。</li><li>資料返還與銷毀：依媒體類型選方法並出具證明（見 <a href="../01-hardware/physical/equipment-disposal.html">設備報廢</a>）。</li></ul><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 已確認我方是控管者還是處理者，並寫入合約</label></li><li><label><input type="checkbox"> 附有處理範圍、資料類型、保存期間</label></li><li><label><input type="checkbox"> 子處理者清單與管理機制已載明</label></li><li><label><input type="checkbox"> 資料存放位置與跨境傳輸已確認</label></li><li><label><input type="checkbox"> 事故通知時限與內容已載明</label></li><li><label><input type="checkbox"> 終止後返還與銷毀流程與證明已載明</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://gdpr-info.eu/art-28-gdpr/">GDPR 第 28 條 處理者</a></li><li><a href="https://law.moj.gov.tw/">全國法規資料庫（個人資料保護法）</a></li><li><a href="https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-072020-concepts-controller-and-processor-gdpr_en">EDPB 控管者與處理者指引</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

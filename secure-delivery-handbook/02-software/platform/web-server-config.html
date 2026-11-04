@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>網頁伺服器設定｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>網頁伺服器設定</h1>
+  <p class="sub">隱藏版本、強制 HTTPS 與加上安全標頭的設定範例。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>停用目錄列表、隱藏版本資訊、移除預設頁面與範例。</li><li>僅啟用 TLS 1.2／1.3，HTTP 一律轉 HTTPS（詳見 <a href="../../03-lifecycle/pre-release/web-hardening/tls.html">TLS 設定</a>）。</li><li>統一在伺服器或閘道加上安全標頭（詳見 <a href="../../03-lifecycle/pre-release/web-hardening/http-headers.html">安全標頭</a>）。</li><li>限制請求大小與逾時，降低慢速攻擊影響。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="nginx"><pre><code>server_tokens off;
+ssl_protocols TLSv1.2 TLSv1.3;
+add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+client_max_body_size 10m;
+autoindex off;</code></pre></div><div class="tech" data-tech="iis"><pre><code>&lt;system.webServer&gt;
+  &lt;security&gt;&lt;requestFiltering removeServerHeader="true" /&gt;&lt;/security&gt;
+  &lt;httpProtocol&gt;
+    &lt;customHeaders&gt;
+      &lt;remove name="X-Powered-By" /&gt;
+      &lt;add name="X-Content-Type-Options" value="nosniff" /&gt;
+      &lt;add name="Referrer-Policy" value="strict-origin-when-cross-origin" /&gt;
+    &lt;/customHeaders&gt;
+  &lt;/httpProtocol&gt;
+&lt;/system.webServer&gt;</code></pre><p>TLS 協定與加密套件由 Windows Schannel 設定（登錄檔或 IIS Crypto 等工具），不在 web.config。</p></div><div class="tech" data-tech="apache"><pre><code>ServerTokens Prod
+ServerSignature Off
+Options -Indexes
+SSLProtocol -all +TLSv1.2 +TLSv1.3
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+Header always set X-Content-Type-Options "nosniff"
+LimitRequestBody 10485760</code></pre></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 版本資訊已隱藏、目錄列表已關閉</label></li><li><label><input type="checkbox"> 僅啟用 TLS 1.2／1.3</label></li><li><label><input type="checkbox"> 安全標頭已設定</label></li><li><label><input type="checkbox"> 預設頁面與範例已移除</label></li><li><label><input type="checkbox"> 服務以非特權帳號執行</label></li><li><label><input type="checkbox"> 請求大小與逾時已設定</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://ssl-config.mozilla.org/">Mozilla SSL Configuration Generator</a></li><li><a href="https://nginx.org/en/docs/">Nginx 文件</a></li><li><a href="https://learn.microsoft.com/en-us/iis/get-started/whats-new-in-iis-10/iis-10-security">Microsoft — IIS 安全</a></li><li><a href="https://httpd.apache.org/docs/current/misc/security_tips.html">Apache — 安全提示</a></li><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

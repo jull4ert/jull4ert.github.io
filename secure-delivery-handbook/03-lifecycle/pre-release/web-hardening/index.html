@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>網站強化設定｜資安交付手冊</title>
+<link rel="stylesheet" href="../../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>網站強化設定</h1>
+  <p class="sub">不改業務程式碼，僅靠伺服器與標頭設定就能提升的防護。</p>
+</header>
+<main class="page">
+<p>這類設定成本低、效益高，也最容易被客戶的外部掃描（例如 SSL Labs、securityheaders.com）直接看到，建議每個專案都有統一基準。</p>
+<div id="children"></div>
+
+<h2>快速自我檢測</h2>
+<ul>
+  <li><a href="https://www.ssllabs.com/ssltest/">SSL Labs Server Test</a>：TLS 設定評分。</li>
+  <li><a href="https://securityheaders.com/">Security Headers</a>：HTTP 安全標頭評分。</li>
+  <li><a href="https://observatory.mozilla.org/">Mozilla HTTP Observatory</a>：綜合檢查。</li>
+</ul>
+<p class="sub">這些是公開的第三方線上服務，只會掃描你輸入的公開網址，內網或預備環境請改用本機工具。</p>
+
+<h2 id="hw-ref">相關硬體與基礎設施</h2><ul><li><a href="../../../01-hardware/network/waf-ddos.html">WAF 與 DDoS 防護</a></li></ul>
+<section class="refs">
+  <h3>參考出處</h3>
+  <ul>
+    <li><a href="https://owasp.org/www-project-secure-headers/">OWASP Secure Headers Project</a></li>
+    <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html">OWASP HTTP Headers Cheat Sheet</a></li>
+  </ul>
+</section>
+</main>
+<footer></footer>
+<script src="../../../assets/sitemap.js"></script>
+<script src="../../../assets/nav.js"></script>
+</body>
+</html>

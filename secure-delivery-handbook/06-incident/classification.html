@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>事故分級｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>事故分級</h1>
+  <p class="sub">分級決定要多快回應、通知誰、動用多少資源。</p>
+</header>
+<main class="page">
+<h2>建議的四級</h2><table><tr><th>等級</th><th>判斷條件（符合任一）</th><th>目標回應時間*</th><th>通知</th></tr><tr><td>P1 重大</td><td>確認或疑似個資／機敏資料外洩；核心服務完全中斷；勒索或被入侵並仍在擴大；金流或交易受影響</td><td>立即（盡可能 30 分鐘內開始處理）</td><td>指揮官、客戶主管、法務；評估法定通報</td></tr><tr><td>P2 嚴重</td><td>重要功能中斷或明顯降級；已確認入侵但範圍受控；高危漏洞被實際利用的跡象</td><td>1–2 小時內</td><td>客戶技術窗口、我方主管</td></tr><tr><td>P3 中度</td><td>單一次要功能異常；被擋下的攻擊嘗試激增；漏洞已知但未見被利用</td><td>下一個工作日內</td><td>客戶技術窗口（視合約）</td></tr><tr><td>P4 輕微</td><td>單次告警、誤報、資訊性事件</td><td>一週內</td><td>留紀錄</td></tr></table><p>* 目標時間為示例，應與客戶在 <a href="../07-contracts/sla.html">SLA</a> 約定，並與系統風險等級（見 <a href="../03-lifecycle/pre-sales/risk-classification.html">風險分級</a>）一致。</p><h2>判斷時的問題</h2><ol><li>哪些資料可能被存取、複製或竄改？是否含個資或金流資料？</li><li>影響多少使用者？</li><li>攻擊者是否仍在系統內？是否還在擴大？</li><li>服務是否中斷？預估影響多久？</li><li>是否有法定通報義務？（見 <a href="notification.html">通報與溝通</a>）</li></ol><div class="note">拿不準時<b>往高一級</b>處理，調查後再降級。事故中升級比降級容易溝通。</div><h2>升降級規則</h2><ul><li>發現個資外洩跡象 → 至少 P1，直到證明沒有。</li><li>遏止成功且確認無外洩 → 可降級，並記錄理由。</li><li>等級變更要記入紀錄表，並通知已被通知過的對象。</li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li><li><a href="https://sre.google/sre-book/managing-incidents/">Google SRE：處理事故</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

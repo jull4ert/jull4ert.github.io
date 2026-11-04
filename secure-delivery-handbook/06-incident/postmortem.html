@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>事後檢討｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>事後檢討</h1>
+  <p class="sub">目的是改善系統與流程，不是追究個人。沒有檢討，同樣的事故會再發生。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li><b>無責備（blameless）</b>：問「系統為什麼讓這件事發生」，而不是「誰做錯」。</li><li>盡快召開（事故結束後 1–2 週內），細節還記得。</li><li>結論要有負責人與期限的改善項目，否則只是報告。</li></ul><h2>報告範本</h2><pre><code>標題：{事故編號}｜{一句話描述}
+摘要：發生什麼、影響多大、持續多久、現在狀態
+影響：受影響使用者／資料／金額；是否有通報
+時間線（UTC+8）：
+  hh:mm 發生／發現／分級／遏止／復原／結案
+偵測：怎麼發現的？早晚？為什麼沒更早發現？
+根本原因：用 5 Whys 或魚骨圖寫到「流程或系統層面」
+促成因素：缺少的監控、權限過大、文件過期等
+做得好的地方：
+運氣成分：這次剛好沒變更糟的事
+改善項目：
+  [ ] 項目｜負責人｜期限｜優先級（預防／偵測／回應）
+經驗與教訓：</code></pre><h2>5 Whys 範例</h2><ol><li>網站被植入後門 → 為什麼？上傳功能允許 .php 檔。</li><li>為什麼允許？只有前端判斷副檔名。</li><li>為什麼沒被擋？後端未驗證，且 <a href="../03-lifecycle/pre-release/code-scan/sast.html">SAST</a> 規則未涵蓋。</li><li>為什麼沒涵蓋？規則集未啟用檔案上傳類別。</li><li>為什麼沒啟用？流水線預設規則沒有人定期檢視 → <b>改善</b>：每季檢視規則集並納入檢查清單。</li></ol><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> 事故結束後 2 週內已召開檢討</label></li><li><label><input type="checkbox"> 報告已與客戶分享（視合約）</label></li><li><label><input type="checkbox"> 每個改善項目都有負責人與期限</label></li><li><label><input type="checkbox"> 相關文件、偵測規則、檢查清單已更新</label></li><li><label><input type="checkbox"> 改善項目追蹤到完成為止</label></li></ul><div class="note">本頁依公開資料與一般實務整理；法規時限、條號與數字會修訂，請以官方最新版本為準。涉及法律責任與合約時請諮詢法務或律師。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://sre.google/sre-book/postmortem-culture/">Google SRE：事後檢討文化</a></li><li><a href="https://www.atlassian.com/incident-management/postmortem">Atlassian Postmortem 指南</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final">NIST SP 800-61 Rev.3</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>開發期｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>開發期</h1>
+  <p class="sub">把資安融入日常開發流程，而不是上線前才補救。</p>
+</header>
+<main class="page">
+<h2>開發流程中的安全控制</h2><table><tr><th>環節</th><th>控制措施</th></tr><tr><td>版本控制</td><td>主幹分支保護、禁止直接推送、PR 必須經審查；啟用雙因素驗證</td></tr><tr><td>環境</td><td>開發／測試／正式環境分離；金鑰與資料不共用；正式資料不用於測試（需要時先去識別化）</td></tr><tr><td>CI 閘門</td><td>SAST、依賴掃描、機敏資訊掃描，嚴重項目阻擋合併（見上線前檢查）</td></tr><tr><td>程式碼審查</td><td>至少一位同儕審查，涉及認證授權與金流需第二人或資安人員</td></tr><tr><td>教育訓練</td><td>開發者定期學習 OWASP Top 10 與公司安全編碼規範</td></tr><tr><td>權限</td><td>開發者對正式環境預設無權限，需要時以臨時授權並留紀錄</td></tr></table><h2>子主題</h2><div id="children"></div><h2>出口條件</h2><ul class="check"><li><label><input type="checkbox"> 所有 PR 皆經審查並通過 CI 掃描</label></li><li><label><input type="checkbox"> 無未處理的嚴重／高風險掃描結果</label></li><li><label><input type="checkbox"> 安全需求對應的測試案例已通過</label></li><li><label><input type="checkbox"> 測試環境未使用真實個資（或已去識別化）</label></li></ul>
+<h2 id="tech-spec">技術與規範</h2><p class="sub">「技術實作」連到 02-software 的對應頁（可用技術分類篩選）；「規範」為外部標準，完整對照見 <a href="../../05-standards/stage-matrix.html">階段 × 規範對照表</a>。</p><table><tr><th>工作項目</th><th>技術實作</th><th>規範／標準</th></tr><tr><td>注入與輸入驗證</td><td><a href="../../02-software/backend/injection.html">注入防護</a>、<a href="../../02-software/backend/input-validation.html">輸入驗證與檔案上傳</a></td><td><a href="https://owasp.org/Top10/">OWASP Top 10</a>、<a href="https://cwe.mitre.org/top25/">CWE Top 25</a></td></tr><tr><td>前端安全</td><td><a href="../../02-software/frontend/xss-csp.html">XSS 與內容安全政策（CSP）</a>、<a href="../../02-software/frontend/csrf-cors.html">CSRF 與 CORS</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">OWASP XSS Prevention Cheat Sheet</a></td></tr><tr><td>驗證與授權</td><td><a href="../../02-software/auth/password-storage.html">密碼儲存</a>、<a href="../../02-software/auth/session-jwt.html">Session 與 JWT</a>、<a href="../../02-software/auth/authorization.html">授權與存取控制</a></td><td><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS</a>（驗證、Session、存取控制相關章節）</td></tr><tr><td>CI 掃描與密鑰</td><td><a href="../../02-software/devops/ci-pipeline.html">CI 安全管線</a>、<a href="../../02-software/devops/secrets-management.html">密鑰管理</a></td><td><a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SSDF（SP 800-218）</a>（PW.5 安全編碼、PW.7 程式碼審查／分析）</td></tr><tr><td>日誌</td><td><a href="../../02-software/logging/structured-logging.html">結構化日誌</a></td><td><a href="https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html">OWASP Logging Cheat Sheet</a></td></tr><tr><td>程式碼審查</td><td><a href="./code-review.html">程式碼審查</a>、<a href="./secure-coding.html">安全編碼</a></td><td><a href="https://owasp.org/www-project-code-review-guide/">OWASP Code Review Guide</a></td></tr></table>
+<p id="cl-ref">📋 本階段彙整檢查清單：<a href="../../04-checklists/lifecycle/development.html">開發期檢查清單</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://csrc.nist.gov/pubs/sp/800/218/final">NIST SP 800-218 SSDF</a></li><li><a href="https://owasp.org/Top10/">OWASP Top 10</a></li><li><a href="https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches">GitHub — 保護分支</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+</body>
+</html>

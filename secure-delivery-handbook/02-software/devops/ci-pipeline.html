@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CI 安全管線｜資安交付手冊</title>
+<link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>CI 安全管線</h1>
+  <p class="sub">把機敏資訊掃描、依賴／映像掃描與 SAST 放進每次提交的流程。</p>
+</header>
+<main class="page">
+<h2>原則</h2><ul><li>PR 階段即執行掃描，嚴重項目阻擋合併（細節見 <a href="../../03-lifecycle/pre-release/code-scan/index.html">程式碼與依賴掃描</a>）。</li><li>管線權限預設唯讀，需要時才提升（如 GitHub Actions 的 <code>permissions</code>）。</li><li>第三方 Action 固定到 commit SHA，避免標籤被改寫。</li><li>不讓來自 fork 的 PR 取得密鑰。</li><li>主幹建置時產生 SBOM 並存檔。</li></ul><h2 id="impl">各技術實作</h2><div class="note">範例為最小示意，用來說明做法，套件 API 會隨版本調整，實作時請對照該版本的官方文件。上方篩選列可只顯示你用的技術。</div><span id="tech-anchor"></span><div class="tech" data-tech="gha"><pre><code>name: security
+on: [pull_request]
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@&lt;commit-sha&gt;
+        with: { fetch-depth: 0 }
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@&lt;commit-sha&gt;
+      - name: Dependency / filesystem scan
+        uses: aquasecurity/trivy-action@&lt;commit-sha&gt;
+        with:
+          scan-type: fs
+          severity: CRITICAL,HIGH
+          exit-code: '1'</code></pre></div><div class="tech" data-tech="gitlab"><pre><code>include:
+  - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml</code></pre></div><div class="tech" data-tech="azdo"><pre><code>steps:
+  - task: MicrosoftSecurityDevOps@1
+    displayName: Microsoft Security DevOps</code></pre><p>需先安裝 Microsoft Security DevOps 擴充套件；亦可於管線中直接執行 gitleaks、Trivy 等 CLI。</p></div><h2>檢查清單</h2><ul class="check"><li><label><input type="checkbox"> PR 觸發機敏資訊、依賴與 SAST 掃描</label></li><li><label><input type="checkbox"> 管線預設最小權限</label></li><li><label><input type="checkbox"> 第三方 Action／映像已固定版本</label></li><li><label><input type="checkbox"> fork PR 無法取得密鑰</label></li><li><label><input type="checkbox"> SBOM 隨版本存檔</label></li></ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions">GitHub — 安全強化 Actions</a></li><li><a href="https://docs.gitlab.com/ee/user/application_security/">GitLab — 安全掃描</a></li><li><a href="https://learn.microsoft.com/en-us/azure/defender-for-cloud/azure-devops-extension">Microsoft Security DevOps</a></li><li><a href="https://github.com/aquasecurity/trivy">Trivy</a></li><li><a href="https://github.com/gitleaks/gitleaks">Gitleaks</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../../assets/sitemap.js"></script>
+<script src="../../assets/nav.js"></script>
+<script src="../../assets/tech.js"></script>
+</body>
+</html>

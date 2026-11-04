@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>硬體與基礎設施｜資安交付手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>硬體與基礎設施</h1>
+  <p class="sub">從機房、伺服器、網路到終端與雲端：軟體再安全，底層失守就全盤皆輸。</p>
+</header>
+<main class="page">
+<h2>先判斷你的情境</h2><table><tr><th>情境</th><th>實體與硬體</th><th>本區塊建議深度</th></tr><tr><td>自建機房</td><td>全部自己負責</td><td>全部章節都需落實</td></tr><tr><td>託管機房（Colocation）</td><td>機房設施由廠商負責，伺服器與網路設備自己負責</td><td>實體章節以「查證廠商」為主，其餘落實</td></tr><tr><td>雲端 IaaS（虛擬機）</td><td>硬體與機房由雲端商負責，OS 以上自己負責</td><td>重點在雲端、伺服器 OS、網路與備份</td></tr><tr><td>PaaS／託管服務</td><td>OS 與執行環境多由廠商負責</td><td>重點在雲端身分與權限、資料與備份</td></tr></table><h2>責任歸屬一個原則</h2><ul><li><b>資料與存取權限永遠是你的責任</b>，不論部署在哪裡。</li><li>任何一層若由廠商負責，要有證據（驗證報告、合約條款），而不是假設。</li></ul><h2>區塊</h2><div id="children"></div>
+<p id="cl-ref">📋 <a href="../04-checklists/technical/hardware.html">硬體與基礎設施檢查清單（彙整）</a></p>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.cisecurity.org/cis-benchmarks">CIS Benchmarks</a></li><li><a href="https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final">NIST SP 800-53（實體與環境保護等控制）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
