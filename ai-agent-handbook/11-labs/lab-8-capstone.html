@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 8：綜合練習：取消原因｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 8：綜合練習：取消原因</h1>
+  <p class="sub">獨立完成一個小需求，並產出完整的證據，作為能力檢核的依據。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：3～4 小時　<b>分支</b>：<code>lab8-cancel-reason</code>　<b>難度</b>：綜合，沒有逐步提示</p>
+<h2>情境</h2>
+<p>客服主管說：「取消訂單時，要記錄取消原因，之後才能分析為什麼被取消。」</p>
+<h2>你要做的</h2>
+<p>獨立走完第 04 章的流程，不看提示。以下是<b>驗收標準</b>，不是步驟：</p>
+<ol>
+<li><b>訪談</b>：agent 提出至少 5 個關鍵問題（例如：原因是必填嗎？是選項還是自由輸入？舊訂單怎麼辦？誰能看到？已出貨的訂單呢？），你做出決定，並有決策紀錄。</li>
+<li><b>規格</b>：含非目標、可驗收的條件、邊界情境、未決問題；並<b>做過需求審查</b>，至少修正一個缺漏。</li>
+<li><b>計畫</b>：垂直切片的任務清單，每個任務可獨立驗收。</li>
+<li><b>實作</b>：後端（Order 增加欄位、Service、API 驗證）、前端（取消時輸入原因、列表顯示原因），每個任務先寫失敗的測試。</li>
+<li><b>驗證</b>：證據表，每個驗收條件都有證據。</li>
+<li><b>交叉審查</b>：至少兩個視角，附反駁與裁決表。</li>
+<li><b>交付</b>：commit 與 PR 說明（含 AI 輔助與驗證說明）、更新 CLAUDE.md 或術語表（若有新慣例或名詞）。</li>
+</ol>
+<h2>提示（不是答案）</h2>
+<ul>
+<li>注意與 Lab 2 的規則互動：已出貨的訂單不能取消，也就不會有原因。</li>
+<li>練習專案是記憶體資料，沒有資料庫，不需要 migration；但請想想：如果有資料庫，哪些事要找人？</li>
+<li>後端驗證與前端提示都要做，前端不能取代後端驗證。</li>
+</ul>
+<h2>評分表（自評或請同事評）</h2>
+<table><tr><th>面向</th><th>3 分</th><th>2 分</th><th>1 分</th></tr>
+<tr><td>需求釐清</td><td>主動提出並處理了關鍵缺漏</td><td>只處理了明顯的</td><td>直接開始寫</td></tr>
+<tr><td>規格品質</td><td>全部條件可直接寫成測試</td><td>部分含糊</td><td>只有描述沒有條件</td></tr>
+<tr><td>測試先行</td><td>每個任務都看過測試先失敗</td><td>部分</td><td>先寫程式再補測試</td></tr>
+<tr><td>驗證誠實</td><td>證據表含不通過項並處理</td><td>全通過但證據薄弱</td><td>只說「應該可以」</td></tr>
+<tr><td>審查</td><td>有反駁與裁決，駁回有理由</td><td>有審查但未裁決</td><td>沒有審查</td></tr>
+<tr><td>範圍控制</td><td>diff 只含相關檔案</td><td>有少量無關改動</td><td>大量無關改動</td></tr>
+<tr><td>可解釋性</td><td>能向同事說明每個決定</td><td>部分說得出</td><td>說不出為什麼</td></tr>
+<tr><td>交付</td><td>PR 說明完整誠實</td><td>缺驗證或 AI 說明</td><td>只有一行</td></tr></table>
+<p>滿分 24。<b>18 分以上</b>可視為達到<a href="../10-learning-path/self-assessment.html">第 3 級</a>；12～17 分建議針對低分項回頭重做對應的 Lab；低於 12 分，請先找同事帶你走一次。</p>
+<h2>交出什麼</h2>
+<ul>
+<li>決策紀錄、規格（含審查後的修訂）、計畫檔。</li>
+<li>證據表、審查裁決表。</li>
+<li>PR 說明。</li>
+<li>你的學習紀錄：這次最大的發現與最想改進的一件事。</li>
+</ul>
+<div class="note">這個練習沒有參考解答。對照基準是你的驗收條件與測試：只要它們被你自己的證據支持，就是正確的。</div>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

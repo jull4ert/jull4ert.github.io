@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：除錯（例外與錯誤行為）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：除錯（例外與錯誤行為）</h1>
+  <p class="sub">先重現、再找根因、最後才修；用測試固定下來。</p>
+</header>
+<main class="page">
+
+<h2>情境</h2>
+<p>使用者回報「某個操作出錯」，或你在 log 看到例外。常見誘惑是把錯誤丟給 agent、直接叫它改。更可靠的順序是：<b>重現 → 根因 → 失敗的測試 → 修正 → 驗證</b>。</p>
+<h2>步驟</h2>
+<ol>
+<li><b>整理線索</b>：重現步驟、預期、實際、完整例外（含 stack trace 最上面的自己程式的幾行）、環境（是哪個環境、哪個版本）。</li>
+<li><b>要求只分析不修改</b>：
+<pre><code>&gt; 重現步驟：…
+&gt; 預期：…　實際：…
+&gt; 例外：（貼 stack trace 最前面 20 行）
+&gt; 請閱讀相關程式，列出 3 個最可能的根因，每個說明「為什麼可能」以及「我怎麼驗證」。
+&gt; 現在不要修改任何檔案。</code></pre></li>
+<li><b>驗證假設</b>：用最便宜的方式（加一個測試、在本機重現、看 log）逐個排除。</li>
+<li><b>先寫失敗的測試</b>，再修正（見<a href="../11-labs/lab-2-fix-bug.html">Lab 2</a>）。</li>
+<li><b>修正後</b>，問：「同樣的問題還可能出現在哪些地方？」並搜尋類似寫法。</li>
+</ol>
+<h2>常見的 .NET 例外與提問方向</h2>
+<table><tr><th>症狀</th><th>可以問 agent</th></tr>
+<tr><td><code>NullReferenceException</code></td><td>「哪一個物件為 null？它在什麼條件下會是 null？上游哪裡應該保證非 null？」</td></tr>
+<tr><td><code>InvalidOperationException</code>（序列沒有元素等）</td><td>「<code>First</code>／<code>Single</code> 在什麼資料下會丟例外？該用 <code>FirstOrDefault</code> 還是先驗證？」</td></tr>
+<tr><td>DI 錯誤（無法解析服務）</td><td>「這個服務註冊的生命週期是什麼？有沒有 Singleton 依賴 Scoped？」</td></tr>
+<tr><td>非同步問題（資料沒更新、死結）</td><td>「有沒有漏掉 <code>await</code>？有沒有在同步程式碼中 <code>.Result</code> / <code>.Wait()</code>？」</td></tr>
+<tr><td>JSON 序列化錯誤或欄位缺失</td><td>「請求與回應的實際 JSON 是什麼？大小寫、列舉、日期格式是否與 DTO 一致？」</td></tr>
+<tr><td>前端畫面沒更新</td><td>「Vue 的資料是在哪裡被改的？是不是直接改了非響應式的物件？瀏覽器 Console 與 Network 的實際回應是什麼？」</td></tr>
+<tr><td>只在某些資料出錯</td><td>「哪一種資料會觸發？請列出邊界值（空、極大、特殊字元、時區）。」</td></tr></table>
+<h2>效能問題</h2>
+<pre><code>&gt; 訂單列表在資料量大時很慢。請先閱讀查詢與資料存取的程式，
+&gt; 列出可能的原因（例如 N+1 查詢、缺少索引、載入了不需要的欄位），
+&gt; 並說明我該用什麼方式量測來證實（不要先改程式）。</code></pre>
+<p>先量測再優化：agent 的推測需要實際數據驗證。</p>
+<h2>檢查清單</h2>
+<ul>
+<li>我能重現問題，且有失敗的測試或明確的重現步驟。</li>
+<li>修正前後的證據都有。</li>
+<li>修改範圍小；沒有順手重構。</li>
+<li>考慮過同類問題與副作用。</li>
+<li>錯誤訊息對使用者與維運都有幫助（沒有吞掉例外）。</li>
+</ul>
+<h2>陷阱</h2>
+<ul>
+<li>不要接受「加上 try-catch 讓它不報錯」這種修法。</li>
+<li>避免把含個資的 log 或例外內容直接貼出去（見 <a href="../09-governance/data-secrets.html">09</a>）。</li>
+<li>agent 說「根因是 X」但沒有證據時，要它用測試或重現證明。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

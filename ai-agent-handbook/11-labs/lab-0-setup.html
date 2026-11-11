@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 0：環境與試跑｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 0：環境與試跑</h1>
+  <p class="sub">把練習專案複製出來、編譯、跑測試、啟動網站，並第一次在專案裡啟動 agent。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：30～45 分鐘　<b>前置</b>：.NET 8 SDK、Node.js、git、Claude Code 已安裝</p>
+<h2>目標</h2>
+<ul>
+<li>把 OrderDemo 複製到你自己的資料夾，並建立獨立的 git 儲存庫。</li>
+<li>確認建置與測試都能執行。</li>
+<li>啟動網站看到訂單列表。</li>
+<li>在專案資料夾啟動 agent，做三個唯讀問答。</li>
+</ul>
+<h2>步驟</h2>
+<h3>1. 複製專案並建立 git</h3>
+<pre><code>:: 把 sample/OrderDemo 整個資料夾複製到你的工作目錄，例如 D:/work/OrderDemo
+cd D:/work/OrderDemo
+git init
+git add -A
+git commit -m "初始狀態"</code></pre>
+<p>一定要複製出來並建立<b>自己的</b> git，不要直接在手冊倉庫裡練習，避免弄亂手冊。</p>
+<h3>2. 建置與測試</h3>
+<pre><code>dotnet test
+node --test</code></pre>
+<p>專案內附 <code>nuget.config</code>，只使用 nuget.org，避免公司內部的私有套件來源要求登入而造成還原失敗。</p>
+<h3>3. 啟動網站</h3>
+<pre><code>dotnet run --project src/OrderDemo.Web</code></pre>
+<p>看輸出中的網址（例如 <code>http://localhost:5000</code>），開啟 <code>/Orders</code> 頁面，應看到部門 1 的訂單表格。</p>
+<h3>4. 啟動 agent 並做唯讀問答</h3>
+<pre><code>claude</code></pre>
+<pre><code>&gt; 這個專案是什麼？用 5 句話說明架構。
+&gt; 測試怎麼跑？目前有哪些測試？
+&gt; 前端是怎麼呼叫後端的？</code></pre>
+<p>請在專案根目錄啟動，並先<b>不要</b>讓它修改任何檔案。</p>
+<h2>預期結果</h2>
+<table><tr><th>指令</th><th>預期</th></tr>
+<tr><td><code>dotnet test</code></td><td>已通過！失敗 0、通過 6、總計 6</td></tr>
+<tr><td><code>node --test</code></td><td>pass 3、fail 0</td></tr>
+<tr><td>瀏覽器 <code>/Orders</code></td><td>顯示 6 筆訂單（部門 1），日期欄為 YYYY-MM-DD</td></tr>
+<tr><td>agent 問答</td><td>能指出 MVC、API、Service、記憶體 Repository、Vue 的角色</td></tr></table>
+<h2>檢核</h2>
+<ul>
+<li>我有自己的 git 儲存庫，且初始 commit 已建立。</li>
+<li>測試結果與預期相同。</li>
+<li>我看到網頁，並試著切換「狀態」篩選。</li>
+<li>agent 的回答中，我能找到一個和程式碼對得上的地方，並說出是哪個檔案。</li>
+</ul>
+<details><summary>常見問題</summary>
+<ul>
+<li><b>NuGet 還原失敗（NU1301）</b>：檢查是否有全域或公司的套件來源需要驗證；專案的 <code>nuget.config</code> 已清除其他來源，確認它在專案根目錄。</li>
+<li><b>找不到 .NET 8</b>：執行 <code>dotnet --list-sdks</code>，需包含 8.x，或安裝 .NET 8 SDK。</li>
+<li><b>頁面空白</b>：Vue 以 CDN 載入，需要能連到 unpkg.com；檢查網路與瀏覽器主控台。</li>
+<li><b>連接埠被占用</b>：加上 <code>--urls http://localhost:5187</code>。</li>
+</ul></details>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://dotnet.microsoft.com/download/dotnet/8.0">.NET 8 下載</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/quickstart">Claude Code Quickstart</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent 開發手冊｜導覽</title>
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>AI Agent 開發手冊</h1>
+  <p class="sub">學會用 AI agent 把事做得更好更強：從需求到程式碼由 agent 代勞，並讓 agent 交叉審查找出盲點，再延伸到行事曆、Trello 等工作流程。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--sw)"></i>入門</span>
+    <span><i class="dot" style="background:var(--accent)"></i>核心（需求到程式碼）</span>
+    <span><i class="dot" style="background:var(--proc)"></i>進階（工作流程）</span>
+    <span><span class="tag done">已完成</span></span>
+  </div>
+</header>
+
+<main>
+
+<h2>新手從這裡開始</h2>
+<div class="card" style="border-top:3px solid var(--ok)">
+  <h3><a href="./10-learning-path/index.html">新手專區：四週學習路徑</a> <span class="tag done">已完成</span></h3>
+  <p>如果你是剛開始的工程師，<b>不要從頭讀到尾</b>。照四週路徑：每週有目標、要讀的頁面、要做的練習和檢核點。</p>
+  <ul>
+    <li><a href="./10-learning-path/prerequisites.html">前置知識補課</a>（git、讀 diff、xUnit、HTTP 與 Vue 基本概念）</li>
+    <li><a href="./11-labs/index.html">動手練習</a>：在 ASP.NET Core MVC＋Vue 的練習專案上做 9 個練習</li>
+    <li><a href="./10-learning-path/verify-code.html">驗證看不懂的程式</a>、<a href="./10-learning-path/agent-as-teacher.html">把 agent 當老師</a>、<a href="./10-learning-path/overtrust.html">過度信任的警訊</a></li>
+    <li><a href="./10-learning-path/self-assessment.html">能力檢核</a>：判斷自己是否已能獨立協作</li>
+  </ul>
+</div>
+
+<h2>定位與範圍</h2>
+<div class="card">
+  <ul>
+    <li><b>定位</b>：不只是入門，更是「怎麼用得更好、更強」的技巧庫。初學者可由 Lv0 起讀，熟手可直接跳到文件、工具箱、交叉審查。</li>
+    <li><b>目標</b>：你負責說清楚要什麼與做決定；釐清需求、寫規格、寫碼、測試、審查由 agent 代勞，並且<b>讓 agent 互相挑戰，找出你和單一 agent 都看不到的盲點</b>。</li>
+    <li><b>範圍內</b>：軟體開發全流程，以及非程式工作流程（行事曆、Trello、Slack、Gmail、Notion 等協作工具整合）。</li>
+    <li><b>示範工具</b>：以 Claude Code 為主，觀念可套用到其他 agent。</li>
+    <li><b>範圍外</b>：模型訓練原理、從零自建 agent 框架。</li>
+  </ul>
+</div>
+
+<h2>三條主軸</h2>
+<div class="grid">
+  <div class="card sw"><h3>① 餵對文件</h3><p>agent 的表現取決於它讀到什麼。學會寫它讀得懂、用得上的文件。</p></div>
+  <div class="card" style="border-top:3px solid var(--accent)"><h3>② 交叉審查</h3><p>用獨立情境、不同角色、對抗式提問，抓出需求與程式碼的盲點。</p></div>
+  <div class="card proc"><h3>③ 串成工作流</h3><p>把重複流程變成 skill、hook、排程，並接上行事曆與 Trello 等工具。</p></div>
+</div>
+
+<h2>各區規劃</h2>
+<div class="grid">
+  <div class="card sw">
+    <h3><a href="./00-foundations/index.html">00 基礎觀念</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./00-foundations/</p>
+    <ul>
+      <li><a href="./00-foundations/what-is-agent.html">Agent 是什麼</a>（模型 + 工具 + 迴圈）</li>
+      <li><a href="./00-foundations/context-window.html">情境視窗與分段交付</a></li>
+      <li><a href="./00-foundations/permissions.html">權限與核准</a></li>
+      <li><a href="./00-foundations/failure-modes.html">常見失誤與把關點</a></li>
+    </ul>
+  </div>
+  <div class="card sw">
+    <h3><a href="./01-getting-started/index.html">01 入門：以 Claude Code 為例</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./01-getting-started/</p>
+    <ul>
+      <li>安裝、登入、第一次啟動；CLI / IDE / 桌面版差異</li>
+      <li>基本操作：計畫模式、核准、斜線指令、復原、壓縮對話</li>
+      <li>寫出好指令：目標、限制、驗收方式</li>
+      <li>讀懂陌生專案、小修改並檢視 diff</li>
+    </ul>
+  </div>
+  <div class="card sw">
+    <h3><a href="./02-docs-for-agents/index.html">02 Agent 愛讀的文件</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./02-docs-for-agents/</p>
+    <ul>
+      <li>CLAUDE.md / AGENTS.md：寫什麼、不寫什麼、多長剛好</li>
+      <li>SKILL.md：結構、觸發描述、搭配腳本與參考檔</li>
+      <li>規格書、ADR、GLOSSARY、README：讓 agent 快速上手的格式</li>
+      <li>寫作原則：具體、可驗證、避免重複與過時</li>
+      <li>memory 與檔案式記憶的取捨</li>
+    </ul>
+  </div>
+  <div class="card sw">
+    <h3><a href="./03-toolbox/index.html">03 工具箱：外掛與擴充</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./03-toolbox/</p>
+    <ul>
+      <li>Skills 與 plugins：安裝、管理、挑選原則</li>
+      <li>MCP：接資料庫、Issue、文件、行事曆、Trello</li>
+      <li>Hooks、自訂 subagent、statusline 等客製化</li>
+      <li>推薦組合（依情境）與常見坑</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./04-requirement-to-code/index.html">04 需求到程式碼</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./04-requirement-to-code/</p>
+    <ul>
+      <li>需求訪談：讓 agent 反問你（grilling）</li>
+      <li>規格 / PRD、設計與任務拆解</li>
+      <li>實作（TDD）、驗證（跑起來看）</li>
+      <li>commit message、PR 說明、變更摘要</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./05-cross-review/index.html">05 交叉審查：找出盲點</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./05-cross-review/</p>
+    <ul>
+      <li><b>為什麼要交叉</b>：同一 agent 自審有同源偏誤，要換情境、角色或模型</li>
+      <li><b>需求審查</b>：事前驗屍（pre-mortem）、反方角色、缺漏情境清單、規格 vs 實際需求比對</li>
+      <li><b>程式碼審查</b>：獨立 subagent 審、對抗式驗證、標準 vs 規格雙軸、安全專項</li>
+      <li><b>用證據收斂</b>：測試、重現步驟、執行結果，而不是「我覺得」</li>
+      <li>如何整合多方意見、判斷哪些盲點值得採納</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./06-advanced-workflows/index.html">06 進階工作流程</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./06-advanced-workflows/</p>
+    <ul>
+      <li>Subagent 平行、多 agent workflow、worktree 隔離</li>
+      <li>Hooks 自動化、排程與 loop、CI / PR 整合</li>
+      <li><b>非程式</b>：透過 MCP 整合行事曆、Trello、Slack、Gmail、Notion</li>
+      <li>範例：每日晨報（行事曆 + Trello）、會議後自動建卡、週報彙整</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./07-community/index.html">07 社群經驗與文章導讀</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./07-community/</p>
+    <ul>
+      <li>整理有經驗實踐者分享的做法（部落格、文章、官方最佳實踐）</li>
+      <li>每篇附出處、重點、可直接套用的作法與適用限制</li>
+      <li>只收可查證的連結，不憑記憶轉述</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./08-practice/index.html">08 實戰範例</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./08-practice/</p>
+    <ul>
+      <li>A：一句話需求 → 訪談 → 實作 → 交叉審查</li>
+      <li>B：既有專案加功能並補測試</li>
+      <li>C：把每週手動流程改成自動化</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./09-governance/index.html">09 治理與風險</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./09-governance/</p>
+    <ul>
+      <li>機密與權限最小化、成本與用量控制</li>
+      <li>如何評估 agent 產出品質、何時不該交給 agent</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./10-learning-path/index.html">10 新手專區</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./10-learning-path/</p>
+    <ul>
+      <li>四週學習路徑、前置知識補課</li>
+      <li>驗證看不懂的程式、把 agent 當老師</li>
+      <li>過度信任的警訊與信任階梯、能力檢核</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./11-labs/index.html">11 動手練習</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./11-labs/　<span class="path">sample/OrderDemo/</span></p>
+    <ul>
+      <li>練習專案：ASP.NET Core MVC（.NET 8）＋ Vue 3，已實測可建置與測試</li>
+      <li>Lab 0～8：環境、讀專案、修 bug、補測試、新功能、Vue、交叉審查、CLAUDE.md、綜合</li>
+      <li>每個練習有預期結果、檢核與參考解答</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./12-cookbook/index.html">12 常見任務食譜</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./12-cookbook/</p>
+    <ul>
+      <li>除錯、寫 xUnit 測試、讀懂舊 MVC 專案、安全重構</li>
+      <li>新增 API、在 MVC 中用 Vue（Razor 衝突、CSRF）、EF 與 SQL</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./13-reference/index.html">13 速查與模板庫</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./13-reference/</p>
+    <ul>
+      <li><a href="./13-reference/cheat-sheet.html">一頁速查表</a>、<a href="./13-reference/prompt-library.html">提示詞庫</a>、<a href="./13-reference/glossary.html">術語表</a></li>
+      <li><a href="./13-reference/templates.html">可複製的範本</a>（CLAUDE.md、subagent、skill、hook、設定）</li>
+      <li><a href="./13-reference/verification-log.html">實測驗證紀錄</a>：已實測、待驗證清單</li>
+    </ul>
+  </div>
+</div>
+
+<h2 id="token-index">省 Token 速查</h2>
+<div class="card">
+  <p>省 Token 的技巧不集中在一頁，而是分散在各主題中，隨流程出現。以下是各頁「省 Token 技巧」段落的索引。</p>
+  <ul><li><a href="./00-foundations/context-window.html#tokens">情境視窗與分段交付</a>　<span class="path">Token 花在哪、如何量測</span></li><li><a href="./01-getting-started/modes-commands.html#tokens">模式與常用指令</a>　<span class="path">/clear、/compact、/context、/model</span></li><li><a href="./01-getting-started/writing-prompts.html#tokens">寫出好指令</a>　<span class="path">指令具體化、限制輸出</span></li><li><a href="./01-getting-started/explore-and-edit.html#tokens">讀懂專案與小修改</a>　<span class="path">限定探索範圍、探索結果存檔</span></li><li><a href="./02-docs-for-agents/claude-md.html#tokens">CLAUDE.md：專案常駐規範</a>　<span class="path">常駐文件的固定成本</span></li><li><a href="./02-docs-for-agents/skill-md.html#tokens">SKILL.md：按需載入的專業流程</a>　<span class="path">漸進式揭露</span></li><li><a href="./02-docs-for-agents/specs-adr-glossary.html#tokens">規格、ADR 與術語表</a>　<span class="path">可分段讀取的文件</span></li><li><a href="./02-docs-for-agents/writing-principles.html#tokens">給 Agent 的寫作原則</a>　<span class="path">省字的寫法</span></li><li><a href="./04-requirement-to-code/interview.html#tokens">① 需求訪談</a>　<span class="path">訪談階段</span></li><li><a href="./04-requirement-to-code/breakdown.html#tokens">③ 設計與任務拆解</a>　<span class="path">subagent 探索、計畫檔接力</span></li><li><a href="./04-requirement-to-code/implement.html#tokens">④ 實作</a>　<span class="path">一任務一對話、過濾輸出</span></li><li><a href="./04-requirement-to-code/verify.html#tokens">⑤ 驗證</a>　<span class="path">分層驗證、輸出摘要化</span></li><li><a href="./04-requirement-to-code/deliver.html#tokens">⑥ 交付</a>　<span class="path">交付階段</span></li><li><a href="./05-cross-review/code-review.html#tokens">程式碼審查</a>　<span class="path">控制審查成本</span></li><li><a href="./05-cross-review/synthesis.html#tokens">整合與裁決</a>　<span class="path">收斂規則即預算</span></li><li><a href="./05-cross-review/requirement-review.html#tokens">需求審查</a>　<span class="path">需求審查的低成本做法</span></li><li><a href="./03-toolbox/skills-plugins.html#tokens">Skills 與 Plugins</a>　<span class="path">每個 skill 的常駐描述成本</span></li><li><a href="./03-toolbox/subagents.html#tokens">Subagent：獨立情境的專職助手</a>　<span class="path">隔離即省、用較小模型</span></li><li><a href="./03-toolbox/mcp.html#tokens">MCP：連接外部系統</a>　<span class="path">工具定義佔情境、查詢要有範圍</span></li><li><a href="./03-toolbox/hooks.html#tokens">Hooks：保證會發生的自動化</a>　<span class="path">取代「請記得」的提示</span></li><li><a href="./03-toolbox/recommendations.html#tokens">推薦組合與常見坑</a>　<span class="path">盤點常駐成本、停用不用的</span></li><li><a href="./06-advanced-workflows/parallel-agents.html#tokens">平行與多 agent 分工</a>　<span class="path">平行省時間不省錢、先小樣本</span></li><li><a href="./06-advanced-workflows/headless-ci.html#tokens">Headless 與 CI 整合</a>　<span class="path">只傳 diff、限制輪數</span></li><li><a href="./06-advanced-workflows/scheduling.html#tokens">排程與定時工作</a>　<span class="path">先用腳本判斷有沒有事</span></li><li><a href="./06-advanced-workflows/collaboration-tools.html#tokens">整合行事曆、Trello 與協作工具</a>　<span class="path">查詢範圍、只取需要欄位</span></li><li><a href="./06-advanced-workflows/recipes.html#tokens">非程式工作流程食譜</a>　<span class="path">篇幅限制、提案與建立分開</span></li><li><a href="./06-advanced-workflows/custom-workflows.html#tokens">設計與維護自己的工作流程</a>　<span class="path">確定性步驟搬進腳本</span></li><li><a href="./09-governance/data-secrets.html#tokens">資料與機密</a>　<span class="path">縮小資料範圍、deny 大型無關檔案</span></li><li><a href="./09-governance/permissions-hardening.html#tokens">權限與防護</a>　<span class="path">白名單、hook 事前攔截</span></li><li><a href="./09-governance/cost-control.html#tokens">成本控管</a>　<span class="path">省 Token 技巧總索引與優先序</span></li><li><a href="./09-governance/quality-evaluation.html#tokens">品質評估</a>　<span class="path">評測集小而精、量測自動化</span></li><li><a href="./09-governance/team-adoption.html#tokens">團隊導入與規範</a>　<span class="path">共用規範與用量儀表板</span></li><li><a href="./08-practice/example-a-new-feature.html#tokens">範例 A：一句話需求到交叉審查</a>　<span class="path">階段清空、審查依風險</span></li><li><a href="./08-practice/example-b-existing-code.html#tokens">範例 B：既有專案加功能並補測試</a>　<span class="path">探索結果存檔</span></li><li><a href="./08-practice/example-c-automation.html#tokens">範例 C：把每週手動流程改成自動化</a>　<span class="path">限定查詢範圍、頻率適中</span></li><li><a href="./12-cookbook/index.html#tokens">食譜總覽</a>　<span class="path">一個食譜一個對話、只貼例外附近的 log</span></li><li><a href="./12-cookbook/read-legacy.html#tokens">食譜：讀懂舊的 MVC 專案</a>　<span class="path">導覽存成筆記</span></li><li><a href="./13-reference/cheat-sheet.html#tokens">一頁速查表</a>　<span class="path">省 Token 速記、plugin details 看成本</span></li></ul>
+</div>
+
+<h2>目錄結構</h2>
+<div class="tree">ai-agent-handbook/
+├─ index.html                 ← 本頁
+├─ assets/  style.css  nav.js  sitemap.js
+├─ 00-foundations/            基礎觀念（已完成）
+├─ 01-getting-started/        入門（Claude Code）
+├─ 02-docs-for-agents/        claude-md  skill-md  specs-adr  writing-principles
+├─ 03-toolbox/                skills-plugins  mcp  hooks  recommendations
+├─ 04-requirement-to-code/    interview  spec  breakdown  implement  verify  deliver
+├─ 05-cross-review/           why  requirement-review  code-review  evidence  synthesis
+├─ 06-advanced-workflows/     subagents  hooks  scheduling  ci  collaboration-tools
+├─ 07-community/              文章導讀（附出處）
+├─ 08-practice/
+├─ 09-governance/
+├─ 10-learning-path/          新手專區（四週路徑、驗證、能力檢核）
+├─ 11-labs/                   動手練習（Lab 0～8）
+├─ 12-cookbook/               常見任務食譜（.NET MVC＋Vue）
+├─ 13-reference/              速查、提示詞庫、術語表、範本、實測紀錄
+└─ sample/OrderDemo/          練習專案（ASP.NET Core MVC＋Vue，含測試）</div>
+
+<h2>維護與擴充</h2>
+<div class="card">
+  <ul>
+    <li>新增頁面：建立檔案 → 在 <code>assets/sitemap.js</code> 登記並加入父層 <code>c</code>。</li>
+    <li>07 社群經驗時效最短，建議每季回頭重讀來源、更新或刪除過時條目。</li>
+    <li>指令、設定欄位與檔案位置會隨 Claude Code 版本變動；各頁已加提醒，請以官方文件與 <code>/help</code> 為準。</li>
+    <li>每頁底部的「參考出處」連結會另開分頁；請定期檢查連結是否仍有效。</li>
+  </ul>
+</div>
+
+</main>
+<footer>ai-agent-handbook AI Agent 開發手冊 · 建立於 2026-11-11</footer>
+<script src="./assets/sitemap.js"></script>
+<script src="./assets/nav.js"></script>
+</body>
+</html>

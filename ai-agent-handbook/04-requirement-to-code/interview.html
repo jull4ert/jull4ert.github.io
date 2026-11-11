@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>① 需求訪談｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>① 需求訪談</h1>
+  <p class="sub">讓 agent 反問你，把腦中模糊的想法問清楚，再開始寫任何東西。</p>
+</header>
+<main class="page">
+
+<h2>為什麼先訪談</h2>
+<p>你給的需求一定有洞，agent 也不會主動說「我不確定」，它會悄悄做出假設。訪談的目的是：<b>讓假設浮到檯面上，由你決定</b>。</p>
+<h2>基本提示</h2>
+<pre><code>&gt; （切到計畫模式）
+&gt; 我想做：訂單列表可以依狀態與日期篩選，給客服人員使用。
+&gt; 先不要寫規格或程式碼。請訪談我：
+&gt; - 一次只問一個問題
+&gt; - 每個問題附上你的建議答案與理由，我可以直接回「同意」
+&gt; - 能從程式碼回答的問題，先自己去查，不要問我
+&gt; - 持續問到沒有重大不確定處為止，然後告訴我你認為還缺什麼</code></pre>
+<h2>這個提示為什麼有效</h2>
+<table><tr><th>指示</th><th>作用</th></tr>
+<tr><td>一次只問一個</td><td>避免十個問題丟過來，你只想回最後一個</td></tr>
+<tr><td>附建議答案</td><td>你只需同意或修正，回答成本很低</td></tr>
+<tr><td>能查程式碼就別問我</td><td>把你的注意力留給只有你能決定的事</td></tr>
+<tr><td>問到沒有重大不確定</td><td>給它明確的停止條件</td></tr></table>
+<h2>範例對話節錄</h2>
+<pre><code>Agent：篩選條件的「日期」指建立日期還是出貨日期？
+       建議：建立日期。依據：目前列表預設排序是 CreatedAt，客服也以此查詢。
+你　　：同意，另外要能選出貨日期。
+Agent：兩者同時選時，是 AND 還是 OR？建議：AND。
+你　　：AND。
+Agent：沒有符合資料時顯示什麼？建議：「查無資料」並保留已選條件。
+你　　：同意。
+Agent：客服只能看自己部門的訂單嗎？程式碼中看到 DepartmentId 過濾，但規格未提。
+       建議：沿用現有權限過濾，不新增例外。</code></pre>
+<h2>該被問到的面向</h2>
+<ul>
+<li>誰會用、什麼情境下用、現在怎麼做（現況流程）。</li>
+<li>範圍：哪些要做、哪些明確不做。</li>
+<li>邊界與錯誤情境（見 05 的缺漏情境清單）。</li>
+<li>權限、資料量、效能期待、相容性。</li>
+<li>怎樣才算完成（驗收方式）。</li>
+</ul>
+<h2>產出：決策紀錄</h2>
+<p>訪談結束，請它把「問題、你的決定、理由」整理成檔案，並列出仍未決的事項。</p>
+<pre><code>&gt; 請把剛才的訪談整理成 docs/specs/order-filter-decisions.md：
+&gt; 已決定（含理由）／未決問題／明確不做。不要加入我沒講過的內容。</code></pre>
+<h2>常見問題</h2>
+<table><tr><th>問題</th><th>處理</th></tr>
+<tr><td>問得太瑣碎</td><td>告訴它「只問會影響設計或驗收的問題」</td></tr>
+<tr><td>你自己也不確定</td><td>回「先列為未決，標明風險」，不要硬答</td></tr>
+<tr><td>它自己決定了不該決定的事</td><td>要求「凡是假設都必須明說，等我確認」</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>「能查程式碼就別問我」</b>：減少無謂的來回，也減少你的時間成本。</li>
+<li><b>附建議答案</b>：你回「同意」兩個字，比長篇回答省。</li>
+<li><b>訪談在計畫模式進行</b>：沒有任何檔案被編輯或大量讀取的副作用。</li>
+<li><b>結束後存成決策紀錄並 <code>/clear</code></b>：後續階段只讀這份短檔，不背著整段訪談歷史。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">計畫模式與工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

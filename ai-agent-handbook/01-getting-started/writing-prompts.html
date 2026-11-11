@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>寫出好指令｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>寫出好指令</h1>
+  <p class="sub">好指令 = 目標 + 範圍 + 限制 + 驗收方式。</p>
+</header>
+<main class="page">
+
+<h2>四要素</h2>
+<table><tr><th>要素</th><th>說明</th><th>範例</th></tr>
+<tr><td>目標</td><td>要的結果，不是步驟</td><td>「訂單列表可依狀態篩選」</td></tr>
+<tr><td>範圍</td><td>該動與不該動的地方</td><td>「只改 Orders 模組，不動資料庫結構」</td></tr>
+<tr><td>限制</td><td>風格、相容性、禁忌</td><td>「沿用現有 Repository 寫法，不新增套件」</td></tr>
+<tr><td>驗收</td><td>怎麼證明完成</td><td>「新增單元測試並全數通過；貼出測試輸出」</td></tr></table>
+<h2>對照</h2>
+<table><tr><th>模糊</th><th>具體</th></tr>
+<tr><td>幫我加篩選功能</td><td>在訂單列表加「狀態」下拉篩選，沿用 OrderQuery 的條件模式；先給計畫，我確認後再改；完成後跑相關測試並貼結果</td></tr>
+<tr><td>這個有 bug，修一下</td><td>重現步驟：…；預期：…；實際：…；錯誤訊息：…。先找根因並說明，再修，補一個會失敗的回歸測試</td></tr></table>
+<h2>幾個高報酬習慣</h2>
+<ul>
+<li><b>先問再做</b>：「做之前，有哪些不清楚的地方請先問我」，把誤解消滅在寫碼前（見 04）。</li>
+<li><b>要它先講計畫</b>：計畫比程式碼好審，改方向成本低。</li>
+<li><b>給範例</b>：「寫法請參考 @Services/FooService」，勝過口頭描述風格。</li>
+<li><b>要證據</b>：要求貼出執行結果，不接受「應該可以」。</li>
+<li><b>一次一件事</b>：大任務拆成可獨立驗收的小段。</li>
+<li><b>事後學習</b>：它做錯時，問「為什麼這樣做」，再把原因對應的規則寫進 CLAUDE.md。</li>
+</ul>
+<div class="note">重複交代超過兩次的話，就不該再用嘴說，改寫進文件（見 02）。</div>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>具體的指令 = 少走冤枉路</b>：指明檔案或資料夾，省下它大範圍搜尋、讀一堆無關檔案的成本。</li>
+<li><b>一次一件事</b>：混在一起的任務會讓情境塞滿，之後每一輪都更貴。</li>
+<li><b>先要計畫</b>：計畫只是幾百字，比寫完上千行程式碼再被推翻便宜得多。</li>
+<li><b>限制輸出</b>：告訴它要什麼格式與長度，例如「只列問題清單，每項一行」「不用複述程式碼」。</li>
+<li><b>給驗收方式</b>：它有明確的終點，就不會一直自行加碼或反覆微調。</li>
+<li><b>修正要精準</b>：「第 3 個方法的邊界判斷錯了」勝過「這邊有問題，再看看」。</li>
+</ul>
+<table><tr><th>耗 Token</th><th>省 Token</th></tr>
+<tr><td>幫我看看整個專案有沒有問題</td><td>只審 @src/Orders/ 的變更，列出會造成資料錯誤的問題，最多 5 項</td></tr>
+<tr><td>（貼整份 2000 行 log）哪裡錯了</td><td>（用 <code>!</code> 取最後 50 行錯誤）這是錯誤段落，找出根因</td></tr></table>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/build-with-claude/prompt-engineering/overview">Prompt engineering 概觀</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

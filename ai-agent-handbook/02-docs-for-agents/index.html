@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent 愛讀的文件｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Agent 愛讀的文件</h1>
+  <p class="sub">agent 的表現取決於它讀到什麼。這一區教你寫它讀得懂、用得上的文件。</p>
+</header>
+<main class="page">
+
+<h2>Agent 讀文件的方式</h2>
+<table><tr><th>文件</th><th>何時被讀</th><th>放什麼</th></tr>
+<tr><td>CLAUDE.md</td><td>每次對話開頭自動載入</td><td>專案常駐規範、指令、禁忌</td></tr>
+<tr><td>SKILL.md</td><td>只有描述常駐；任務相關時才載入全文</td><td>可重複的流程與專業做法</td></tr>
+<tr><td>規格、ADR、術語表</td><td>需要時由 CLAUDE.md 或指令引導去讀</td><td>需求細節、決策脈絡、領域用語</td></tr>
+<tr><td>README、程式註解</td><td>探索專案時讀</td><td>給人也給 agent 的入口</td></tr></table>
+<p>核心取捨：<b>常駐的越多越貴、越容易被稀釋</b>。常駐只放「每次都要」的；其餘用「需要時才載入」的方式。</p>
+<h2>子頁面</h2>
+<div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/memory">Memory / CLAUDE.md</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Agent Skills</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

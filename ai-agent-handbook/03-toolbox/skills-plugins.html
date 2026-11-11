@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Skills 與 Plugins｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Skills 與 Plugins</h1>
+  <p class="sub">安裝、管理、挑選；以及怎麼把自己的流程打包分享。</p>
+</header>
+<main class="page">
+
+<h2>Skills：怎麼來</h2>
+<table><tr><th>來源</th><th>做法</th></tr>
+<tr><td>自己寫</td><td>在 <code>.claude/skills/名稱/SKILL.md</code>（專案）或 <code>~/.claude/skills/</code>（個人）建立，寫法見 <a href="../02-docs-for-agents/skill-md.html">02 SKILL.md</a></td></tr>
+<tr><td>團隊共用</td><td>放進專案的 <code>.claude/skills/</code> 並納入版控，clone 就有</td></tr>
+<tr><td>別人做好的</td><td>透過 plugin 安裝，或直接取得資料夾放到上述位置</td></tr></table>
+<h2>Plugins：把整套設定打包</h2>
+<p>Plugin 可以同時包含自訂指令、subagent、skill、hooks 與 MCP 設定，一次安裝全部啟用，適合團隊統一工作方式。</p>
+<table><tr><th>操作</th><th>範例</th></tr>
+<tr><td>開啟管理介面</td><td><code>/plugin</code></td></tr>
+<tr><td>加入來源（marketplace）</td><td><code>/plugin marketplace add 擁有者/倉庫</code></td></tr>
+<tr><td>安裝</td><td><code>/plugin install 外掛名@來源名</code></td></tr>
+<tr><td>停用／移除</td><td>在 <code>/plugin</code> 介面操作</td></tr></table>
+<h2>挑選與評估</h2>
+<table><tr><th>檢查項目</th><th>問自己</th></tr>
+<tr><td>來源</td><td>是官方、知名作者，還是不明來源？</td></tr>
+<tr><td>內容</td><td>讀過它的 SKILL.md、hooks、腳本嗎？有沒有下載或外傳資料的指令？</td></tr>
+<tr><td>權限</td><td>它要求哪些工具權限？是否超出用途？</td></tr>
+<tr><td>維護</td><td>最近有更新嗎？有人在用嗎？</td></tr>
+<tr><td>重疊</td><td>是否與你已有的 skill 功能重複、描述衝突？</td></tr>
+<tr><td>成本</td><td>它的描述與指令會常駐多少情境？</td></tr></table>
+<div class="note">第三方的 skill、plugin、MCP 伺服器都是「會被你的 agent 執行或讀取的外部程式與內容」，等同於安裝軟體。安裝前先看原始碼與來源、只授予必要權限；來自外部的內容（網頁、工單、郵件）也可能夾帶惡意指示（prompt injection），重要動作務必保留人工核准。</div>
+<h2>用 skill 解決的常見需求</h2>
+<table><tr><th>需求</th><th>skill 做什麼</th></tr>
+<tr><td>統一 commit message</td><td>依專案格式，只根據 diff 產生</td></tr>
+<tr><td>審查</td><td>固定的檢查表與輸出格式（見 05）</td></tr>
+<tr><td>文件產生</td><td>依範本產出規格、ADR、週報</td></tr>
+<tr><td>領域知識</td><td>公司術語、內部系統用法、資安規範</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>每裝一個 skill，就多一段常駐描述</b>：只留常用的，不用的移除或停用。</li>
+<li><b>描述精簡且明確</b>：太籠統會誤觸發，載入不需要的全文就是浪費。</li>
+<li><b>plugin 一次帶來多個元件</b>：安裝前看清楚帶了哪些 skill、agent、MCP，用不到的關掉。</li>
+<li>用 <code>/context</code> 檢查哪些擴充佔用了多少情境。</li>
+<li>安裝或評估外掛時，可用 <code>claude plugin details 名稱</code> 查看它的元件清單與<b>預估 token 成本</b>（已在本機 <code>--help</code> 確認此指令存在）。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/plugins">Plugins</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/plugin-marketplaces">Plugin marketplaces</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

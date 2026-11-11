@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工具箱：外掛與擴充｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>工具箱：外掛與擴充</h1>
+  <p class="sub">Claude Code 的五種擴充方式，以及什麼情況該用哪一種。</p>
+</header>
+<main class="page">
+
+<p>Agent 的能力來自「情境 + 工具」。這一區介紹你能加到它身上的五種東西，以及最重要的：<b>怎麼選</b>。</p>
+<h2>五種擴充一覽</h2>
+<table><tr><th>擴充</th><th>它是什麼</th><th>何時載入</th><th>典型用途</th></tr>
+<tr><td>CLAUDE.md</td><td>常駐規範文件</td><td>每次對話</td><td>專案慣例、指令、禁忌（見 02）</td></tr>
+<tr><td>Skill</td><td>按需載入的流程與知識</td><td>相關時才載入全文</td><td>commit 格式、審查清單、報表流程</td></tr>
+<tr><td>Subagent</td><td>獨立情境的專職助手</td><td>被呼叫時啟動</td><td>探索、審查、平行作業、隔離大量輸出</td></tr>
+<tr><td>MCP</td><td>連接外部系統的標準介面</td><td>連線期間工具定義常駐</td><td>資料庫、Issue、行事曆、Trello、Slack</td></tr>
+<tr><td>Hook</td><td>在特定事件自動執行的指令</td><td>事件發生時由系統觸發</td><td>自動格式化、攔截危險操作、通知</td></tr>
+<tr><td>Plugin</td><td>把以上打包、可安裝與分享</td><td>安裝後啟用</td><td>團隊共用一整套設定</td></tr></table>
+<h2>怎麼選：一張決策表</h2>
+<table><tr><th>你想要…</th><th>用</th></tr>
+<tr><td>每次都要遵守的規則</td><td>CLAUDE.md</td></tr>
+<tr><td>某類任務的標準做法，不想常駐佔位</td><td>Skill</td></tr>
+<tr><td>大量搜尋、審查、不想汙染主對話</td><td>Subagent</td></tr>
+<tr><td>讓 agent 讀寫外部服務</td><td>MCP</td></tr>
+<tr><td>「一定要發生」的自動動作（不能靠 agent 記得）</td><td>Hook</td></tr>
+<tr><td>把以上整包給團隊或自己跨專案使用</td><td>Plugin</td></tr></table>
+<p>關鍵區別：<b>CLAUDE.md、skill 是「建議」，agent 可能沒做；hook 是「保證」，由系統強制執行。</b>必須 100% 發生的事（格式化、阻擋危險指令），請用 hook。</p>
+<h2>子頁面</h2>
+<div id="children"></div>
+<div class="note">設定檔位置、欄位名稱與指令選項會隨版本調整，請以官方文件與你機器上的 <code>/help</code>、<code>/agents</code>、<code>/mcp</code>、<code>/plugin</code> 實際畫面為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code 概覽</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/mcp">MCP</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/hooks">Hooks</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/plugins">Plugins</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

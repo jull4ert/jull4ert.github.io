@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用證據收斂｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>用證據收斂</h1>
+  <p class="sub">沒有證據的意見只是疑問；有證據才是缺陷。</p>
+</header>
+<main class="page">
+
+<h2>為什麼要求證據</h2>
+<p>多個 agent 一起審查，容易產出一大串「看起來合理」的意見，其中不少是誤報或品味問題。證據是唯一能快速分辨真假的東西。</p>
+<h2>發現的三種狀態</h2>
+<table><tr><th>狀態</th><th>定義</th><th>處置</th></tr>
+<tr><td>已證實</td><td>有可重現的失敗測試、錯誤輸出或明確的程式碼路徑</td><td>優先修正</td></tr>
+<tr><td>可能成立</td><td>有合理推論，但尚未實際重現</td><td>先設法重現，再決定</td></tr>
+<tr><td>推測</td><td>只是「可能會有問題」，無具體路徑</td><td>預設不處理，除非高風險領域</td></tr></table>
+<h2>證據的形式</h2>
+<table><tr><th>形式</th><th>範例</th></tr>
+<tr><td>失敗的測試</td><td>寫一個測試重現問題，修好後轉綠（同時成為回歸測試）</td></tr>
+<tr><td>執行輸出</td><td>實際跑出的錯誤訊息、日誌、HTTP 回應</td></tr>
+<tr><td>重現步驟</td><td>輸入、操作順序、預期與實際結果</td></tr>
+<tr><td>程式碼路徑</td><td>列出從入口到問題點的呼叫鏈，附檔案與行號</td></tr>
+<tr><td>規格對照</td><td>引用規格哪一條、程式碼哪一行不符</td></tr></table>
+<h2>讓 agent 自己找證據</h2>
+<pre><code>&gt; 審查者指出：「OrderService.Cancel 在已出貨狀態仍可取消」。
+&gt; 請先寫一個單元測試嘗試重現（取消一筆已出貨訂單，預期應拒絕）。
+&gt; 執行測試並貼出結果。
+&gt; 若測試通過（代表問題不成立），請說明為何，並刪除該測試。
+&gt; 若測試失敗（問題成立），先不要修，回報給我。</code></pre>
+<p>先寫失敗測試再修復，等於把審查發現轉成永久的保護網。</p>
+<h2>人也要驗證證據</h2>
+<ul>
+<li>看測試本身是否真的在測那件事，而不是寫成必過。</li>
+<li>確認貼出的輸出是實際執行的結果，而非 agent 的描述。</li>
+<li>看「沒有發現」的結論是否附上它檢查了哪些範圍。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development（Martin Fowler）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

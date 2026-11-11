@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：新增一支 API（含前端串接）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：新增一支 API（含前端串接）</h1>
+  <p class="sub">從規格到 Controller、Service、測試、Vue 呼叫，一支 API 該有的樣子。</p>
+</header>
+<main class="page">
+
+<h2>情境</h2>
+<p>要新增「依訂單編號查詢單一訂單」的 API，並在前端顯示詳情。</p>
+<h2>步驟</h2>
+<ol>
+<li><b>先定義契約</b>（寫成規格的一小段）：路由、方法、參數、成功回應、錯誤回應、授權規則。
+<pre><code>GET /api/orders/{id}
+- 成功 200：{ id, customerName, status, total, createdAt, shippedAt }
+- 找不到或不屬於呼叫者部門：404（不洩漏是否存在）
+- 未登入：401</code></pre></li>
+<li><b>Service 先行</b>：先寫測試（找得到、找不到、他部門），再實作。</li>
+<li><b>Controller 薄</b>：只做參數、呼叫 Service、回對應的狀態碼。</li>
+<li><b>授權</b>：部門從<b>登入身分</b>取得，不信任請求參數。</li>
+<li><b>前端串接</b>：呼叫 API、處理 200 / 404 / 其他錯誤，並顯示對使用者有意義的訊息。</li>
+<li><b>驗證</b>：用 curl 或瀏覽器實測，確認各狀態碼。</li>
+</ol>
+<h2>提示範例</h2>
+<pre><code>&gt; 依 @docs/specs/order-detail.md 新增 GET /api/orders/{id}。
+&gt; 慣例請參考 @src/OrderDemo.Web/Controllers/Api/OrdersApiController.cs，
+&gt; 商業邏輯放 OrderService，Controller 只做轉接。
+&gt; 先在 OrderServiceTests 寫會失敗的測試（找得到、找不到、他部門），再實作。
+&gt; 授權規則：不要從查詢字串信任 departmentId；先告訴我你打算怎麼取得目前使用者的部門，等我確認。</code></pre>
+<p>最後一句很重要：授權相關的設計，要讓 agent <b>先講、你確認</b>，不要讓它自行決定。</p>
+<h2>一支 API 的檢查表</h2>
+<table><tr><th>面向</th><th>檢查</th></tr>
+<tr><td>輸入驗證</td><td>型別、範圍、必填；不合法回 400，並有清楚訊息</td></tr>
+<tr><td>授權</td><td>誰能呼叫？只能看自己部門嗎？不是靠前端隱藏按鈕</td></tr>
+<tr><td>錯誤碼</td><td>400 / 401 / 403 / 404 / 409 / 500 用得合理，且不洩漏內部細節</td></tr>
+<tr><td>回應格式</td><td>與既有 API 一致（大小寫、列舉、日期格式）</td></tr>
+<tr><td>測試</td><td>Service 單元測試；必要時 API 整合測試</td></tr>
+<tr><td>效能</td><td>沒有明顯的 N+1、回傳過多欄位</td></tr>
+<tr><td>文件</td><td>規格或 API 說明已更新</td></tr></table>
+<h2>.NET 小提醒</h2>
+<ul>
+<li><code>[ApiController]</code> 會自動做模型驗證並回 400，但你仍要驗證業務規則。</li>
+<li>回傳實體（Entity）給前端容易洩漏欄位，建議用專用的回應類型（DTO）。</li>
+<li>列舉要不要序列化成字串（本專案設定為字串），前後端要一致。</li>
+</ul>
+<h2>陷阱</h2>
+<ul>
+<li>agent 為了方便，把 <code>departmentId</code> 當參數（練習專案現況就是這樣，是已知缺陷）。</li>
+<li>只回 200 或 500，沒有區分情況。</li>
+<li>前端沒處理失敗情況。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

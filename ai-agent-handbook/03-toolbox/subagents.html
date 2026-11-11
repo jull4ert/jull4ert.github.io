@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Subagent：獨立情境的專職助手｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Subagent：獨立情境的專職助手</h1>
+  <p class="sub">隔離大量輸出、平行作業、讓審查者有獨立性。</p>
+</header>
+<main class="page">
+
+<h2>它是什麼</h2>
+<p>Subagent 是被主 agent 派出去的助手：有<b>自己的情境視窗</b>、自己的系統提示、自己限定的工具。它做完事只把結論回報給主對話，過程不佔主對話情境。</p>
+<table><tr><th>好處</th><th>說明</th></tr>
+<tr><td>隔離</td><td>翻遍幾十個檔案的探索，只回傳一段摘要</td></tr>
+<tr><td>獨立</td><td>看不到作者的對話歷史，適合審查（見 05）</td></tr>
+<tr><td>專職</td><td>固定角色、固定輸出格式、限定工具</td></tr>
+<tr><td>平行</td><td>多個 subagent 可同時進行</td></tr>
+<tr><td>成本彈性</td><td>可指定較小的模型處理簡單工作</td></tr></table>
+<h2>內建與自訂</h2>
+<ul>
+<li>系統通常內建幾種通用 subagent（例如專做唯讀探索、專做規劃的），可直接被使用。</li>
+<li>自訂：用 <code>/agents</code> 互動建立，或手動在 <code>.claude/agents/</code>（專案）、<code>~/.claude/agents/</code>（個人）放 Markdown 檔。</li>
+</ul>
+<h2>檔案格式</h2>
+<pre><code>---
+name: code-explorer
+description: 在大型程式碼庫中尋找相關檔案與實作方式。需要先了解現況、但不想塞滿主對話時使用。
+tools: Read, Grep, Glob
+model: haiku
+---
+你是程式碼探索員，只讀不改。
+針對問題找出相關檔案，回報：
+- 檔案路徑與一句話說明
+- 關鍵函式與呼叫關係
+不要貼大段程式碼；最多回報 10 個最相關的檔案。</code></pre>
+<table><tr><th>欄位</th><th>用途</th></tr>
+<tr><td><code>name</code></td><td>識別名稱</td></tr>
+<tr><td><code>description</code></td><td>何時該派它；主 agent 靠這句決定是否自動使用</td></tr>
+<tr><td><code>tools</code></td><td>可用工具；省略則繼承全部。審查與探索建議只給唯讀工具</td></tr>
+<tr><td><code>model</code></td><td>指定模型，或沿用主對話的模型</td></tr></table>
+<h2>怎麼呼叫</h2>
+<pre><code>&gt; 用 code-explorer 找出所有處理訂單取消的程式碼
+
+&gt; 請同時啟動 3 個 subagent，分別審查正確性、安全、測試品質（互相獨立）
+
+&gt; 先用 subagent 探索現況，只回報結論，我再決定設計</code></pre>
+<h2>什麼時候該用</h2>
+<table><tr><th>適合</th><th>不適合</th></tr>
+<tr><td>大範圍搜尋與探索</td><td>需要你與 agent 反覆討論的設計</td></tr>
+<tr><td>獨立審查</td><td>只改一兩個已知檔案的小任務</td></tr>
+<tr><td>互不相依的平行工作</td><td>步驟間強相依、要共享中間狀態</td></tr>
+<tr><td>輸出很長但你只要結論</td><td>結果需要完整細節才能判斷</td></tr></table>
+<h2>設計原則</h2>
+<ul>
+<li>一個 subagent 一個職責，description 寫清楚「何時用」。</li>
+<li>工具最小化：審查與探索只給唯讀。</li>
+<li>明確規定回報格式與長度，避免它把整包塞回主對話。</li>
+<li>subagent 之間通常不會共享情境，需要的資訊要由主 agent 傳給它。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>隔離就是省</b>：把「讀一堆檔案」的成本關在它的情境，主對話保持精簡，之後每一輪都更便宜。</li>
+<li><b>探索與機械性工作用較小模型</b>：<code>model</code> 欄位指定較省的模型。</li>
+<li><b>限制回報長度</b>：「最多 10 項、只列路徑與一句話」。</li>
+<li><b>別濫用</b>：每個 subagent 都有自己的啟動與讀檔成本；小任務直接做更省。</li>
+<li><b>平行不等於便宜</b>：同時跑多個，總成本是相加的；它省的是時間，不一定省錢。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

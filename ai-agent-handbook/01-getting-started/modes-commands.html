@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>模式與常用指令｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>模式與常用指令</h1>
+  <p class="sub">掌握幾個開關，就能在「放手」與「掌控」之間切換。</p>
+</header>
+<main class="page">
+
+<h2>權限模式（Shift+Tab 可循環切換）</h2>
+<table><tr><th>模式</th><th>行為</th><th>何時用</th></tr>
+<tr><td>預設</td><td>每次編輯、執行指令都詢問</td><td>剛開始、陌生專案</td></tr>
+<tr><td>自動接受編輯</td><td>檔案編輯免詢問，指令仍詢問</td><td>已有 git、任務範圍清楚</td></tr>
+<tr><td>計畫模式</td><td>只讀不改，先提出計畫等你核准</td><td>大任務、需求不確定、想先看方向</td></tr></table>
+<div class="note">以命令列啟動時，可用 <code>--permission-mode</code> 指定模式。本機版本（Claude Code 2.1.322）實際列出的選項為 <code>plan</code>、<code>acceptEdits</code>、<code>auto</code>、<code>manual</code>、<code>dontAsk</code>、<code>bypassPermissions</code>；各模式的確切行為請以官方文件為準。</div>
+<h2>常用斜線指令</h2>
+<table><tr><th>指令</th><th>用途</th></tr>
+<tr><td><code>/init</code></td><td>掃描專案，產生初版 CLAUDE.md</td></tr>
+<tr><td><code>/clear</code></td><td>清空對話，開始新任務（最常用的省情境手段）</td></tr>
+<tr><td><code>/compact</code></td><td>摘要壓縮目前對話，保留重點、釋出空間</td></tr>
+<tr><td><code>/resume</code></td><td>回到之前的對話</td></tr>
+<tr><td><code>/rewind</code> 或連按兩次 Esc</td><td>把對話與（程式碼）狀態退回先前某一步</td></tr>
+<tr><td><code>/memory</code></td><td>檢視、編輯載入的 CLAUDE.md</td></tr>
+<tr><td><code>/permissions</code></td><td>管理免詢問的指令白名單</td></tr>
+<tr><td><code>/agents</code>、<code>/mcp</code>、<code>/plugin</code>、<code>/hooks</code></td><td>管理 subagent、MCP、外掛、hooks（見 03、06）</td></tr>
+<tr><td><code>/help</code></td><td>列出目前版本全部指令</td></tr></table>
+<h2>輸入技巧</h2>
+<p>同樣的需求，用對輸入方式，agent 拿到的資訊更準、你花的力氣更少。以下每項都附可直接照抄的範例。</p>
+
+<h3>1. <code>@</code> 引用檔案與資料夾</h3>
+<p>輸入 <code>@</code> 後接路徑，Tab 可自動補全。被引用的檔案內容會直接放進情境，agent 不必自己搜尋，也不會找錯檔。引用資料夾則給它該資料夾的檔案清單。</p>
+<pre><code>&gt; 請看 @src/Orders/OrderService.cs，說明 Cancel 方法在什麼條件下會失敗
+
+&gt; 新增 ExportService，寫法請參考 @src/Reports/ReportService.cs 的結構與命名
+
+&gt; 比較 @docs/specs/order-filter.md 和 @src/Orders/OrderQuery.cs，
+&gt; 列出規格有寫但程式沒做的項目
+
+&gt; @src/Orders/ 這個資料夾各檔案分別負責什麼？</code></pre>
+<p><b>何時用</b>：你已經知道檔案在哪。<b>何時不用</b>：還不知道在哪時，直接描述問題讓它自己搜尋，避免塞入無關檔案浪費情境。</p>
+
+<h3>2. <code>!</code> 直接執行 shell 指令</h3>
+<p>在提示列開頭輸入 <code>!</code> 切換成 shell 模式，指令會立刻執行，且輸出會進入對話情境，agent 接著就能根據結果行動。省掉「請你幫我跑…」的來回，也不消耗模型推理。</p>
+<pre><code>&gt; !git status
+&gt; !dotnet test --filter OrderTests
+（輸出出現後再接著說：）
+&gt; 上面第 2 個測試失敗，請找出原因並修正
+
+&gt; !git log --oneline -5
+&gt; 依上面最近 5 個 commit，幫我寫本週變更摘要</code></pre>
+<p><b>適合</b>：跑測試、看 git 狀態、查環境版本、貼上你已知的錯誤輸出。<b>注意</b>：它以你的身分執行，輸入前確認指令安全。</p>
+
+<h3>3. 貼圖片：截圖、設計稿、錯誤畫面</h3>
+<p>圖片可以貼上（常見為 <kbd>Ctrl+V</kbd>，部分終端機或系統快捷鍵不同）、拖曳進終端機，或直接給路徑。前端排版、UI 對照設計稿、無法複製文字的錯誤視窗，圖片通常比文字描述準確很多。</p>
+<pre><code>&gt; （貼上畫面截圖）
+&gt; 這是目前的訂單列表。表頭欄位沒有對齊，請找出對應的 CSS 並修正
+
+&gt; （貼上設計稿）+ （貼上目前畫面）
+&gt; 左邊是設計稿，右邊是現況，列出所有差異，再逐項修正
+
+&gt; 請看 C:/temp/error-dialog.png，這個錯誤是哪個流程觸發的？</code></pre>
+<p><b>技巧</b>：一次貼多張時，在文字中標明各張是什麼（「第一張是設計稿」）。</p>
+
+<h3>4. 多行輸入</h3>
+<p>需求描述常常很長。Enter 預設是送出，換行要用其他方式：</p>
+<table><tr><th>方式</th><th>說明</th></tr>
+<tr><td><kbd>\</kbd> 加 <kbd>Enter</kbd></td><td>行尾輸入反斜線再按 Enter，通用於各終端機</td></tr>
+<tr><td><kbd>Shift+Enter</kbd></td><td>部分終端機可直接用；若無效，執行 <code>/terminal-setup</code> 設定</td></tr>
+<tr><td>貼上多行文字</td><td>直接貼，整段會視為同一則訊息</td></tr>
+<tr><td>先寫成檔案再引用</td><td>很長的需求寫在 <code>task.md</code>，再說「依 @task.md 執行」，還能版本控制</td></tr></table>
+
+<h3>5. 中斷與退回</h3>
+<table><tr><th>操作</th><th>效果</th><th>情境</th></tr>
+<tr><td><kbd>Esc</kbd></td><td>中斷目前動作，保留對話</td><td>看到它方向走偏，立刻喊停並補一句「改用 X」</td></tr>
+<tr><td><kbd>Esc</kbd> 連按兩次</td><td>開啟退回選單，回到先前某則訊息</td><td>整段做錯，想回到那一步重新下指令</td></tr>
+<tr><td><kbd>Ctrl+C</kbd></td><td>取消目前輸入或中止執行；連按兩次離開</td><td>輸入到一半想清掉</td></tr>
+<tr><td><kbd>↑</kbd> / <kbd>↓</kbd></td><td>叫出先前輸入過的指令</td><td>重複下類似的指令</td></tr></table>
+<pre><code>（agent 正要大改 Controller）
+按 Esc
+&gt; 先停。這次只改 Service 層，不要動 Controller 的簽章。繼續</code></pre>
+
+<h3>6. 斜線指令與模式切換</h3>
+<ul>
+<li>輸入 <code>/</code> 會列出可用指令，打幾個字母可過濾；你自訂的指令與 skill 也會出現在這裡。</li>
+<li><kbd>Shift+Tab</kbd> 循環切換權限模式，不必離開輸入框。</li>
+</ul>
+
+<h3>7. 組合範例：一次用上多種技巧</h3>
+<pre><code>（Shift+Tab 切到計畫模式）
+&gt; !git diff --stat
+&gt; 這是我目前未提交的變更。請對照 @docs/specs/order-filter.md，
+&gt; 檢查有沒有偏離規格；另外參考這張畫面（貼圖）確認 UI 欄位是否齊全。
+&gt; 先給我問題清單，不要改任何檔案</code></pre>
+<p>這一則訊息同時：切換成唯讀的計畫模式、帶入實際變更、引用規格檔、附上畫面、並明確限制「只列清單」。agent 一次拿到完整的對照材料。</p>
+
+<h3>常見錯誤</h3>
+<table><tr><th>做法</th><th>問題</th><th>改善</th></tr>
+<tr><td>一次 <code>@</code> 引用十幾個檔案</td><td>情境被塞滿，重點被稀釋</td><td>只引用必要的 2～3 個，其餘讓它自己搜尋</td></tr>
+<tr><td>貼整份 log 文字</td><td>大量雜訊</td><td>用 <code>!</code> 跑指令並篩選，或只貼錯誤附近的段落</td></tr>
+<tr><td>看它走偏仍等它做完</td><td>浪費時間，還得退回</td><td>發現就按 Esc 中斷修正方向</td></tr>
+<tr><td>很長的需求每次重打</td><td>容易漏、無法重用</td><td>寫成 md 檔用 <code>@</code> 引用</td></tr></table>
+<div class="note">指令名稱、快捷鍵與檔案位置會隨版本調整，以官方文件與你機器上 <code>/help</code> 的顯示為準。</div><h2 id="tokens">省 Token 技巧</h2>
+<table><tr><th>操作</th><th>省在哪</th><th>範例</th></tr>
+<tr><td><code>/clear</code></td><td>丟掉舊歷史，後續每輪都更便宜</td><td>修完 bug 要做新功能時先 <code>/clear</code></td></tr>
+<tr><td><code>/compact 指示</code></td><td>壓縮對話並指定保留重點</td><td><code>/compact 保留目前計畫與已修改的檔案清單，其他可丟</code></td></tr>
+<tr><td><code>/context</code></td><td>找出誰在吃情境</td><td>發現某 MCP 佔了大量空間，就停用它</td></tr>
+<tr><td><code>/model</code></td><td>簡單任務改用較小較省的模型</td><td>改名、格式整理用小模型；設計與疑難除錯用大模型</td></tr>
+<tr><td>計畫模式</td><td>先對齊方向，避免寫完整包再重做</td><td>Shift+Tab 切到計畫模式再下大任務</td></tr>
+<tr><td><code>@檔案</code></td><td>直達目標，免去 agent 反覆搜尋</td><td><code>@src/Orders/OrderService.cs</code></td></tr>
+<tr><td><code>!指令</code></td><td>你自己跑指令，不經模型推理</td><td><code>!git status</code></td></tr>
+<tr><td>Esc 中斷</td><td>發現走偏立即停止，少付一整段錯誤輸出</td><td>見上方「中斷與退回」</td></tr></table>
+<h3>壓縮的時機</h3>
+<p>在任務的「自然停頓點」壓縮（一個階段完成、準備進入下一個）比在做到一半時壓縮好，因為此時最容易說清楚「哪些要留」。</p>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/slash-commands">斜線指令</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/iam">權限與模式</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

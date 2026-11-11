@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 4：新功能：日期區間篩選｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 4：新功能：日期區間篩選</h1>
+  <p class="sub">走一次完整流程：訪談、規格、需求審查、拆解、實作、驗證，後端與 Vue 前端都要做。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：2～3 小時（可分兩次）　<b>分支</b>：<code>lab4-date-filter</code></p>
+<h2>情境</h2>
+<p>客服主管說：「訂單列表要能依建立日期區間篩選，要能和狀態篩選一起用。」專案裡有一份規格草稿 <code>docs/specs/order-filter.md</code>。</p>
+<h2>目標</h2>
+<ul>
+<li>走過 04 的流程：訪談、規格、需求審查、拆解、實作（先測試）、驗證。</li>
+<li>後端（Service 與 API）與前端（Vue）串起來。</li>
+<li>產出：決策紀錄、修訂後的規格、計畫檔、證據表。</li>
+</ul>
+<h2>步驟</h2>
+<h3>1. 訪談（計畫模式）</h3>
+<pre><code>&gt; 我要在訂單列表加「建立日期區間」篩選。規格草稿見 @docs/specs/order-filter.md。
+&gt; 先訪談我：一次一題、附建議答案、能從程式碼查到的別問我。
+&gt; 特別注意草稿中標為未決的問題。</code></pre>
+<p>agent 應該會提到<b>時區</b>。請你做出決定（練習解答採用 UTC 日期，並寫進規格）。</p>
+<h3>2. 規格與需求審查</h3>
+<ul>
+<li>把決定寫進規格，產出修訂版。</li>
+<li>做一次需求審查（見 <a href="../05-cross-review/requirement-review.html">05</a>）：用事前驗屍或反方角色找缺漏，並裁決。</li>
+</ul>
+<h3>3. 拆解</h3>
+<p>請 agent 先唯讀探索現有寫法，再提出任務清單。建議的切法：</p>
+<ol>
+<li>OrderService.List 支援日期區間（含測試）。</li>
+<li>API 參數與驗證（起日晚於迄日回 400，含測試或手動驗證）。</li>
+<li>Vue 日期輸入、帶入查詢。</li>
+<li>端對端驗證。</li>
+</ol>
+<h3>4. 實作（每個任務新對話）</h3>
+<pre><code>&gt; 依 @docs/plans/date-filter.md 做任務 1。規格見 @docs/specs/order-filter.md。
+&gt; 先寫失敗的測試，確認失敗；再實作；只做任務 1。
+&gt; 完成後貼出測試輸出與改動檔案清單。</code></pre>
+<h3>5. 驗證</h3>
+<p>走過規格的每個驗收條件，產出證據表（條件、驗證方式、證據、結果）。</p>
+<h2>預期結果</h2>
+<table><tr><th>驗收條件</th><th>驗證</th></tr>
+<tr><td>區間含頭尾兩天</td><td>部門 1、10/03～10/12 → 訂單 4、3、2（共 3 筆）</td></tr>
+<tr><td>只有起日</td><td>部門 1、起日 10/15 → 訂單 6、5</td></tr>
+<tr><td>日期加狀態</td><td>部門 1、已出貨、10/01～10/10 → 訂單 2</td></tr>
+<tr><td>起日晚於迄日</td><td>API 回 400，訊息「起日不得晚於迄日」</td></tr></table>
+<p>你的測試總數會依前面練習而不同，重點是<b>全部通過</b>。</p>
+<h2>檢核</h2>
+<ul>
+<li>有決策紀錄與規格，且時區的決定有寫下來。</li>
+<li>需求審查至少找出一個規格缺漏並處理。</li>
+<li>每個任務都有先失敗的測試。</li>
+<li>證據表中每條都有證據，如有不通過也誠實標示。</li>
+<li>前端日期輸入能實際操作，起日晚於迄日時使用者能看到錯誤。</li>
+</ul>
+<details><summary>參考解答（後端，已實際執行驗證）</summary>
+<p><code>OrderService.List</code>：</p>
+<pre><code>public IReadOnlyList&lt;Order&gt; List(
+    int departmentId,
+    OrderStatus? status = null,
+    DateTime? from = null,
+    DateTime? to = null)
+{
+    var query = repository.GetAll().Where(o => o.DepartmentId == departmentId);
+
+    if (status.HasValue)
+    {
+        query = query.Where(o => o.Status == status.Value);
+    }
+
+    if (from.HasValue)
+    {
+        query = query.Where(o => o.CreatedAt >= from.Value.Date);
+    }
+
+    if (to.HasValue)
+    {
+        query = query.Where(o => o.CreatedAt &lt; to.Value.Date.AddDays(1));
+    }
+
+    return query.OrderByDescending(o => o.CreatedAt).ToList();
+}</code></pre>
+<p><code>OrdersApiController.Get</code>：</p>
+<pre><code>[HttpGet]
+public IActionResult Get(
+    [FromQuery] int departmentId,
+    [FromQuery] OrderStatus? status,
+    [FromQuery] DateTime? from,
+    [FromQuery] DateTime? to)
+{
+    if (from.HasValue &amp;&amp; to.HasValue &amp;&amp; from.Value.Date > to.Value.Date)
+    {
+        return BadRequest(new { error = "起日不得晚於迄日" });
+    }
+
+    return Ok(service.List(departmentId, status, from, to));
+}</code></pre>
+<p>測試：</p>
+<pre><code>[Fact]
+public void List_WithDateRange_IncludesBothEndDays()
+{
+    var orders = CreateService().List(
+        departmentId: 1,
+        from: new DateTime(2026, 10, 3),
+        to: new DateTime(2026, 10, 12));
+
+    Assert.Equal(new[] { 4, 3, 2 }, orders.Select(o => o.Id).ToArray());
+}</code></pre>
+<p>此解答已實際執行：加入 3 個日期測試後全數通過，API 對起日晚於迄日回 400。</p></details>
+<details><summary>參考解答（前端）</summary>
+<p><code>Index.cshtml</code> 工具列新增：</p>
+<pre><code>&lt;label&gt;起日 &lt;input type="date" v-model="from" v-on:change="load" /&gt;&lt;/label&gt;
+&lt;label&gt;迄日 &lt;input type="date" v-model="to" v-on:change="load" /&gt;&lt;/label&gt;</code></pre>
+<p><code>orders-app.js</code>：<code>data</code> 加入 <code>from: ""</code>、<code>to: ""</code>，<code>load()</code> 內：</p>
+<pre><code>if (this.from) { query.append("from", this.from); }
+if (this.to) { query.append("to", this.to); }</code></pre>
+<p>前端的錯誤顯示（起日晚於迄日）在 Lab 5 處理。</p></details>
+<details><summary>時區的決定與取捨</summary>
+<p>練習解答採用「依資料的建立時間（UTC）切日期」，簡單但可能與使用者感受的日期差一天（台灣為 UTC+8，早上 8 點前建立的訂單，UTC 日期會是前一天）。真實專案請依客服實際使用情境決定，並寫進規格。</p></details>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>品質評估｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>品質評估</h1>
+  <p class="sub">不要憑感覺判斷 agent 好不好用；用小而持續的量測看出改善或退步。</p>
+</header>
+<main class="page">
+
+<h2>為什麼要評估</h2>
+<p>agent 的輸出常常「看起來對」。若沒有量測，你不知道換了模型、改了 CLAUDE.md、加了 skill，結果是變好還是變壞，也不知道自己是不是越來越盲信。</p>
+<h2>可用的指標</h2>
+<table><tr><th>指標</th><th>怎麼量</th><th>代表什麼</th></tr>
+<tr><td>一次通過率</td><td>無需修正就被接受的任務比例</td><td>指令與規範的品質</td></tr>
+<tr><td>返工次數</td><td>每個任務被要求修改的次數</td><td>理解與執行的落差</td></tr>
+<tr><td>審查發現率</td><td>交叉審查抓到的已證實問題數</td><td>實作品質與審查有效性</td></tr>
+<tr><td>缺陷逃逸</td><td>上線後才發現、本該在審查抓到的問題</td><td>防線漏洞</td></tr>
+<tr><td>範圍偏離</td><td>改動了不該動的檔案的次數</td><td>約束是否清楚</td></tr>
+<tr><td>驗證通過率</td><td>驗證報告中「不通過」的比例</td><td>是否有誠實驗證</td></tr>
+<tr><td>耗時與成本</td><td>完成任務的時間與用量</td><td>效率</td></tr></table>
+<h2>建立小型評測集</h2>
+<p>挑 5～10 個代表性任務，附上「期望結果」與「怎麼判斷通過」，每次調整設定後重跑一遍。</p>
+<table><tr><th>任務</th><th>期望</th><th>判定</th></tr>
+<tr><td>修一個已知 bug（附重現步驟）</td><td>找到根因並補回歸測試</td><td>測試先失敗後通過</td></tr>
+<tr><td>新增欄位驗證</td><td>沿用既有驗證模式</td><td>diff 只含相關檔案、測試通過</td></tr>
+<tr><td>解釋一段複雜程式</td><td>說明正確、不編造</td><td>由熟悉的人對照</td></tr>
+<tr><td>審查含已知缺陷的 PR</td><td>抓到植入的 2 個缺陷</td><td>命中數</td></tr></table>
+<h2>比較改動前後</h2>
+<ul>
+<li>一次只改一個變數（模型、CLAUDE.md、skill、提示），其他不動。</li>
+<li>同一組任務各跑數次（結果有隨機性，單次不具代表性）。</li>
+<li>看通過率與成本的變化，而不是挑單一漂亮案例。</li>
+</ul>
+<h2>抽樣審查</h2>
+<ul>
+<li>即使信任度提高，也定期隨機抽查 agent 的產出。</li>
+<li>特別抽查「它說完成」的項目，看證據是否真實。</li>
+<li>留意技能萎縮：自己是否還有能力看懂並判斷它的產出。</li>
+</ul>
+<h2>失敗要轉成改進</h2>
+<table><tr><th>錯誤類型</th><th>改進方向</th></tr>
+<tr><td>反覆犯同一類錯</td><td>補進 CLAUDE.md 或 skill 的檢查表</td></tr>
+<tr><td>需求理解錯</td><td>加強訪談與規格審查</td></tr>
+<tr><td>驗證不實</td><td>要求貼出實際輸出，加上驗證 hook 或腳本</td></tr>
+<tr><td>範圍膨脹</td><td>指令寫明範圍，審 diff 檔案清單</td></tr>
+<tr><td>某類任務一直做不好</td><td>改由人做，或拆得更小</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>評測集要小而精</b>：5～10 個代表性任務即可，不必跑全套。</li>
+<li><b>用較小模型做例行評分的前置整理</b>，最終判斷仍由人或高風險時的大模型。</li>
+<li><b>把量測自動化</b>：測試通過與否由腳本判斷，不要靠 agent 自評。</li>
+</ul>
+<div class="note">本頁為一般性的實務建議，不構成法律意見。資料保存、模型訓練使用、地區合規等條款依你使用的方案與合約而異，請以供應商最新條款與你的法務、資安負責人意見為準。設定語法與欄位以官方文件為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

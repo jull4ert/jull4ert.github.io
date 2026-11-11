@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>實踐者長文三篇｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>實踐者長文三篇</h1>
+  <p class="sub">三位有經驗的開發者各自的工作方式：個人化強，重在思考方式而非照抄指令。</p>
+</header>
+<main class="page">
+
+<div class="note">本頁為 2026-11-11 閱讀原文後的重點整理（以自己的話改寫，僅引用極短片語）。原文可能已更新或修訂，採用前請回到原文確認。</div>
+<h2>1. Armin Ronacher：Agentic Coding Recommendations</h2>
+<div class="card"><h3><a href="https://lucumr.pocoo.org/2025/6/12/agentic-coding/" target="_blank" rel="noopener noreferrer">Agentic Coding Recommendations</a></h3><p>來源：個人部落格；作者 Armin Ronacher；2025-06-12。</p></div><h3>重點</h3><ul><li>把 agent 能觀察或操作的一切都當成工具，要求工具<b>快、錯誤訊息清楚、能防誤用</b>。</li><li>服務輸出寫到 agent 讀得到的檔案，並避免服務被重複啟動。</li><li>工具與 log 輸出要精簡：冗長會耗 Token、拖慢迴圈。</li><li>寫「最笨但能動」的簡單程式：偏好函式勝於類別、避免繼承、直接用 SQL。</li><li>重要的檢查（例如權限檢查）放在 agent 看得到的程式路徑，不要藏在別的檔案或設定。</li><li>依賴升級要比以前更保守，能產生程式碼就少加依賴。</li><li>為平行的 agent 設計：共享狀態（檔案系統、資料庫）要先想好如何隔離。</li><li>程式庫大到超出 agent 能掌握的情境量時，就重構（例如抽出元件庫）。</li></ul><h3>可以直接套用</h3><ul><li>把常跑的操作寫成腳本或 Makefile 指令，讓 agent 呼叫，而不是多裝一個工具 → 見 <a href="../03-toolbox/mcp.html">03 MCP</a></li><li>輸出精簡與 log 寫檔 → <a href="../04-requirement-to-code/implement.html#tokens">04 實作的省 Token</a></li><li>簡單、局部化的程式碼其實也讓審查更容易 → <a href="../05-cross-review/code-review.html">05</a></li></ul><h3>作者自己說的限制</h3><ul><li>他以別名使用 <code>claude --dangerously-skip-permissions</code>（跳過權限詢問），並自述「有風險」，建議用 Docker 管理；<b>這是個人在特定環境的選擇，不是本手冊的建議</b>，見 <a href="../09-governance/permissions-hardening.html">09 權限與防護</a>。</li><li>作者預期文章「會很快過時」，並說這是個人工作流程，不是 Claude Code 的廣告。</li><li>他幾乎不用 MCP，僅在替代方案太不可靠時才用；平行化他也自承還沒有好的解法。</li></ul>
+<h2>2. Simon Willison：Designing agentic loops</h2>
+<div class="card"><h3><a href="https://simonwillison.net/2025/Sep/30/designing-agentic-loops/" target="_blank" rel="noopener noreferrer">Designing agentic loops</a></h3><p>來源：個人部落格；作者 Simon Willison；2025-09-30。</p></div><h3>重點</h3><ul><li>挑「成功標準明確、需要大量嘗試錯誤」的問題：除錯、查詢優化、依賴升級、縮小容器等。</li><li>好的自動化測試是放大 agent 價值的關鍵。</li><li>傾向把工具設計成 shell 指令，並在 AGENTS.md（或同類檔案）記錄可用的 CLI 與使用範例。</li><li>要讓 agent 無人值守地跑，須在受限的沙箱內：限制檔案、機密與網路。</li><li>偏好在拋棄式的雲端容器（別人的電腦）上執行，並限制可連網的主機清單。</li><li>給 agent 測試或預備環境的憑證；任何能花錢的憑證都要設定嚴格預算上限。</li></ul><h3>可以直接套用</h3><ul><li>以測試與成功標準設計迴圈 → <a href="../04-requirement-to-code/implement.html">04 實作</a>、<a href="../05-cross-review/evidence.html">05 用證據收斂</a></li><li>無人值守的隔離、憑證與預算 → <a href="../06-advanced-workflows/headless-ci.html">06 Headless 與 CI</a>、<a href="../09-governance/permissions-hardening.html">09</a>、<a href="../09-governance/cost-control.html">成本控管</a></li></ul><h3>作者自己說的限制</h3><ul><li>作者明說無人值守的跳過權限模式很危險：可能刪改資料、外洩機密、被當跳板攻擊；並引用「AI agent 就是在迴圈裡破壞環境的 LLM」這類說法。</li><li>他對內建沙箱仍持保留，認為尚未看到足以信任的文件。</li><li>他稱此領域「還很新」，並非每個問題都適用此模式。</li></ul>
+<h2>3. Harper Reed：My LLM codegen workflow atm</h2>
+<div class="card"><h3><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/" target="_blank" rel="noopener noreferrer">My LLM codegen workflow atm</a></h3><p>來源：個人部落格；作者 Harper Reed；2025-02-16。</p></div><h3>重點</h3><ul><li>先用對話式 LLM 把想法磨成規格，存成 <code>spec.md</code>，再動手。</li><li>把規格交給推理模型產出計畫，切成小塊，每塊對應一個後續提示。</li><li>計畫存 <code>prompt_plan.md</code>、清單存 <code>todo.md</code>，讓不同工作階段能接力、勾選。</li><li>一次執行一個提示、跑測試，通過再往下。</li><li>既有專案不是為整個專案規劃，而是<b>每個任務各自規劃</b>。</li><li>agent 的工作放在新分支；並隨時對照計畫文件，避免進度跑得比你的理解還快。</li></ul><h3>可以直接套用</h3><ul><li>規格、計畫檔、待辦清單的接力方式，與 04 的流程幾乎一致 → <a href="../04-requirement-to-code/index.html">04 需求到程式碼</a></li><li>用審查、補測試的提示審計既有程式碼 → <a href="../05-cross-review/code-review.html">05</a></li></ul><h3>作者自己說的限制</h3><ul><li>作者說這套做法「兩週後大概就不管用了」，所用工具與模型已過時，提示自述「又舊又破」。</li><li>主要是單人工作流程；多人或多個 bot 並行時會互相衝突。</li><li>他常「滑太快」而失控，所以靠測試與規劃來約束。</li></ul><section class="refs"><h3>參考出處</h3><ul><li><a href="https://lucumr.pocoo.org/2025/6/12/agentic-coding/">Armin Ronacher</a></li><li><a href="https://simonwillison.net/2025/Sep/30/designing-agentic-loops/">Simon Willison</a></li><li><a href="https://harper.blog/2025/02/16/my-llm-codegen-workflow-atm/">Harper Reed</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

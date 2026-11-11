@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>實測驗證紀錄｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>實測驗證紀錄</h1>
+  <p class="sub">哪些內容已經實際驗證過、哪些還沒有，以及請你在互動式環境補驗的清單。</p>
+</header>
+<main class="page">
+
+<p>這份手冊的內容有三種可信度：<b>已實測</b>、<b>讀過官方文件</b>、<b>僅依印象撰寫</b>。這一頁老實列出，讓你知道哪裡可以放心、哪裡需要自己確認。</p>
+<div class="note">驗證日期：2026-11-11。環境：Windows 11、Claude Code 2.1.322、.NET SDK 8.0.427（亦安裝 9、10）、Node.js 24.18.1。</div>
+<h2>A. 已在本機實測</h2>
+<table><tr><th>項目</th><th>方法</th><th>結果</th></tr>
+<tr><td>CLI 旗標：<code>-p</code>、<code>--output-format</code>、<code>--permission-mode</code>、<code>--allowedTools</code>、<code>-c</code>、<code>-r</code>、<code>-w</code>、<code>--agents</code>、<code>--model</code>、<code>--effort</code>、<code>--bare</code>、<code>--add-dir</code></td><td><code>claude --help</code></td><td>皆存在</td></tr>
+<tr><td><code>--permission-mode</code> 可選值</td><td><code>claude --help</code></td><td><code>acceptEdits</code>、<code>auto</code>、<code>bypassPermissions</code>、<code>manual</code>、<code>dontAsk</code>、<code>plan</code></td></tr>
+<tr><td><code>--max-turns</code></td><td>實際執行 <code>claude -p … --max-turns 1</code></td><td>可用；但 <code>--help</code> 未列出</td></tr>
+<tr><td><code>--max-budget-usd</code></td><td><code>claude --help</code></td><td>存在，只搭配 <code>-p</code></td></tr>
+<tr><td><code>claude mcp add</code>（http 與 stdio、<code>-s</code>、<code>-e</code>、<code>-H</code>）</td><td><code>claude mcp add --help</code></td><td>與手冊寫法一致</td></tr>
+<tr><td><code>claude plugin marketplace add</code>、<code>claude plugin install 外掛@來源</code>、<code>claude plugin details</code></td><td><code>--help</code></td><td>存在；<code>details</code> 顯示元件清單與預估 token 成本</td></tr>
+<tr><td>練習專案 OrderDemo 的建置與測試</td><td><code>dotnet test</code>、<code>node --test</code></td><td>6 個後端測試、3 個前端測試通過</td></tr>
+<tr><td>Lab 2 參考解答</td><td>先加測試，再修正</td><td>修正前失敗 1、通過 6；修正後通過 7</td></tr>
+<tr><td>Lab 4 參考解答（後端）</td><td>加入 3 個日期測試與 API 驗證</td><td>10 個測試全通過；API 起日晚於迄日回 400</td></tr>
+<tr><td>Lab 5 formatDate 解答</td><td>Node 執行</td><td>2026-10-01T17:00:00Z → 2026-10-02（台灣時區）</td></tr>
+<tr><td>練習網站啟動</td><td><code>dotnet run</code> 後 curl</td><td><code>/Orders</code> 回 200；API 列表、400、取消皆符合預期</td></tr>
+<tr><td>Hook 腳本（block-danger.js、format-cs.js）</td><td>以標準輸入餵入 JSON</td><td>危險指令結束碼 2；一般指令 0；非 JSON 0；非 .cs 略過；格式化可執行</td></tr></table>
+<h2>B. 已讀官方文件或原文（未實測）</h2>
+<table><tr><th>項目</th><th>來源</th></tr>
+<tr><td>CLAUDE.md 建議 200 行內、<code>CLAUDE.local.md</code>、<code>.claude/rules/</code> 與 <code>paths:</code></td><td>官方最佳實踐頁</td></tr>
+<tr><td><code>deny</code> 規則在所有權限模式有效、<code>/sandbox</code></td><td>官方最佳實踐頁</td></tr>
+<tr><td><code>Stop</code> hook 以結束碼 2 退出可強制繼續</td><td>官方最佳實踐頁</td></tr>
+<tr><td>斜線指令已被 skills 取代（概念合流）</td><td>Böckeler 文章（2026-01 版本）</td></tr></table>
+<h2>C. 尚未實測：請你在互動式環境補驗</h2>
+<p>這些需要在 Claude Code 的互動畫面中操作，我無法替你驗證。請照表測試，把結果填在「實際」欄，並回報不符之處，我會據以修正頁面。</p>
+<table><tr><th>#</th><th>項目</th><th>出現在</th><th>預期</th><th>實際</th><th>狀態</th></tr>
+<tr><td>1</td><td><code>/context</code> 顯示情境佔用</td><td>00、01、03</td><td>列出各項佔用</td><td></td><td>☐</td></tr>
+<tr><td>2</td><td><code>/cost</code> 顯示用量</td><td>00、01、09</td><td>顯示本次用量（依方案而異）</td><td></td><td>☐</td></tr>
+<tr><td>3</td><td><code>/compact 指示</code></td><td>01</td><td>壓縮並保留指定重點</td><td></td><td>☐</td></tr>
+<tr><td>4</td><td><code>/rewind</code>、連按兩次 Esc</td><td>01</td><td>可退回先前步驟</td><td></td><td>☐</td></tr>
+<tr><td>5</td><td>Shift+Tab 切換模式</td><td>01</td><td>循環切換</td><td></td><td>☐</td></tr>
+<tr><td>6</td><td>Ctrl+V 貼圖片（Windows 終端機）</td><td>01</td><td>可貼上截圖</td><td></td><td>☐</td></tr>
+<tr><td>7</td><td>Shift+Enter 與 <code>\</code>+Enter 換行、<code>/terminal-setup</code></td><td>01</td><td>可換行</td><td></td><td>☐</td></tr>
+<tr><td>8</td><td><code>!指令</code> 直接執行 shell</td><td>01</td><td>輸出進入情境</td><td></td><td>☐</td></tr>
+<tr><td>9</td><td><code>/init</code> 產生 CLAUDE.md</td><td>01、Lab 7</td><td>產生初版</td><td></td><td>☐</td></tr>
+<tr><td>10</td><td>自訂 subagent 的檔案格式與欄位（<code>name</code>、<code>description</code>、<code>tools</code>、<code>model</code>）</td><td>03、05、模板</td><td>可用 <code>/agents</code> 看到並呼叫</td><td></td><td>☐</td></tr>
+<tr><td>11</td><td>skill 放 <code>.claude/skills/名稱/SKILL.md</code> 能被載入並觸發</td><td>02、03、Lab 7</td><td>能依描述觸發</td><td></td><td>☐</td></tr>
+<tr><td>12</td><td>hook 設定格式與觸發（PreToolUse 結束碼 2 阻擋）</td><td>03、模板</td><td>危險指令被擋並回饋訊息</td><td></td><td>☐</td></tr>
+<tr><td>13</td><td>hook 標準輸入的 JSON 欄位（<code>tool_input.command</code>、<code>tool_input.file_path</code>）</td><td>模板</td><td>與腳本假設一致</td><td></td><td>☐</td></tr>
+<tr><td>14</td><td><code>permissions.deny</code> 的語法（例如 <code>Read(./.env)</code>、<code>Bash(dotnet ef migrations*)</code>）</td><td>09、模板</td><td>實際被拒絕</td><td></td><td>☐</td></tr>
+<tr><td>15</td><td>遠端 MCP 的授權流程（<code>/mcp</code>）</td><td>03、06</td><td>可登入授權</td><td></td><td>☐</td></tr>
+<tr><td>16</td><td>GitHub Actions 的 <code>claude-code-action</code> 設定</td><td>06</td><td>可審查 PR</td><td></td><td>☐</td></tr>
+<tr><td>17</td><td>Windows 工作排程器執行 <code>claude -p</code></td><td>06、Lab</td><td>可定時產生檔案</td><td></td><td>☐</td></tr>
+<tr><td>18</td><td>.NET Framework（MVC 5）專案的建置與測試指令</td><td>12、模板</td><td>依你的環境</td><td></td><td>☐</td></tr></table>
+<h2>D. 因實測而修正或補充的地方</h2>
+<table><tr><th>項目</th><th>修正</th></tr>
+<tr><td>CLAUDE.md 長度</td><td>原寫「百行內」，改為官方建議的 200 行內</td></tr>
+<tr><td><code>--max-budget-usd</code></td><td>原先未提；已補在 Headless 與成本控管</td></tr>
+<tr><td>權限模式名稱</td><td>補上實際可選值（含 <code>auto</code>、<code>manual</code>、<code>dontAsk</code>）</td></tr>
+<tr><td><code>claude plugin details</code></td><td>補上可預估 token 成本，用於省 Token 盤點</td></tr>
+<tr><td>練習專案 NuGet 還原</td><td>實測遇到私有套件來源要求驗證而失敗，專案加入只用 nuget.org 的 <code>nuget.config</code></td></tr>
+<tr><td>練習專案測試無法編譯</td><td>實測發現缺少 <code>using Xunit</code>，已修正</td></tr></table>
+<h2>怎麼維護這份紀錄</h2>
+<ul>
+<li>升級 Claude Code 後，重跑 A 區，並更新版本號。</li>
+<li>C 區每驗證一項就改狀態；不符之處回頭改對應頁面。</li>
+<li>手冊其他頁面中「依印象寫的」說法，優先靠 C 區補驗。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

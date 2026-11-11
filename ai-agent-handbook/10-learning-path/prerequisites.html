@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>前置知識補課｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>前置知識補課</h1>
+  <p class="sub">用 agent 之前，你至少要會的五件事；缺哪個，就先補哪個。</p>
+</header>
+<main class="page">
+
+<p>agent 能幫你很多，但<b>驗證與判斷是你的工作</b>。以下五項是最低門檻，每項都附自我測驗。</p>
+<h2>1. 終端機與檔案路徑</h2>
+<table><tr><th>最低要會</th><th>自我測驗</th></tr>
+<tr><td>在資料夾中開啟終端機、切換目錄、列出檔案</td><td>不用滑鼠，進到練習專案資料夾並列出檔案</td></tr>
+<tr><td>知道目前工作目錄在哪</td><td>說出「為什麼要在專案根目錄啟動 agent」</td></tr></table>
+<pre><code>cd D:/work/OrderDemo
+dir            # PowerShell / cmd 列出檔案；Git Bash 可用 ls
+git status</code></pre>
+<h2>2. Git 基本功</h2>
+<table><tr><th>最低要會</th><th>指令</th></tr>
+<tr><td>看目前狀態與差異</td><td><code>git status</code>、<code>git diff</code>、<code>git diff --stat</code></td></tr>
+<tr><td>開分支、提交</td><td><code>git switch -c lab2-fix</code>、<code>git add -A</code>、<code>git commit -m "..."</code></td></tr>
+<tr><td>丟掉不要的修改</td><td><code>git restore 檔案</code>（還原單一檔案）</td></tr>
+<tr><td>暫存目前進度</td><td><code>git stash</code>、<code>git stash pop</code></td></tr></table>
+<p><b>自我測驗</b>：在新分支改一個檔案、看 diff、再完全還原，全程不經 agent。</p>
+<div class="note"><code>git restore</code> 會直接丟掉未提交的修改，無法復原。執行前先用 <code>git diff</code> 確認真的不要。</div>
+<h2>3. 讀 diff</h2>
+<p>agent 的每次修改你都要看 diff。最低要會：</p>
+<ul>
+<li>認得 <code>+</code>（新增）、<code>-</code>（刪除）、<code>@@</code>（位置）。</li>
+<li>先看 <code>git diff --stat</code> 了解動了哪些檔案，再逐檔看內容。</li>
+<li>特別留意<b>刪除的行</b>和<b>條件判斷的改動</b>。</li>
+</ul>
+<h2>4. 單元測試基本概念（xUnit）</h2>
+<pre><code>[Fact]
+public void Cancel_AlreadyCancelledOrder_Fails()
+{
+    // Arrange：準備資料
+    var service = new OrderService(new InMemoryOrderRepository());
+
+    // Act：執行被測行為
+    var result = service.Cancel(orderId: 3, departmentId: 1);
+
+    // Assert：驗證結果
+    Assert.False(result.Success);
+}</code></pre>
+<table><tr><th>最低要會</th><th>自我測驗</th></tr>
+<tr><td>跑測試並看懂通過／失敗</td><td>執行 <code>dotnet test</code>，說出結果的三個數字代表什麼</td></tr>
+<tr><td>「先失敗再通過」的意義</td><td>能解釋為什麼測試要先看到它失敗</td></tr></table>
+<h2>5. HTTP、API 與前端基本概念</h2>
+<table><tr><th>主題</th><th>最低要會</th></tr>
+<tr><td>HTTP</td><td>GET 與 POST 的差別、狀態碼 200 / 400 / 404 / 500 的意思</td></tr>
+<tr><td>MVC</td><td>Controller 接請求、Service 處理邏輯、View 產生頁面</td></tr>
+<tr><td>Vue 基本語法</td><td><code>v-for</code>、<code>v-model</code>、<code>v-on:click</code>、<code>{{ }}</code> 插值</td></tr>
+<tr><td>前端呼叫 API</td><td>看得懂 <code>fetch</code> 與 <code>async/await</code></td></tr></table>
+<h2>怎麼補</h2>
+<p>這些都可以<b>請 agent 當老師</b>教你（見<a href="agent-as-teacher.html">把 agent 當老師</a>），但要自己動手做過一次。每項花 30 分鐘到 1 小時即可，不需要精通。</p>
+<h2>自我檢核</h2>
+<ul>
+<li>我能在新分支改檔案、看 diff、還原。</li>
+<li>我能跑 <code>dotnet test</code> 並看懂結果。</li>
+<li>我能說出一個 API 請求從前端到 Service 的路徑。</li>
+<li>我能看懂一段簡單的 Vue 模板。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://git-scm.com/book/zh-tw/v2">Pro Git（繁體中文）</a></li><li><a href="https://learn.microsoft.com/zh-tw/dotnet/core/testing/unit-testing-with-dotnet-test">Microsoft Learn：用 dotnet test 做單元測試</a></li><li><a href="https://xunit.net/docs/getting-started/netcore/cmdline">xUnit 入門</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

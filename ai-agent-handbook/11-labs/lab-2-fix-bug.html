@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 2：修 bug（先寫失敗的測試）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 2：修 bug（先寫失敗的測試）</h1>
+  <p class="sub">取消已出貨的訂單不該成功。先重現、先讓測試失敗，再修，再證明修好了。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：45～60 分鐘　<b>分支</b>：<code>lab2-fix</code></p>
+<h2>情境</h2>
+<p>客服回報：「已出貨的訂單還能按取消，而且會變成已取消。」規則是：<b>已出貨的訂單不能取消</b>。</p>
+<h2>目標</h2>
+<ul>
+<li>用實際操作<b>重現</b>問題。</li>
+<li>先寫會失敗的測試，確認失敗，再修，再確認通過。</li>
+<li>用 diff 確認修改範圍最小。</li>
+</ul>
+<h2>步驟</h2>
+<ol>
+<li><b>重現</b>：啟動網站，在部門 1 的列表對「已出貨」的訂單 2 按取消，觀察狀態被改掉。或用 API：
+<pre><code>curl -X POST "http://localhost:5000/api/orders/2/cancel?departmentId=1" -i</code></pre></li>
+<li><b>讓 agent 先找根因，不要修改</b>：
+<pre><code>&gt; 已出貨（Shipped）的訂單目前可以被取消，這是錯的。
+&gt; 重現方式：POST /api/orders/2/cancel?departmentId=1。
+&gt; 請先閱讀 OrderService.Cancel，找出根因並說明，現在不要改檔案。</code></pre></li>
+<li><b>先寫失敗的測試</b>：
+<pre><code>&gt; 在 tests/OrderDemo.Tests/OrderServiceTests.cs 新增一個測試：
+&gt; 取消已出貨的訂單 2 應失敗，錯誤訊息為「已出貨的訂單不能取消」。
+&gt; 只加測試，不要修改正式程式碼。執行 dotnet test 並貼出結果，我要看到它失敗。</code></pre></li>
+<li><b>修正</b>：
+<pre><code>&gt; 現在修正 OrderService.Cancel，讓這個測試通過。只改這個方法，不要動其他檔案。
+&gt; 執行全部測試並貼出結果。</code></pre></li>
+<li>用 <code>git diff</code> 檢查：正式程式只改了一處嗎？</li>
+<li>再實際操作一次網站，確認已出貨訂單取消時被拒絕。</li>
+<li>commit。</li>
+</ol>
+<h2>預期結果</h2>
+<table><tr><th>階段</th><th>預期輸出</th></tr>
+<tr><td>寫完測試後（修正前）</td><td>失敗 1、通過 6、總計 7</td></tr>
+<tr><td>修正後</td><td>已通過！失敗 0、通過 7</td></tr>
+<tr><td>API 對訂單 2 取消</td><td>HTTP 400，內容 <code>{"error":"已出貨的訂單不能取消"}</code></td></tr></table>
+<h2>檢核</h2>
+<ul>
+<li>我親眼看到測試先失敗，原因就是我要修的 bug。</li>
+<li>正式程式碼的 diff 很小（約 5 行以內）。</li>
+<li>agent 沒有為了通過測試而修改測試。</li>
+<li>我實際操作了網站（或 API）驗證。</li>
+</ul>
+<details><summary>參考解答</summary>
+<p>測試：</p>
+<pre><code>[Fact]
+public void Cancel_ShippedOrder_Fails()
+{
+    var result = CreateService().Cancel(orderId: 2, departmentId: 1);
+
+    Assert.False(result.Success);
+    Assert.Equal("已出貨的訂單不能取消", result.Error);
+}</code></pre>
+<p>修正（在 <code>Cancel</code> 設定狀態之前加入）：</p>
+<pre><code>if (order.Status == OrderStatus.Shipped)
+{
+    return CancelResult.Fail("已出貨的訂單不能取消");
+}</code></pre>
+<p>此解答已實際執行驗證：修正前測試失敗（失敗 1、通過 6），修正後全部通過（通過 7）。</p></details>
+<details><summary>如果 agent 做了這些事，要警覺</summary>
+<ul>
+<li>順手重構整個 Service，或改了其他方法。</li>
+<li>先改正式程式，再寫「剛好通過」的測試。</li>
+<li>把「已取消」的測試期望值改掉。</li>
+</ul></details>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

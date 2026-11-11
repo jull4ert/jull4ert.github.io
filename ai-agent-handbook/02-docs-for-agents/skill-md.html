@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SKILL.md：按需載入的專業流程｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>SKILL.md：按需載入的專業流程</h1>
+  <p class="sub">把「某類任務怎麼做」封裝成 agent 在需要時才讀的文件。</p>
+</header>
+<main class="page">
+
+<h2>與 CLAUDE.md 的差別</h2>
+<table><tr><th></th><th>CLAUDE.md</th><th>SKILL.md</th></tr>
+<tr><td>載入時機</td><td>每次對話都載入</td><td>只常駐名稱與描述；判斷相關才載入全文</td></tr>
+<tr><td>適合</td><td>常駐規範</td><td>特定任務的流程、檢查表、專業做法</td></tr>
+<tr><td>觸發</td><td>無需觸發</td><td>靠 <code>description</code> 比對任務；也可手動呼叫</td></tr></table>
+<p>這是「漸進式揭露」：目錄常駐、細節按需讀，讓你能裝很多 skill 而不撐爆情境。</p>
+<h2>結構</h2>
+<pre><code>.claude/skills/
+└─ code-review-checklist/
+   ├─ SKILL.md          ← 必要：前言 + 說明
+   ├─ checklist.md      ← 選用：被 SKILL.md 引用的參考資料
+   └─ scripts/lint.sh   ← 選用：可執行的腳本</code></pre>
+<p>個人層級放 <code>~/.claude/skills/</code>，專案層級放 <code>.claude/skills/</code>（可入版控與團隊共用）。</p>
+<h2>範例</h2>
+<pre><code>---
+name: code-review-checklist
+description: 審查 C# 變更時使用。當使用者要求 review、檢查 diff 或 PR 時套用，涵蓋授權、錯誤處理、效能與測試。
+---
+# 審查流程
+1. 先讀 git diff，列出變更範圍。
+2. 依 [checklist.md](checklist.md) 逐項檢查。
+3. 輸出：嚴重度排序的問題清單，每項附檔案行號與建議。
+4. 不要自行修改程式碼，只回報。</code></pre>
+<h2>寫好 description 是關鍵</h2>
+<ul>
+<li>說明「做什麼」<b>以及「何時使用」</b>，並包含使用者會說的關鍵詞。</li>
+<li>邊界要清楚：什麼情況不要用，避免誤觸發。</li>
+<li>太籠統（「幫忙寫程式」）會亂觸發；太窄會永遠不觸發。</li>
+</ul>
+<h2>撰寫原則</h2>
+<ul>
+<li>主檔保持精簡（建議數百行內），細節拆到旁邊的檔案，由主檔指向。</li>
+<li>把流程寫成<b>步驟與輸出格式</b>，而非散文。</li>
+<li>需要穩定結果的部分（格式檢查、轉換）放成腳本，不要靠 agent 即興。</li>
+<li>用真實任務測試：觸發了嗎？照做了嗎？哪裡跑偏就改哪裡。</li>
+<li>一個 skill 一件事；彼此可組合，不要做萬用大雜燴。</li>
+</ul>
+<h2>什麼該做成 skill</h2>
+<p>你發現自己對 agent 重複貼同一段指令時：commit 慣例、PR 說明格式、審查清單、報表產生流程、公司術語翻譯。</p>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>Skill 本身就是省 Token 設計</b>：只有名稱與描述常駐，全文在需要時才載入（漸進式揭露）。</li>
+<li><b>description 要精簡</b>：它是常駐成本，用一兩句講清楚做什麼與何時用，不要寫成長文。</li>
+<li><b>主檔精簡、細節外放</b>：把大型參考資料拆到旁邊的檔案，主檔只指向，用到才讀。</li>
+<li><b>穩定的邏輯放腳本</b>：腳本執行不佔推理成本，輸出也可控；只讓 agent 讀結果。</li>
+<li><b>不用的 skill 就移除</b>：每個都有常駐描述的成本。</li>
+<li><b>把重複貼的長指令搬進 skill</b>：從「每次貼」變成「按需載入」。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Agent Skills 文件</a></li><li><a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills">Equipping agents for the real world with Agent Skills</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>程式碼審查｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>程式碼審查</h1>
+  <p class="sub">用獨立情境、多視角與對抗式驗證，找出作者看不到的問題。</p>
+</header>
+<main class="page">
+
+<h2>審查的兩條軸</h2>
+<table><tr><th>軸</th><th>問題</th><th>比對基準</th></tr>
+<tr><td>規格軸</td><td>做對了嗎？有漏做、多做嗎？</td><td>規格、驗收條件、原始需求</td></tr>
+<tr><td>標準軸</td><td>寫得好嗎？符合專案規範嗎？</td><td>CLAUDE.md、風格與架構規範、ADR</td></tr></table>
+<p>兩軸分開審，結果更清楚：規格軸抓「功能性盲點」，標準軸抓「維護性盲點」。</p>
+<h2>做法一：獨立 subagent 審查</h2>
+<p>subagent 在自己的情境視窗運作，看不到你與作者 agent 的對話歷史，天然就有獨立性。</p>
+<pre><code>---
+name: code-reviewer
+description: 審查未提交或指定範圍的程式碼變更。完成實作後使用。
+tools: Read, Grep, Glob, Bash
+---
+你是資深審查員，獨立於作者，不知道實作時的考量。
+1. 執行 git diff 取得變更；讀取相關檔案理解上下文。
+2. 依 CLAUDE.md 規範檢查標準軸；依指定規格檢查規格軸。
+3. 每個發現必須包含：嚴重度（高/中/低）、檔案與行號、問題說明、
+   證據（重現步驟、測試或程式碼推論）、信心（高/中/低）。
+4. 沒有高嚴重度問題就明說，不要湊數。不得修改任何檔案。</code></pre>
+<pre><code>&gt; 用 code-reviewer 審查目前未提交的變更，規格見 @docs/specs/order-filter.md</code></pre>
+<h2>做法二：多視角並行</h2>
+<p>同一份變更交給不同專長的審查者，各自獨立，再彙整。</p>
+<table><tr><th>視角</th><th>關注</th></tr>
+<tr><td>正確性</td><td>邏輯、邊界、錯誤處理、併發、與規格是否一致</td></tr>
+<tr><td>安全</td><td>輸入驗證、授權、注入、機密、個資（可對照資安交付手冊）</td></tr>
+<tr><td>效能</td><td>N+1 查詢、不必要的迴圈、大資料量行為</td></tr>
+<tr><td>可維護性</td><td>命名、重複、過度設計、是否符合既有慣例</td></tr>
+<tr><td>測試</td><td>覆蓋是否足夠、測試是否真的能抓到錯誤</td></tr></table>
+<pre><code>&gt; 請同時啟動 3 個 subagent 平行審查目前的 git diff，
+&gt; 分別以「正確性」「安全」「測試品質」為唯一視角，
+&gt; 各自獨立回報，不要互相參考。最後我再請你彙整。</code></pre>
+<h2>做法三：對抗式驗證</h2>
+<p>第一輪審查者一定會有誤報。派第二個 agent 專門<b>反駁</b>第一輪的每一項發現，存活下來的才算數。</p>
+<pre><code>&gt; 以下是審查者提出的 6 個問題（貼上清單）。
+&gt; 你的任務是逐項嘗試反駁：讀實際程式碼，判斷它是否真的成立。
+&gt; 每項回答：成立／不成立／無法判斷，並附你查到的程式碼證據。
+&gt; 你不是在幫作者辯護，而是在剔除誤報。</code></pre>
+<h2>做法四：換模型再審</h2>
+<p>對高風險變更，用不同模型（subagent 的 <code>model</code> 欄位可指定）或另一個工具再審一輪。不同模型的盲點不完全重疊，兩邊都提到的問題通常最值得優先處理。</p>
+<h2>做法五：盲審</h2>
+<p>只給審查者「規格」與「成品」，不告知作者的設計理由。若審查者看不懂為何如此設計，往往代表程式碼或註解沒有自我說明。</p>
+<h2>審查提示的黃金句型</h2>
+<ul>
+<li>「只回報你能指出具體檔案與行號的問題。」</li>
+<li>「依嚴重度排序，沒有高嚴重度請明說。」</li>
+<li>「不要重複 linter 與格式化工具已經能抓到的事。」</li>
+<li>「不要修改檔案，只回報。」</li>
+<li>「對每個發現給出信心程度與你不確定的地方。」</li>
+</ul>
+<div class="note">指令、檔案位置與 frontmatter 欄位會隨版本調整，以官方文件與 <code>/help</code>、<code>/agents</code> 的實際畫面為準。</div><h2 id="tokens">省 Token 技巧</h2>
+<p>交叉審查會把成本乘以審查者人數，所以要有意識地控制。</p>
+<table><tr><th>做法</th><th>說明</th></tr>
+<tr><td>依風險決定輪數與視角</td><td>金流、權限、資料遷移才多視角；小改動一個審查者一輪即可</td></tr>
+<tr><td>審查範圍縮到 diff</td><td>「只審 git diff 與其直接相關的檔案」，不要整個專案</td></tr>
+<tr><td>審查者用較省的模型</td><td>subagent 可指定模型；一般審查用中小型，高風險再升級或換模型再審</td></tr>
+<tr><td>限制輸出</td><td>「最多回報 5 項、依嚴重度、無高嚴重度就直說」</td></tr>
+<tr><td>只讀工具</td><td>限制 tools，審查者不會順手大量讀檔或亂改</td></tr>
+<tr><td>反駁只針對高、中嚴重度</td><td>低嚴重度或品味問題不值得再派一個 agent 驗證</td></tr>
+<tr><td>subagent 只回結論</td><td>要求回報摘要與證據位置，不貼整段程式碼</td></tr></table>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://owasp.org/www-project-code-review-guide/">OWASP Code Review Guide</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

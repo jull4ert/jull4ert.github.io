@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>進階工作流程｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>進階工作流程</h1>
+  <p class="sub">把 agent 從「對話助手」升級成「可重複、可排程、可串接工具的工作流程」。</p>
+</header>
+<main class="page">
+
+<p>前面各區讓你學會和 agent 一起把<b>一件事</b>做好。這一區處理另一個問題：<b>重複發生的事</b>、<b>需要多個 agent 分工的事</b>、<b>要跟外部工具互動的事</b>（行事曆、Trello、Slack、信件）。</p>
+<h2>從對話到工作流程</h2>
+<div class="tree">對話式      你問一句、它做一句                    （Lv1～4）
+   │
+可重複      把流程寫進 skill，一句話觸發             （03）
+   │
+可自動      hook / 排程 / CI 在事件或時間到時執行    （本區）
+   │
+可分工      多個 subagent 平行、互相審查             （本區 + 05）
+   │
+可串接      MCP 連到行事曆、Trello、Slack、信件      （本區）</div>
+<h2>頁面</h2>
+<div id="children"></div>
+<h2>設計工作流程的五條原則</h2>
+<table><tr><th>原則</th><th>說明</th></tr>
+<tr><td>確定性的交給程式，判斷交給 agent</td><td>格式轉換、排序、呼叫 API 用腳本；摘要、分類、起草用 agent</td></tr>
+<tr><td>先唯讀，再寫入</td><td>先讓它只產生「建議清單」，信任後才開放建立、修改</td></tr>
+<tr><td>寫入前有人工關卡</td><td>對外可見、難以還原的動作，由你核准</td></tr>
+<tr><td>狀態存在檔案，不在記憶裡</td><td>中間結果、已處理清單寫成檔案，可接力、可檢查</td></tr>
+<tr><td>可重跑（冪等）</td><td>重複執行不會產生重複卡片、重複信件</td></tr></table>
+<div class="note">旗標、指令與設定欄位會隨版本調整，請以官方文件與 <code>claude --help</code> 的實際輸出為準；範例腳本請先在安全的環境小規模測試。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code 概覽</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/headless">Headless 模式</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/github-actions">GitHub Actions</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

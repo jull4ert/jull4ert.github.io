@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 7：寫 CLAUDE.md 與 skill｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 7：寫 CLAUDE.md 與 skill</h1>
+  <p class="sub">把專案慣例寫成 agent 讀得懂的文件，並驗證它真的有照做。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：60～90 分鐘　<b>分支</b>：<code>lab7-docs</code></p>
+<h2>目標</h2>
+<ul>
+<li>為 OrderDemo 寫一份精簡的 CLAUDE.md。</li>
+<li>做一個 skill（commit message 格式）。</li>
+<li>用<b>行為測試</b>驗證文件有效：換新對話，看 agent 是否照做。</li>
+</ul>
+<h2>步驟</h2>
+<ol>
+<li>先讓 agent 產生初版：<code>/init</code>，或請它掃描專案提出草稿。</li>
+<li><b>你來精簡與修正</b>：刪掉讀程式就看得出來的內容；補上它不可能知道的事。參考 <a href="../02-docs-for-agents/claude-md.html">02 CLAUDE.md</a> 與<a href="../13-reference/templates.html">模板庫</a>。</li>
+<li>決定三條「慣例」寫進去，例如：
+<ul>
+<li>商業邏輯放 Service，Controller 只負責接收與回應。</li>
+<li>新增 API 一定要有對應的 xUnit 測試。</li>
+<li>Vue 模板在 .cshtml 內使用 <code>v-on:</code> 寫法。</li>
+</ul></li>
+<li>建立 skill：<code>.claude/skills/commit-message/SKILL.md</code>，規定 commit 訊息格式（例如第一行 50 字內、說明「為什麼」）。</li>
+<li><b>行為驗證</b>：開新對話，請它「新增一個查詢單一訂單的 API 並提交」，觀察：有沒有放在 Service、有沒有寫測試、commit 訊息是否符合格式。沒做到的，回頭修文件。</li>
+</ol>
+<h2>預期結果</h2>
+<ul>
+<li>CLAUDE.md 在 60 行內，只含 agent 無法自行得知的資訊。</li>
+<li>新對話中，agent 的新 API 遵守你寫的慣例。</li>
+<li>commit 訊息符合 skill 的格式。</li>
+</ul>
+<h2>檢核</h2>
+<ul>
+<li>每條規則都具體、可驗證、有原因。</li>
+<li>沒有一般性的口號（「寫乾淨的程式」）。</li>
+<li>skill 的 <code>description</code> 說明了「何時使用」。</li>
+<li>我用新對話驗證過，並根據結果修改過一次文件。</li>
+</ul>
+<details><summary>參考解答（CLAUDE.md 精簡版）</summary>
+<pre><code># OrderDemo
+## 指令
+- 建置：dotnet build
+- 測試：dotnet test；前端純函式：node --test
+- 啟動：dotnet run --project src/OrderDemo.Web
+## 架構
+- Controllers 只接收與回應；商業邏輯在 Services；資料存取在 Data（目前為記憶體假資料）
+- 前端：Views/Orders/Index.cshtml 以 Vue 3 掛載；純函式在 wwwroot/js/order-utils.js
+## 慣例
+- 新增或修改 API 必須有對應的 xUnit 測試，且先看到測試失敗再實作
+- .cshtml 內的 Vue 事件一律用 v-on: 寫法（@ 會被 Razor 解析）
+- 日期顯示一律使用台灣時區（見 order-utils.js 的 formatDate）
+## 禁忌
+- 不得從查詢字串信任 departmentId 做授權（練習專案的現況是已知缺陷，正式程式請改用登入身分）
+## 完成標準
+- dotnet test 與 node --test 全數通過；說明列出改動的 API 與畫面</code></pre></details>
+<details><summary>參考解答（commit-message skill）</summary>
+<pre><code>---
+name: commit-message
+description: 依目前的 git diff 產生繁體中文 commit message。當使用者要求 commit、寫提交訊息或整理這次的變更時使用。
+---
+# 流程
+1. 執行 git diff --staged（沒有已暫存內容則用 git diff）取得變更。
+2. 第一行：50 字內，說明「做了什麼」，不用句號。
+3. 空一行，之後用 1～3 點說明「為什麼要改」與影響，不重述程式碼。
+4. 只寫 diff 中確實存在的內容，不要推測。
+5. 不要自行執行 git commit，輸出訊息讓使用者確認。</code></pre></details>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/memory">Memory / CLAUDE.md</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

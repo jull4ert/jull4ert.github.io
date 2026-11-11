@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：資料存取、EF 與 SQL｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：資料存取、EF 與 SQL</h1>
+  <p class="sub">資料庫是不可逆風險最高的地方：讓 agent 輔助，但關鍵決定留給人。</p>
+</header>
+<main class="page">
+
+<h2>先講原則</h2>
+<table><tr><th>可以交給 agent</th><th>必須由你（或資深同事）決定</th></tr>
+<tr><td>解釋既有的查詢與 LINQ</td><td>資料表結構變更</td></tr>
+<tr><td>寫查詢草稿、提出索引建議</td><td><b>產生與套用 migration</b></td></tr>
+<tr><td>在測試資料庫或記憶體資料上驗證</td><td>對正式資料庫執行任何寫入、刪除、結構變更</td></tr>
+<tr><td>審查產生的 SQL 與效能風險</td><td>大量資料更新、資料修補腳本的執行</td></tr></table>
+<div class="note"><b>Migration 一律人工決定。</b>agent 可以說明「這次的模型變更需要一份 migration、內容大致是什麼」，但不要讓它自行執行新增、修改或套用 migration 的指令。建議把這條寫進 CLAUDE.md 並在權限設定中禁止。</div>
+<h2>環境與權限</h2>
+<ul>
+<li>開發用<b>本機或測試資料庫</b>，不要連正式資料庫。</li>
+<li>連線帳號用<b>唯讀或最小權限</b>，連線字串放在祕密管理或環境變數，不要寫進被版控的檔案。</li>
+<li>不要把正式資料（個資、交易）貼進對話；需要樣本時用去識別化資料。</li>
+</ul>
+<h2>步驟：讓 agent 輔助寫查詢</h2>
+<ol>
+<li>提供<b>結構</b>而不是資料：資料表、欄位、關聯、索引（可從模型類別或 schema 取得）。</li>
+<li>說明需求與資料量級：「約 100 萬筆、依建立日期與狀態查詢」。</li>
+<li>要求同時說明<b>索引需求</b>與<b>風險</b>。</li>
+<li>在測試環境驗證結果正確，並看實際執行計畫。</li>
+</ol>
+<pre><code>&gt; 這是 Order 的模型與目前的 EF 設定（@檔案）。
+&gt; 需求：依部門、狀態、建立日期區間查詢，並分頁，資料量約 100 萬筆。
+&gt; 請寫出 LINQ 查詢，並說明：產生的 SQL 大致長什麼樣、需要什麼索引、
+&gt; 有沒有 N+1 或載入過多欄位的風險。不要建立 migration，也不要修改任何設定。</code></pre>
+<h2>EF Core 常見的審查點</h2>
+<table><tr><th>問題</th><th>提問方向</th></tr>
+<tr><td>N+1 查詢</td><td>「迴圈中有沒有再查資料庫？該用 Include 或投影嗎？」</td></tr>
+<tr><td>載入過多</td><td>「是否只需要部分欄位？能用投影（Select）嗎？」</td></tr>
+<tr><td>只讀查詢的追蹤成本</td><td>「唯讀的查詢是否該用 AsNoTracking？」</td></tr>
+<tr><td>在記憶體中過濾</td><td>「這個條件是在資料庫執行，還是先把全部載入再用 LINQ to Objects 過濾？」</td></tr>
+<tr><td>交易與併發</td><td>「兩個請求同時修改同一筆資料會怎樣？需要交易或樂觀並行控制嗎？」</td></tr>
+<tr><td>字串拼接 SQL</td><td>「是否有把使用者輸入拼進 SQL？一律用參數化。」</td></tr></table>
+<h2>資料修補腳本</h2>
+<p>要修正正式資料時（例如補欄位、更正資料）：</p>
+<ol>
+<li>agent 只協助<b>撰寫與審查</b>腳本，不執行。</li>
+<li>腳本要先 <code>SELECT</code> 確認影響筆數與內容，再 <code>UPDATE</code>。</li>
+<li>在測試環境用複製的資料演練。</li>
+<li>備份、在交易中執行、有回復方案。</li>
+<li>由有權限的人執行，並有紀錄。</li>
+</ol>
+<h2>檢查清單</h2>
+<ul>
+<li>沒有連到正式資料庫，沒有貼出個資。</li>
+<li>沒有自動執行任何 migration 或結構變更。</li>
+<li>查詢已在測試資料上驗證結果正確。</li>
+<li>已檢查索引、N+1、載入量。</li>
+<li>SQL 都是參數化，沒有字串拼接。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://learn.microsoft.com/zh-tw/ef/core/performance/">Microsoft Learn：EF Core 效能</a></li><li><a href="../09-governance/data-secrets.html">09 資料與機密</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

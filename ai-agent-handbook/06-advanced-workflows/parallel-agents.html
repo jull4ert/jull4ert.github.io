@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>平行與多 agent 分工｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>平行與多 agent 分工</h1>
+  <p class="sub">用 worktree 與 subagent 同時處理多件事，並設計 agent 之間的分工模式。</p>
+</header>
+<main class="page">
+
+<h2>兩種平行方式</h2>
+<table><tr><th>方式</th><th>做法</th><th>適合</th></tr>
+<tr><td>多個 subagent（同一對話內）</td><td>主 agent 派出多個，各自獨立情境，結果回到主對話</td><td>探索、審查、資料蒐集等<b>唯讀</b>工作</td></tr>
+<tr><td>多個對話 + git worktree</td><td>每個對話在各自的工作目錄與分支上動手</td><td>互不相依的<b>實作</b>任務</td></tr></table>
+<h2>git worktree：讓多個 agent 不互相踩</h2>
+<p>同一個 repo 不能同時在兩個分支上改檔案。worktree 讓同一個 repo 擁有多個獨立的工作目錄。</p>
+<pre><code>git worktree add ../shop-filter -b feature/order-filter
+git worktree add ../shop-export -b feature/order-export
+
+# 各開一個終端機
+cd ../shop-filter  &amp;&amp; claude    # 對話 A：做篩選
+cd ../shop-export  &amp;&amp; claude    # 對話 B：做匯出
+
+# 完成後
+git worktree remove ../shop-filter</code></pre>
+<p>每個 worktree 是獨立資料夾，兩個 agent 同時改檔案也不會衝突；最後各自提交 PR，由你合併。</p>
+<h2>四種分工模式</h2>
+<table><tr><th>模式</th><th>結構</th><th>範例</th></tr>
+<tr><td>管線（pipeline）</td><td>A 的產出交給 B，再交給 C</td><td>訪談 → 規格 → 拆解（見 04）</td></tr>
+<tr><td>扇出扇入（fan-out / fan-in）</td><td>同一份輸入分給多人，最後彙整</td><td>多視角程式碼審查（見 05）</td></tr>
+<tr><td>主從（orchestrator-worker）</td><td>主 agent 拆任務，派給專職 worker，再整合</td><td>大型重構：每個模組一個 worker</td></tr>
+<tr><td>評審團</td><td>多個獨立判斷，取共識或多數</td><td>重要決策、高風險審查</td></tr></table>
+<h2>範例：批次遷移</h2>
+<pre><code>&gt; 要把 40 個舊式 Service 改成新的 Result 回傳慣例。
+&gt; 1. 先寫遷移指南 docs/migration/result-pattern.md（含改前改後範例）
+&gt; 2. 先挑 2 個檔案示範，我確認寫法
+&gt; 3. 確認後，每 5 個檔案派一個 subagent，依指南遷移並跑對應測試
+&gt; 4. 各 subagent 只回報：改了哪些檔、測試結果、遇到的例外
+&gt; 5. 最後彙整成清單，列出需要人工處理的檔案</code></pre>
+<p>關鍵：<b>先用小樣本確認做法，再放大</b>；每個 worker 的輸入（指南）與輸出（回報格式）都明確。</p>
+<h2>什麼時候不要平行</h2>
+<ul>
+<li>任務之間有相依，後一個需要前一個的結果。</li>
+<li>會改同一批檔案（即使用 worktree，合併時也會衝突）。</li>
+<li>你來不及審查：平行產出的速度，不應超過你審查的速度。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>平行省時間，不省錢</b>：總成本是各 agent 相加；要省錢靠縮小每個任務的情境與範圍。</li>
+<li><b>先小樣本驗證做法</b>：避免 40 個檔案都做錯再重來，這是最大的浪費。</li>
+<li><b>限制回報格式</b>：worker 只回報摘要與結果，不貼大段程式碼。</li>
+<li><b>worker 用較小模型</b>：機械性遷移不需要最大模型。</li>
+<li><b>每個 worker 的輸入自給自足</b>：把指南給它，不要讓每個都自己重新探索。</li>
+</ul>
+<div class="note">旗標、指令與設定欄位會隨版本調整，請以官方文件與 <code>claude --help</code> 的實際輸出為準；範例腳本請先在安全的環境小規模測試。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://git-scm.com/docs/git-worktree">git worktree 文件</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程（含 worktree）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

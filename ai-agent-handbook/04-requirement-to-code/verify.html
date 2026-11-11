@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>⑤ 驗證｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>⑤ 驗證</h1>
+  <p class="sub">「測試通過」不等於「功能正確」；要實際跑起來，對照每一條驗收條件。</p>
+</header>
+<main class="page">
+
+<h2>驗證的四個層次</h2>
+<table><tr><th>層次</th><th>內容</th><th>agent 做法</th></tr>
+<tr><td>靜態</td><td>建置、型別、lint、格式</td><td>執行建置與檢查指令</td></tr>
+<tr><td>自動化測試</td><td>單元、整合測試</td><td>執行全部相關測試，貼出輸出</td></tr>
+<tr><td>實際執行</td><td>啟動程式，真的操作一次</td><td>啟動服務、呼叫 API、開瀏覽器操作並截圖</td></tr>
+<tr><td>對照驗收</td><td>規格每一條是否滿足</td><td>逐條列出：條件 → 證據 → 通過／不通過</td></tr></table>
+<h2>提示範例</h2>
+<pre><code>&gt; 所有任務已完成。請做完整驗證：
+&gt; 1. 執行建置、lint、全部測試，貼出結果摘要
+&gt; 2. 啟動應用程式，實際走過規格 @docs/specs/order-filter.md 的每個情境
+&gt; 3. 前端部分請截圖
+&gt; 4. 產出對照表：驗收條件｜驗證方式｜證據｜結果
+&gt; 任何一項不通過或無法驗證，請明說，不要自行判定為通過。</code></pre>
+<h2>證據報告格式</h2>
+<table><tr><th>驗收條件</th><th>驗證方式</th><th>證據</th><th>結果</th></tr>
+<tr><td>依狀態篩選</td><td>整合測試 + 手動操作</td><td>OrderQueryTests 4 通過；截圖 s1.png</td><td>通過</td></tr>
+<tr><td>起日大於迄日</td><td>API 呼叫</td><td>回應 400，訊息符合規格</td><td>通過</td></tr>
+<tr><td>10 萬筆 2 秒內</td><td>壓測資料集</td><td>實測 3.4 秒</td><td><b>不通過</b></td></tr></table>
+<p>報告裡出現「不通過」是好事，代表驗證有在做事。把不通過項目回到實作階段修，再驗一次。</p>
+<h2>常見的偽驗證</h2>
+<table><tr><th>現象</th><th>如何察覺</th></tr>
+<tr><td>只說「測試應該會過」但沒執行</td><td>要求貼出實際輸出</td></tr>
+<tr><td>只測了正常路徑</td><td>對照規格的邊界與錯誤情境，缺哪些</td></tr>
+<tr><td>測試寫成必過（斷言空泛）</td><td>臨時破壞實作，看測試是否真的失敗</td></tr>
+<tr><td>沒啟動就宣稱介面正常</td><td>要求截圖或實際回應內容</td></tr></table>
+<h2>你仍要親自試一次</h2>
+<p>挑最關鍵的一條流程自己操作一次。agent 的驗證涵蓋面廣，但只有你知道「用起來對不對」。</p>
+<h2>關卡：程式碼審查</h2>
+<p>驗證通過後、交付前，進行交叉審查（見 <a href="../05-cross-review/code-review.html">05 程式碼審查</a>）：獨立 subagent、多視角、對抗式驗證，並由你裁決。修正後再跑一次驗證。</p>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>分層驗證，便宜的先跑</b>：建置與 lint 先過，再跑測試，最後才做耗成本的實際操作與截圖。</li>
+<li><b>輸出摘要化</b>：「只貼通過／失敗數與失敗項目」，不要整份輸出。</li>
+<li><b>截圖只留關鍵畫面</b>：圖片也佔 Token，只截驗收需要的幾張。</li>
+<li><b>修正後只重跑受影響的部分</b>，最後再完整跑一次。</li>
+<li><b>驗證另開對話</b>：用乾淨情境，只帶規格與證據報告格式。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>推薦組合與常見坑｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>推薦組合與常見坑</h1>
+  <p class="sub">依情境挑選配置，並避開最常踩的雷。</p>
+</header>
+<main class="page">
+
+<h2>依情境的建議配置</h2>
+<table><tr><th>情境</th><th>建議組合</th></tr>
+<tr><td>個人起步</td><td>精簡的 CLAUDE.md（指令 + 慣例）＋ 計畫模式習慣；先不裝擴充</td></tr>
+<tr><td>日常開發</td><td>CLAUDE.md ＋ 1～2 個自己的 skill（commit、審查）＋ 編輯後格式化 hook</td></tr>
+<tr><td>重視品質</td><td>上述 ＋ spec-reviewer / code-reviewer 兩個唯讀 subagent ＋ 交叉審查 skill（見 05）</td></tr>
+<tr><td>團隊共用</td><td>專案層級的 CLAUDE.md、skills、agents、hooks 納入版控；用 plugin 分享跨專案設定</td></tr>
+<tr><td>非程式協作工作流</td><td>行事曆／Trello／Slack 的 MCP（先唯讀）＋ 晨報、週報 skill ＋ 寫入前人工核准（見 06）</td></tr>
+<tr><td>有合規要求</td><td>最小權限、hook 攔截危險動作、MCP 用唯讀帳號、審查所有第三方擴充</td></tr></table>
+<h2>建議的導入順序</h2>
+<ol>
+<li><b>先寫好 CLAUDE.md</b>：投資報酬率最高。</li>
+<li><b>把重複貼的指令做成 skill</b>。</li>
+<li><b>加上保證類的 hook</b>（格式化、危險指令攔截）。</li>
+<li><b>為審查與探索建立唯讀 subagent</b>。</li>
+<li><b>接上需要的 MCP</b>，先唯讀。</li>
+<li><b>最後才打包成 plugin 分享</b>。</li>
+</ol>
+<p>每加一樣，先觀察一週是否真的有幫助，再加下一樣。</p>
+<h2>常見的坑</h2>
+<table><tr><th>坑</th><th>後果</th><th>解法</th></tr>
+<tr><td>一次裝太多擴充</td><td>常駐成本高、描述互相干擾、誤觸發</td><td>逐一導入，定期清點；用 <code>/context</code> 檢查</td></tr>
+<tr><td>CLAUDE.md 寫成百科全書</td><td>遵守度下降、每輪都貴</td><td>精簡，細節放 skill 或文件</td></tr>
+<tr><td>用 CLAUDE.md 要求「一定要…」</td><td>agent 偶爾會忘</td><td>必須發生的事改用 hook</td></tr>
+<tr><td>skill 描述太籠統</td><td>亂觸發或不觸發</td><td>寫清楚做什麼與何時用，實測調整</td></tr>
+<tr><td>subagent 繼承所有工具</td><td>審查者順手改檔</td><td>限定唯讀工具</td></tr>
+<tr><td>MCP 全域開、全部寫入權限</td><td>誤操作、情境被工具定義佔滿</td><td>專案啟用、先唯讀、寫入需核准</td></tr>
+<tr><td>未審查就裝第三方擴充</td><td>安全風險</td><td>先看原始碼與來源</td></tr>
+<tr><td>hook 太慢或會失敗</td><td>每次操作都卡住</td><td>保持快速，失敗要有明確訊息</td></tr></table>
+<h2>定期保養</h2>
+<ul>
+<li>每月清點：哪些 skill、agent、MCP 已沒在用？</li>
+<li>把 agent 反覆犯的錯，對應補進 CLAUDE.md 或 skill，並刪除已不需要的規則。</li>
+<li>擴充更新後重新實測關鍵流程。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<table><tr><th>項目</th><th>做法</th></tr>
+<tr><td>盤點常駐成本</td><td><code>/context</code> 看 CLAUDE.md、skill、MCP 各佔多少</td></tr>
+<tr><td>停用而非累積</td><td>不用的 MCP、skill 先停用，要用再開</td></tr>
+<tr><td>保證用 hook、判斷用 skill</td><td>前者無推理成本，後者按需載入</td></tr>
+<tr><td>探索與審查用 subagent 並限制回報</td><td>主對話保持精簡</td></tr></table>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code 文件</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

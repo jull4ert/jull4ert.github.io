@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>術語表｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>術語表</h1>
+  <p class="sub">AI agent 與 .NET／前端相關的常見詞彙。</p>
+</header>
+<main class="page">
+
+<h2>AI agent 相關</h2>
+<table><tr><th>詞</th><th>意思</th></tr>
+<tr><td>Agent</td><td>能使用工具（讀檔、跑指令、呼叫外部服務）並自己迴圈執行的 AI；不只是一問一答</td></tr>
+<tr><td>Token</td><td>模型處理文字的計量單位，影響費用與情境上限</td></tr>
+<tr><td>情境（context）／情境視窗</td><td>agent 目前「看得到」的內容總和：指令、歷史、讀過的檔案、工具輸出；有上限</td></tr>
+<tr><td>計畫模式</td><td>只讀不改，先提出計畫等你核准</td></tr>
+<tr><td>權限／核准</td><td>agent 要執行有副作用的動作時，需要你同意</td></tr>
+<tr><td>CLAUDE.md</td><td>每次對話自動載入的專案規範文件</td></tr>
+<tr><td>Skill（SKILL.md）</td><td>按需載入的流程與知識；平時只常駐名稱與描述</td></tr>
+<tr><td>Subagent</td><td>擁有獨立情境的專職助手，做完只回報結論</td></tr>
+<tr><td>MCP</td><td>Model Context Protocol，把外部服務接給 agent 的標準介面</td></tr>
+<tr><td>Hook</td><td>在特定事件由系統強制執行的指令，不靠 agent 記得</td></tr>
+<tr><td>Plugin</td><td>把 skill、agent、hook、MCP 設定打包的可安裝單位</td></tr>
+<tr><td>Headless／非互動</td><td>以 <code>claude -p</code> 在腳本與 CI 中執行，不開對話畫面</td></tr>
+<tr><td>Prompt injection</td><td>外部內容夾帶指示，誘導 agent 做壞事；外部內容是資料，不是指令</td></tr>
+<tr><td>Worktree</td><td>同一個 git 儲存庫的多個獨立工作目錄，讓多個 agent 平行作業</td></tr>
+<tr><td>同源偏誤</td><td>同一個 agent 自己審自己，會一起複製盲點</td></tr>
+<tr><td>交叉審查</td><td>換情境、角色、資訊或模型，讓審查者獨立找問題</td></tr></table>
+<h2>開發流程相關</h2>
+<table><tr><th>詞</th><th>意思</th></tr>
+<tr><td>驗收條件</td><td>可以直接寫成測試的「完成」標準，常用 Given / When / Then</td></tr>
+<tr><td>垂直切片</td><td>每個任務貫穿必要的層，做完就有一小段完整行為</td></tr>
+<tr><td>TDD</td><td>測試驅動開發：先寫失敗的測試，再寫程式讓它通過，再整理</td></tr>
+<tr><td>特徵測試</td><td>記錄既有行為的測試（不論對錯），用來在重構或修改前鎖住現況</td></tr>
+<tr><td>臨時破壞</td><td>手動改壞一行程式，確認測試會失敗，藉此驗證測試有效</td></tr>
+<tr><td>ADR</td><td>架構決策紀錄：為什麼選 A 不選 B</td></tr>
+<tr><td>事前驗屍</td><td>假設已經失敗，倒推原因，找出需求與設計的缺漏</td></tr>
+<tr><td>證據表</td><td>「驗收條件｜驗證方式｜證據｜結果」的對照表</td></tr>
+<tr><td>diff</td><td>變更前後的差異</td></tr></table>
+<h2>.NET 與前端相關</h2>
+<table><tr><th>詞</th><th>意思</th></tr>
+<tr><td>MVC</td><td>Model-View-Controller：Controller 接請求、Model 表示資料、View 產生畫面</td></tr>
+<tr><td>Razor</td><td>.cshtml 中混合 HTML 與 C# 的樣板語法，<code>@</code> 是 C# 的起點</td></tr>
+<tr><td>Service／Repository</td><td>商業邏輯層／資料存取層</td></tr>
+<tr><td>DI（依賴注入）</td><td>由框架提供物件給需要它的類別，註冊時要注意生命週期（Singleton／Scoped／Transient）</td></tr>
+<tr><td>DTO</td><td>用於傳輸的資料物件，避免直接暴露內部實體</td></tr>
+<tr><td>xUnit</td><td>.NET 常用的單元測試框架（<code>[Fact]</code>、<code>[Theory]</code>）</td></tr>
+<tr><td>EF Core／migration</td><td>物件關聯對應工具／資料庫結構變更的版本紀錄</td></tr>
+<tr><td>N+1 查詢</td><td>迴圈中每筆資料各查一次資料庫，造成大量查詢</td></tr>
+<tr><td>CSRF／防偽造權杖</td><td>防止其他網站假冒使用者送出請求的機制</td></tr>
+<tr><td>XSS</td><td>把惡意腳本注入頁面執行的攻擊</td></tr>
+<tr><td>Vue 響應式</td><td>資料改變時，畫面自動更新的機制</td></tr>
+<tr><td>v-model／v-for／v-on</td><td>Vue 的雙向綁定、迴圈、事件指令</td></tr>
+<tr><td>Vite</td><td>前端建置工具；用在較複雜的 Vue 專案</td></tr></table>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

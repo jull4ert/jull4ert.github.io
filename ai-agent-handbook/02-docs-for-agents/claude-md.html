@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CLAUDE.md：專案常駐規範｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>CLAUDE.md：專案常駐規範</h1>
+  <p class="sub">每次對話都會讀，所以要短、準、可執行。</p>
+</header>
+<main class="page">
+
+<h2>放在哪裡</h2>
+<table><tr><th>位置</th><th>範圍</th></tr>
+<tr><td>專案根目錄 <code>CLAUDE.md</code></td><td>整個專案，建議納入版本控制，團隊共用</td></tr>
+<tr><td>子資料夾 <code>CLAUDE.md</code></td><td>agent 處理該資料夾檔案時才載入，適合模組專屬規則</td></tr>
+<tr><td><code>~/.claude/CLAUDE.md</code></td><td>你個人的跨專案偏好（語言、風格）</td></tr>
+<tr><td><code>CLAUDE.local.md</code></td><td>僅自己、不入版控的專案設定</td></tr></table>
+<h2>該寫什麼</h2>
+<ul>
+<li><b>指令</b>：建置、測試、啟動、格式化怎麼下（agent 無法猜）。</li>
+<li><b>架構地圖</b>：重要資料夾各管什麼，一兩行即可。</li>
+<li><b>非顯而易見的慣例</b>：與一般做法不同、讀程式看不出來的規則。</li>
+<li><b>禁忌</b>：不要動的檔案、不要用的做法，附一句原因。</li>
+<li><b>完成標準</b>：「改完要跑哪些檢查」。</li>
+</ul>
+<h2>不該寫什麼</h2>
+<ul>
+<li>讀程式就看得出來的事、一般語言常識。</li>
+<li>大段說明文件（改成連結或 <code>@檔案</code> 引用）。</li>
+<li>一次性的任務指示（那是對話，不是規範）。</li>
+<li>會很快過時的細節（版本號、暫時性狀態）。</li>
+</ul>
+<h2>範例（精簡版）</h2>
+<pre><code># 專案：OrderService
+## 指令
+- 建置：dotnet build
+- 測試：dotnet test --filter Category!=Slow
+- 格式化：dotnet format
+## 架構
+- src/Domain 領域模型；src/Application 用例；src/Web API 層
+## 慣例
+- 查詢走 Query 物件，不在 Controller 直接寫 LINQ（原因：統一分頁與權限）
+- 新增 API 必須有對應整合測試
+## 禁忌
+- 不要修改 Migrations/ 內既有檔案
+## 完成標準
+- dotnet test 全綠；變更說明列出影響的 API</code></pre>
+<div class="note">官方最佳實踐頁也提到：路徑專屬的規則可放在 <code>.claude/rules/</code> 並用 <code>paths:</code> 限定，只在處理相關檔案時載入；個人偏好放 <code>CLAUDE.local.md</code> 並加入 gitignore。細節以官方文件為準。</div>
+<h2>維護原則</h2>
+<ul>
+<li><b>控制長度</b>：官方記憶指南建議 200 行以內，越短越好；越長遵守度越低。</li>
+<li><b>用 <code>@路徑</code> 匯入</b>細節文件，保持主檔精簡。</li>
+<li><b>從錯誤長出規則</b>：agent 犯同樣的錯第二次，才寫進去。</li>
+<li><b>定期瘦身</b>：刪掉已經不犯的、過時的。</li>
+<li><b>寫成肯定、具體、可驗證</b>：「用 X」優於「不要用 Y」，「函式不超過 40 行」優於「保持簡潔」。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<p>CLAUDE.md 每次對話都載入，等於<b>每一輪都在付費</b>。它是 Token 成本最容易被忽略的地方。</p>
+<ul>
+<li><b>控制長度</b>：每多一行都是每次對話的固定成本；只留 agent 無法從程式碼得知的資訊。</li>
+<li><b>用子資料夾 CLAUDE.md</b>：模組專屬規則放在該資料夾，只在處理該區檔案時載入。</li>
+<li><b>匯入要節制</b>：<code>@檔案</code> 匯入的內容也會跟著載入，別把大型文件整份匯入；改成「需要時請讀 docs/xxx.md」的索引文字。</li>
+<li><b>刪除已不犯的規則</b>：定期瘦身，過時規則白白佔位。</li>
+<li><b>量測</b>：用 <code>/context</code> 看 memory 佔多少。</li>
+</ul>
+<table><tr><th>放哪</th><th>載入成本</th></tr>
+<tr><td>根目錄 CLAUDE.md</td><td>每次對話</td></tr>
+<tr><td>子資料夾 CLAUDE.md</td><td>處理該資料夾時</td></tr>
+<tr><td>docs/ 下的文件（僅索引一行）</td><td>需要時才讀</td></tr>
+<tr><td>skill</td><td>描述常駐，全文按需</td></tr></table>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/memory">Manage Claude's memory</a></li><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code: Best practices for agentic coding</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

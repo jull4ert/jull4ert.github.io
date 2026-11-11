@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>非程式工作流程食譜｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>非程式工作流程食譜</h1>
+  <p class="sub">晨報、會議後建卡、週報彙整：三個可直接改造的完整範例。</p>
+</header>
+<main class="page">
+
+<p>三個範例都遵循同一套原則：先讀取、產生提案、人工核准、才寫入。把它們各做成一個 skill，之後一句話觸發。</p>
+
+<h2>食譜一：每日晨報</h2>
+<p><b>目標</b>：每天開工前，一頁看完今天要注意的事。</p>
+<table><tr><th>輸入</th><th>處理</th><th>輸出</th></tr>
+<tr><td>今日行事曆</td><td>列出行程、標出衝突與空檔</td><td>今日時間表</td></tr>
+<tr><td>Trello：指派給我且今日到期／逾期</td><td>依緊急度排序</td><td>待辦清單</td></tr>
+<tr><td>Gmail：過去 24 小時需回覆的信</td><td>分類、一行摘要</td><td>待回清單（只讀）</td></tr></table>
+<pre><code>---
+name: morning-brief
+description: 產生今日晨報。當使用者要求晨報、今日摘要、今天要做什麼時使用。
+---
+# 晨報流程（全程唯讀，不修改任何資料）
+1. 讀取今日行事曆，列出時間表；標出重疊的行程與連續 2 小時以上的空檔。
+2. 讀取 Trello 中指派給我、今日到期或已逾期的卡片，依「逾期 &gt; 今日到期」排序。
+3. 搜尋過去 24 小時需我回覆的信，每封一行：寄件人｜主旨｜建議處理方式。
+4. 輸出格式：
+   ## 今日時間表
+   ## 必須處理（逾期與今日到期）
+   ## 待回覆信件
+   ## 建議安排：把「必須處理」排進空檔
+5. 全文不超過 40 行。沒有資料的區塊寫「無」。</code></pre>
+
+<h2>食譜二：會議後自動建卡</h2>
+<p><b>目標</b>：把會議紀錄中的行動項目，變成有負責人與期限的 Trello 卡片。</p>
+<table><tr><th>步驟</th><th>內容</th></tr>
+<tr><td>1. 抽取</td><td>從會議紀錄抽出行動項目：內容、負責人、期限（沒有就標「待確認」）</td></tr>
+<tr><td>2. 去重</td><td>搜尋看板上既有卡片，標出疑似重複的項目</td></tr>
+<tr><td>3. 提案</td><td>輸出「預計建立的卡片」表格，不執行</td></tr>
+<tr><td>4. 核准</td><td>你修改並確認</td></tr>
+<tr><td>5. 建立</td><td>建立卡片、指派、設定期限、加上「由 agent 建立」標籤，並記錄卡片 ID</td></tr>
+<tr><td>6. 跟進</td><td>對重要期限，詢問是否在行事曆建立提醒（需核准）</td></tr></table>
+<pre><code>&gt; 依 @notes/2026-11-10-sprint-review.md 抽取行動項目。
+&gt; 對照 Trello「Sprint 12」看板，標出可能重複的卡片。
+&gt; 輸出預計建立的卡片表格：標題｜負責人｜期限｜清單｜是否疑似重複。
+&gt; 現階段不要建立任何卡片，等我確認。</code></pre>
+<pre><code>提案表（範例）
+| 標題                  | 負責人 | 期限   | 清單  | 疑似重複      |
+| 補上訂單篩選的整合測試 | Amy    | 11/14  | 待辦  | 否            |
+| 調查匯出逾時          | 待確認 | 待確認 | 待辦  | 是：卡片「匯出效能」 |</code></pre>
+<p>你確認後再說：「依修改後的表格建立，並把建立的卡片 ID 存到 notes/created-cards.json。」</p>
+
+<h2>食譜三：週報彙整</h2>
+<p><b>目標</b>：週五用幾分鐘產生週報草稿，你只需修改與補充。</p>
+<table><tr><th>來源</th><th>取得什麼</th></tr>
+<tr><td>Trello</td><td>本週移到「完成」的卡片</td></tr>
+<tr><td>Git</td><td>本週合併的 PR 與 commit 標題</td></tr>
+<tr><td>行事曆</td><td>本週重要會議</td></tr>
+<tr><td>上週週報</td><td>本週的「下週計畫」是否有達成</td></tr></table>
+<pre><code>&gt; 產生本週週報草稿，格式見 @templates/weekly-report.md。
+&gt; 資料來源：Trello 本週完成的卡片、!git log --since="last monday" --oneline、
+&gt; 本週行事曆的重要會議、@reports/2026-11-07.md（上週週報）。
+&gt; 要求：
+&gt; - 每項成果一行，附連結
+&gt; - 對照上週「下週計畫」，標示達成／未達成與原因（未知的標「待補」）
+&gt; - 不要編造沒有資料支持的內容</code></pre>
+
+<h2>把食譜變成日常</h2>
+<table><tr><th>階段</th><th>做法</th></tr>
+<tr><td>第 1 週</td><td>手動觸發，全程唯讀，檢查輸出品質</td></tr>
+<tr><td>第 2 週</td><td>調整 skill 的格式與規則，補上常見錯誤的處理</td></tr>
+<tr><td>第 3 週</td><td>晨報排程自動產生（見排程頁）；建卡仍維持人工核准</td></tr>
+<tr><td>之後</td><td>依信任度逐步放寬低風險的寫入（例如加註解），高風險仍保留核准</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>晨報限制篇幅</b>（例如 40 行），並規定沒資料就寫「無」。</li>
+<li><b>資料先過濾</b>：只取「指派給我、今日到期、近 24 小時」。</li>
+<li><b>建卡流程中，提案與建立分兩次對話</b>：提案後存檔並 <code>/clear</code>，建立時只讀核准後的表格。</li>
+<li><b>週報讀上週週報的「下週計畫」段落</b>，不要讀全文。</li>
+<li><b>固定格式放在範本檔</b>，用 <code>@</code> 引用，不要每次貼。</li>
+<li><b>用 skill 封裝</b>：流程說明按需載入，不常駐。</li>
+</ul>
+<div class="note">旗標、指令與設定欄位會隨版本調整，請以官方文件與 <code>claude --help</code> 的實際輸出為準；範例腳本請先在安全的環境小規模測試。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/mcp">MCP</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/headless">Headless 模式</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

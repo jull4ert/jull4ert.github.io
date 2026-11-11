@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一頁速查表｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>一頁速查表</h1>
+  <p class="sub">常用指令、輸入技巧、流程與決策表；列印或放在旁邊用。</p>
+</header>
+<main class="page">
+
+<div class="note">標示「已實測」的旗標與指令，是 2026-11-11 在 Claude Code 2.1.322（Windows）以 <code>--help</code> 或實際執行驗證過的。互動式的斜線指令與快捷鍵沒有在這份紀錄中實測，詳見<a href="verification-log.html">實測驗證紀錄</a>。</div>
+<h2>日常流程（一頁版）</h2>
+<div class="tree">1 需求模糊 → 計畫模式 → 讓 agent 訪談你（一次一題、附建議答案）
+2 寫規格（可驗收條件）→ 需求審查（找缺漏）
+3 拆成小任務 → 存成計畫檔
+4 每個任務：新對話 → 先寫失敗的測試 → 實作 → 看 diff
+5 驗證：建置、測試、實際操作 → 證據表
+6 交叉審查 → 你裁決
+7 commit、PR（誠實說明驗證與 AI 輔助）→ 回寫 CLAUDE.md</div>
+<h2>啟動與非互動（已實測）</h2>
+<table><tr><th>指令</th><th>用途</th></tr>
+<tr><td><code>claude</code></td><td>在目前資料夾啟動互動對話</td></tr>
+<tr><td><code>claude -p "提示"</code></td><td>非互動，輸出後結束</td></tr>
+<tr><td><code>--output-format text|json|stream-json</code></td><td>搭配 <code>-p</code> 的輸出格式</td></tr>
+<tr><td><code>-c</code> / <code>--continue</code>、<code>-r</code> / <code>--resume</code></td><td>接續最近／指定的對話</td></tr>
+<tr><td><code>--permission-mode</code></td><td>可選：<code>plan</code>、<code>acceptEdits</code>、<code>auto</code>、<code>manual</code>、<code>dontAsk</code>、<code>bypassPermissions</code></td></tr>
+<tr><td><code>--allowedTools</code> / <code>--disallowedTools</code></td><td>限定允許或拒絕的工具，例如 <code>"Bash(git *)"</code></td></tr>
+<tr><td><code>--max-turns N</code></td><td>限制回合數（實測可用；本機版本的 <code>--help</code> 未列出）</td></tr>
+<tr><td><code>--max-budget-usd 金額</code></td><td>用量金額上限，只搭配 <code>-p</code></td></tr>
+<tr><td><code>-w</code> / <code>--worktree [名稱]</code></td><td>在新的 git worktree 中工作</td></tr>
+<tr><td><code>--model</code>、<code>--effort low|medium|high|xhigh|max</code></td><td>選模型、思考強度</td></tr>
+<tr><td><code>--add-dir</code></td><td>額外開放存取的資料夾</td></tr>
+<tr><td><code>--agents</code></td><td>以 JSON 定義自訂 agent</td></tr>
+<tr><td><code>--bare</code></td><td>精簡模式：略過 hooks、外掛同步、CLAUDE.md 自動探索等</td></tr>
+<tr><td><code>claude doctor</code></td><td>檢查安裝健康狀態</td></tr></table>
+<h2>MCP 與外掛（已實測 --help）</h2>
+<table><tr><th>指令</th><th>說明</th></tr>
+<tr><td><code>claude mcp add --transport http 名稱 網址</code></td><td>加入遠端 MCP</td></tr>
+<tr><td><code>claude mcp add 名稱 -e KEY=值 -- npx 套件</code></td><td>加入本機（stdio）MCP</td></tr>
+<tr><td><code>-s</code> / <code>--scope local|user|project</code></td><td>設定範圍（預設 local）</td></tr>
+<tr><td><code>claude mcp list</code> / <code>get 名稱</code></td><td>列出、檢視</td></tr>
+<tr><td><code>claude plugin marketplace add 來源</code></td><td>加入外掛來源（網址、路徑或 GitHub 倉庫）</td></tr>
+<tr><td><code>claude plugin install 外掛@來源</code></td><td>安裝外掛</td></tr>
+<tr><td><code>claude plugin details 名稱</code></td><td>檢視元件清單與<b>預估 token 成本</b></td></tr></table>
+<h2>對話中的操作（互動式，尚未實測，以 /help 為準）</h2>
+<table><tr><th>操作</th><th>用途</th></tr>
+<tr><td><code>/clear</code></td><td>清空對話，開新任務</td></tr>
+<tr><td><code>/compact [指示]</code></td><td>壓縮對話</td></tr>
+<tr><td><code>/context</code>、<code>/cost</code></td><td>檢視情境佔用、用量</td></tr>
+<tr><td><code>/init</code></td><td>產生初版 CLAUDE.md</td></tr>
+<tr><td><code>/memory</code>、<code>/permissions</code>、<code>/hooks</code>、<code>/agents</code>、<code>/mcp</code>、<code>/plugin</code></td><td>管理對應項目</td></tr>
+<tr><td><code>/rewind</code> 或連按兩次 Esc</td><td>退回先前某一步</td></tr>
+<tr><td>Shift+Tab</td><td>循環切換權限模式</td></tr>
+<tr><td><code>@路徑</code>、<code>!指令</code></td><td>引用檔案、執行 shell 指令</td></tr>
+<tr><td>Esc</td><td>中斷目前動作</td></tr></table>
+<h2>提示骨架</h2>
+<pre><code>目標：…
+範圍：只改 …，不要動 …
+限制：沿用 @某檔案 的寫法；不新增套件
+驗收：新增測試並通過；貼出實際輸出
+流程：先給計畫，我確認後再改</code></pre>
+<h2>要用哪一種擴充？</h2>
+<table><tr><th>需求</th><th>用</th></tr>
+<tr><td>每次都要遵守的規則</td><td>CLAUDE.md</td></tr>
+<tr><td>某類任務的標準做法</td><td>Skill</td></tr>
+<tr><td>大量探索／獨立審查</td><td>Subagent</td></tr>
+<tr><td>一定要發生的自動動作</td><td>Hook</td></tr>
+<tr><td>連外部服務</td><td>MCP</td></tr>
+<tr><td>整包分享</td><td>Plugin</td></tr></table>
+<h2>.NET 與前端常用指令</h2>
+<pre><code>dotnet build
+dotnet test
+dotnet test --filter "FullyQualifiedName~Cancel"
+dotnet run --project src/OrderDemo.Web
+dotnet format
+node --test</code></pre>
+<h2>git 常用</h2>
+<pre><code>git status
+git diff --stat            # 先看改了哪些檔案
+git diff                   # 看內容
+git switch -c 分支名
+git restore 檔案            # 丟掉未提交的修改（無法復原）
+git stash / git stash pop
+git worktree add ../另一個資料夾 -b 分支</code></pre>
+<h2>什麼時候 /clear</h2>
+<ul>
+<li>任務完成、要做新任務。</li>
+<li>agent 走錯方向、再補修正只會越補越亂。</li>
+<li>對話很長，開始忘記先前的約定。</li>
+<li>換階段（訪談 → 規格 → 實作）。</li>
+</ul>
+<h2 id="tokens">省 Token 速記</h2>
+<ul>
+<li>一個對話一件事；完成就 <code>/clear</code>。</li>
+<li>先計畫模式，避免整包重做。</li>
+<li>指令具體、限定檔案與範圍、限制輸出格式。</li>
+<li>CLAUDE.md 精簡；停用用不到的 MCP 與 skill（可用 <code>claude plugin details</code> 看成本）。</li>
+<li>探索與審查交給 subagent，限制回報長度。</li>
+<li>只跑相關測試；工具輸出只留失敗與摘要。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

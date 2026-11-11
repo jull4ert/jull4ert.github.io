@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>交叉審查：找出盲點｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>交叉審查：找出盲點</h1>
+  <p class="sub">讓多個 agent 從不同角度互相挑戰，抓出你和單一 agent 都看不到的需求與程式碼盲點。</p>
+</header>
+<main class="page">
+
+<p>單一 agent 寫完又自己檢查，常常會「確認自己是對的」。交叉審查的目的，是刻意製造<b>獨立性</b>：換一個乾淨的情境、換一個角色、換一份資訊，讓審查者有機會看到作者看不到的東西。</p>
+<h2>核心流程</h2>
+<div class="tree">需求 ─► [需求審查]  反方角色 / 事前驗屍 / 缺漏情境
+            │ 修正規格
+            ▼
+規格 ─► 實作 ─► [程式碼審查]  獨立 subagent / 多視角並行 / 對抗式驗證
+                    │ 每項發現都要附證據（測試、重現步驟）
+                    ▼
+              [彙整與裁決]  去重、分級、採納或駁回、記錄原因
+                    │
+                    ▼
+        重複出現的盲點 → 寫回 CLAUDE.md / 審查 skill（讓下次更早抓到）</div>
+<h2>五個頁面</h2>
+<div id="children"></div>
+<h2>三個最重要的原則</h2>
+<ol>
+<li><b>審查者不能看到作者的結論。</b>只給它規格與產出，不給「我覺得這樣沒問題」，避免被帶著走。</li>
+<li><b>每個發現都要有證據。</b>沒有證據的意見只能算「疑問」，不能算「缺陷」。</li>
+<li><b>人做最後裁決。</b>agent 負責找，你負責判斷哪些值得處理。</li>
+</ol>
+<div class="note">指令、檔案位置與 frontmatter 欄位會隨版本調整，以官方文件與 <code>/help</code>、<code>/agents</code> 的實際畫面為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

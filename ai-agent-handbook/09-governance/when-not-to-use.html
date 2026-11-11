@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>何時不該用 agent｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>何時不該用 agent</h1>
+  <p class="sub">知道界線，和知道怎麼用一樣重要。</p>
+</header>
+<main class="page">
+
+<h2>四個快速問題</h2>
+<table><tr><th>問題</th><th>答「否」時</th></tr>
+<tr><td>我能驗證結果嗎？</td><td>無法判斷對錯的領域，產出再漂亮也不能信</td></tr>
+<tr><td>出錯可以還原嗎？</td><td>不可逆的動作由人親自做，或加強核准與備份</td></tr>
+<tr><td>風險我承擔得起嗎？</td><td>涉及人身安全、大額金錢、法律責任，要人主導</td></tr>
+<tr><td>我有能力審它嗎？</td><td>你看不懂的東西，不要在正式環境使用</td></tr></table>
+<h2>不適合或需特別謹慎的情境</h2>
+<table><tr><th>情境</th><th>原因</th><th>替代做法</th></tr>
+<tr><td>處理受管制或機密資料</td><td>資料外送與合規風險</td><td>去識別化、離線方案、取得授權後在核可環境使用</td></tr>
+<tr><td>直接操作正式環境</td><td>不可逆、影響範圍大</td><td>由人執行；agent 只產生指令與檢查清單</td></tr>
+<tr><td>需要法律、醫療、財務的最終判斷</td><td>需要有資格者負責</td><td>agent 做資料整理與初稿，由專業人員決定</td></tr>
+<tr><td>安全關鍵程式（金流、權限、加密）</td><td>細微錯誤後果嚴重</td><td>人主導設計與審查，agent 輔助；多重交叉審查加專家把關</td></tr>
+<tr><td>方向與品味的決定</td><td>需要你的判斷與價值觀</td><td>agent 提供選項與取捨，你決定</td></tr>
+<tr><td>你想學會的技能</td><td>全部交出去會讓自己學不到</td><td>先自己做，再讓 agent 審、解釋</td></tr>
+<tr><td>極小的修改</td><td>描述與審查的成本高於直接改</td><td>自己改</td></tr>
+<tr><td>需求完全不明、連你也說不清</td><td>agent 會自行腦補</td><td>先釐清需求，或用訪談（見 04）</td></tr>
+<tr><td>極度依賴最新資訊或內部未公開知識</td><td>模型知識有時效限制</td><td>提供文件與資料，或查證後再用</td></tr></table>
+<h2>「可以用，但要加關卡」的情境</h2>
+<ul>
+<li>資料庫結構變更與資料遷移：agent 起草，人審查，在測試環境演練。</li>
+<li>對外溝通（信件、公告、客戶回覆）：agent 起草，人修改後送出。</li>
+<li>部署與回滾：agent 準備清單與腳本，人觸發。</li>
+<li>刪除類操作：先列清單，人確認，再執行，並有備份。</li>
+</ul>
+<h2>警訊：你過度依賴了</h2>
+<ul>
+<li>你不再讀 diff，直接接受。</li>
+<li>你說不清楚程式為什麼這樣寫。</li>
+<li>驗證都靠 agent 自己回報，你沒親手跑過。</li>
+<li>出錯時不知道從哪裡查起。</li>
+</ul>
+<p>出現這些訊號時，放慢：重新讀 diff、親手跑一次關鍵流程、把關卡補回來。</p>
+<div class="note">本頁為一般性的實務建議，不構成法律意見。資料保存、模型訓練使用、地區合規等條款依你使用的方案與合約而異，請以供應商最新條款與你的法務、資安負責人意見為準。設定語法與欄位以官方文件為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/security">Claude Code 安全</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

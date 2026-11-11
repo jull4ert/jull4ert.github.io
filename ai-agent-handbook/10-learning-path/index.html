@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>新手專區：四週學習路徑｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>新手專區：四週學習路徑</h1>
+  <p class="sub">給剛開始的工程師：照這個順序讀、照這些練習做，四週後能和 AI agent 協作產出。</p>
+</header>
+<main class="page">
+
+<p>這份手冊很完整，但<b>不是用來從頭讀到尾的</b>。如果你是初階工程師，請照這一頁的路徑走：每週有目標、要讀的頁面、要做的練習和檢核點。</p>
+<div class="note">本章範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端在同一個 .NET 專案</b>為基準。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念與流程相同，但建置與測試指令（例如 MSBuild、vstest）、專案檔格式與設定檔不同，請在你的 CLAUDE.md 中寫清楚。</div>
+<h2>先講結論：你要練成什麼樣子</h2>
+<p>四週後，你應該能做到：</p>
+<ul>
+<li>拿到一個小需求，能和 agent 一起<b>釐清、規格化、實作、測試、驗證</b>，而且說得出每個決定的理由。</li>
+<li>能判斷 agent 的產出<b>對不對、有沒有多做</b>，看不懂時知道怎麼查證。</li>
+<li>能把專案慣例寫進 CLAUDE.md，讓 agent 照你的團隊風格做事。</li>
+<li>知道哪些事不能交給 agent，並在該找人看的時候找人。</li>
+</ul>
+<h2>每天 1 小時的節奏</h2>
+<table><tr><th>時間</th><th>做什麼</th></tr>
+<tr><td>15 分鐘</td><td>讀當天要讀的頁面（只讀「重點」，不必背）</td></tr>
+<tr><td>35 分鐘</td><td>在練習專案上動手做對應的練習</td></tr>
+<tr><td>10 分鐘</td><td>寫學習紀錄：今天做了什麼、agent 哪裡做錯、我學到什麼</td></tr></table>
+<h2>四週路徑</h2>
+<table><tr><th>週</th><th>目標</th><th>先讀</th><th>練習</th><th>檢核點</th></tr>
+<tr><td><b>第 1 週</b><br>建立基礎</td><td>會啟動 agent、問答、讀懂專案；補齊 git 與測試的基本功</td>
+<td><a href="prerequisites.html">前置知識</a>、<a href="../00-foundations/index.html">00 基礎觀念</a>、<a href="../01-getting-started/index.html">01 入門</a></td>
+<td><a href="../11-labs/lab-0-setup.html">Lab 0</a>、<a href="../11-labs/lab-1-read-project.html">Lab 1</a></td>
+<td>能用自己的話說明練習專案的一個請求如何從 Vue 走到資料；<code>dotnet test</code> 全綠</td></tr>
+<tr><td><b>第 2 週</b><br>小任務</td><td>修 bug、補測試，並學會驗證 agent 的產出</td>
+<td><a href="verify-code.html">驗證看不懂的程式</a>、<a href="../04-requirement-to-code/implement.html">04 實作</a>、<a href="../04-requirement-to-code/verify.html">04 驗證</a></td>
+<td><a href="../11-labs/lab-2-fix-bug.html">Lab 2</a>、<a href="../11-labs/lab-3-write-tests.html">Lab 3</a></td>
+<td>先寫失敗的測試再修；能說出「怎麼證明它修好了」</td></tr>
+<tr><td><b>第 3 週</b><br>完整流程</td><td>從需求到交付，並用交叉審查找盲點</td>
+<td><a href="../04-requirement-to-code/index.html">04 全部</a>、<a href="../05-cross-review/index.html">05 全部</a>、<a href="agent-as-teacher.html">把 agent 當老師</a></td>
+<td><a href="../11-labs/lab-4-new-feature.html">Lab 4</a>、<a href="../11-labs/lab-5-vue-component.html">Lab 5</a>、<a href="../11-labs/lab-6-cross-review.html">Lab 6</a></td>
+<td>有規格、計畫、證據表、審查裁決表四份產出</td></tr>
+<tr><td><b>第 4 週</b><br>變成習慣</td><td>把慣例寫成文件與 skill，獨立完成一個小需求</td>
+<td><a href="../02-docs-for-agents/index.html">02 文件</a>、<a href="../03-toolbox/index.html">03 工具箱</a>、<a href="overtrust.html">過度信任的警訊</a></td>
+<td><a href="../11-labs/lab-7-claude-md-skill.html">Lab 7</a>、<a href="../11-labs/lab-8-capstone.html">Lab 8</a></td>
+<td>通過<a href="self-assessment.html">能力檢核</a>第 3 級</td></tr></table>
+<h2>先不要讀的</h2>
+<table><tr><th>頁面</th><th>原因</th><th>什麼時候讀</th></tr>
+<tr><td><a href="../06-advanced-workflows/index.html">06 進階工作流程</a></td><td>需要先熟悉單一任務的協作</td><td>第 4 週之後</td></tr>
+<tr><td><a href="../07-community/index.html">07 社群經驗</a></td><td>多數偏個人風格，容易混淆</td><td>有自己的做法後再比較</td></tr>
+<tr><td><a href="../09-governance/index.html">09 治理與風險</a>的團隊導入</td><td>偏管理層面</td><td>需要時；但「資料與機密」、「權限與防護」第 1 週就該讀</td></tr></table>
+<h2>卡住的時候</h2>
+<ol>
+<li>把問題縮小：先回到前一個能運作的狀態（<code>git restore</code> 或 <code>/rewind</code>）。</li>
+<li>把你預期的、實際的、錯誤訊息，原封不動貼給 agent，請它「先解釋原因，不要改檔案」。</li>
+<li>查<a href="../13-reference/cheat-sheet.html">速查表</a>與<a href="../13-reference/glossary.html">術語表</a>。</li>
+<li>超過 30 分鐘沒有進展，就問同事；不要獨自和 agent 反覆循環。</li>
+</ol>
+<h2>頁面</h2>
+<div id="children"></div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/overview">Claude Code 概覽</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

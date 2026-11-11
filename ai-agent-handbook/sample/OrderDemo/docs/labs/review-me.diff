@@ -1,0 +1,38 @@
+diff --git a/src/OrderDemo.Web/Controllers/Api/StatsApiController.cs b/src/OrderDemo.Web/Controllers/Api/StatsApiController.cs
+new file mode 100644
+--- /dev/null
++++ b/src/OrderDemo.Web/Controllers/Api/StatsApiController.cs
+@@ -0,0 +1,38 @@
++using Microsoft.AspNetCore.Mvc;
++using OrderDemo.Web.Models;
++using OrderDemo.Web.Services;
++
++namespace OrderDemo.Web.Controllers.Api;
++
++[ApiController]
++[Route("api/stats")]
++public class StatsApiController(IOrderRepository repository) : ControllerBase
++{
++    // 依部門統計訂單平均金額與取消率
++    [HttpGet]
++    public IActionResult Get(int departmentId)
++    {
++        try
++        {
++            var orders = repository.GetAll().Where(o => o.DepartmentId == departmentId).ToList();
++            var cancelled = orders.Count(o => o.Status == OrderStatus.Cancelled);
++
++            return Ok(new
++            {
++                count = orders.Count,
++                averageTotal = orders.Sum(o => o.Total) / orders.Count,
++                cancelRate = cancelled * 100 / orders.Count,
++                topCustomer = orders.OrderByDescending(o => o.Total).First().CustomerName,
++            });
++        }
++        catch (Exception)
++        {
++            return Ok(new { count = 0 });
++        }
++    }
++}

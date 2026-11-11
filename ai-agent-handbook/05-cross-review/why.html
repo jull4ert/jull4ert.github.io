@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>為什麼要交叉審查｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>為什麼要交叉審查</h1>
+  <p class="sub">同一個 agent 自己審自己，盲點會一起被複製。</p>
+</header>
+<main class="page">
+
+<h2>同源偏誤</h2>
+<p>同一段對話裡寫程式、再要求「檢查一下」，審查者與作者共享同樣的情境、假設與推理路徑，常見後果：</p>
+<table><tr><th>現象</th><th>說明</th></tr>
+<tr><td>錨定</td><td>已讀過自己的實作思路，審查時順著同一條路走，看不到替代解釋</td></tr>
+<tr><td>確認偏誤</td><td>傾向找支持「這是對的」的證據，而不是找反例</td></tr>
+<tr><td>共同的誤解</td><td>需求若一開始就理解錯，寫的人與審的人錯得一模一樣</td></tr>
+<tr><td>迎合</td><td>被問「這樣好嗎？」時，傾向給正面回應；被問「哪裡有問題？」才認真挑</td></tr></table>
+<h2>製造獨立性的五個維度</h2>
+<table><tr><th>維度</th><th>做法</th><th>效果</th></tr>
+<tr><td>情境</td><td>用 subagent 或新對話審查，不帶作者的對話歷史</td><td>沒有錨定</td></tr>
+<tr><td>角色</td><td>指定立場：反方、資安人員、維運、新進同事</td><td>換視角抓不同類型問題</td></tr>
+<tr><td>資訊</td><td>盲審：只給需求與成品，不給實作理由</td><td>檢驗成品能否自證</td></tr>
+<tr><td>模型</td><td>以不同模型（或不同工具）再審一輪</td><td>不同的訓練偏好，盲點不完全重疊</td></tr>
+<tr><td>手段</td><td>實際執行：跑測試、跑程式、重現，而非只讀文字</td><td>用事實取代推論</td></tr></table>
+<h2>提問方式也要改</h2>
+<table><tr><th>容易得到客套回應</th><th>更能挖出問題</th></tr>
+<tr><td>這個設計 OK 嗎？</td><td>假設這個設計三個月後失敗了，最可能的三個原因是什麼？</td></tr>
+<tr><td>幫我 review 一下</td><td>找出會讓正式環境出事的問題；沒有高嚴重度問題時請明說，不要湊數</td></tr>
+<tr><td>測試夠了嗎？</td><td>列出沒被測試覆蓋的行為，並各寫一個會失敗的測試嘗試證明</td></tr></table>
+<h2>不是越多越好</h2>
+<ul>
+<li>審查越多輪，雜訊與<b>假陽性</b>越多；要求審查者必須附證據與信心程度。</li>
+<li>成本線性成長：用在高風險處（金流、權限、資料遷移、對外 API），小改動一輪即可。</li>
+<li>交叉審查替代不了人的判斷，也替代不了測試。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents：獨立情境</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

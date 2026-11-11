@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>把 agent 當老師｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>把 agent 當老師</h1>
+  <p class="sub">同樣一個工具，可以替你代工，也可以教你變強。差別在你怎麼問。</p>
+</header>
+<main class="page">
+
+<p>新手最大的陷阱，是用 agent 只求「完成」，卻沒有學到東西，下次還是不會。這一頁教你把 agent 變成<b>老師</b>，讓工作和學習同時發生。</p>
+<h2>三種使用姿態</h2>
+<table><tr><th>姿態</th><th>怎麼問</th><th>學習效果</th></tr>
+<tr><td>代工</td><td>「幫我做 X」</td><td>低：你只拿到結果</td></tr>
+<tr><td>家教</td><td>「先解釋 X 怎麼做，再讓我試試」</td><td>高</td></tr>
+<tr><td>審稿人</td><td>「我先做了 X，請你找出問題」</td><td>最高：你先動腦，再被糾正</td></tr></table>
+<p>建議的比例：<b>日常任務可以用代工；但每天至少有一個任務用家教或審稿人的方式做。</b></p>
+<h2>常用的學習提示</h2>
+<h3>讀懂專案</h3>
+<pre><code>&gt; 我是剛接手這個專案的新人。請帶我導覽：
+&gt; 1. 用 5 句話說明整體架構
+&gt; 2. 從使用者按下『取消』按鈕開始，列出經過的檔案與方法
+&gt; 3. 最值得先讀的三個檔案，以及原因</code></pre>
+<h3>解釋錯誤</h3>
+<pre><code>&gt; 我執行 dotnet test 得到下面的錯誤（貼上）。
+&gt; 請先解釋這個錯誤的意思與可能原因，列出 3 個我可以自己檢查的方向。
+&gt; 現在先不要修改任何檔案。</code></pre>
+<h3>蘇格拉底式引導</h3>
+<pre><code>&gt; 我想自己修這個 bug。請不要直接給答案，
+&gt; 用提問引導我：先問我預期行為，再問我實際行為，再問我認為哪裡出問題。</code></pre>
+<h3>比較兩種寫法</h3>
+<pre><code>&gt; 這裡可以用 foreach，也可以用 LINQ。請各給一個版本，
+&gt; 比較可讀性與效能，並說明在這個專案的慣例下建議哪一個。</code></pre>
+<h3>出練習題</h3>
+<pre><code>&gt; 依這個專案的程式，出 3 題難度遞增的練習，
+&gt; 讓我練習 xUnit 測試。先不要給解答，我做完再請你批改。</code></pre>
+<h3>先寫後審</h3>
+<pre><code>&gt; 我寫了這個方法（貼上或 @檔案）。請以資深審查者的角度，
+&gt; 指出問題與可改進之處，依嚴重度排序，並解釋原因。</code></pre>
+<h2>先自己試 15 分鐘</h2>
+<p>遇到問題，建議先<b>自己嘗試 15 分鐘</b>：查錯誤訊息、看程式、做出假設。再去問 agent，並把你的假設一起帶上，這樣學到的最多。若 15 分鐘完全沒頭緒，就直接問，不要硬撐。</p>
+<h2>學習日誌</h2>
+<p>每天用 5 分鐘寫下三件事：</p>
+<ul>
+<li>今天讓 agent 做了什麼。</li>
+<li>agent 哪裡做錯或讓我意外。</li>
+<li>我新學到的一個觀念或做法。</li>
+</ul>
+<p>一週後回頭看，你會發現自己重複犯的錯，這些就是該寫進 CLAUDE.md 或自己多練習的主題。</p>
+<h2>避免的壞習慣</h2>
+<table><tr><th>習慣</th><th>後果</th></tr>
+<tr><td>錯誤訊息一出現就整段丟給 agent，不看</td><td>永遠看不懂錯誤訊息</td></tr>
+<tr><td>只複製貼上，不理解</td><td>無法維護、無法除錯</td></tr>
+<tr><td>agent 說對就當對</td><td>被錯誤自信帶著走</td></tr>
+<tr><td>完全不寫測試，靠「跑起來沒錯」</td><td>之後改動會壞掉而不自知</td></tr></table>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

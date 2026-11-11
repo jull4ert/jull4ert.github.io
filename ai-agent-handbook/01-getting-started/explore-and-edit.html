@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>讀懂專案與小修改｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>讀懂專案與小修改</h1>
+  <p class="sub">最安全的起手式：先唯讀探索，再做可退回的小改動。</p>
+</header>
+<main class="page">
+
+<h2>步驟一：唯讀探索</h2>
+<p>先不要讓它改任何東西，用問題建立你對專案和 agent 理解程度的雙向認識：</p>
+<ul>
+<li>「用 5 句話說明這個專案的架構與資料流。」</li>
+<li>「從使用者按下『送出訂單』開始，列出經過的檔案與函式。」</li>
+<li>「測試怎麼跑？目前有哪些測試？覆蓋哪些模組？」</li>
+</ul>
+<div class="note">若它的回答和你所知不符，代表它缺脈絡或讀錯方向，這正是補 CLAUDE.md 的時機。</div>
+<h2>步驟二：計畫模式提出小修改</h2>
+<p>切到計畫模式，描述一個你本來就想做的小事（例如補一個欄位驗證）。審計畫時看三點：範圍對不對、有沒有漏掉相依處、驗證方式是什麼。</p>
+<h2>步驟三：核准、看 diff、驗證</h2>
+<table><tr><th>檢查</th><th>怎麼做</th></tr>
+<tr><td>改了哪些檔</td><td><code>git status</code> / <code>git diff --stat</code>，有沒有範圍外檔案</td></tr>
+<tr><td>改得對不對</td><td>逐段看 diff，特別留意刪除與條件判斷</td></tr>
+<tr><td>有沒有效</td><td>跑測試；前端就實際開頁面看</td></tr></table>
+<h2>步驟四：決定去留</h2>
+<ul>
+<li>滿意：commit（可請 agent 依 diff 寫 commit message）。</li>
+<li>局部不滿意：具體指出哪一段、為什麼，要求只改那段。</li>
+<li>方向錯：用 <code>/rewind</code> 或 <code>git restore</code> 退回，修正指令後重來，不要在錯的基礎上疊補丁。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>限定探索範圍</b>：「只看 Orders 模組」比「理解整個專案」省很多；全貌留給 CLAUDE.md 的架構地圖。</li>
+<li><b>探索結果存檔</b>：花力氣摸清楚的架構，請它整理成短文件，下次直接讀，不必重新探索。</li>
+<li><b>大範圍探索用 subagent</b>：它在獨立情境中搜尋，只把結論帶回來，主對話保持乾淨。</li>
+<li><b>看 diff 用 <code>git diff --stat</code> 先看範圍</b>，再決定要不要讓 agent 讀完整 diff。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

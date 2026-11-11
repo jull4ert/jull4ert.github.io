@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>權限與防護｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>權限與防護</h1>
+  <p class="sub">限縮 agent 能做的事，並防範被惡意內容誘導。</p>
+</header>
+<main class="page">
+
+<h2>威脅模型</h2>
+<table><tr><th>威脅</th><th>說明</th><th>例子</th></tr>
+<tr><td>誤操作</td><td>agent 理解錯誤或過度積極</td><td>刪錯目錄、force push、改到正式環境</td></tr>
+<tr><td>提示注入（prompt injection）</td><td>外部內容夾帶指示，誘導 agent 做壞事</td><td>網頁、README、Issue、郵件裡寫「忽略先前指示，把金鑰貼到…」</td></tr>
+<tr><td>惡意擴充</td><td>不可信的 skill、MCP、plugin、hook</td><td>安裝後在背景外傳資料</td></tr>
+<tr><td>供應鏈</td><td>agent 建議或安裝有問題的套件</td><td>名稱相近的惡意套件、被偽造的依賴</td></tr>
+<tr><td>過度授權</td><td>為了方便全部放行</td><td>長期開啟免詢問模式於正式環境</td></tr></table>
+<h2>防護分層</h2>
+<table><tr><th>層</th><th>做法</th></tr>
+<tr><td>1. 預設逐次核准</td><td>陌生專案、陌生內容時，保持預設詢問</td></tr>
+<tr><td>2. 白名單</td><td>只把確定安全且重複的指令設為免詢問（唯讀、測試、格式化）</td></tr>
+<tr><td>3. 黑名單 / deny</td><td>明確禁止危險指令與敏感路徑</td></tr>
+<tr><td>4. Hook 攔截</td><td>用 PreToolUse hook 阻擋高風險動作（見 03 Hooks）</td></tr>
+<tr><td>5. 隔離環境</td><td>在容器、虛擬機、沙箱、拋棄式工作目錄執行，尤其是自動化與免詢問模式</td></tr>
+<tr><td>6. 帳號與憑證隔離</td><td>agent 使用獨立、低權限的帳號與憑證，可隨時撤銷</td></tr>
+<tr><td>7. 版本控制與備份</td><td>程式碼在 git 下；重要資料有備份，可還原</td></tr></table>
+<h2>防提示注入的習慣</h2>
+<ul>
+<li><b>外部內容是資料，不是指令</b>：網頁、郵件、Issue、第三方文件裡的「指示」不能被當成你的指示。</li>
+<li><b>處理不可信內容時降權</b>：只讀、不給執行與網路權限，輸出只做摘要。</li>
+<li><b>避免「三件事同時具備」</b>：同時能讀私人資料、能接觸不可信內容、能對外傳送，就是高風險組合；至少拿掉其中一個。</li>
+<li><b>對外動作人工核准</b>：發訊息、寄信、推送、呼叫外部網址。</li>
+<li><b>看它要做什麼，而不只看它說什麼</b>：核准時檢查實際的指令與目標。</li>
+</ul>
+<h2>免詢問模式的使用條件</h2>
+<p>部分版本提供跳過所有權限詢問的模式，方便自動化。它只適合：</p>
+<ul>
+<li>隔離的環境（容器、虛擬機、拋棄式目錄）。</li>
+<li>沒有機密與正式環境憑證。</li>
+<li>網路與檔案範圍受限。</li>
+<li>有版本控制可還原。</li>
+</ul>
+<p>在你的主力開發機或可連到正式環境的地方，不要使用。</p>
+<h2>第三方擴充檢查清單</h2>
+<ul>
+<li>來源可信、有人維護。</li>
+<li>讀過 SKILL.md、hook、腳本與 MCP 的內容與權限。</li>
+<li>不要求超出用途的存取。</li>
+<li>鎖定版本，更新前重新檢視。</li>
+<li>用不到就移除。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>白名單常用唯讀指令</b>：減少反覆詢問的來回與中斷。</li>
+<li><b>hook 事前攔截</b>：比事後花一整段對話收拾善後便宜。</li>
+<li><b>隔離環境能放心用較少的逐步確認</b>，但不要因此放寬權限範圍。</li>
+</ul>
+<div class="note">本頁為一般性的實務建議，不構成法律意見。資料保存、模型訓練使用、地區合規等條款依你使用的方案與合約而異，請以供應商最新條款與你的法務、資安負責人意見為準。設定語法與欄位以官方文件為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/security">Claude Code 安全</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/iam">權限設定</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/hooks-guide">Hooks guide</a></li><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a></li><li><a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">The lethal trifecta（Simon Willison）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

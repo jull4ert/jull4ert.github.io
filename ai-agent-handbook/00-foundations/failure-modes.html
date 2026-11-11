@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>常見失誤與把關點｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>常見失誤與把關點</h1>
+  <p class="sub">agent 很能幹但會出錯；知道錯在哪，就知道檢查哪裡。</p>
+</header>
+<main class="page">
+
+<h2>常見失誤</h2>
+<table><tr><th>失誤</th><th>長什麼樣</th><th>把關方式</th></tr>
+<tr><td>自信地編造</td><td>引用不存在的函式、套件、API 參數</td><td>跑起來、跑測試、查官方文件</td></tr>
+<tr><td>誤解需求</td><td>做得很漂亮但不是你要的</td><td>先寫規格並確認；讓它先反問</td></tr>
+<tr><td>範圍膨脹</td><td>順手改了不相關的檔案</td><td>指令寫明範圍；看 diff 檔案清單</td></tr>
+<tr><td>只做表面</td><td>測試通過但邏輯是寫死的</td><td>檢查測試本身；加邊界案例</td></tr>
+<tr><td>過度宣稱完成</td><td>說「已完成」但沒驗證</td><td>要求貼出實際執行結果</td></tr>
+<tr><td>脈絡遺失</td><td>長對話後違反早先約定</td><td>規範寫進 CLAUDE.md；縮短對話</td></tr>
+<tr><td>不當副作用</td><td>誤刪、誤寄、誤改他人資料</td><td>權限分層、重要動作人工核准</td></tr></table>
+<h2>驗收三問</h2>
+<ol><li><b>它做了什麼？</b>看 diff / 變更清單，不只看它的摘要。</li><li><b>怎麼證明有效？</b>測試、實際執行、截圖。</li><li><b>有沒有多做？</b>範圍外的改動。</li></ol>
+<h2>你仍負責</h2>
+<p>最終責任在你。agent 是高速的助手，不是免審查的承包商；越重要的產出，越要親自抽查。</p>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

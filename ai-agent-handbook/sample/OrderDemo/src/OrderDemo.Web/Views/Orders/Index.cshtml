@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "訂單列表";
+}
+
+<div id="app">
+    <div class="toolbar">
+        <label>部門
+            <input type="number" v-model.number="departmentId" v-on:change="load" />
+        </label>
+        <label>狀態
+            <select v-model="status" v-on:change="load">
+                <option value="">全部</option>
+                <option value="Draft">草稿</option>
+                <option value="Submitted">已送出</option>
+                <option value="Shipped">已出貨</option>
+                <option value="Cancelled">已取消</option>
+            </select>
+        </label>
+    </div>
+
+    <table>
+        <thead>
+            <tr><th>編號</th><th>客戶</th><th>狀態</th><th>金額</th><th>建立日期</th><th></th></tr>
+        </thead>
+        <tbody>
+            <tr v-for="o in orders" v-bind:key="o.id">
+                <td>{{ o.id }}</td>
+                <td>{{ o.customerName }}</td>
+                <td>{{ statusText(o.status) }}</td>
+                <td>{{ o.total }}</td>
+                <td>{{ formatDate(o.createdAt) }}</td>
+                <td><button v-on:click="cancel(o)">取消</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://unpkg.com/vue@3.4.38/dist/vue.global.prod.js"></script>
+<script src="~/js/order-utils.js"></script>
+<script src="~/js/orders-app.js"></script>

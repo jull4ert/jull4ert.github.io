@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>④ 實作｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>④ 實作</h1>
+  <p class="sub">一次一個任務，先寫測試，再寫程式；小步前進、隨時可退回。</p>
+</header>
+<main class="page">
+
+<h2>每個任務的迴圈</h2>
+<div class="tree">開新對話（/clear） → 讀規格 + 計畫 + 本任務
+        │
+        ▼
+  紅：先寫會失敗的測試（對應驗收條件）→ 執行，確認失敗
+        │
+        ▼
+  綠：寫最少的程式讓測試通過 → 執行，確認通過
+        │
+        ▼
+  整理：重構、對齊專案風格 → 測試仍全綠
+        │
+        ▼
+  你看 diff → commit → 在計畫檔勾選 → 下一個任務</div>
+<h2>起手提示</h2>
+<pre><code>&gt; 請執行 @docs/plans/order-filter.md 的任務 2。
+&gt; 規格見 @docs/specs/order-filter.md。
+&gt; 做法：
+&gt; 1. 先寫對應驗收條件的測試，執行並確認它們會失敗
+&gt; 2. 再實作，讓測試通過
+&gt; 3. 沿用 @src/Orders/OrderQuery.cs 現有的寫法
+&gt; 4. 只做任務 2，不要順手處理其他任務
+&gt; 完成後貼出測試輸出，並列出改動的檔案</code></pre>
+<h2>為什麼先寫測試</h2>
+<ul>
+<li>測試把「驗收條件」變成程式能檢查的東西，agent 才有明確的完成標準。</li>
+<li>測試先失敗，能證明它真的在測那件事，而不是寫成必過。</li>
+<li>後續重構與審查有保護網。</li>
+</ul>
+<h2>讓它走在軌道上</h2>
+<table><tr><th>狀況</th><th>做法</th></tr>
+<tr><td>它開始改計畫外的檔案</td><td>Esc 中斷：「只改任務範圍內的檔案，其他的還原」</td></tr>
+<tr><td>測試不過，它改測試來配合</td><td>明確要求：「不得修改既有測試來讓它通過；若認為測試有誤，先告訴我原因」</td></tr>
+<tr><td>卡住反覆嘗試</td><td>要求停下來回報：已試過什麼、卡在哪、你的假設；必要時退回重來</td></tr>
+<tr><td>寫法與專案不一致</td><td>指定參考檔案，或補進 CLAUDE.md 慣例</td></tr>
+<tr><td>做到一半對話太長</td><td>commit 目前進度，<code>/clear</code>，用計畫檔接續</td></tr></table>
+<h2>小步提交</h2>
+<p>每完成一個任務就 commit。壞了可以精準退回，審查也只需看一小段 diff。請 agent 依 diff 寫 commit message（見「交付」）。</p>
+<h2>平行任務</h2>
+<p>互不相依的任務，可用 git worktree 各開一個對話同時進行（見 06 進階工作流程），完成後合併。相依的任務不要平行，以免衝突。</p>
+<h2>你的抽查重點</h2>
+<ul>
+<li>diff 是否只包含該任務的檔案。</li>
+<li>測試是否真的對應驗收條件，而非只測 happy path。</li>
+<li>有沒有寫死的值、被註解掉的程式碼、過度設計。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>一任務一對話</b>：完成、commit 後 <code>/clear</code>，再用計畫檔接續。</li>
+<li><b>只跑相關測試</b>：<code>dotnet test --filter OrderTests</code>，全部測試留到驗證階段。</li>
+<li><b>過濾輸出</b>：要求「只回報失敗的測試與錯誤訊息」，不要貼完整輸出。</li>
+<li><b>給參考檔案</b>：「寫法參考 @某檔案」，免去它搜尋風格的成本。</li>
+<li><b>卡住就停</b>：設定「同一問題嘗試 3 次未果就回報」，避免無底洞式重試。</li>
+<li><b>簡單任務用較小模型</b>：機械性修改（改名、補欄位）不必動用最大的模型。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：寫 xUnit 測試｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：寫 xUnit 測試</h1>
+  <p class="sub">讓 agent 寫「真的有保護力」的測試，而不是為了覆蓋率而寫的空殼。</p>
+</header>
+<main class="page">
+
+<h2>什麼是好測試</h2>
+<table><tr><th>特徵</th><th>說明</th></tr>
+<tr><td>測一件事</td><td>一個測試一個情境，名稱說明「情境＿預期」</td></tr>
+<tr><td>有實際斷言</td><td>斷言具體的值，而不是「不為 null」</td></tr>
+<tr><td>會失敗</td><td>實作改壞時它會失敗（用臨時破壞驗證）</td></tr>
+<tr><td>獨立、可重複</td><td>不依賴順序、時間、外部服務</td></tr></table>
+<h2>步驟</h2>
+<ol>
+<li>請 agent 先列出<b>要測的行為與邊界</b>（表格），你挑選。</li>
+<li>指定風格：Arrange / Act / Assert、命名規則、參考的既有測試檔。</li>
+<li>先確認測試<b>會失敗</b>（新行為）或<b>會通過</b>（記錄現況）。</li>
+<li>用臨時破壞確認測試有保護力。</li>
+</ol>
+<h2>提示範例</h2>
+<pre><code>&gt; 為 OrderService.List 補 xUnit 測試。
+&gt; 風格請參考 @tests/OrderDemo.Tests/OrderServiceTests.cs（命名、AAA、使用 InMemoryOrderRepository）。
+&gt; 涵蓋：不存在的部門、狀態沒有符合的資料、日期區間邊界（含頭尾兩天）。
+&gt; 不要使用 Moq，也不要修改正式程式碼。執行 dotnet test --filter "FullyQualifiedName~OrderServiceTests" 並貼出結果。</code></pre>
+<h2>常用語法</h2>
+<pre><code>[Fact]                                  // 單一情境
+[Theory]                                // 同一邏輯、多組資料
+[InlineData(OrderStatus.Draft)]
+[InlineData(OrderStatus.Submitted)]
+public void Cancel_AllowedStatuses_Succeeds(OrderStatus status) { ... }
+
+Assert.Equal(expected, actual);
+Assert.Throws&lt;InvalidOperationException&gt;(() => service.Do());
+Assert.All(collection, item => Assert.Equal(1, item.DepartmentId));</code></pre>
+<h2>只跑部分測試</h2>
+<pre><code>dotnet test --filter "FullyQualifiedName~Cancel"     # 名稱包含 Cancel
+dotnet test --filter "FullyQualifiedName~OrderServiceTests.Cancel_ShippedOrder_Fails"</code></pre>
+<h2>常見的壞測試（要叫 agent 修）</h2>
+<table><tr><th>壞味道</th><th>改善</th></tr>
+<tr><td>沒有斷言，或只斷言 <code>Assert.NotNull</code></td><td>斷言具體行為</td></tr>
+<tr><td>過度 mock，測的是 mock 本身</td><td>能用簡單的假實作（如記憶體 Repository）就不用 mock 框架</td></tr>
+<tr><td>一個測試驗太多事情</td><td>拆開</td></tr>
+<tr><td>依賴目前時間、隨機、檔案系統</td><td>注入時間或固定值</td></tr>
+<tr><td>測試之間共享可變狀態</td><td>每個測試建立自己的資料</td></tr>
+<tr><td>為了通過而複製正式程式的邏輯來算期望值</td><td>期望值用寫死的、你能獨立判斷的值</td></tr></table>
+<h2>驗證測試有效：臨時破壞</h2>
+<ol>
+<li>手動改壞一行正式程式（例如把條件取反）。</li>
+<li>執行測試，應有測試失敗。</li>
+<li><code>git restore</code> 還原。</li>
+</ol>
+<p>也可以請 agent 做：「請對 Cancel 方法依序做 3 個小的破壞性修改（每次只改一處），每次執行相關測試並回報是否有測試失敗，最後還原所有修改。」</p>
+<h2>檢查清單</h2>
+<ul>
+<li>每個測試名稱能獨立說明情境與預期。</li>
+<li>斷言具體。</li>
+<li>臨時破壞時測試會失敗。</li>
+<li>沒有為了通過而改正式程式或既有測試。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://xunit.net/docs/getting-started/netcore/cmdline">xUnit 入門</a></li><li><a href="https://learn.microsoft.com/zh-tw/dotnet/core/testing/selective-unit-tests">Microsoft Learn：選擇性執行單元測試</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

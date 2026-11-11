@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>成本控管｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>成本控管</h1>
+  <p class="sub">知道錢花在哪、設上限、持續優化。這一頁也是全手冊「省 Token」技巧的總整理。</p>
+</header>
+<main class="page">
+
+<h2>成本結構</h2>
+<table><tr><th>項目</th><th>說明</th></tr>
+<tr><td>輸入</td><td>每一輪重送的對話歷史、檔案、工具輸出、常駐文件（有快取折扣，但仍是大宗）</td></tr>
+<tr><td>輸出</td><td>模型產生的文字與程式碼，單價通常較高</td></tr>
+<tr><td>模型</td><td>越大越貴；簡單任務用小模型</td></tr>
+<tr><td>倍增器</td><td>subagent、多視角審查、平行任務、排程頻率都會相乘</td></tr>
+<tr><td>浪費</td><td>方向錯重做、長對話、無謂探索、重複載入</td></tr></table>
+<h2>量測</h2>
+<ul>
+<li>對話中用 <code>/cost</code> 看本次用量、<code>/context</code> 看情境佔用。</li>
+<li>團隊用量請看供應商的用量儀表板或帳務報表；部分版本提供遙測與監控的整合選項。</li>
+<li>記錄「哪類任務花多少」，才知道優化哪裡。</li>
+</ul>
+<h2>上限與預算</h2>
+<table><tr><th>層面</th><th>做法</th></tr>
+<tr><td>個人／團隊</td><td>設定用量上限或預算提醒（依方案提供的功能）</td></tr>
+<tr><td>自動化</td><td><code>--max-turns</code>、<code>--max-budget-usd</code>（只搭配 <code>-p</code>）、逾時、頻率上限；失敗不無限重試</td></tr>
+<tr><td>CI</td><td>觸發條件精準、只審 diff、草稿 PR 不審</td></tr>
+<tr><td>金鑰</td><td>為自動化使用獨立金鑰，可單獨設限與撤銷</td></tr></table>
+<h2 id="tokens">省 Token 技巧總索引</h2>
+<p>省法分散在各主題中，隨流程出現。依影響大小，優先做這幾件：</p>
+<table><tr><th>優先序</th><th>做法</th><th>詳見</th></tr>
+<tr><td>1</td><td>任務完成就 <code>/clear</code>，一個對話一件事</td><td><a href="../01-getting-started/modes-commands.html#tokens">模式與指令</a></td></tr>
+<tr><td>2</td><td>用計畫模式先對齊，避免整包重做</td><td><a href="../01-getting-started/writing-prompts.html#tokens">寫出好指令</a></td></tr>
+<tr><td>3</td><td>精簡常駐文件（CLAUDE.md、skill 描述、MCP）</td><td><a href="../02-docs-for-agents/claude-md.html#tokens">CLAUDE.md</a>、<a href="../03-toolbox/recommendations.html#tokens">工具箱建議</a></td></tr>
+<tr><td>4</td><td>探索與審查交給 subagent，限制回報長度與模型</td><td><a href="../03-toolbox/subagents.html#tokens">Subagent</a></td></tr>
+<tr><td>5</td><td>階段產出存檔，換對話接力</td><td><a href="../04-requirement-to-code/breakdown.html#tokens">任務拆解</a></td></tr>
+<tr><td>6</td><td>過濾工具輸出，只看失敗與摘要</td><td><a href="../04-requirement-to-code/implement.html#tokens">實作</a></td></tr>
+<tr><td>7</td><td>依風險決定審查輪數與視角</td><td><a href="../05-cross-review/code-review.html#tokens">程式碼審查</a></td></tr>
+<tr><td>8</td><td>排程先用腳本判斷有沒有事</td><td><a href="../06-advanced-workflows/scheduling.html#tokens">排程</a></td></tr></table>
+<p>首頁的「省 Token 速查」列出所有相關頁面。</p>
+<h2>成本與價值的判斷</h2>
+<ul>
+<li>比較的對象是<b>人的時間與返工成本</b>，不是零。一次省下半天的任務，多花一些 Token 通常划算。</li>
+<li>真正該砍的是<b>浪費</b>：重做、失控的迴圈、無人看的排程。</li>
+<li>省 Token 不該犧牲驗證與審查；把錢省在流程，不要省在品質關卡。</li>
+</ul>
+<h2>常見的成本陷阱</h2>
+<table><tr><th>陷阱</th><th>解法</th></tr>
+<tr><td>超長對話一路用到底</td><td>階段結束 <code>/clear</code>，用檔案接力</td></tr>
+<tr><td>每個小事都派 subagent 或多視角審查</td><td>依風險分級</td></tr>
+<tr><td>排程每小時跑，沒人看</td><td>降頻、沒事不通知、先腳本判斷</td></tr>
+<tr><td>CI 對每個 commit 都完整審查</td><td>只審 PR、只審 diff、同 commit 不重審</td></tr>
+<tr><td>失敗後無限重試</td><td>輪數上限，三次未果就停下回報</td></tr>
+<tr><td>全部用最大模型</td><td>依任務複雜度選模型</td></tr></table>
+<div class="note">本頁為一般性的實務建議，不構成法律意見。資料保存、模型訓練使用、地區合規等條款依你使用的方案與合約而異，請以供應商最新條款與你的法務、資安負責人意見為準。設定語法與欄位以官方文件為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/costs">管理成本</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/monitoring-usage">監控用量</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/model-config">模型設定</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

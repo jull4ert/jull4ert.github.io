@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：在 MVC 專案中使用 Vue｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：在 MVC 專案中使用 Vue</h1>
+  <p class="sub">同一個 .NET 專案裡放 Vue：載入方式、Razor 衝突、資料傳遞、防偽造權杖與測試。</p>
+</header>
+<main class="page">
+
+<h2>兩種常見做法</h2>
+<table><tr><th>做法</th><th>特色</th><th>適合</th></tr>
+<tr><td>以 CDN 或靜態檔載入 Vue，在頁面上掛載</td><td>不需 Node 建置；單檔頁面小應用；本手冊練習專案採用</td><td>既有 MVC 頁面逐步加入互動</td></tr>
+<tr><td>Vite（或其他打包工具）＋單檔元件（.vue），建置輸出到 wwwroot</td><td>可用元件、模組、TypeScript、前端測試；需要 Node</td><td>前端較複雜、有專人維護</td></tr></table>
+<p>無論哪種，請在 CLAUDE.md 寫清楚<b>前端怎麼建置、怎麼測試、檔案放哪</b>，agent 才不會亂放。</p>
+<h2>陷阱一：Razor 的 <code>@</code> 與 Vue 縮寫衝突</h2>
+<table><tr><th>寫法</th><th>結果</th></tr>
+<tr><td><code>@click="save"</code>（寫在 .cshtml）</td><td>Razor 把 <code>@click</code> 當程式碼，編譯錯誤或行為怪異</td></tr>
+<tr><td><code>v-on:click="save"</code></td><td>正確</td></tr>
+<tr><td><code>@@click="save"</code></td><td>Razor 輸出一個 <code>@</code>，也正確</td></tr>
+<tr><td>寫在 .js 或 .vue 檔</td><td>不經過 Razor，可用任何寫法</td></tr></table>
+<p>把這一條寫進 CLAUDE.md，agent 才不會每次都踩。</p>
+<h2>陷阱二：怎麼把伺服器資料交給前端</h2>
+<ul>
+<li><b>首選</b>：頁面載入後，由前端呼叫 JSON API 取得（本專案做法）。</li>
+<li>如果要在頁面直接內嵌初始資料，請用框架提供的 JSON 序列化輸出，<b>不要自己用字串拼接 JSON 或把使用者輸入直接寫進 &lt;script&gt;</b>，否則有 XSS 風險。請對照官方文件確認編碼行為。</li>
+<li>也不要把機密（金鑰、內部網址）輸出到前端。</li>
+</ul>
+<h2>陷阱三：POST 與防偽造權杖（CSRF）</h2>
+<p>若你的站台使用 Cookie 登入，對伺服器的 POST／PUT／DELETE 需要防偽造機制。傳統 MVC 表單用 <code>@Html.AntiForgeryToken()</code> 與 <code>[ValidateAntiForgeryToken]</code>；用 <code>fetch</code> 呼叫 API 時，要把權杖放進請求標頭。實作細節因版本與設定而異，請讓 agent 先讀你專案現有的做法與官方文件，再提出方案，並由你確認。</p>
+<h2>陷阱四：快取與路徑</h2>
+<ul>
+<li>CDN 或靜態檔更新後，瀏覽器可能仍用舊檔案；確認版本參數或檔名策略。</li>
+<li>CDN 版本請鎖定版本號，避免版本自動變動。</li>
+<li>靜態檔路徑在不同部署方式（子應用程式、虛擬目錄）可能不同，用 <code>~/</code> 與 <code>Url.Content</code> 處理。</li>
+</ul>
+<h2>測試前端的分層做法</h2>
+<table><tr><th>層</th><th>做法</th></tr>
+<tr><td>純函式（格式化、計算）</td><td>抽成獨立檔案，用 Node 內建測試（本專案：<code>node --test</code>）</td></tr>
+<tr><td>元件行為</td><td>使用 Vite 專案時搭配 Vitest 等工具</td></tr>
+<tr><td>整個流程</td><td>手動操作，或端對端測試工具</td></tr></table>
+<h2>提示範例</h2>
+<pre><code>&gt; 我要在 @src/OrderDemo.Web/Views/Orders/Index.cshtml 加一個「訂單詳情」側邊欄。
+&gt; 限制：
+&gt; - 不引入建置工具，延續目前的 Vue CDN 方式
+&gt; - 事件一律用 v-on: 寫法
+&gt; - 資料用 fetch 呼叫 /api/orders/{id}，不要把資料內嵌在頁面
+&gt; - 格式化相關的純函式放 order-utils.js 並補 node 測試
+&gt; 先給計畫，等我確認再動手。</code></pre>
+<h2>檢查清單</h2>
+<ul>
+<li>.cshtml 中沒有 <code>@click</code> 這類縮寫。</li>
+<li>沒有字串拼接 JSON 或把使用者輸入寫進 script。</li>
+<li>POST 有防偽造機制（或確認不適用）。</li>
+<li>純函式有測試，且不依賴機器時區。</li>
+<li>我在瀏覽器實際操作並看過 Console 沒有錯誤。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://vuejs.org/guide/introduction.html">Vue 官方文件</a></li><li><a href="https://learn.microsoft.com/zh-tw/aspnet/core/mvc/views/razor">Microsoft Learn：Razor 語法</a></li><li><a href="https://learn.microsoft.com/zh-tw/aspnet/core/security/anti-request-forgery">Microsoft Learn：防偽造要求</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

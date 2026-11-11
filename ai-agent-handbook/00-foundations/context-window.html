@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>情境視窗與分段交付｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>情境視窗與分段交付</h1>
+  <p class="sub">agent 的「工作記憶」有限，這決定了你該怎麼拆任務。</p>
+</header>
+<main class="page">
+
+<h2>什麼是情境（context）</h2>
+<p>Agent 每一步「看得到」的內容：你的指令、對話歷史、它讀過的檔案、工具輸出。這些都計入有上限的 token 額度。</p>
+<h2>為什麼重要</h2>
+<ul>
+<li><b>越長越雜</b>：對話很長、讀了很多無關檔案後，品質會下降，早期的要求容易被忽略。</li>
+<li><b>系統會壓縮</b>：過長時舊內容會被摘要，細節可能流失。</li>
+<li><b>換對話 = 失憶</b>：新對話不記得上一段，除非寫進檔案（CLAUDE.md、規格書、memory）。</li>
+<li><b>成本與速度</b>：情境越大越慢、越貴。</li>
+</ul>
+<h2>實務做法</h2>
+<table><tr><th>原則</th><th>怎麼做</th></tr>
+<tr><td>一個對話一件事</td><td>任務完成就開新對話，不要把所有事塞同一串</td></tr>
+<tr><td>重要決定寫成檔案</td><td>規格、決策、待辦存成 .md，下次讓 agent 讀</td></tr>
+<tr><td>指定範圍</td><td>「只看 src/Orders 資料夾」比「看整個專案」好</td></tr>
+<tr><td>大型探索交給 subagent</td><td>讓它在獨立情境搜尋，只回傳結論（Lv4）</td></tr>
+<tr><td>分段交付</td><td>需求 → 規格 → 實作 各階段各自驗收，再往下</td></tr></table>
+<div class="note">經驗法則：當你發現要重複交代同一件事第二次，就該把它寫進檔案。</div>
+
+<h2 id="tokens">省 Token 技巧</h2>
+<p>Token 是計費與情境上限的共同單位。先理解錢花在哪，後面各區的省法才有依據。</p>
+<table><tr><th>花費來源</th><th>說明</th><th>怎麼降</th></tr>
+<tr><td>每一輪都重送的歷史</td><td>對話越長，每次回應都要把前面全部再讀一次（雖有快取折扣，仍是主要成本）</td><td>任務完成就 <code>/clear</code>；換主題就換對話</td></tr>
+<tr><td>讀進來的檔案</td><td>讀過的檔案內容會留在情境裡</td><td>只讀需要的檔案與範圍；大型探索交給 subagent</td></tr>
+<tr><td>工具輸出</td><td>測試、建置、log 的長輸出都會進情境</td><td>過濾輸出，只留錯誤與摘要</td></tr>
+<tr><td>常駐內容</td><td>CLAUDE.md、已連接的 MCP 工具定義、skill 描述每次都在</td><td>精簡常駐文件；停用用不到的 MCP</td></tr>
+<tr><td>輸出與重做</td><td>方向錯了重做，等於付兩次錢</td><td>先用計畫模式確認方向，再動手</td></tr></table>
+<h3>先量測，再優化</h3>
+<ul>
+<li><code>/context</code>：查看目前情境被什麼佔用（對話、檔案、MCP 工具、系統提示等）。</li>
+<li><code>/cost</code>：查看本次對話的用量（訂閱方案與 API 方案顯示內容不同）。</li>
+</ul>
+<div class="note">省 Token 與品質常常同向：情境越乾淨，agent 越專注。但不要為了省而省，反覆重做的成本遠高於多讀一個檔案。</div>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：讀懂舊的 MVC 專案｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：讀懂舊的 MVC 專案</h1>
+  <p class="sub">接手陌生專案的前兩天，怎麼用 agent 快速建立地圖。</p>
+</header>
+<main class="page">
+
+<h2>情境</h2>
+<p>你被指派維護一個沒人說得清楚的舊專案。目標不是一次全懂，而是先建立<b>地圖</b>：入口在哪、請求怎麼流、資料從哪來、哪裡最危險。</p>
+<h2>先認出專案類型</h2>
+<table><tr><th>線索</th><th>代表</th><th>入口檔</th></tr>
+<tr><td><code>Program.cs</code>、<code>.csproj</code>（SDK 格式）</td><td>ASP.NET Core</td><td><code>Program.cs</code>、<code>appsettings.json</code></td></tr>
+<tr><td><code>Global.asax</code>、<code>Web.config</code>、<code>packages.config</code></td><td>.NET Framework 的 ASP.NET MVC 5</td><td><code>Global.asax.cs</code>、<code>App_Start/RouteConfig.cs</code>、<code>Web.config</code></td></tr></table>
+<h2>步驟</h2>
+<ol>
+<li><b>唯讀導覽</b>（計畫模式）：
+<pre><code>&gt; 我剛接手這個專案。請先判斷它是 ASP.NET Core 還是 .NET Framework MVC，
+&gt; 再帶我導覽：
+&gt; 1. 專案與資料夾結構各管什麼
+&gt; 2. 路由設定在哪、有哪些主要 Controller
+&gt; 3. 資料存取是怎麼做的（EF？Dapper？預存程序？）
+&gt; 4. 驗證與授權怎麼做
+&gt; 5. 前端怎麼組成（Razor、Vue、jQuery？打包方式？）
+&gt; 6. 設定與機密放在哪
+&gt; 每點附檔案路徑，不要貼大段程式碼。先不要修改任何檔案。</code></pre></li>
+<li><b>追一條主要流程</b>：挑最核心的一個功能（例如下單），請它從畫面按鈕到資料庫完整追一次。</li>
+<li><b>找風險</b>：「列出最可能出問題、最難改的地方（重複的程式、過大的類別、沒有測試的核心邏輯、寫死的設定）。」</li>
+<li><b>存成筆記</b>：<code>docs/notes/architecture.md</code>，你用自己的話修改。以後直接讀它，不必重新探索。</li>
+<li><b>確認能建置與測試</b>：先把「怎麼建置、怎麼跑測試、怎麼啟動」寫進 CLAUDE.md。</li>
+</ol>
+<h2>可以追問的問題</h2>
+<ul>
+<li>「這個 Controller 的某個 Action 呼叫了誰？誰又呼叫它？」</li>
+<li>「這個資料表／欄位在哪些地方被讀寫？」（改資料庫前必問）</li>
+<li>「這段程式為什麼這樣寫？有沒有可能是為了某個歷史原因？看得出來嗎？」（讓它區分「看得出」與「猜測」）</li>
+</ul>
+<h2>.NET Framework 專案的特別提醒</h2>
+<ul>
+<li>建置與測試指令可能是 MSBuild 與 vstest，而不是 <code>dotnet</code>；請寫進 CLAUDE.md，並先在你的機器上確認能執行。</li>
+<li>設定在 <code>Web.config</code>，不同環境靠轉換檔（transform）；請 agent 說明不要擅自修改。</li>
+<li>套件管理可能是 <code>packages.config</code>；升級套件風險高，先評估再動。</li>
+</ul>
+<h2>檢查清單</h2>
+<ul>
+<li>我有一份自己的架構筆記，且已驗證過至少三處。</li>
+<li>我知道怎麼建置、測試、啟動。</li>
+<li>我知道三個最危險、最需要小心的地方。</li>
+<li>agent 說「看起來是…」的地方，我標示為待確認。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li>導覽用 subagent 做，只回報摘要與路徑。</li>
+<li>存成筆記，之後只讀筆記。</li>
+<li>追流程時指定起點與終點，不要「讀整個專案」。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>需求到程式碼｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>需求到程式碼</h1>
+  <p class="sub">從一句模糊的需求，到可上線的程式碼：每一階段都由 agent 代勞，你只在關卡做決定。</p>
+</header>
+<main class="page">
+
+<p>把整件事拆成六個階段，每個階段產出一份<b>檔案</b>，下一階段讀這份檔案，而不是依賴冗長的對話記憶（見 Lv0 的情境視窗）。你在每個關卡確認後才往下。</p>
+<h2>總覽</h2>
+<div class="tree">一句話需求
+  │ ① 訪談     agent 反問，你回答        → docs/specs/xxx-decisions.md
+  ▼
+  │ ② 規格     整理成可驗收的規格        → docs/specs/xxx.md
+  ▼   ◄── 關卡：需求審查（05）
+  │ ③ 拆解     設計 + 切成小任務         → docs/plans/xxx.md（含任務清單）
+  ▼   ◄── 關卡：你審計畫
+  │ ④ 實作     一次一個任務，先測試      → 程式碼 + 測試
+  ▼
+  │ ⑤ 驗證     實際跑起來、對照驗收條件  → 證據報告
+  ▼   ◄── 關卡：程式碼審查（05）
+  │ ⑥ 交付     commit、PR、文件更新      → 可合併的 PR</div>
+<h2>六個階段頁面</h2>
+<div id="children"></div>
+<h2>每個階段的「你」與「agent」</h2>
+<table><tr><th>階段</th><th>agent 做</th><th>你做</th></tr>
+<tr><td>訪談</td><td>提問、指出矛盾、給建議答案</td><td>回答、做取捨</td></tr>
+<tr><td>規格</td><td>整理成文件、列出未決問題</td><td>確認是你要的</td></tr>
+<tr><td>拆解</td><td>探索程式碼、提出設計與任務</td><td>選方案、核准計畫</td></tr>
+<tr><td>實作</td><td>寫測試與程式、自我檢查</td><td>抽查 diff</td></tr>
+<tr><td>驗證</td><td>跑測試、啟動、截圖、對照條件</td><td>看證據、親自試用關鍵流程</td></tr>
+<tr><td>交付</td><td>寫 commit、PR 說明、更新文件</td><td>決定是否合併</td></tr></table>
+<h2>幾個貫穿全程的習慣</h2>
+<ul>
+<li><b>階段之間換對話</b>：用 <code>/clear</code> 開新對話，開頭只引用上一階段的檔案。</li>
+<li><b>檔案是事實來源</b>：口頭改的決定要回寫進檔案，否則下次就消失。</li>
+<li><b>先計畫模式、後動手</b>：訪談、規格、拆解都在唯讀的計畫模式完成。</li>
+<li><b>留下可回溯的紀錄</b>：決定、取捨、被否決的方案，之後才查得到為什麼。</li>
+</ul>
+<div class="note">本區的流程是一種建議的做法，可依任務大小裁剪：小修改可以直接跳到實作，大功能才需要完整走完。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>能力檢核：你到哪一級了？｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>能力檢核：你到哪一級了？</h1>
+  <p class="sub">用具體可驗證的項目，判斷自己是否已能獨立和 AI 協作。</p>
+</header>
+<main class="page">
+
+<p>每一級都列出「做得到」的證據。建議每項都留下<b>可以拿出來的東西</b>：PR、證據表、規格檔，而不只是自我感覺。</p>
+<h2>第 1 級：會用（第 1 週後）</h2>
+<ul>
+<li>能在專案根目錄啟動 agent，並用唯讀問答了解專案。</li>
+<li>能用 <code>@</code>、<code>!</code>、計畫模式、<code>/clear</code>。</li>
+<li>能看 <code>git diff</code>，並還原不要的修改。</li>
+<li>能用自己的話說明一個請求從前端到資料的路徑。</li>
+<li><b>證據</b>：Lab 0、Lab 1 完成；有一份自己整理的架構筆記。</li>
+</ul>
+<h2>第 2 級：會驗證（第 2 週後）</h2>
+<ul>
+<li>能先寫失敗的測試，再修正，並說明為什麼。</li>
+<li>能用五步驗證法確認 agent 的修改。</li>
+<li>能辨認常見的程式碼警訊。</li>
+<li>知道什麼情況要找同事。</li>
+<li><b>證據</b>：Lab 2、Lab 3 完成；PR 說明含驗證紀錄。</li>
+</ul>
+<h2>第 3 級：能協作（第 4 週後）——目標</h2>
+<ul>
+<li>能帶著 agent 走完：訪談、規格、拆解、實作、驗證、交付。</li>
+<li>規格有可驗收的條件，並做過需求審查。</li>
+<li>每個驗收條件都有證據，證據表中誠實標出「不通過」。</li>
+<li>做過交叉審查，並能對發現做出採納或駁回的決定與理由。</li>
+<li>能把專案慣例寫成 CLAUDE.md 與至少一個 skill。</li>
+<li>知道哪些事不能交給 agent。</li>
+<li><b>證據</b>：Lab 4～8 完成；一個含規格、計畫、證據表、審查裁決表的小需求。</li>
+</ul>
+<h2>第 4 級：能帶人（之後）</h2>
+<ul>
+<li>能為團隊設計共用的 CLAUDE.md、skills、審查流程。</li>
+<li>能評估 agent 的產出品質並持續改進。</li>
+<li>能把例行工作做成排程或工作流程，並設定安全邊界。</li>
+<li>能指導別人，並處理 agent 出錯的事故。</li>
+<li><b>證據</b>：共用規範被團隊採用；有指標追蹤品質與成本。</li>
+</ul>
+<h2>如何自評</h2>
+<table><tr><th>狀況</th><th>建議</th></tr>
+<tr><td>某一級有 2 項以上做不到</td><td>回頭重做對應的 Lab，不急著升級</td></tr>
+<tr><td>全部做得到，但總是靠 agent 解釋</td><td>多用「先寫後審」的方式練習</td></tr>
+<tr><td>全部做得到，且能教別人</td><td>往下一級，並開始做 06 進階工作流程</td></tr></table>
+<h2>請同事幫你驗收</h2>
+<p>找一位資深同事看你的 Lab 8 成果，請他回答三個問題：</p>
+<ol>
+<li>如果這是我團隊的 PR，我會放心合併嗎？</li>
+<li>哪一個決定最讓我擔心？</li>
+<li>這個人知道自己不知道什麼嗎？</li>
+</ol>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

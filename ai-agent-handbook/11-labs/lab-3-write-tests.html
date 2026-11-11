@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 3：補測試與驗證測試有效｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 3：補測試與驗證測試有效</h1>
+  <p class="sub">為現有行為補上測試，並用「臨時破壞」確認測試真的有保護力。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：60 分鐘　<b>分支</b>：<code>lab3-tests</code></p>
+<h2>目標</h2>
+<ul>
+<li>為邊界與錯誤情境補測試（特徵測試：記錄現況）。</li>
+<li>學會判斷「這個測試有沒有用」。</li>
+<li>前端純函式也補測試。</li>
+</ul>
+<h2>步驟</h2>
+<ol>
+<li>請 agent 列出尚未被測試涵蓋的行為，<b>先不要寫</b>：
+<pre><code>&gt; 閱讀 OrderService 與 tests/OrderDemo.Tests/OrderServiceTests.cs，
+&gt; 列出尚未被測試涵蓋的行為與邊界情境（表格：情境、預期結果）。
+&gt; 先只列清單，不要寫程式。</code></pre></li>
+<li>你挑 3～4 個，並自己先預測「現在的程式會怎樣」。</li>
+<li>請它撰寫測試：
+<pre><code>&gt; 為上述選定的情境新增 xUnit 測試，遵守既有的命名與 Arrange/Act/Assert 風格。
+&gt; 期望值依「現有程式的實際行為」，不要修改正式程式碼。執行並貼出結果。</code></pre></li>
+<li><b>臨時破壞驗證</b>：手動改壞一行正式程式（例如把 <code>DepartmentId ==</code> 改成 <code>!=</code>），執行測試，<b>應該要有測試失敗</b>。沒有就代表測試沒保護力。完成後用 <code>git restore</code> 還原。</li>
+<li>前端：為 <code>order-utils.js</code> 補測試，包含 <code>formatDate(null)</code> 的現況。</li>
+</ol>
+<h2>預期結果</h2>
+<ul>
+<li>新增 3～4 個通過的後端測試與 1～2 個前端測試。</li>
+<li>臨時破壞時，至少一個測試失敗。</li>
+<li>發現 <code>formatDate(null)</code> 會丟出例外（現況）。</li>
+</ul>
+<h2>檢核</h2>
+<ul>
+<li>每個測試都有清楚的名稱與實際的斷言（不是只斷言不為 null）。</li>
+<li>我做過「臨時破壞」驗證，且已還原。</li>
+<li>我知道特徵測試記錄的是「現況」，不代表「正確」。</li>
+</ul>
+<details><summary>參考解答</summary>
+<p>後端（以下情境都是現況行為，已對照程式確認）：</p>
+<pre><code>[Fact]
+public void List_UnknownDepartment_ReturnsEmpty()
+{
+    var orders = CreateService().List(departmentId: 99);
+
+    Assert.Empty(orders);
+}
+
+[Fact]
+public void List_StatusWithNoMatch_ReturnsEmpty()
+{
+    var orders = CreateService().List(departmentId: 2, status: OrderStatus.Cancelled);
+
+    Assert.Empty(orders);
+}
+
+[Fact]
+public void Cancel_NonExistentOrder_Fails()
+{
+    var result = CreateService().Cancel(orderId: 999, departmentId: 1);
+
+    Assert.False(result.Success);
+    Assert.Equal("找不到訂單", result.Error);
+}</code></pre>
+<p>前端（現況：傳入 null 會丟出 TypeError）：</p>
+<pre><code>test("formatDate 遇到 null 會丟出錯誤（現況，Lab 5 會改善）", () => {
+  assert.throws(() => formatDate(null), TypeError);
+});</code></pre></details>
+<details><summary>想一想</summary>
+<p>第一個「formatDate 遇到 null 會丟例外」的測試，在 Lab 5 修好 formatDate 之後會失敗。這時該改測試還是改程式？（答案：行為是你有意改變的，所以更新測試；但要在 PR 說明中講清楚這是有意的行為變更。）</p></details>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

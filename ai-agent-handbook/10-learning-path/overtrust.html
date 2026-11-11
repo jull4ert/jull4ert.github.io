@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>過度信任的警訊與信任階梯｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>過度信任的警訊與信任階梯</h1>
+  <p class="sub">新手最容易發生的風險是「太快相信」。這一頁教你辨認警訊，並一步步放權。</p>
+</header>
+<main class="page">
+
+<h2>新手常見的過度信任</h2>
+<table><tr><th>現象</th><th>為什麼危險</th><th>對策</th></tr>
+<tr><td>看到「已完成、測試通過」就合併</td><td>agent 可能沒有真的執行，或測試本身沒有保護力</td><td>要求貼出實際輸出；自己再跑一次</td></tr>
+<tr><td>不看 diff</td><td>可能被多改、被刪除檢查</td><td>每次都看 <code>--stat</code> 與內容</td></tr>
+<tr><td>接受自己不懂的做法</td><td>出事時不會查</td><td>要它解釋，或換更簡單的寫法</td></tr>
+<tr><td>把機密、個資貼進對話</td><td>資料外洩</td><td>見 <a href="../09-governance/data-secrets.html">09 資料與機密</a></td></tr>
+<tr><td>對 agent 的「為什麼」照單全收</td><td>解釋也可能是編的</td><td>用測試、文件、原始碼查證</td></tr>
+<tr><td>一次要太多東西</td><td>產出太大，根本沒辦法審</td><td>拆成小任務，每個都能獨立驗收</td></tr></table>
+<h2>你已經過度依賴的訊號</h2>
+<ul>
+<li>你不再讀 diff，直接接受。</li>
+<li>出錯時，你只會把錯誤丟給 agent，不知道從哪裡查起。</li>
+<li>你說不出程式「為什麼這樣寫」。</li>
+<li>驗證都靠 agent 自己回報。</li>
+</ul>
+<p>出現這些訊號時，<b>放慢</b>：回到小任務、親手跑測試、自己寫一段。</p>
+<h2>信任階梯：一級一級放權</h2>
+<table><tr><th>級別</th><th>你讓 agent 做</th><th>升級條件</th></tr>
+<tr><td><b>L0 唯讀</b></td><td>讀程式、回答問題、解釋錯誤</td><td>能判斷它的回答是否正確</td></tr>
+<tr><td><b>L1 小修改</b></td><td>單一檔案、單一函式的修改，你逐行審</td><td>連續 5 次 diff 你都看得懂</td></tr>
+<tr><td><b>L2 功能實作</b></td><td>一個完整小功能，含測試，你看證據表</td><td>能自己寫出驗收條件與測試</td></tr>
+<tr><td><b>L3 交叉審查</b></td><td>多個 agent 審查，你裁決</td><td>能分辨審查意見的真偽</td></tr>
+<tr><td><b>L4 自動化</b></td><td>排程、CI、批次任務（唯讀為主）</td><td>已有穩定的規範與驗證</td></tr></table>
+<p>升級要有<b>證據</b>，不是感覺。不同風險的任務可以停在不同級別：金流、權限、資料庫結構，建議停在 L1 或 L2，並多一個人審查。</p>
+<h2>向同事交代你的產出</h2>
+<p>在 PR 說明中，誠實說明哪些是 agent 產出、你做了哪些驗證。例如：</p>
+<pre><code>## 驗證
+- 先寫失敗的測試（Cancel_ShippedOrder_Fails），確認失敗後修正，通過
+- 執行全部測試：10 通過、0 失敗
+- 手動操作：已出貨訂單按取消，畫面顯示錯誤訊息
+## AI 輔助
+- 實作與測試由 agent 產生；我逐行審過 diff
+- 我不確定的部分：錯誤訊息的文案，請確認</code></pre>
+<p>這樣審查者知道該把注意力放在哪，也建立你的可信度。</p>
+<h2>一定要找人的時候</h2>
+<ul>
+<li>權限、金流、個資、migration。</li>
+<li>你看不懂但 agent 很堅持的做法。</li>
+<li>改動範圍比預期大很多。</li>
+<li>你已經和 agent 來回超過 30 分鐘沒有進展。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="../09-governance/when-not-to-use.html">何時不該用 agent</a></li><li><a href="../09-governance/quality-evaluation.html">品質評估</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

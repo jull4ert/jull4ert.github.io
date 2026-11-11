@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>食譜：安全重構｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>食譜：安全重構</h1>
+  <p class="sub">先鎖住行為，再小步整理；重構不該改變功能。</p>
+</header>
+<main class="page">
+
+<h2>情境</h2>
+<p>一個 Controller 動作有 200 行，邏輯、驗證、資料存取全混在一起。你想把它拆乾淨，但不想弄壞功能。</p>
+<h2>核心規則</h2>
+<ol>
+<li><b>沒有測試就不重構</b>：先補特徵測試鎖住現況（見 <a href="../11-labs/lab-3-write-tests.html">Lab 3</a>、<a href="../08-practice/example-b-existing-code.html">範例 B</a>）。</li>
+<li><b>一次一種重構</b>：抽出方法、搬移到 Service、改名，不要同時做。</li>
+<li><b>小步提交</b>：每步測試全綠就 commit，壞了可以精準退回。</li>
+<li><b>不改行為</b>：重構的 diff 不該包含新功能或 bug 修正。</li>
+</ol>
+<h2>步驟</h2>
+<ol>
+<li>唯讀分析：「列出這個動作做了哪些事（驗證、授權、查詢、計算、組回應），並建議如何分層，先不要改。」</li>
+<li>補特徵測試，確認全綠。</li>
+<li>請它列出<b>重構步驟清單</b>（每步獨立可驗證），你審核。</li>
+<li>每一步新對話或明確指示：
+<pre><code>&gt; 只做步驟 2：把訂單金額計算抽成 OrderService 的方法 CalculateTotal，
+&gt; 行為完全不變，不要改名、不要整理其他程式。
+&gt; 完成後執行全部測試並貼出結果。</code></pre></li>
+<li>每步後看 <code>git diff</code>，確認只是搬移與抽取。</li>
+</ol>
+<h2>典型重構目標（MVC）</h2>
+<table><tr><th>壞味道</th><th>方向</th></tr>
+<tr><td>Controller 內有商業邏輯</td><td>抽到 Service</td></tr>
+<tr><td>Controller 直接操作 DbContext／Repository</td><td>透過 Service 與介面</td></tr>
+<tr><td>View 裡有複雜的 C# 邏輯</td><td>移到 ViewModel 或 Service</td></tr>
+<tr><td>重複的程式碼</td><td>抽出共用方法（先確認「真的是同一件事」）</td></tr>
+<tr><td>過長的方法、深巢狀</td><td>提早 return、拆小方法</td></tr>
+<tr><td>魔術數字與字串</td><td>常數或列舉</td></tr></table>
+<h2>讓 agent 守規矩</h2>
+<ul>
+<li>明確說：「不要順便修 bug、不要改公開方法的簽章、不要新增套件。」</li>
+<li>發現疑似 bug 時：「列出來給我，不要修。」</li>
+<li>要求每步貼出測試結果。</li>
+</ul>
+<h2>陷阱</h2>
+<table><tr><th>陷阱</th><th>對策</th></tr>
+<tr><td>agent 一次改幾十個檔案</td><td>限定步驟與範圍；用 <code>--stat</code> 檢查</td></tr>
+<tr><td>測試為了配合重構被修改</td><td>規定不得修改既有測試（除非介面確實改了，且要說明）</td></tr>
+<tr><td>重構中悄悄改變行為</td><td>特徵測試、人工審 diff</td></tr>
+<tr><td>為了「更乾淨」而過度設計</td><td>要求維持簡單，符合專案現有慣例</td></tr></table>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

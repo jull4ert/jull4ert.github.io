@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>權限與核准｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>權限與核准</h1>
+  <p class="sub">agent 能做事，所以要決定它「能做到哪、誰按確認」。</p>
+</header>
+<main class="page">
+
+<h2>三層動作，三種風險</h2>
+<table><tr><th>層級</th><th>範例</th><th>風險</th><th>建議</th></tr>
+<tr><td>唯讀</td><td>讀檔、搜尋、查行事曆</td><td>低（但仍可能讀到機密）</td><td>可放寬</td></tr>
+<tr><td>可還原的修改</td><td>編輯程式（有 git）、建立草稿</td><td>中</td><td>檢視 diff 後接受</td></tr>
+<tr><td>難以還原 / 對外</td><td>刪檔、force push、寄信、改他人行事曆、移動 Trello 卡片、部署</td><td>高</td><td>每次人工核准</td></tr></table>
+<h2>核准的做法</h2>
+<ul>
+<li><b>預設逐次詢問</b>：初期保持，邊用邊學它會做什麼。</li>
+<li><b>白名單</b>：把確定安全且重複的指令（如 <code>git status</code>、跑測試）設為免詢問。</li>
+<li><b>計畫模式</b>：先只讓它規劃不動手，你看過計畫再放行。</li>
+<li><b>版本控制當保險</b>：程式碼一律在 git 下作業，改壞可退回。</li>
+</ul>
+<h2>非程式工作要更小心</h2>
+<p>行事曆、信件、Trello 沒有 git 可退。建議：先讓它「只讀 + 提出建議清單」，確認後才開寫入；對外可見的動作（邀請與會者、發訊息）永遠人工確認。</p>
+<h2>機密</h2>
+<p>不要把密碼、金鑰、客戶個資直接貼進對話；用環境變數或祕密管理，並限制 agent 可讀的資料夾。詳見 06 治理。</p>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

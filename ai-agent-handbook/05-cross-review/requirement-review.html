@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>需求審查｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>需求審查</h1>
+  <p class="sub">寫程式前找盲點，成本最低、效益最高。</p>
+</header>
+<main class="page">
+
+<p>多數昂貴的錯誤出在需求：做對了錯的事。需求審查放在「規格寫好、尚未實作」的時間點。</p>
+<h2>方法一：事前驗屍（pre-mortem）</h2>
+<p>假設專案已經失敗，倒推原因。比問「有什麼風險」更容易產生具體答案。</p>
+<pre><code>&gt; 請讀 @docs/specs/order-filter.md。
+&gt; 假設這個功能上線一個月後被判定失敗。
+&gt; 請列出最可能的 7 個原因，依可能性排序，
+&gt; 每項說明：觸發條件、對使用者的影響、規格中缺了什麼才導致。
+&gt; 只做分析，不要修改任何檔案。</code></pre>
+<h2>方法二：反方角色</h2>
+<p>指定一個立場與你對立的審查者，並禁止它客套。</p>
+<pre><code>&gt; 你是挑剔的資深 QA。請針對 @docs/specs/order-filter.md：
+&gt; 1. 找出含糊、不可測試的描述（無法寫成驗收條件的句子）
+&gt; 2. 找出互相矛盾的規則
+&gt; 3. 找出沒寫的情境
+&gt; 若某類沒有問題請寫「無」，不要為了湊數而編造。</code></pre>
+<h2>方法三：缺漏情境清單</h2>
+<table><tr><th>面向</th><th>要問的問題</th></tr>
+<tr><td>邊界</td><td>空值、零筆、超大量、極長字串、特殊字元</td></tr>
+<tr><td>權限</td><td>誰能做？沒權限時怎麼辦？跨租戶／跨部門能看到嗎？</td></tr>
+<tr><td>併發</td><td>兩人同時改？重複送出？重試是否冪等？</td></tr>
+<tr><td>失敗</td><td>外部系統逾時、部分成功、網路中斷後的資料狀態</td></tr>
+<tr><td>時間</td><td>時區、跨日、月底、夏令時間、歷史資料</td></tr>
+<tr><td>資料</td><td>既有資料的遷移、相容、舊版客戶端</td></tr>
+<tr><td>稽核</td><td>誰做了什麼要留紀錄嗎？個資與保存期限？</td></tr>
+<tr><td>營運</td><td>怎麼監控、怎麼回滾、怎麼客服排查</td></tr></table>
+<h2>方法四：規格對照原始需求（可追溯）</h2>
+<p>把你最初的口語需求（會議記錄、客戶訊息）與整理後的規格都給審查者，檢查是否「走鐘」。</p>
+<pre><code>&gt; 左：@docs/raw/customer-request.md（客戶原話）
+&gt; 右：@docs/specs/order-filter.md（目前規格）
+&gt; 請建立對照表：原話每一點 → 對應到規格哪一節，或「未涵蓋」。
+&gt; 另外列出規格中有、但原話沒提到的項目（可能是我們自行添加的假設）。</code></pre>
+<h2>審查結果分類</h2>
+<table><tr><th>類型</th><th>處置</th></tr>
+<tr><td>矛盾</td><td>必須決定哪一條成立，改規格</td></tr>
+<tr><td>缺漏</td><td>補寫，或明列為「不做」</td></tr>
+<tr><td>含糊</td><td>改寫成可驗證的驗收條件</td></tr>
+<tr><td>假設</td><td>向需求方確認後記錄；未確認前標為「未決問題」</td></tr></table>
+<h2>用 subagent 固定成可重複流程</h2>
+<p>先給最小做法；完整的 subagent 介紹見 03。在 <code>.claude/agents/</code> 建立一個檔案，之後可直接呼叫：</p>
+<pre><code>---
+name: spec-reviewer
+description: 審查需求規格的盲點。在規格完成、開始實作前使用。
+tools: Read, Grep, Glob
+---
+你是挑剔的需求審查員。只讀取，不修改檔案。
+對輸入的規格依序檢查：含糊、矛盾、缺漏情境（邊界、權限、併發、失敗、時間、資料、稽核、營運）。
+輸出表格：類型｜位置｜問題｜為什麼重要｜建議問需求方的問題。
+沒有發現的類別寫「無」，不可編造。</code></pre>
+<pre><code>&gt; 請用 spec-reviewer 審查 @docs/specs/order-filter.md</code></pre>
+<p>只給唯讀工具（Read、Grep、Glob），審查者就不會順手改檔，也更安全。</p>
+<div class="note">指令、檔案位置與 frontmatter 欄位會隨版本調整，以官方文件與 <code>/help</code>、<code>/agents</code> 的實際畫面為準。</div><h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>用唯讀的 spec-reviewer</b>：獨立情境，只讀規格，成本低。</li>
+<li><b>只帶規格，不帶訪談歷史</b>：既符合盲審，也省 Token。</li>
+<li><b>要求表格式輸出</b>：類型、位置、問題、建議，比長篇論述精簡。</li>
+<li><b>需求階段的錯誤最便宜修</b>：多花一輪審查，通常能省下後面整段重做。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://en.wikipedia.org/wiki/Pre-mortem">Pre-mortem（事前驗屍）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

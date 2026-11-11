@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>範例 B：既有專案加功能並補測試｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>範例 B：既有專案加功能並補測試</h1>
+  <p class="sub">在沒有測試、結構雜亂的舊程式上動手：先保護，再修改。</p>
+</header>
+<main class="page">
+
+<div class="note"><b>這是示意情境。</b>對話、檔名、數字都是為了說明流程而設計的範例，不是真實專案的執行結果；請把它當成可改造的腳本，換成你自己的專案與資料。</div>
+<h2>情境</h2>
+<p>一個運作多年的出貨計算模組，沒有測試，邏輯散在好幾個方法裡。要新增「某類客戶免運費」的規則。直接改很危險：沒人確定現有行為完整是什麼。</p>
+<h2>策略：先鎖住現況，再改</h2>
+<div class="tree">① 理解現況（唯讀） → ② 補「特徵測試」鎖住現有行為
+        → ③ 才加新規則（先寫新規則的失敗測試）
+        → ④ 全部測試通過 + 交叉審查 → ⑤ 交付</div>
+<h2>時間軸</h2>
+<table><tr><th>#</th><th>階段</th><th>做法</th></tr>
+<tr><td>1</td><td>理解現況</td><td>計畫模式、唯讀：「說明運費計算的流程、分支與已知特殊情況，列出相關檔案，不要貼大段程式碼」；用 subagent 探索並只回報摘要</td></tr>
+<tr><td>2</td><td>記錄理解</td><td>把摘要存成 <code>docs/notes/shipping-current-behavior.md</code>，之後直接讀，不重新探索</td></tr>
+<tr><td>3</td><td>補特徵測試</td><td>「針對現有行為寫測試，輸入與期望值取自目前實際輸出；不要修改任何正式程式碼」。這是記錄現況，不是判斷對錯</td></tr>
+<tr><td>4</td><td>確認測試有效</td><td>臨時改動一行計算邏輯，看測試是否會失敗（驗證測試真的在測）</td></tr>
+<tr><td>5</td><td>寫新規則的測試</td><td>依需求寫「免運費客戶」的測試，先確認失敗</td></tr>
+<tr><td>6</td><td>實作</td><td>最小的修改讓新測試通過，且特徵測試全數維持通過</td></tr>
+<tr><td>7</td><td>審查</td><td>獨立 subagent：「這份 diff 有沒有改變既有行為？」，並反駁</td></tr>
+<tr><td>8</td><td>交付</td><td>PR 說明列出：保護了哪些行為、新增了什麼、沒動什麼</td></tr></table>
+<h2>範例提示：特徵測試</h2>
+<pre><code>&gt; 針對 @src/Shipping/ShippingCalculator.cs 目前的行為補測試。
+&gt; 規則：
+&gt; - 不修改正式程式碼
+&gt; - 每個測試的期望值，是呼叫現有程式後得到的實際結果
+&gt; - 涵蓋：不同重量區間、不同地區、空購物車、超重
+&gt; - 發現疑似 bug 的行為，仍照現況寫測試，並在測試名稱加「（疑似錯誤）」，另列清單給我
+&gt; 完成後執行測試並貼出結果。</code></pre>
+<p>「疑似 bug 也照現況鎖住」的好處：你有意識地決定要不要順便修，而不是在加功能時不小心改變行為。</p>
+<h2>你做的決定</h2>
+<ul>
+<li>疑似錯誤的行為：保留、還是另開任務修？</li>
+<li>新規則與既有規則衝突時，以哪個為準。</li>
+</ul>
+<h2>可能出錯的地方</h2>
+<table><tr><th>坑</th><th>對策</th></tr>
+<tr><td>agent 順手重構</td><td>明確規定「不要整理、不要改名，只做這件事」</td></tr>
+<tr><td>為了讓測試通過而改測試</td><td>規定不得修改特徵測試</td></tr>
+<tr><td>特徵測試寫成必過</td><td>用「臨時破壞」驗證測試會失敗</td></tr>
+<tr><td>探索結果太籠統</td><td>要求列出分支條件與實際例子</td></tr></table>
+<h2>檢查清單</h2>
+<ul>
+<li>改動前後，特徵測試都全數通過。</li>
+<li>新規則有獨立的測試。</li>
+<li>diff 只含必要檔案。</li>
+<li>疑似錯誤清單已交給負責人決策。</li>
+<li>現況說明文件已存檔，供下次使用。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li>探索結果存成短文件，下次直接讀。</li>
+<li>探索與審查用 subagent，只回報結論。</li>
+<li>一個任務一個對話；特徵測試與新功能分開做。</li>
+<li>大型舊檔案只讀相關方法，用 <code>@</code> 引用指定檔案。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>治理與風險｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>治理與風險</h1>
+  <p class="sub">讓 agent 又快又安全：資料、權限、成本、品質，以及知道什麼時候不該用。</p>
+</header>
+<main class="page">
+
+<p>前面各區教你怎麼把 agent 用強。這一區處理另一面：<b>用強之後，什麼會出事</b>，以及怎麼把風險控制在可接受的範圍。</p>
+<h2>五個風險面向</h2>
+<table><tr><th>面向</th><th>典型問題</th><th>頁面</th></tr>
+<tr><td>資料</td><td>機密、個資、客戶程式碼被送出或寫進文件</td><td>資料與機密</td></tr>
+<tr><td>權限</td><td>誤刪、誤發、被惡意內容誘導執行危險動作</td><td>權限與防護</td></tr>
+<tr><td>成本</td><td>用量失控、長對話、無謂重做</td><td>成本控管</td></tr>
+<tr><td>品質</td><td>看起來對、實際有錯；越用越依賴卻不知好壞</td><td>品質評估</td></tr>
+<tr><td>適用性</td><td>把不該交給 agent 的事交給它</td><td>何時不該用</td></tr>
+<tr><td>組織</td><td>團隊各用各的、沒有規範與責任歸屬</td><td>團隊導入與規範</td></tr></table>
+<h2>頁面</h2>
+<div id="children"></div>
+<h2>四個核心原則</h2>
+<ol>
+<li><b>最小權限</b>：只給完成任務所需的資料與工具。</li>
+<li><b>人在迴圈</b>：不可逆、對外、涉及金錢與個資的動作，由人核准。</li>
+<li><b>可追溯</b>：做了什麼、為什麼、依據什麼，要查得到。</li>
+<li><b>責任在人</b>：agent 的產出由使用它的人負責，不能推給工具。</li>
+</ol>
+<div class="note">若你的工作涉及為客戶交付軟體，也請對照 <a href="../../secure-delivery-handbook/index.html">資安交付手冊</a>：它處理的是交付物本身的資安，本區處理的是「使用 agent 的過程」的風險。</div>
+<div class="note">本頁為一般性的實務建議，不構成法律意見。資料保存、模型訓練使用、地區合規等條款依你使用的方案與合約而異，請以供應商最新條款與你的法務、資安負責人意見為準。設定語法與欄位以官方文件為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/security">Claude Code 安全</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/iam">權限與身分</a></li><li><a href="https://owasp.org/www-project-top-10-for-large-language-model-applications/">OWASP Top 10 for LLM Applications</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>常見任務食譜（.NET MVC＋Vue）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>常見任務食譜（.NET MVC＋Vue）</h1>
+  <p class="sub">日常開發最常遇到的七種任務，各有一套可重複使用的做法與提示。</p>
+</header>
+<main class="page">
+
+<p>前面的章節教流程，這一區教<b>具體的任務</b>：遇到某種工作時，該怎麼和 agent 一起做。每份食譜都有：情境、步驟、提示範例、檢查清單與這個技術棧特有的陷阱。</p>
+<div class="note">本章範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端在同一個 .NET 專案</b>為基準。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念與流程相同，但建置與測試指令（例如 MSBuild、vstest）、專案檔格式與設定檔不同，請在你的 CLAUDE.md 中寫清楚。</div>
+<h2>食譜一覽</h2>
+<div id="children"></div>
+<h2>每個食譜的共同骨架</h2>
+<div class="tree">1. 先唯讀：讓 agent 讀懂相關程式，說明現況
+2. 要證據：重現問題／寫失敗的測試／列驗收條件
+3. 小步改：只做這一件事，範圍明確
+4. 驗證：跑測試、實際操作，貼出輸出
+5. 審：看 diff，必要時交叉審查
+6. 留下：commit、必要的文件或 CLAUDE.md 更新</div>
+<h2>技術棧特有的注意事項</h2>
+<table><tr><th>面向</th><th>注意</th></tr>
+<tr><td>MVC 分層</td><td>Controller 薄、Service 厚；不要讓 agent 把邏輯寫進 Controller 或 View</td></tr>
+<tr><td>Razor 與 Vue</td><td><code>@</code> 衝突、伺服器資料傳給前端的方式、防偽造權杖（見<a href="vue-in-mvc.html">Vue 與 MVC</a>）</td></tr>
+<tr><td>資料庫</td><td>migration 與正式資料由人決定（見<a href="data-ef-sql.html">EF 與 SQL</a>）</td></tr>
+<tr><td>測試</td><td>Service 用單元測試、API 用整合測試、前端純函式用 Node 測試</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li>貼堆疊與 log 時，只貼最後的例外與附近 20～30 行；用 <code>!dotnet test</code> 取輸出再裁剪。</li>
+<li>測試用 <code>--filter</code> 只跑相關的，驗證階段才跑全部。</li>
+<li>大型舊專案先請 agent 做「導覽筆記」存檔，之後直接讀。</li>
+<li>一個食譜一個對話；完成後 <code>/clear</code>。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

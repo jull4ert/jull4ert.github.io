@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>③ 設計與任務拆解｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>③ 設計與任務拆解</h1>
+  <p class="sub">先讀懂既有程式碼，再選方案，最後切成可獨立驗收的小任務。</p>
+</header>
+<main class="page">
+
+<h2>步驟一：唯讀探索既有程式碼</h2>
+<pre><code>&gt; （計畫模式）依 @docs/specs/order-filter.md，
+&gt; 先探索程式碼，回答：
+&gt; 1. 現有類似功能是怎麼實作的？列出可參考的檔案
+&gt; 2. 這個功能會影響哪些檔案與模組？
+&gt; 3. 有沒有已存在可重用的元件，避免重複造輪子？
+&gt; 先不要提出設計，只回報你看到的。</code></pre>
+<p>大型專案可請它用 subagent 探索，只把結論帶回主對話，節省情境。</p>
+<h2>步驟二：比較方案</h2>
+<pre><code>&gt; 提出 2～3 個設計方案，每個說明：做法、優缺點、對既有程式碼的衝擊、
+&gt; 風險。最後給你的建議與理由。我選定後再往下。</code></pre>
+<p>重要取捨寫成 ADR（見 02），避免之後被重複推翻。</p>
+<h2>步驟三：切成小任務</h2>
+<table><tr><th>原則</th><th>說明</th></tr>
+<tr><td>垂直切片</td><td>每個任務貫穿必要的層（資料到介面），做完就能看見一小段完整行為；避免「先做完所有資料庫、再做所有介面」</td></tr>
+<tr><td>可獨立驗收</td><td>每個任務有自己的驗收方式與測試</td></tr>
+<tr><td>大小適中</td><td>一個任務一次對話可完成，改動檔案數有限</td></tr>
+<tr><td>標明相依</td><td>哪個要先做、哪些可平行</td></tr>
+<tr><td>風險先行</td><td>不確定的部分先做，早點暴露問題</td></tr></table>
+<h2>計畫檔範例</h2>
+<pre><code># 實作計畫：訂單列表篩選
+依據：docs/specs/order-filter.md
+方案：擴充 OrderQuery 加入條件，沿用既有分頁（見 ADR-007）
+## 任務
+- [ ] 1. OrderQuery 支援狀態條件（含單元測試）
+- [ ] 2. OrderQuery 支援建立日期／出貨日期區間（含邊界測試）
+- [ ] 3. API 參數與驗證（起日大於迄日回 400）
+- [ ] 4. 前端篩選元件與網址參數同步
+- [ ] 5. 端對端驗收：對照規格情境 1～3
+## 相依
+1 → 2 → 3 → 4 → 5（1、2 的測試可先行）
+## 風險
+- 大量資料下日期條件的查詢效能（任務 2 先驗證）</code></pre>
+<h2>關卡：你審計畫</h2>
+<ul>
+<li>範圍：有沒有超出規格，或漏掉規格？</li>
+<li>順序：風險是否先處理？</li>
+<li>任務：每個是否可獨立驗收？</li>
+<li>有沒有它假設了你沒同意的事？</li>
+</ul>
+<p>核准後把計畫存檔。之後每完成一個任務就勾選，這份檔案同時是進度板，也能在換對話時讓 agent 立刻接上。</p>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>探索交給 subagent</b>：翻遍程式碼的過程留在它的情境，只帶回「相關檔案與做法」的摘要。</li>
+<li><b>要求結論式回報</b>：「列出相關檔案路徑與一句話說明，不要貼程式碼」。</li>
+<li><b>計畫檔就是接力棒</b>：任務完成後 <code>/clear</code>，新對話只讀計畫檔與當前任務。</li>
+<li><b>任務切小</b>：每個任務情境都短，整體成本比一個巨大對話低。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents：隔離探索</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

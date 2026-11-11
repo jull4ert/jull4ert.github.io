@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Context Engineering（Fowler 網站）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Context Engineering（Fowler 網站）</h1>
+  <p class="sub">Birgitta Böckeler 對「該把什麼放進 agent 情境、由誰載入」的整理。</p>
+</header>
+<main class="page">
+
+<div class="note">本頁為 2026-11-11 閱讀原文後的重點整理（以自己的話改寫，僅引用極短片語）。原文可能已更新或修訂，採用前請回到原文確認。</div><div class="card"><h3><a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html" target="_blank" rel="noopener noreferrer">Context Engineering for Coding Agents</a></h3><p>來源：martinfowler.com「Exploring Gen AI」系列；作者 Birgitta Böckeler（Thoughtworks）；2026-02-05。</p></div><h3>重點</h3><ul><li>把情境分成兩層：可重用的提示（指示與指引），以及情境介面（工具、MCP、skills）。</li><li><b>情境越小越好</b>：不要一開始就塞滿規則，邊用邊逐步加。</li><li>用 <code>/context</code> 這類功能看清楚誰佔了多少空間。</li><li>依「誰決定載入」來選機制：LLM 決定（skills、MCP）、人決定（斜線指令）、agent 軟體決定（hooks）。</li><li>只把「常被重複、整個專案通用」的慣例放 CLAUDE.md；與檔案相關的指引改用路徑範圍的規則。</li><li>必須每次都發生的事（例如編輯後格式化）用 hook，因為它是確定性的。</li><li>大任務或需要「第二意見」時用 subagent，甚至以不同模型審查。</li><li>既有程式碼本身就是情境，AI 友善的程式碼設計會讓 agent 表現更好。</li><li>情境設定在團隊內分享、逐步累積，而不是照抄陌生人的。</li></ul><h3>可以直接套用</h3><ul><li>誰決定載入的分類，可對照 → <a href="../03-toolbox/index.html">03 五種擴充的決策表</a></li><li>情境要小、要量測 → <a href="../00-foundations/context-window.html#tokens">00 情境視窗</a>、<a href="../09-governance/cost-control.html">09 成本控管</a></li><li>不同模型審查 → <a href="../05-cross-review/why.html">05 為什麼要交叉審查</a></li></ul><h3>作者自己說的限制</h3><ul><li>「控制的錯覺」：最終仍由 LLM 的詮釋決定，我們永遠無法完全確定它會載入或遵守什麼。</li><li>「情境工程沒有單元測試」：只能靠使用經驗判斷好壞。</li><li>情境過多會讓 agent 效果下降；分享的設定容易過度工程、彼此矛盾。</li><li>功能清單反映 2026 年 1 月的 Claude Code，作者預期之後會收斂；文中指出斜線指令已被 skills 取代。</li></ul><section class="refs"><h3>參考出處</h3><ul><li><a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

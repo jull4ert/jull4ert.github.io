@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>② 規格撰寫｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>② 規格撰寫</h1>
+  <p class="sub">把訪談結果整理成可驗收的規格，這份文件是後面所有階段的依據。</p>
+</header>
+<main class="page">
+
+<h2>規格的作用</h2>
+<ul>
+<li>實作的依據、測試的依據、審查的依據。</li>
+<li>讓換了對話的 agent 也能完整接手。</li>
+<li>交接與日後維護時，回答「當初為什麼這樣做」。</li>
+</ul>
+<h2>範本</h2>
+<pre><code># 訂單列表篩選
+## 目標
+客服人員可依狀態與日期快速找到訂單。
+## 非目標
+- 不做匯出；不改權限模型；不做模糊搜尋。
+## 使用情境與驗收條件
+1. 依狀態篩選
+   - Given 存在多種狀態的訂單
+   - When 選擇「已出貨」
+   - Then 只顯示已出貨訂單，筆數與條件一致
+2. 日期區間（建立日期、出貨日期可同時選，AND 條件）
+3. 無符合資料：顯示「查無資料」，保留已選條件
+## 邊界與錯誤
+- 起日大於迄日：顯示欄位錯誤，不送出查詢
+- 跨部門訂單：維持現有權限過濾，不可見
+- 資料量：10 萬筆內，回應 &lt; 2 秒
+## 影響範圍
+- OrderQuery、OrderListController、列表前端元件
+## 未決問題
+- 是否需要記住使用者上次選擇的條件？（待確認）</code></pre>
+<h2>請 agent 產出規格</h2>
+<pre><code>&gt; 依 @docs/specs/order-filter-decisions.md 撰寫規格 docs/specs/order-filter.md，
+&gt; 格式參考 @docs/specs/_template.md。
+&gt; 要求：
+&gt; - 每個情境都有可驗證的驗收條件（Given/When/Then）
+&gt; - 只能使用決策紀錄中的內容，不確定的寫進「未決問題」
+&gt; - 明確列出非目標</code></pre>
+<h2>好的驗收條件長什麼樣</h2>
+<table><tr><th>不好</th><th>好</th></tr>
+<tr><td>篩選要快</td><td>10 萬筆資料下，套用篩選後 2 秒內顯示結果</td></tr>
+<tr><td>錯誤處理要完善</td><td>起日大於迄日時顯示「起日不得晚於迄日」，且不發出請求</td></tr>
+<tr><td>介面要好用</td><td>篩選條件在重新整理頁面後仍保留於網址參數</td></tr></table>
+<p>判斷標準：<b>能不能直接寫成一個測試</b>。寫不成測試的描述，就還不夠具體。</p>
+<h2>關卡：需求審查</h2>
+<p>規格完成後，在動手前先做一次需求審查（見 <a href="../05-cross-review/requirement-review.html">05 需求審查</a>）：事前驗屍、反方角色、缺漏情境。把發現的問題回寫進規格，再進入下一階段。這是整條流程中投資報酬率最高的一步。</p>
+<h2>讓規格成為專案的一部分</h2>
+<ul>
+<li>放進版本控制（<code>docs/specs/</code>），與程式碼一起審查、一起演進。</li>
+<li>CLAUDE.md 加一行索引，讓之後的任務知道去哪找（見 <a href="../02-docs-for-agents/specs-adr-glossary.html">02 規格、ADR 與術語表</a>）。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/memory">CLAUDE.md 匯入語法</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

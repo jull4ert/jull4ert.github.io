@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>共識、分歧與對照｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>共識、分歧與對照</h1>
+  <p class="sub">把各來源放在一起看：哪些大家都同意、哪些各說各話、本手冊在哪裡。</p>
+</header>
+<main class="page">
+
+<h2>多個來源的共識</h2>
+<table><tr><th>共識</th><th>出處</th><th>本手冊</th></tr>
+<tr><td>先規格／計畫，再實作；小步前進</td><td>官方、Reed、Marmelab</td><td><a href="../04-requirement-to-code/index.html">04</a></td></tr>
+<tr><td>要有可驗證的檢查（測試、型別檢查），要求證據</td><td>官方、Willison、ykdojo</td><td><a href="../04-requirement-to-code/verify.html">04 驗證</a>、<a href="../05-cross-review/evidence.html">05 證據</a></td></tr>
+<tr><td>情境要小、要管理；走錯就清掉重來</td><td>官方、Böckeler、Marmelab、ykdojo</td><td><a href="../00-foundations/context-window.html">00</a>、<a href="../01-getting-started/modes-commands.html">01</a></td></tr>
+<tr><td>CLAUDE.md 要短，只放 agent 看不出來的事</td><td>官方、Böckeler、Marmelab</td><td><a href="../02-docs-for-agents/claude-md.html">02</a></td></tr>
+<tr><td>必須發生的事用 hook</td><td>官方、Böckeler</td><td><a href="../03-toolbox/hooks.html">03 Hooks</a></td></tr>
+<tr><td>無人值守必須隔離並限制權限與預算</td><td>官方、Willison、Ronacher（自承風險）</td><td><a href="../09-governance/permissions-hardening.html">09</a></td></tr></table>
+<h2>有分歧或需要斟酌的地方</h2>
+<table><tr><th>主題</th><th>不同的說法</th><th>建議</th></tr>
+<tr><td>MCP</td><td>Ronacher、Willison 傾向用腳本與 shell 指令取代；官方與 Fowler 文章則把 MCP 當正式的情境介面</td><td>需要與外部服務（行事曆、Trello）互動時用 MCP；固定可腳本化的工作用腳本。見 <a href="../03-toolbox/mcp.html">03 MCP</a></td></tr>
+<tr><td>權限詢問</td><td>Ronacher 日常跳過；Willison 與官方建議無人值守時要在沙箱／容器</td><td>本手冊建議：主力機不要跳過；僅在隔離環境使用</td></tr>
+<tr><td>模型選擇</td><td>Ronacher 只用較省的模型；其他人未特別限定</td><td>依任務複雜度選模型，見 <a href="../09-governance/cost-control.html">09 成本控管</a></td></tr>
+<tr><td>平行與 worktree</td><td>有人視為關鍵、有人懷疑、有人自承尚無好解法</td><td>先小範圍試；見 <a href="../06-advanced-workflows/parallel-agents.html">06</a></td></tr>
+<tr><td>個人偏好類</td><td>狀態列、語音輸入、是否自動 push 等</td><td>當作靈感，不當作標準</td></tr></table>
+<h2>讀社群文章的三個習慣</h2>
+<ol>
+<li><b>先分辨是事實還是偏好</b>：功能名稱可驗證，習慣因人而異。</li>
+<li><b>看作者自己聲明的限制</b>：多數好文章會說「這可能很快過時」。</li>
+<li><b>用自己的小任務試一次</b>：有效再納入 CLAUDE.md 或 skill，無效就丟。</li>
+</ol>
+<h2>下一步：持續收錄</h2>
+<ul>
+<li>想收錄新來源時，要求：讀過原文、可開啟的連結、標明日期與類型、附作者限制。</li>
+<li>每季回頭檢查舊條目是否過時。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://code.claude.com/docs/en/best-practices">官方最佳實踐</a></li><li><a href="https://martinfowler.com/articles/exploring-gen-ai/context-engineering-coding-agents.html">Context Engineering for Coding Agents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

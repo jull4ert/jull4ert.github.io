@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>可複製的範本｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>可複製的範本</h1>
+  <p class="sub">針對 .NET MVC＋Vue 專案的 CLAUDE.md、subagent、skill、hook 與設定檔範本。</p>
+</header>
+<main class="page">
+
+<div class="note">所有範本都需要<b>依你的專案修改</b>。兩個 hook 腳本已實際在 Windows 上以 Node 執行測試過（攔截邏輯與結束碼 2、非 .cs 檔略過、格式化指令可執行）；但與 Claude Code 的整合（觸發時機、設定格式）仍請你在自己的環境驗證，見<a href="verification-log.html">實測驗證紀錄</a>。</div>
+<h2>1. CLAUDE.md：ASP.NET Core MVC＋Vue</h2>
+<pre><code># 專案名稱
+## 指令
+- 建置：dotnet build
+- 測試：dotnet test；單一類別：dotnet test --filter "FullyQualifiedName~類別名"
+- 前端純函式測試：node --test
+- 啟動：dotnet run --project src/專案名.Web
+- 格式化：dotnet format
+## 架構
+- Controllers 只接收與回應，商業邏輯在 Services，資料存取在 Data／Repositories
+- API 放 Controllers/Api；MVC 頁面放 Controllers；回傳給前端用專用 DTO，不直接回傳實體
+- 前端：Views/*/ 的 .cshtml 掛載 Vue；純函式放 wwwroot/js/*-utils.js 並有 Node 測試
+## 慣例
+- 新增或修改 API 必須有對應的 xUnit 測試；先看到測試失敗再實作
+- .cshtml 內的 Vue 事件一律用 v-on: / v-bind: 寫法（@ 會被 Razor 解析）
+- 授權資訊（部門、使用者）從登入身分取得，不信任請求參數
+- 日期顯示使用台灣時區，邏輯統一用 UTC 儲存
+## 禁忌
+- 不要建立、修改或套用 EF migration；需要時告訴我內容，由我決定
+- 不要連線或修改正式資料庫；不要把連線字串、金鑰寫進程式或 commit
+- 不要修改 Migrations/ 內既有檔案
+## 完成標準
+- dotnet test 與 node --test 全數通過
+- 說明列出改動的 API、畫面與驗證結果</code></pre>
+<h3>.NET Framework（MVC 5）專案要改的地方</h3>
+<pre><code>## 指令
+- 建置：msbuild 專案.sln /p:Configuration=Debug      （請依你的環境確認實際指令）
+- 測試：vstest.console.exe 測試專案.dll                （或你團隊使用的測試執行方式）
+- 設定在 Web.config，不同環境用轉換檔；不要擅自修改
+- 套件為 packages.config／NuGet；升級套件前先告訴我評估影響</code></pre>
+<h2>2. Subagent：需求審查（唯讀）</h2>
+<p>檔案：<code>.claude/agents/spec-reviewer.md</code></p>
+<pre><code>---
+name: spec-reviewer
+description: 審查需求規格的盲點。在規格完成、開始實作前使用。
+tools: Read, Grep, Glob
+---
+你是挑剔的需求審查員，只讀取、不修改檔案。
+依序檢查：含糊（無法寫成測試的句子）、矛盾、缺漏情境（邊界、權限、併發、失敗、時間與時區、資料遷移、稽核、營運）。
+輸出表格：類型｜位置｜問題｜為什麼重要｜建議問需求方的問題。
+沒有發現的類別寫「無」，不可編造。</code></pre>
+<h2>3. Subagent：.NET 程式碼審查（唯讀）</h2>
+<p>檔案：<code>.claude/agents/code-reviewer.md</code></p>
+<pre><code>---
+name: code-reviewer
+description: 審查 C# 與 Vue 的變更。完成實作後使用，可指定規格檔做規格軸審查。
+tools: Read, Grep, Glob, Bash
+---
+你是資深審查員，獨立於作者，不知道實作時的考量，不得修改任何檔案。
+1. 執行 git diff 取得變更，讀取相關檔案理解上下文。
+2. 規格軸：是否符合指定的規格與驗收條件；標準軸：是否符合 CLAUDE.md 的慣例。
+3. 重點檢查：授權（不信任請求參數）、輸入驗證、吞掉例外、空集合與除以零、整數除法、
+   非同步（漏 await）、Razor 的 @ 與 Vue 衝突、XSS、N+1、缺少測試。
+4. 每個發現包含：嚴重度、檔案與行號、問題、證據（重現步驟或程式碼推論）、信心。
+5. 沒有高嚴重度問題就明說，不要湊數；不重複 linter 能抓的格式問題。</code></pre>
+<h2>4. Skill：commit message（繁體中文）</h2>
+<p>檔案：<code>.claude/skills/commit-message/SKILL.md</code></p>
+<pre><code>---
+name: commit-message
+description: 依目前的 git diff 產生繁體中文 commit message。當使用者要求 commit、寫提交訊息或整理這次的變更時使用。
+---
+1. 執行 git diff --staged（沒有已暫存內容則用 git diff）。
+2. 第一行 50 字內說明做了什麼，不加句號。
+3. 空一行，用 1～3 點說明為什麼要改與影響，不重述程式碼。
+4. 只寫 diff 中確實存在的內容，不要推測。
+5. 不要自行執行 git commit，輸出訊息讓使用者確認。</code></pre>
+<h2>5. Skill：.NET 變更審查清單</h2>
+<p>檔案：<code>.claude/skills/dotnet-review-checklist/SKILL.md</code>（搭配旁邊的 <code>checklist.md</code>）</p>
+<pre><code>---
+name: dotnet-review-checklist
+description: 審查 ASP.NET MVC 與 Vue 的變更。當使用者要求 review、檢查 diff 或 PR 時使用。
+---
+# 流程
+1. 讀 git diff，列出變更範圍。
+2. 依 [checklist.md](checklist.md) 逐項檢查。
+3. 輸出：依嚴重度排序的問題清單，每項附檔案行號、證據與建議。
+4. 只回報，不修改程式碼。</code></pre>
+<h2>6. 設定檔：權限與 hooks</h2>
+<p>檔案：<code>.claude/settings.json</code>（團隊共用，可入版控）</p>
+<pre><code>{
+  "permissions": {
+    "allow": [
+      "Bash(dotnet build)",
+      "Bash(dotnet test*)",
+      "Bash(node --test*)",
+      "Bash(git status)",
+      "Bash(git diff*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/appsettings.Production.json)",
+      "Bash(dotnet ef migrations*)",
+      "Bash(dotnet ef database*)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [ { "type": "command", "command": "node scripts/hooks/block-danger.js" } ] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Edit|Write", "hooks": [ { "type": "command", "command": "node scripts/hooks/format-cs.js" } ] }
+    ]
+  }
+}</code></pre>
+<p>個人偏好放 <code>.claude/settings.local.json</code> 並加入 <code>.gitignore</code>。權限規則的語法以官方文件為準；上面只是示意，請用 <code>/permissions</code> 與 <code>/hooks</code> 確認實際生效。</p>
+<h3>scripts/hooks/block-danger.js</h3>
+<pre><code>// scripts/hooks/block-danger.js
+// PreToolUse（matcher: Bash）：攔截高風險指令。結束碼 2 代表阻擋，stderr 訊息會回饋給 agent。
+let raw = "";
+process.stdin.on("data", (chunk) => (raw += chunk));
+process.stdin.on("end", () => {
+  let command = "";
+  try {
+    command = (JSON.parse(raw).tool_input || {}).command || "";
+  } catch {
+    process.exit(0);
+  }
+  const patterns = [/rm\s+-rf/i, /git\s+push\s+.*--force/i, /git\s+reset\s+--hard/i, /drop\s+table/i, /Remove-Item\s+.*-Recurse/i];
+  if (patterns.some((p) => p.test(command))) {
+    console.error("已攔截高風險指令：" + command + "。請改用較安全的做法，或由人工執行。");
+    process.exit(2);
+  }
+  process.exit(0);
+});</code></pre>
+<h3>scripts/hooks/format-cs.js</h3>
+<pre><code>// scripts/hooks/format-cs.js
+// PostToolUse（matcher: Edit|Write）：只在 .cs 檔被修改時格式化該檔。
+const { execFileSync } = require("node:child_process");
+let raw = "";
+process.stdin.on("data", (chunk) => (raw += chunk));
+process.stdin.on("end", () => {
+  let file = "";
+  try {
+    file = (JSON.parse(raw).tool_input || {}).file_path || "";
+  } catch {
+    process.exit(0);
+  }
+  if (!file.toLowerCase().endsWith(".cs")) {
+    process.exit(0);
+  }
+  try {
+    execFileSync("dotnet", ["format", "--include", file, "--verbosity", "quiet"], { stdio: "inherit" });
+  } catch (e) {
+    console.error("dotnet format 失敗：" + e.message);
+    process.exit(1);
+  }
+});</code></pre>
+<p>用 Node 寫 hook 的好處是跨平台（Windows 不需要另外安裝 jq）。你可以先手動測試：</p>
+<pre><code>echo {"tool_input":{"command":"git push origin main --force"}} | node scripts/hooks/block-danger.js
+:: 預期：印出攔截訊息，結束碼為 2</code></pre>
+<h2>7. .gitignore 建議</h2>
+<pre><code>bin/
+obj/
+.vs/
+node_modules/
+.claude/settings.local.json
+CLAUDE.local.md</code></pre>
+<h2>使用前的檢查</h2>
+<ul>
+<li>每條指令在你的環境都能實際執行。</li>
+<li>權限允許清單只包含你確定安全的指令。</li>
+<li>hook 先在個人設定中試，再放進專案。</li>
+<li>用新對話測試 agent 是否遵守 CLAUDE.md 與 skill。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/memory">CLAUDE.md</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/hooks">Hooks 參考</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/settings">設定</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

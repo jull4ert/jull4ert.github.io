@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>社群技巧集（個人經驗）｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>社群技巧集（個人經驗）</h1>
+  <p class="sub">兩份廣受閱讀的技巧整理；實用但偏個人化，使用前要自己驗證。</p>
+</header>
+<main class="page">
+
+<div class="note">本頁為 2026-11-11 閱讀原文後的重點整理（以自己的話改寫，僅引用極短片語）。原文可能已更新或修訂，採用前請回到原文確認。</div>
+<div class="note">這類來源的價值是「快速拿到小技巧」，風險是偏好與事實混在一起，且可能含宣傳。以下我標明哪些是可驗證的功能、哪些是作者個人做法。</div>
+<h2>1. Marmelab：Claude Code Tips I Wish I'd Had From Day One</h2>
+<div class="card"><h3><a href="https://marmelab.com/blog/2026/04/24/claude-code-tips-i-wish-id-had-from-day-one.html" target="_blank" rel="noopener noreferrer">Claude Code Tips I Wish I'd Had From Day One</a></h3><p>來源：公司部落格；作者 Caroline Schneider（Marmelab）；2026-04-24。團隊數月日常使用的經驗報告，文末含公司產品連結與宣傳。</p></div><h3>重點</h3><ul><li>複雜任務先用計畫模式，讓假設錯誤早點被抓到。</li><li>一次只要第一步，審過再要下一步。</li><li>走錯方向時用 <code>/rewind</code>（或連按兩次 Esc）或 <code>/clear</code>，不要在同一情境裡「追加修正」，那會汙染後續嘗試。</li><li>agent 引入 bug 時：先讓它調查、把教訓寫進專案文件，再修。</li><li>用 <code>@路徑</code> 引用檔案、用 <code>!</code> 執行 shell 指令。</li><li>CLAUDE.md 保持在約 200 行內；共用內容放 AGENTS.md，再用 <code>@AGENTS.md</code> 匯入。</li></ul><h3>可以直接套用</h3><ul><li><a href="../01-getting-started/modes-commands.html">01 模式與指令</a>、<a href="../02-docs-for-agents/agents-md-portability.html">02 AGENTS.md</a> 已涵蓋；「把教訓寫進文件」呼應 <a href="../04-requirement-to-code/deliver.html">04 交付的回饋</a></li></ul><h3>作者自己說的限制</h3><ul><li>屬團隊個人經驗：其中「約 40 萬 token 後品質下降」、對 worktree 的懷疑等是經驗之談，不是可驗證的事實。</li><li>推薦的第三方工具（如 Context7 等）不是 Claude Code 的功能，採用前請另行評估。</li></ul>
+<h2>2. ykdojo：claude-code-tips（GitHub）</h2>
+<div class="card"><h3><a href="https://github.com/ykdojo/claude-code-tips" target="_blank" rel="noopener noreferrer">45+ Claude Code Tips: From Basics to Advanced</a></h3><p>來源：GitHub 倉庫 README；作者帳號 ykdojo；未標示發布日期。第一人稱的個人經驗兼參考文件。</p></div><h3>重點</h3><ul><li>把大問題拆小，一直拆到每塊都能解。</li><li>主動壓縮情境；重開前請 Claude 寫一份 <code>HANDOFF.md</code> 交接。</li><li>讓 agent 能完成「寫、測、驗」的循環，才能放心讓它自主作業。</li><li>自訂狀態列顯示模型、目錄、分支與 Token 用量，方便隨時掌握。</li><li>讓 agent 處理 git 與 GitHub CLI，但以草稿 PR 先讓你審。</li></ul><h3>可以直接套用</h3><ul><li>交接檔與主動壓縮 → <a href="../01-getting-started/modes-commands.html#tokens">01 模式與指令的省 Token</a>、<a href="../04-requirement-to-code/breakdown.html">04 計畫檔接力</a></li><li>寫測驗循環 → <a href="../04-requirement-to-code/verify.html">04 驗證</a></li></ul><h3>作者自己說的限制</h3><ul><li>是否允許自動 pull/push、關閉自動壓縮、語音輸入、偏好 Playwright 等都是作者個人設定。</li><li>我只完整讀到前段；後段內容（例如自動模式相關的設定）未逐字核對，採用前請回原文確認。</li></ul><section class="refs"><h3>參考出處</h3><ul><li><a href="https://marmelab.com/blog/2026/04/24/claude-code-tips-i-wish-id-had-from-day-one.html">Marmelab</a></li><li><a href="https://github.com/ykdojo/claude-code-tips">ykdojo/claude-code-tips</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>規格、ADR 與術語表｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>規格、ADR 與術語表</h1>
+  <p class="sub">讓 agent 懂「為什麼」和「這個詞是什麼意思」。</p>
+</header>
+<main class="page">
+
+<h2>三種最有價值的專案文件</h2>
+<table><tr><th>文件</th><th>回答的問題</th><th>agent 用它做什麼</th></tr>
+<tr><td>規格 / PRD</td><td>要做什麼、做到什麼算完成</td><td>對照需求實作、產生測試、審查是否偏離</td></tr>
+<tr><td>ADR（架構決策紀錄）</td><td>為什麼選 A 不選 B</td><td>避免推翻既有決定、理解限制</td></tr>
+<tr><td>GLOSSARY（術語表）</td><td>領域詞彙的精確定義</td><td>命名一致、少誤解需求</td></tr></table>
+<h2>規格怎麼寫（agent 友善版）</h2>
+<ul>
+<li>目標與非目標（明寫「不做什麼」）。</li>
+<li>使用情境，每個附<b>可驗證的驗收條件</b>（Given / When / Then 或條列）。</li>
+<li>邊界與錯誤情境：空值、權限不足、重複送出、併發。</li>
+<li>未決問題清單（讓 agent 知道哪些不能自行假設）。</li>
+</ul>
+<h2>ADR 範本</h2>
+<pre><code># ADR-007 查詢統一使用 Query 物件
+狀態：已採用（2026-03）
+背景：Controller 直接寫 LINQ，導致分頁與權限邏輯分散。
+決定：所有查詢封裝為 Query 物件，集中處理分頁與權限。
+後果：新增查詢需多一個類別；換得一致性與可測試性。
+被否決方案：Repository 回傳 IQueryable（難以控制效能）。</code></pre>
+<h2>術語表範例</h2>
+<pre><code>- 訂單（Order）：客戶已送出且未取消的購買紀錄；草稿不算。
+- 出貨單（Shipment）：一張訂單可拆成多張出貨單。
+- 避免用語：「單」（有歧義，請用上列正式名詞）。</code></pre>
+<h2>放哪、怎麼讓它讀到</h2>
+<ul>
+<li>放在 <code>docs/</code>（規格、ADR）與根目錄 <code>GLOSSARY.md</code>。</li>
+<li>CLAUDE.md 只放<b>索引與一句話說明</b>：「領域用語見 @GLOSSARY.md；決策見 docs/adr/」。</li>
+<li>任務開始時明確指示：「先讀 @docs/specs/order-filter.md」。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>規格寫成可分段讀取</b>：標題清楚、每節獨立，讓 agent 只讀與任務相關的章節。</li>
+<li><b>任務指令引用章節，不引用整份</b>：「依規格 §3 情境 2 實作」。</li>
+<li><b>術語表保持精簡</b>：只收有歧義、易誤解的詞，不是字典。</li>
+<li><b>ADR 一份一決策</b>：短小獨立，需要時才讀特定一份。</li>
+<li><b>把探索成果存成文件</b>：下次直接讀，不必再花 Token 重新理解。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://adr.github.io/">Architectural Decision Records</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/memory">CLAUDE.md 匯入語法</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

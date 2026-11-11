@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>範例 A：一句話需求到交叉審查｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>範例 A：一句話需求到交叉審查</h1>
+  <p class="sub">從「訂單列表加篩選」這一句話，走完訪談、規格、拆解、實作、驗證、審查、交付。</p>
+</header>
+<main class="page">
+
+<div class="note"><b>這是示意情境。</b>對話、檔名、數字都是為了說明流程而設計的範例，不是真實專案的執行結果；請把它當成可改造的腳本，換成你自己的專案與資料。</div>
+<h2>情境</h2>
+<p>客服主管說：「訂單列表要能依狀態和日期篩選。」團隊使用 .NET 後端加網頁前端，專案已有 CLAUDE.md 與測試。</p>
+<h2>時間軸</h2>
+<table><tr><th>#</th><th>階段</th><th>你說的話（摘要）</th><th>產出</th><th>詳見</th></tr>
+<tr><td>1</td><td>訪談</td><td>計畫模式：「訪談我，一次一題、附建議答案、能查程式碼的別問我」</td><td>決策紀錄：日期有兩種、兩者為 AND、無資料顯示「查無資料」</td><td><a href="../04-requirement-to-code/interview.html">04 訪談</a></td></tr>
+<tr><td>2</td><td>規格</td><td>「依決策紀錄寫規格，含 Given/When/Then 與非目標，不確定的放未決問題」</td><td><code>docs/specs/order-filter.md</code></td><td><a href="../04-requirement-to-code/spec.html">04 規格</a></td></tr>
+<tr><td>3</td><td>需求審查</td><td>「用 spec-reviewer 審這份規格」＋事前驗屍</td><td>發現：未定義起日大於迄日、時區、權限範圍</td><td><a href="../05-cross-review/requirement-review.html">05 需求審查</a></td></tr>
+<tr><td>4</td><td>修規格</td><td>逐項裁決：三項都採納並補進規格</td><td>規格 v2</td><td><a href="../05-cross-review/synthesis.html">05 整合與裁決</a></td></tr>
+<tr><td>5</td><td>拆解</td><td>「先唯讀探索現有查詢寫法，提出方案與任務」</td><td>計畫檔：5 個垂直切片任務</td><td><a href="../04-requirement-to-code/breakdown.html">04 拆解</a></td></tr>
+<tr><td>6</td><td>實作</td><td>每個任務新對話：「先寫失敗的測試，再實作；只做任務 N」</td><td>5 個小 commit</td><td><a href="../04-requirement-to-code/implement.html">04 實作</a></td></tr>
+<tr><td>7</td><td>驗證</td><td>「建置、測試、啟動、走過每個情境，產出證據表」</td><td>證據表，其中一項效能不通過</td><td><a href="../04-requirement-to-code/verify.html">04 驗證</a></td></tr>
+<tr><td>8</td><td>修正</td><td>回任務 2 加索引後重驗</td><td>證據表全通過</td><td>—</td></tr>
+<tr><td>9</td><td>程式碼審查</td><td>平行三視角（正確性、安全、測試）＋反駁高中嚴重度項目</td><td>裁決表：2 項已證實、1 項駁回</td><td><a href="../05-cross-review/code-review.html">05 程式碼審查</a></td></tr>
+<tr><td>10</td><td>交付</td><td>「依 diff 寫 commit 與 PR 說明，含驗證與審查紀錄」</td><td>PR；你決定合併</td><td><a href="../04-requirement-to-code/deliver.html">04 交付</a></td></tr></table>
+<h2>對話片段：訪談</h2>
+<pre><code>你　　：（計畫模式）要做訂單列表篩選，給客服用。先訪談我。
+Agent：日期指建立日期還是出貨日期？建議：兩者都支援，可同時選。
+你　　：同意。
+Agent：兩個條件同時選是 AND 還是 OR？建議：AND。
+你　　：AND。
+Agent：程式碼中列表已依 DepartmentId 過濾。這次要沿用嗎？
+你　　：沿用，不新增例外。
+Agent：目前沒有重大不確定處。仍未決：是否記住上次條件？
+你　　：先列未決，這次不做。</code></pre>
+<h2>對話片段：反駁一項審查發現</h2>
+<pre><code>審查者：OrderService.Cancel 對已出貨訂單仍可取消。（嚴重度：高）
+反駁者：讀程式碼後，Cancel 在狀態檢查前已回傳。請先寫測試重現。
+Agent ：測試通過（代表問題不成立），原因：Controller 層已先攔截。測試已刪除。
+你　　：駁回，記錄理由。</code></pre>
+<h2>你做的決定（agent 不能代替）</h2>
+<ul>
+<li>訪談中的取捨：AND 或 OR、哪些不做。</li>
+<li>審查後哪些發現採納、哪些駁回。</li>
+<li>最後是否合併。</li>
+</ul>
+<h2>可能出錯的地方</h2>
+<table><tr><th>坑</th><th>對策</th></tr>
+<tr><td>訪談結束仍有隱含假設</td><td>要求「凡是假設都明說」，並用事前驗屍再檢一次</td></tr>
+<tr><td>實作時順手改了其他模組</td><td>「只做任務 N」，看 <code>git diff --stat</code></td></tr>
+<tr><td>測試通過但沒實際跑起來</td><td>驗證階段要求啟動並走流程、貼證據</td></tr>
+<tr><td>審查意見太多太雜</td><td>要求證據與嚴重度，只反駁高中嚴重度</td></tr></table>
+<h2>檢查清單</h2>
+<ul>
+<li>決策紀錄、規格、計畫檔都已存檔並入版控。</li>
+<li>每個驗收條件都有對應證據。</li>
+<li>審查發現都有裁決與理由。</li>
+<li>PR 說明含驗證與審查紀錄。</li>
+<li>學到的事已回寫到 CLAUDE.md、ADR 或術語表。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li>每個階段結束 <code>/clear</code>，下一階段只讀上一階段的檔案。</li>
+<li>探索與審查交給唯讀 subagent，限制回報長度。</li>
+<li>實作只跑相關測試，驗證階段才跑全套。</li>
+<li>審查只針對 diff，並依風險決定視角數。</li>
+</ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

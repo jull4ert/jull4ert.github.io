@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agent 是什麼｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Agent 是什麼</h1>
+  <p class="sub">與一般 AI 聊天的差別：會用工具、會迴圈。</p>
+</header>
+<main class="page">
+
+<h2>聊天 vs Agent</h2>
+<table><tr><th></th><th>聊天機器人</th><th>Agent</th></tr>
+<tr><td>能做的事</td><td>回答、寫出文字</td><td>實際讀寫檔案、執行指令、呼叫外部系統</td></tr>
+<tr><td>流程</td><td>一問一答</td><td>自己規劃多步驟，邊做邊修正</td></tr>
+<tr><td>資訊來源</td><td>你貼進來的內容</td><td>自己去專案、網頁、行事曆、Trello 找</td></tr>
+<tr><td>你的工作</td><td>複製貼上、自己落實</td><td>下目標、核准、驗收</td></tr></table>
+<h2>Agent 迴圈</h2>
+<div class="tree">目標 ──► 思考下一步 ──► 呼叫工具 ──► 觀察結果 ─┐
+          ▲                                      │
+          └──────────── 未完成就繼續 ◄────────────┘
+                         │ 完成 / 需要決定 / 需要權限
+                         ▼
+                      回報給你</div>
+<h2>工具就是能力邊界</h2>
+<p>Agent 能做什麼，完全取決於給它哪些工具。</p>
+<table><tr><th>工具類型</th><th>程式工作</th><th>非程式工作</th></tr>
+<tr><td>檔案</td><td>讀寫原始碼</td><td>整理文件、報表</td></tr>
+<tr><td>指令列</td><td>建置、測試、git</td><td>批次處理檔案、呼叫腳本</td></tr>
+<tr><td>搜尋/網頁</td><td>查文件、API 用法</td><td>查資料、比較方案</td></tr>
+<tr><td>MCP 連接器</td><td>資料庫、Issue 系統</td><td>行事曆、Trello、Slack、Gmail、Notion</td></tr></table>
+<p>MCP（Model Context Protocol）是把外部服務接給 agent 的標準方式，進階區會專章說明如何整合行事曆與 Trello。</p>
+<h2>你的新角色</h2>
+<ul><li><b>定目標</b>：要什麼結果，不是怎麼做。</li><li><b>給限制</b>：不能動什麼、用什麼風格。</li><li><b>做核准</b>：有副作用的動作由你放行。</li><li><b>驗收</b>：用可檢查的方式確認結果。</li></ul>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

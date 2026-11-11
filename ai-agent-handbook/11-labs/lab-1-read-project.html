@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 1：讀懂專案｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 1：讀懂專案</h1>
+  <p class="sub">用 agent 當導遊讀懂陌生專案，並驗證它說的是不是對的。</p>
+</header>
+<main class="page">
+
+<p><b>預計時間</b>：45～60 分鐘　<b>模式</b>：全程唯讀（計畫模式）</p>
+<h2>目標</h2>
+<ul>
+<li>能說出「按下取消按鈕」之後，請求經過哪些檔案。</li>
+<li>產出一份自己整理的 <code>docs/notes/architecture.md</code>。</li>
+<li>練習<b>查證</b> agent 的說法，而不是直接相信。</li>
+</ul>
+<h2>步驟</h2>
+<ol>
+<li>切到計畫模式（Shift+Tab），確保它不會修改檔案。</li>
+<li>讓 agent 導覽：
+<pre><code>&gt; 我是新人。請帶我導覽這個專案：
+&gt; 1. 目錄結構各管什麼
+&gt; 2. 從使用者在畫面按下「取消」開始，列出經過的檔案與方法，附檔案路徑
+&gt; 3. 資料存在哪裡？重啟後會怎樣？
+&gt; 4. 最值得先讀的三個檔案
+&gt; 先不要修改任何檔案。</code></pre></li>
+<li><b>查證</b>：自己打開它提到的檔案，逐一確認「這個檔案真的有這個方法嗎？」</li>
+<li>請它把導覽整理成 <code>docs/notes/architecture.md</code>，<b>你修改</b>成自己的話。</li>
+<li>反問一題：「如果 orderId 不存在，Cancel 會回傳什麼？前端會看到什麼？」並用程式碼驗證。</li>
+</ol>
+<h2>預期結果</h2>
+<p>請求路徑大致為：</p>
+<pre><code>Views/Orders/Index.cshtml（按鈕 v-on:click="cancel(o)"）
+  → wwwroot/js/orders-app.js 的 cancel()：POST /api/orders/{id}/cancel?departmentId=…
+  → Controllers/Api/OrdersApiController.cs 的 Cancel
+  → Services/OrderService.cs 的 Cancel
+  → Data/InMemoryOrderRepository.cs 的 Get / Update（資料在記憶體，重啟會重置）</code></pre>
+<h2>檢核</h2>
+<ul>
+<li>我能不看筆記說出上面的路徑。</li>
+<li>我驗證過 agent 的說法，並找到至少一處它說得不精確或我原先誤解的地方。</li>
+<li>我的筆記是用自己的話寫的。</li>
+<li>agent 沒有修改任何檔案（<code>git status</code> 乾淨）。</li>
+</ul>
+<details><summary>參考觀察（看完你自己的結果再打開）</summary>
+<ul>
+<li>前端的 <code>cancel()</code> 不檢查回應是否成功，失敗時使用者什麼也看不到。（Lab 5 會處理）</li>
+<li>API 的 <code>departmentId</code> 來自查詢字串，由前端提供，不是從登入身分取得。（Lab 6 會討論）</li>
+<li>Repository 是 Singleton 的記憶體清單，重啟即重置，也不是執行緒安全。</li>
+</ul></details>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

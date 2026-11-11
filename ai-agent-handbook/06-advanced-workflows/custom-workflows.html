@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>設計與維護自己的工作流程｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>設計與維護自己的工作流程</h1>
+  <p class="sub">把「發現重複 → 抽象成流程 → 上線 → 持續改進」變成習慣。</p>
+</header>
+<main class="page">
+
+<h2>什麼值得變成工作流程</h2>
+<table><tr><th>訊號</th><th>例子</th></tr>
+<tr><td>同樣的指令貼第三次</td><td>commit 格式、PR 說明</td></tr>
+<tr><td>固定時間做的例行事</td><td>晨報、週報、巡檢</td></tr>
+<tr><td>跨工具搬資料</td><td>會議紀錄 → Trello → 行事曆</td></tr>
+<tr><td>多步驟、易漏步驟</td><td>發版流程、新人設定</td></tr>
+<tr><td>需要多視角</td><td>交叉審查</td></tr></table>
+<h2>設計的六個步驟</h2>
+<ol>
+<li><b>寫下手動流程</b>：你現在怎麼做，每一步的輸入與輸出。</li>
+<li><b>分類每一步</b>：確定性（腳本）／需判斷（agent）／需決策（你）。</li>
+<li><b>決定載體</b>：skill、subagent、hook、腳本、排程（見 03 決策表）。</li>
+<li><b>定義輸出格式與關卡</b>：產出什麼、在哪裡暫停等你核准。</li>
+<li><b>先小範圍試跑</b>：唯讀、測試資料、少量案例。</li>
+<li><b>觀察與調整</b>：看哪裡跑偏，修 skill，再放寬範圍。</li>
+</ol>
+<h2>步驟分類範例：發版前檢查</h2>
+<table><tr><th>步驟</th><th>類型</th><th>載體</th></tr>
+<tr><td>跑建置與測試</td><td>確定性</td><td>腳本 / CI</td></tr>
+<tr><td>比對規格與變更，找出遺漏</td><td>需判斷</td><td>subagent（見 05）</td></tr>
+<tr><td>檢查 migration 有沒有破壞性變更</td><td>需判斷</td><td>skill + 唯讀 subagent</td></tr>
+<tr><td>決定是否上線</td><td>需決策</td><td>你</td></tr>
+<tr><td>寫發版說明</td><td>需判斷</td><td>skill</td></tr>
+<tr><td>部署</td><td>確定性、高風險</td><td>腳本，由你觸發</td></tr></table>
+<h2>讓流程可維護</h2>
+<ul>
+<li><b>版本控制</b>：skill、agent、腳本、hook 都放進 git，變更可追溯。</li>
+<li><b>留下執行紀錄</b>：時間、輸入、輸出、結果，出問題能還原現場。</li>
+<li><b>狀態存檔</b>：已處理清單、建立的 ID，讓重跑安全。</li>
+<li><b>失敗處理</b>：外部服務逾時、權限過期時要停下來回報，不要默默跳過。</li>
+<li><b>定期檢視</b>：每月看哪些流程不再使用、哪些輸出品質下降。</li>
+<li><b>文件化</b>：用 README 說明每個流程的目的、輸入、輸出、風險與負責人。</li>
+</ul>
+<h2>常見的失敗模式</h2>
+<table><tr><th>失敗</th><th>預防</th></tr>
+<tr><td>流程自動化太早，品質未驗證</td><td>手動觸發穩定一段時間再排程</td></tr>
+<tr><td>一個 skill 做太多事</td><td>拆成可組合的小流程</td></tr>
+<tr><td>寫入權限放太寬</td><td>最小權限、人工核准、可還原</td></tr>
+<tr><td>沒有人知道它在跑</td><td>通知與紀錄；有負責人</td></tr>
+<tr><td>外部服務改版導致壞掉</td><td>失敗時明確報錯；定期實測</td></tr>
+<tr><td>過度依賴</td><td>保留手動做法的文件，人要能接手</td></tr></table>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>確定性步驟全部搬進腳本</b>：零推理成本，結果穩定。</li>
+<li><b>agent 只處理需要判斷的部分</b>，並限制輸入範圍與輸出格式。</li>
+<li><b>每個流程設定上限</b>：輪數、逾時、頻率。</li>
+<li><b>定期清點</b>：關掉沒人看的排程與流程。</li>
+<li><b>記錄用量</b>：知道哪個流程最花錢，才知道優化哪裡。</li>
+</ul>
+<div class="note">旗標、指令與設定欄位會隨版本調整，請以官方文件與 <code>claude --help</code> 的實際輸出為準；範例腳本請先在安全的環境小規模測試。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/hooks-guide">Hooks guide</a></li><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Building effective agents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

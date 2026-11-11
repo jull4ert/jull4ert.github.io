@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hooks：保證會發生的自動化｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Hooks：保證會發生的自動化</h1>
+  <p class="sub">在特定事件自動執行指令，不依賴 agent 記不記得。</p>
+</header>
+<main class="page">
+
+<h2>它是什麼</h2>
+<p>Hook 是你在設定檔中登記的 shell 指令，由 Claude Code 在<b>特定事件</b>觸發執行。因為由系統執行而非模型決定，所以是「保證」。</p>
+<h2>常用事件</h2>
+<table><tr><th>事件</th><th>時機</th><th>典型用途</th></tr>
+<tr><td><code>PreToolUse</code></td><td>工具執行前</td><td>攔截危險指令、保護特定檔案</td></tr>
+<tr><td><code>PostToolUse</code></td><td>工具執行後</td><td>編輯後自動格式化、跑 lint</td></tr>
+<tr><td><code>UserPromptSubmit</code></td><td>你送出提示時</td><td>自動補充固定脈絡</td></tr>
+<tr><td><code>Stop</code></td><td>agent 完成回應時</td><td>通知你、紀錄、最後檢查</td></tr>
+<tr><td><code>SessionStart</code></td><td>對話開始時</td><td>載入環境資訊</td></tr>
+<tr><td><code>Notification</code></td><td>需要你注意時</td><td>桌面通知、提示音</td></tr></table>
+<h2>設定位置</h2>
+<table><tr><th>檔案</th><th>範圍</th></tr>
+<tr><td><code>~/.claude/settings.json</code></td><td>你的所有專案</td></tr>
+<tr><td><code>.claude/settings.json</code></td><td>此專案，可入版控、團隊共用</td></tr>
+<tr><td><code>.claude/settings.local.json</code></td><td>此專案，只有自己</td></tr></table>
+<p>也可用 <code>/hooks</code> 互動管理。</p>
+<h2>範例一：編輯後自動格式化</h2>
+<pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          { "type": "command", "command": "./scripts/format-changed.sh" }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+<p>Hook 會透過標準輸入收到 JSON，內含工具名稱與參數（例如被編輯的檔案路徑），腳本自行解析後處理。</p>
+<h2>範例二：攔截危險指令</h2>
+<pre><code>#!/usr/bin/env bash
+# scripts/block-danger.sh：由 PreToolUse（matcher: Bash）呼叫
+input=$(cat)
+cmd=$(echo "$input" | jq -r '.tool_input.command')
+if echo "$cmd" | grep -Eq 'rm -rf|git push --force|DROP TABLE'; then
+  echo "已攔截高風險指令，請改用更安全的做法或由人工執行" &gt;&amp;2
+  exit 2
+fi
+exit 0</code></pre>
+<p>以特定結束碼（通常 2）回應，表示阻擋該動作，並把標準錯誤輸出的訊息回饋給 agent，讓它知道為什麼被擋。</p>
+<h2>範例三：完成時通知</h2>
+<p>長任務跑很久時，用 <code>Stop</code> 或 <code>Notification</code> 事件發出桌面通知，你就不必盯著畫面。</p>
+<h2>設計原則</h2>
+<ul>
+<li><b>快</b>：hook 會卡住流程，不要放耗時指令。</li>
+<li><b>只做確定性的事</b>：格式化、阻擋、通知；需要判斷力的交給 agent 或 skill。</li>
+<li><b>失敗要有訊息</b>：被擋時說清楚原因與替代做法。</li>
+<li><b>注意安全</b>：hook 以你的權限執行任意指令，來自他人的設定檔要先看過。</li>
+<li><b>先小範圍測試</b>：用個人設定檔試，再提交到專案。</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>用 hook 取代「請記得…」的提示</b>：自動格式化不必每次在指令裡叮嚀，也不必讓 agent 手動執行再讀輸出。</li>
+<li><b>過濾 hook 輸出</b>：回饋給 agent 的訊息要短，只說被擋的原因。</li>
+<li><b>攔截於事前</b>：在危險或無意義的動作發生前擋下，避免之後的修復對話。</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/hooks-guide">Hooks guide</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/hooks">Hooks reference</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

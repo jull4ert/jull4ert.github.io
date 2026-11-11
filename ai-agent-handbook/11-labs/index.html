@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>動手練習｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>動手練習</h1>
+  <p class="sub">在一個 ASP.NET Core MVC＋Vue 的小專案上，用 9 個練習把手冊的技巧實際做一遍。</p>
+</header>
+<main class="page">
+
+<p>只讀不練是學不會的。這一區提供一個<b>練習專案</b>與 9 個循序漸進的練習，每個都有目標、步驟、提示、預期結果與參考解答。</p>
+<div class="note">本章範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端在同一個 .NET 專案</b>為基準。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念與流程相同，但建置與測試指令（例如 MSBuild、vstest）、專案檔格式與設定檔不同，請在你的 CLAUDE.md 中寫清楚。</div>
+<div class="note"><b>專案內刻意有缺陷與缺漏</b>（有 bug、缺功能、有不安全的寫法），這是練習素材，不是範本。請不要把它的寫法帶回正式專案。</div>
+<h2>練習專案：OrderDemo</h2>
+<table><tr><th>項目</th><th>說明</th></tr>
+<tr><td>位置</td><td>手冊倉庫內的 <code>ai-agent-handbook/sample/OrderDemo/</code></td></tr>
+<tr><td>技術</td><td>ASP.NET Core MVC（.NET 8）＋ Vue 3（CDN）＋ xUnit ＋ Node 內建測試</td></tr>
+<tr><td>內容</td><td>訂單列表：依部門與狀態查詢、取消訂單；MVC 頁面載入 Vue，呼叫同專案的 JSON API</td></tr>
+<tr><td>資料</td><td>記憶體假資料，不需資料庫</td></tr>
+<tr><td>所需環境</td><td>.NET 8 SDK、Node.js 20 以上、git、Claude Code</td></tr></table>
+<h3>目錄結構</h3>
+<pre><code>OrderDemo/
+├─ src/OrderDemo.Web/
+│  ├─ Controllers/OrdersController.cs        MVC 頁面
+│  ├─ Controllers/Api/OrdersApiController.cs  JSON API
+│  ├─ Services/OrderService.cs                商業邏輯
+│  ├─ Data/InMemoryOrderRepository.cs         假資料
+│  ├─ Views/Orders/Index.cshtml               Vue 掛載的頁面
+│  └─ wwwroot/js/orders-app.js, order-utils.js
+├─ tests/OrderDemo.Tests/                     xUnit
+├─ tests/js/                                  前端純函式測試
+└─ docs/specs/order-filter.md, docs/labs/review-me.diff</code></pre>
+<p>專案已實際編譯與測試過：基準狀態下 <code>dotnet test</code> 為 6 個測試通過、<code>node --test</code> 為 3 個通過。若你的數字不同，請見 <a href="lab-0-setup.html">Lab 0</a>。</p>
+<h2>練習清單</h2>
+<div id="children"></div>
+<h2>每個練習的做法</h2>
+<ol>
+<li><b>先讀目標與步驟</b>，但不要先看參考解答。</li>
+<li><b>開新分支</b>：<code>git switch -c lab2-fix</code>。</li>
+<li><b>自己和 agent 一起做</b>，需要時查提示。</li>
+<li><b>對照「預期結果」與「檢核」</b>，確認真的做到。</li>
+<li><b>最後才看參考解答</b>，比較你和它的差異，並寫學習紀錄。</li>
+</ol>
+<div class="note">參考解答只是「一種可行的做法」。你的 agent 產出的程式碼可能不同，只要符合驗收條件且測試通過，就是正確。重點是<b>過程</b>：你有沒有驗證、有沒有看懂。</div>
+<h2>建議的練習順序</h2>
+<table><tr><th>週</th><th>練習</th></tr>
+<tr><td>第 1 週</td><td>Lab 0、Lab 1</td></tr>
+<tr><td>第 2 週</td><td>Lab 2、Lab 3</td></tr>
+<tr><td>第 3 週</td><td>Lab 4、Lab 5、Lab 6</td></tr>
+<tr><td>第 4 週</td><td>Lab 7、Lab 8</td></tr></table>
+<p>完整路徑見<a href="../10-learning-path/index.html">新手專區</a>。</p>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

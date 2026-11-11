@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>給 Agent 的寫作原則｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>給 Agent 的寫作原則</h1>
+  <p class="sub">對人好讀的文件，通常對 agent 也好讀；再加幾條針對性原則。</p>
+</header>
+<main class="page">
+
+<h2>十條原則</h2>
+<table><tr><th>#</th><th>原則</th><th>反例 → 正例</th></tr>
+<tr><td>1</td><td>具體可驗證</td><td>「程式要乾淨」→「單一函式不超過 40 行，巢狀不超過 3 層」</td></tr>
+<tr><td>2</td><td>先講結論與指令</td><td>先給「怎麼跑測試」，再講背景</td></tr>
+<tr><td>3</td><td>附原因</td><td>「不要改 Migrations」→「…因為已部署，改了會造成環境不一致」</td></tr>
+<tr><td>4</td><td>給範例勝過形容</td><td>附一段符合規範的程式碼或「參考 @某檔案」</td></tr>
+<tr><td>5</td><td>說明邊界與優先序</td><td>規則衝突時以何者為準</td></tr>
+<tr><td>6</td><td>單一事實來源</td><td>同一規則只寫一處，其他地方連結</td></tr>
+<tr><td>7</td><td>結構化</td><td>標題、條列、表格，利於定位</td></tr>
+<tr><td>8</td><td>常駐要短，細節按需</td><td>主檔放索引，細節放獨立檔案或 skill</td></tr>
+<tr><td>9</td><td>維持新鮮</td><td>過時文件比沒有文件更糟，隨變更一起改</td></tr>
+<tr><td>10</td><td>用行為驗證</td><td>寫完讓 agent 執行任務，看是否照做；不照做就改文件</td></tr></table>
+<h2>強調語氣要節制</h2>
+<p>滿篇「絕對」「必須」「永遠」會稀釋重點。只在真正不可違反處使用，並說明理由；一般偏好用平述句即可。</p>
+<h2>文件的壞味道</h2>
+<ul>
+<li>超長：agent 讀了但抓不到重點。</li>
+<li>互相矛盾：兩份文件對同一件事說法不同。</li>
+<li>抽象口號：「寫高品質程式」無法執行也無法檢查。</li>
+<li>混入暫時資訊：進度、待辦、除錯筆記放進常駐檔。</li>
+</ul>
+<h2>快速自檢</h2>
+<ul>
+<li>新同事（或 agent）只讀這份，能不能跑起專案、跑通測試？</li>
+<li>每條規則是否能被檢查、有無原因？</li>
+<li>有沒有重複或矛盾的規則？</li>
+<li>上次 agent 犯的錯，有沒有對應規則？</li>
+</ul>
+<h2 id="tokens">省 Token 技巧</h2>
+<table><tr><th>寫法</th><th>為什麼省</th></tr>
+<tr><td>先講結論與指令</td><td>agent 讀到答案就能停，不必讀完整篇背景</td></tr>
+<tr><td>具體可驗證的規則</td><td>少一輪「我理解對嗎」的來回</td></tr>
+<tr><td>單一事實來源</td><td>不會同一件事在多處重複載入</td></tr>
+<tr><td>表格與條列取代長段落</td><td>相同資訊量，字數更少、更好檢索</td></tr>
+<tr><td>去掉客套與重複強調</td><td>直接減少常駐字數</td></tr></table>
+<p>經驗：每寫一句問自己「刪掉這句，agent 會做錯嗎？」不會，就刪。</p>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/claude-code-best-practices">Claude Code best practices</a></li><li><a href="https://www.anthropic.com/engineering/writing-tools-for-agents">Writing effective tools for agents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

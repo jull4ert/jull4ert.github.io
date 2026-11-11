@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AGENTS.md 與跨工具共用｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>AGENTS.md 與跨工具共用</h1>
+  <p class="sub">同一份規範，讓不同的 agent 工具都讀得到。</p>
+</header>
+<main class="page">
+
+<h2>AGENTS.md 是什麼</h2>
+<p>AGENTS.md 是社群推動的跨工具慣例檔名，許多 coding agent 會讀它。Claude Code 以 CLAUDE.md 為主要檔案；若團隊同時用多種工具，避免維護兩份重複內容。</p>
+<h2>做法</h2>
+<table><tr><th>做法</th><th>說明</th></tr>
+<tr><td>以 AGENTS.md 為主檔</td><td>CLAUDE.md 只寫一行 <code>@AGENTS.md</code> 匯入，再補充 Claude 專屬設定</td></tr>
+<tr><td>以 CLAUDE.md 為主檔</td><td>只用 Claude Code 的團隊，最簡單</td></tr>
+<tr><td>符號連結</td><td>可行，但 Windows 與部分 git 設定較麻煩</td></tr></table>
+<pre><code># CLAUDE.md
+@AGENTS.md
+## Claude Code 專屬
+- 大型重構先進計畫模式</code></pre>
+<div class="note">各工具對檔名與巢狀載入的支援不同，採用前請以該工具文件確認。</div>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://agents.md">AGENTS.md 官方說明</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/memory">Claude Code memory 文件</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

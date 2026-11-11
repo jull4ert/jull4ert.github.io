@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>安裝與第一次啟動｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>安裝與第一次啟動</h1>
+  <p class="sub">選介面、登入、在專案資料夾啟動。</p>
+</header>
+<main class="page">
+
+<h2>介面選擇</h2>
+<table><tr><th>介面</th><th>適合</th><th>特色</th></tr>
+<tr><td>終端機 CLI</td><td>多數情境、腳本與自動化</td><td>功能最完整，可搭配 CI、排程</td></tr>
+<tr><td>IDE 擴充（VS Code、JetBrains）</td><td>邊寫邊問、看內嵌 diff</td><td>能引用目前選取的程式碼與開啟的檔案</td></tr>
+<tr><td>桌面版 / 網頁版</td><td>不想碰終端機、長時間背景任務</td><td>介面友善，部分進階設定較少</td></tr></table>
+<h2>第一次啟動</h2>
+<pre><code>cd 你的專案
+claude</code></pre>
+<ul>
+<li>啟動位置就是 agent 的「工作目錄」，它預設只在此範圍內讀寫。請務必在專案根目錄啟動，不要在家目錄或磁碟根目錄。</li>
+<li>第一次會要求登入；之後在對話中可用 <code>/help</code> 查看指令。</li>
+<li>新專案建議先執行 <code>/init</code>，讓它掃描專案產生初版 CLAUDE.md（再手動精簡，見 02）。</li>
+</ul>
+<h2>建議的前置條件</h2>
+<ul>
+<li>專案已在 git 下，且啟動前工作區乾淨，方便比對與退回。</li>
+<li>能用一行指令跑建置與測試（agent 需要自行驗證）。</li>
+<li>機密不放在專案明文檔案裡（見 09 治理）。</li>
+</ul>
+<div class="note">指令名稱、快捷鍵與檔案位置會隨版本調整，以官方文件與你機器上 <code>/help</code> 的顯示為準。</div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/setup">安裝與設定</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/ide-integrations">IDE 整合</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

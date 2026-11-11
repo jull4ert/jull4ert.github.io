@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>驗證看不懂的程式｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>驗證看不懂的程式</h1>
+  <p class="sub">你不可能全部看懂 agent 寫的東西。這一頁教你在看不懂時，如何確認它是對的。</p>
+</header>
+<main class="page">
+
+<p>原則只有一條：<b>你不需要立刻看懂每一行，但你必須有辦法證明它是對的；證明不了，就不要提交。</b></p>
+<h2>五步驗證法</h2>
+<table><tr><th>步驟</th><th>做法</th><th>你得到什麼</th></tr>
+<tr><td>1. 看範圍</td><td><code>git diff --stat</code>：動了哪些檔案？有沒有不該動的？</td><td>知道影響面</td></tr>
+<tr><td>2. 要它解釋</td><td>請 agent 逐段解釋，並列出這段改動的前提假設</td><td>把「看不懂」變成具體的疑問</td></tr>
+<tr><td>3. 用測試證明</td><td>執行既有測試；沒有測試就先請它補，並確認測試先失敗</td><td>客觀證據</td></tr>
+<tr><td>4. 自己試一次</td><td>實際操作功能，或改一個輸入預測結果再驗證</td><td>自己的理解</td></tr>
+<tr><td>5. 找人看</td><td>不確定的部分，標記出來問同事，附上你已經驗證的證據</td><td>補上你的盲點</td></tr></table>
+<h2>讓 agent 把程式講清楚</h2>
+<pre><code>&gt; 請逐段解釋 @src/OrderDemo.Web/Services/OrderService.cs 的 Cancel 方法：
+&gt; 1. 每一段在做什麼，用一句話
+&gt; 2. 如果 orderId 不存在會發生什麼？如果 departmentId 不符呢？
+&gt; 3. 這段程式有哪些前提假設？
+&gt; 4. 你認為最可能出錯的三個地方
+&gt; 用我這個初學者能懂的方式，不要貼大段程式碼。</code></pre>
+<pre><code>&gt; 我的理解是：「Cancel 只要訂單存在就會把狀態改成已取消」。
+&gt; 請指出我理解錯誤或遺漏的地方，並給一個會讓我的理解出錯的具體例子。</code></pre>
+<p>第二種（<b>你先講、它來糾正</b>）特別有效：它逼你把理解說出來，agent 才找得到落差。</p>
+<h2>用「預測再驗證」建立理解</h2>
+<ol>
+<li>看一段邏輯，先<b>自己預測</b>「輸入 X 會得到 Y」。</li>
+<li>寫成測試或實際執行。</li>
+<li>預測錯了，代表你的理解有洞，回頭問 agent 為什麼。</li>
+</ol>
+<h2>程式碼警訊清單（看到就停下來問）</h2>
+<table><tr><th>警訊</th><th>為什麼要小心</th></tr>
+<tr><td><code>catch (Exception)</code> 然後回傳預設值</td><td>會吞掉所有錯誤，問題被藏起來</td></tr>
+<tr><td>寫死的數字、帳號、路徑、網址</td><td>換環境就壞；可能含機密</td></tr>
+<tr><td>測試只斷言「不是 null」或沒有斷言</td><td>測試幾乎一定通過，沒有保護力</td></tr>
+<tr><td>為了讓測試通過而修改測試</td><td>可能掩蓋真正的錯誤</td></tr>
+<tr><td>刪除了你沒要求的程式或檢查</td><td>可能拿掉了防線</td></tr>
+<tr><td>忽略 <code>await</code>、沒有釋放資源（<code>IDisposable</code>）</td><td>非同步與資源的 bug 很難重現</td></tr>
+<tr><td>使用者輸入直接拿來信任（例如 departmentId 來自查詢字串）</td><td>授權與安全問題</td></tr>
+<tr><td>前端 <code>v-for</code> 沒有 <code>key</code>、直接改 props</td><td>畫面更新異常</td></tr></table>
+<h2>必須找人看的情況</h2>
+<ul>
+<li>涉及權限、金流、個資、資料庫結構變更（migration）。</li>
+<li>你無法用測試或實際操作證明它正確。</li>
+<li>agent 很堅持某個做法，但你覺得怪。</li>
+<li>改動超出你本來要改的範圍。</li>
+</ul>
+<h2>提交前的自問</h2>
+<ul>
+<li>我能不能用自己的話向同事說明這個改動？</li>
+<li>我有沒有親眼看到測試先失敗、後通過？</li>
+<li>我有沒有實際操作過這個功能？</li>
+<li>diff 裡有沒有我不認得的檔案或改動？</li>
+</ul>
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://owasp.org/www-project-top-ten/">OWASP Top 10</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/common-workflows">常見工作流程</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

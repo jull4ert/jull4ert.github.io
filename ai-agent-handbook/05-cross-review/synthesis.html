@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>整合與裁決｜AI Agent 開發手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>整合與裁決</h1>
+  <p class="sub">多方意見匯整後，由你決定哪些處理、哪些駁回，並讓盲點不再重複。</p>
+</header>
+<main class="page">
+
+<h2>彙整流程</h2>
+<ol>
+<li><b>收集</b>：各審查者的原始輸出，保留不改。</li>
+<li><b>去重</b>：合併描述不同但指向同一問題的發現；多人同時提到，信心上調。</li>
+<li><b>驗證</b>：對高嚴重度或有爭議的項目要求證據（見「用證據收斂」）。</li>
+<li><b>排序</b>：依影響、發生機率、修復成本排序。</li>
+<li><b>裁決</b>：採納／延後／駁回，並寫下理由。</li>
+<li><b>回饋</b>：把重複出現的盲點寫進規範或審查 skill。</li>
+</ol>
+<pre><code>&gt; 以下是 3 位審查者的輸出（貼上或 @檔案）。請彙整：
+&gt; 1. 合併重複項，註明有幾位提出
+&gt; 2. 每項標示狀態：已證實／可能成立／推測
+&gt; 3. 依「影響 × 機率」排序，並估計修復成本（小/中/大）
+&gt; 4. 彼此矛盾的意見單獨列出並說明分歧點
+&gt; 不要替我做決定，只整理成裁決表。</code></pre>
+<h2>裁決表</h2>
+<table><tr><th>#</th><th>發現</th><th>狀態</th><th>嚴重度</th><th>修復成本</th><th>決定</th><th>理由</th></tr>
+<tr><td>1</td><td>已出貨訂單可取消</td><td>已證實</td><td>高</td><td>小</td><td>採納</td><td>測試重現，違反規格 §3.2</td></tr>
+<tr><td>2</td><td>查詢缺少索引</td><td>推測</td><td>中</td><td>中</td><td>延後</td><td>目前資料量小，列入觀察</td></tr>
+<tr><td>3</td><td>建議改用策略模式</td><td>推測</td><td>低</td><td>大</td><td>駁回</td><td>屬風格偏好，現況可讀</td></tr></table>
+<h2>採納準則</h2>
+<ul>
+<li>已證實且影響高：一律修。</li>
+<li>涉及安全、金錢、個資、資料遺失：門檻放低，推測也要追查。</li>
+<li>純風格偏好：以專案規範為準，規範沒寫就不採納。</li>
+<li>多位審查者獨立提出同一點：提高優先序。</li>
+<li>修復成本遠大於風險：記錄為已知風險而不是硬修。</li>
+</ul>
+<h2>什麼時候停</h2>
+<p>設定收斂規則，避免無止盡循環：「連續一輪沒有新的『已證實』高、中嚴重度問題，就結束」。通常 1～2 輪即可，再多多半是雜訊。</p>
+<h2>讓盲點不再重複</h2>
+<table><tr><th>盲點類型</th><th>寫到哪</th></tr>
+<tr><td>專案特有規則（例如查詢一律走 Query 物件）</td><td>CLAUDE.md 的慣例／禁忌</td></tr>
+<tr><td>每次審查都要檢查的項目</td><td>審查 skill 的檢查表</td></tr>
+<tr><td>需求常漏的情境</td><td>規格範本的「缺漏情境」章節</td></tr>
+<tr><td>已做的重大取捨</td><td>ADR，避免被重複挑戰</td></tr></table>
+<h2>把整套流程做成 skill</h2>
+<pre><code>---
+name: cross-review
+description: 對需求規格或程式碼變更進行交叉審查。當使用者要求交叉審查、找盲點、完整 review 時使用。
+---
+# 交叉審查流程
+1. 確認審查對象（規格檔或 git diff）與比對基準。
+2. 啟動獨立 subagent：需求用 spec-reviewer；程式碼用 code-reviewer，
+   依需要平行啟動正確性、安全、測試三個視角。
+3. 對高、中嚴重度發現，派另一個 subagent 嘗試反駁並要求證據。
+4. 彙整成裁決表（狀態、嚴重度、修復成本、建議），交由使用者決定。
+5. 使用者決定後才開始修改；修完重新執行失敗測試確認。
+不得自行跳過裁決直接修改程式碼。</code></pre>
+<div class="note">流程中「由使用者裁決」是刻意設計：交叉審查降低盲點，不取代責任。</div>
+<h2 id="tokens">省 Token 技巧</h2>
+<ul>
+<li><b>收斂規則就是預算</b>：連續一輪沒有新的已證實高、中嚴重度問題就停，不無限循環。</li>
+<li><b>彙整時只傳摘要</b>：審查者的原始長輸出存檔，彙整對話只讀各自的發現清單。</li>
+<li><b>把重複盲點寫進規範</b>：同一類問題一次寫進 CLAUDE.md 或審查 skill，之後不必每輪再審。</li>
+<li><b>裁決由你決定</b>：避免讓 agent 自己再多輪討論。</li>
+</ul>
+
+<section class="refs"><h3>參考出處</h3><ul><li><a href="https://docs.claude.com/en/docs/claude-code/skills">Agent Skills</a></li><li><a href="https://docs.claude.com/en/docs/claude-code/sub-agents">Subagents</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
