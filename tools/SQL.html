@@ -79,9 +79,12 @@
                     const type = columnTypes[col] || "nvarchar";
                     
                     if (type.includes("char") || type.includes("text") || type.includes("date") || type.includes("uniqueidentifier")) {
-                        value = value !== "NULL" ? `'${value}'` : value;
-                        if (type.includes("nvarchar") || type.includes("ntext")) {
-                            value = value.replace("'", "N'");
+                        if (value !== "NULL") {
+                            // 跳脫單引號：' → ''
+                            value = `'${(value ?? "").replaceAll("'", "''")}'`;
+                            if (type.includes("nvarchar") || type.includes("ntext")) {
+                                value = "N" + value;
+                            }
                         }
                     }
 					
