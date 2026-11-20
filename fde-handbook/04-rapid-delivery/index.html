@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>快速交付與原型｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>快速交付與原型</h1>
+  <p class="sub">從想法到能運作的東西：分階段交付，先做一條完整的路，並用 .NET MVC＋Vue 實作</p>
+</header>
+<main class="page">
+
+<p>FDE 的特色是「做得出來」。這一區談怎麼快，又不失控：用階段與出口條件管理風險，用垂直切片取得早期回饋，用程式結構讓原型可以長成正式系統。</p><div class="note">技術範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端同一個 .NET 專案</b>為基準，並以練習專案 <code>sample/TicketDesk</code> 為例。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念相同，但建置與測試指令、專案檔格式不同。</div>
+<h2>建議順序</h2><ol><li><a href="./poc-pilot-prod.html">POC、試辦、正式上線</a>：三個階段與各自的出口條件</li><li><a href="./vertical-slice.html">垂直切片</a>：先做一條從頭到尾的完整路徑</li><li><a href="./llm-in-aspnet.html">在 ASP.NET Core 呼叫模型</a>：介面、逾時、機密、解析</li><li><a href="./streaming-vue.html">串流到 Vue</a>：Server-Sent Events 與 fetch 讀取</li><li><a href="./prompts-as-code.html">把提示當程式管理</a>：版本、結構化、與資料分離</li><li><a href="./cost-latency.html">成本與延遲</a>：估算、量測與控制</li></ol><div id="children"></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>.NET MVC＋Vue 的架構｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>.NET MVC＋Vue 的架構</h1>
+  <p class="sub">把模型接進 ASP.NET Core MVC＋Vue 專案時，各層放什麼</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>在同一個 .NET 專案中，前端由 Vue 負責畫面與互動，MVC 的 API Controller 負責輸入與輸出，服務層負責業務規則與流程，外部依賴（模型、資料庫）則放在介面之後。</p><h2>為什麼 FDE 需要它</h2><p>AI 應用最常見的架構錯誤，是把模型呼叫直接寫在 Controller 或前端。這會讓你無法測試、無法替換模型、無法在呼叫前後加入遮罩、驗證、稽核與規則。把模型當作「不可信的外部依賴」，放在介面之後，是最重要的一個決定。</p><h2>怎麼做</h2><div class="note">技術範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端同一個 .NET 專案</b>為基準，並以練習專案 <code>sample/TicketDesk</code> 為例。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念相同，但建置與測試指令、專案檔格式不同。</div><h3>分層圖</h3>
+<div class="tree">Vue（畫面、核可、編輯草稿）
+  └─ fetch → /api/...
+MVC API Controller（輸入驗證、HTTP 結果；不放業務規則）
+  └─ TriageService（流程：遮罩 → 呼叫 → 驗證 → 規則 → 稽核）
+        ├─ PiiMasker / InjectionDetector（純函式，容易測）
+        ├─ ILlmClient（介面）──┬─ FakeLlmClient（測試與練習）
+        │                     └─ AnthropicLlmClient（真實模型）
+        └─ IAuditLog / ITicketStore（持久化的介面）</div>
+<h3>為什麼這樣分</h3><ul><li><b>ILlmClient 介面</b>：測試用替身、可重現的評測、日後更換模型或供應商都不改業務程式。</li><li><b>驗證與規則在服務層</b>：「模型說的」永遠要經過「我們的規則」才成為結果。</li><li><b>前端不直接呼叫模型</b>：金鑰不能放在瀏覽器；呼叫也無法被稽核與限流。</li><li><b>純函式獨立出來</b>：遮罩、偵測這類邏輯用單元測試就能涵蓋。</li></ul><h3>程式範例：TicketDesk 的註冊方式</h3><pre><code>builder.Services.AddSingleton&lt;IAuditLog, InMemoryAuditLog&gt;();
+builder.Services.AddScoped&lt;TriageService&gt;();
+
+var apiKey = Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY");
+if (Environment.GetEnvironmentVariable("TICKETDESK_LLM") == "anthropic"
+    &amp;&amp; !string.IsNullOrWhiteSpace(apiKey))
+{
+    builder.Services.AddHttpClient&lt;ILlmClient, AnthropicLlmClient&gt;(
+        (http, _) =&gt; new AnthropicLlmClient(http, apiKey, model));
+}
+else
+{
+    builder.Services.AddSingleton&lt;ILlmClient, FakeLlmClient&gt;();
+}</code></pre><p>預設使用替身；只有明確設定環境變數才連真實模型。金鑰只從環境變數讀取。</p>
+<h3>同步、串流與背景工作</h3><table><thead><tr><th>情境</th><th>作法</th><th>備註</th></tr></thead><tbody><tr><td>使用者等待一個短回應</td><td>同步 API</td><td>設逾時；顯示處理中</td></tr><tr><td>長回應想即時顯示</td><td>串流（Server-Sent Events 等）</td><td>見<a href="../04-rapid-delivery/streaming-vue.html">串流到 Vue</a></td></tr><tr><td>大量批次（處理幾千封信）</td><td>背景工作＋佇列</td><td>要有重試、進度與失敗清單；注意成本上限</td></tr></tbody></table><h3>.NET Framework（MVC 5）的差異</h3><ul><li>依賴注入需自行配置容器；非同步與 HttpClient 的使用方式不同（注意 HttpClient 要重複使用）。</li><li>設定與機密：用 Web.config 的環境替換或外部機密管理，不要提交金鑰。</li><li>概念（介面、分層、驗證）完全相同。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：把模型呼叫寫在 Controller 的後果</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：原型階段把呼叫直接寫在 Controller 裡。三週後客戶要求：(1) 個資不可送出、(2) 要有稽核紀錄、(3) 換成客戶指定的供應商。</p><ul><li>三個需求都需要改 Controller，而且沒有測試保護，每次修改都要手動測。</li><li>如果一開始就有 <code>ILlmClient</code> 與服務層，三項各自是一個小改動，而且能被自動測試確認。</li></ul></div><h2>常見錯誤</h2><ul><li>把提示、金鑰、驗證邏輯散落在多個檔案。</li><li>前端直接帶金鑰呼叫模型。</li><li>在 Controller 放業務規則，導致無法單元測試。</li><li>沒有替身，每次測試都要花錢連模型。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式版的「分層」是：誰負責輸入（表單或信箱）、誰負責規則（檢核表與審核）、誰負責執行（人或系統）。把「AI 建議」放在規則之前，而不是直接成為結果。</p></div><h2>怎麼練</h2><ul><li>打開 <code>sample/TicketDesk</code>，在 <code>TriageService</code> 找出所有「不信任模型輸出」的地方，列成清單。</li><li>寫一個新的 <code>ILlmClient</code> 實作，永遠回傳固定結果，用來測試「模型出錯時」的分流行為。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>能畫出你專案的分層圖，並指出模型被隔離在哪一層；測試可以在沒有網路的情況下跑完。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>把不確定、會變、會失敗的外部依賴放到介面之後，是六角架構與整潔架構的核心，也適用於金流、簡訊、地圖等所有外部服務。AI 只是最不確定的一個。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

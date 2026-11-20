@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>評分方式｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>評分方式</h1>
+  <p class="sub">精確比對、規則檢查、模型評審與人工：依輸出類型選擇</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>評分方式是決定「如何判斷輸出對不對」。不同類型的輸出適合不同的方式：分類與擷取可以精確比對；格式可以用規則檢查；開放式文字（如草稿）則需要評分準則，由人或另一個模型評審。</p><h2>為什麼 FDE 需要它</h2><p>能自動評分的才會被經常執行。Anthropic 的文件列出多種方式（精確比對、相似度、ROUGE-L、以模型做李克特量表評分、以模型做二元分類等），並建議以<b>不同的模型</b>做評審。選對方式，評測才可靠、可擴大、可進入日常流程。</p><h2>怎麼做</h2><table><thead><tr><th>方式</th><th>適用</th><th>優點</th><th>限制</th></tr></thead><tbody><tr><td>精確比對</td><td>分類標籤、是否升級、擷取的欄位值</td><td>客觀、免費、可重複</td><td>只適用答案唯一的任務</td></tr><tr><td>規則檢查</td><td>格式（合法 JSON）、必含／不得含的內容、長度、不含個資</td><td>快速、可嚴格執行</td><td>無法判斷語意品質</td></tr><tr><td>相似度指標</td><td>與參考答案的文字相似度</td><td>自動化</td><td>與人感受的相關性有限；對改寫不敏感</td></tr><tr><td>模型評審（LLM-as-judge）</td><td>開放式文字：語氣、完整性、是否回答問題</td><td>可大量執行、可依準則評分</td><td>有偏誤；要用人工校準；用不同模型當評審</td></tr><tr><td>人工評審</td><td>最終驗收、爭議案例、校準</td><td>最可信</td><td>昂貴、慢；需要明確準則與一致性檢查</td></tr></tbody></table><h3>評分準則（rubric）</h3>
+<p>對開放式輸出，先寫好準則再評分。例如草稿回覆：</p><table><thead><tr><th>面向</th><th>1 分</th><th>3 分</th></tr></thead><tbody><tr><td>正確性</td><td>包含與事實不符的內容</td><td>所有事實都與來源相符</td></tr><tr><td>完整性</td><td>沒有回應客戶的問題</td><td>回應所有問題並說明下一步</td></tr><tr><td>語氣</td><td>冷淡或過度承諾</td><td>禮貌、不過度承諾</td></tr><tr><td>安全</td><td>洩漏個資或做出不該做的承諾</td><td>無風險內容</td></tr></tbody></table><h3>使用模型評審的注意事項</h3><ul><li>用<b>不同的模型</b>當評審，避免偏好自己的輸出。</li><li>評審提示要具體、有範例，並要求先給理由再給分數。</li><li><b>用人工校準</b>：抽 30 筆，比較模型評審與人的一致程度；一致性不夠就不要依賴它。</li><li>評審本身會有雜訊；用於趨勢與回歸，不要用單一分數做重大決策。</li><li>不要把客戶的敏感內容送給未核准的評審模型。</li></ul><h3>TicketDesk 使用的評分</h3><ul><li>分類：精確比對（<code>Category == expected</code>）。</li><li>安全底線：規則檢查（<code>mustEscalate</code> 的案例必須 <code>NeedsHuman == true</code>）。</li><li>遮罩與稽核：單元測試（不得含原始個資）。</li><li>草稿品質：<b>尚未評分</b>；Lab 會練習為它設計準則。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：用模型評審模型</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：團隊用評審模型為草稿打分，平均 4.5 分（滿分 5）。人工抽查 30 筆，發現評審與人只有 55% 一致，而且評審對「語氣很客氣但內容錯誤」的草稿給高分。</p><ul><li>修正：把「事實是否與來源相符」獨立成一個二元檢查，並要求評審引用來源句子；語氣另外評。</li><li>結果：一致性升到 80%，並以人工複核的抽樣長期校準。</li></ul></div><h2>常見錯誤</h2><ul><li>用相似度當作草稿品質的唯一指標。</li><li>沒有校準就相信模型評審。</li><li>評審與被評的是同一個模型。</li><li>準則寫得模糊，每次評分標準不同。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案裡，評分的重點是「準則先行」：寫清楚什麼是好的摘要、好的回覆，再請多人套用；用兩人評分的一致性檢查準則是否清楚。</p></div><h2>怎麼練</h2><ul><li>替一類開放式輸出（如草稿回覆）寫一份四面向的準則，找兩個人各評 10 筆，計算一致比例。</li><li>嘗試用另一個你有權使用的模型當評審，與人工評分比對，記錄差異。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>每一種輸出類型都有對應的評分方式，並有一份校準記錄（人工 vs 自動）。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>評分準則與評審者間一致性，是教育評量、論文審查與品質稽核的核心概念；它說明了「標準不明確，再多資料也沒用」。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Anthropic 文件：Create strong empirical evaluations（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

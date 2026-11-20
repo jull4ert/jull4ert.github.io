@@ -1,0 +1,65 @@
+@{
+    ViewData["Title"] = "來信列表";
+}
+
+<div id="app">
+    <p class="hint">練習用：模型預設是可重現的替身，不會寄出任何信件；「核可送出」只會更新狀態並寫稽核紀錄。</p>
+
+    <div class="layout">
+        <section class="list">
+            <h2>來信</h2>
+            <ul>
+                <li v-for="t in tickets" v-bind:key="t.id" v-bind:class="{ active: current && current.id === t.id }" v-on:click="select(t)">
+                    <b>#{{ t.id }}</b> {{ t.subject }}
+                    <span class="status">{{ statusText(t.status) }}</span>
+                    <span v-if="t.triage && t.triage.needsHuman" class="badge warn">需人工</span>
+                </li>
+            </ul>
+            <p v-if="tickets.length === 0" class="empty">目前沒有來信。</p>
+        </section>
+
+        <section class="detail" v-if="current">
+            <h2>#{{ current.id }} {{ current.subject }}</h2>
+            <p class="from">來自：{{ current.customer }}</p>
+            <pre class="body">{{ current.body }}</pre>
+
+            <button v-on:click="runTriage" v-bind:disabled="busy">AI 分流</button>
+            <p v-if="error" class="error">{{ error }}</p>
+
+            <div v-if="current.triage" class="result">
+                <p>
+                    分類：<b>{{ current.triage.category }}</b>
+                    優先：<b>{{ current.triage.priority }}</b>
+                    信心：<b>{{ current.triage.confidence.toFixed(2) }}</b>
+                </p>
+                <p v-if="current.triage.flags.length">旗標：<span class="badge" v-for="f in current.triage.flags" v-bind:key="f">{{ f }}</span></p>
+                <p>理由：{{ current.triage.reason }}</p>
+                <p v-if="current.triage.needsHuman" class="warn-text">此信需要人工判斷，請不要直接採用草稿。</p>
+
+                <button v-on:click="streamDraft" v-bind:disabled="busy">重新串流顯示草稿（示範）</button>
+
+                <label>回覆內容（可修改）
+                    <textarea v-model="reply" rows="5"></textarea>
+                </label>
+                <button v-on:click="approve" v-bind:disabled="busy || current.status === 'Replied'">核可送出</button>
+                <span v-if="current.status === 'Replied'" class="badge ok">已核可</span>
+            </div>
+        </section>
+    </div>
+
+    <section class="audit">
+        <h2>稽核紀錄</h2>
+        <table>
+            <thead><tr><th>時間</th><th>操作者</th><th>動作</th><th>單號</th><th>內容</th></tr></thead>
+            <tbody>
+                <tr v-for="(a, i) in audit" v-bind:key="i">
+                    <td>{{ a.at }}</td><td>{{ a.actor }}</td><td>{{ a.action }}</td><td>{{ a.ticketId }}</td><td>{{ a.detail }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <p v-if="audit.length === 0" class="empty">還沒有紀錄。</p>
+    </section>
+</div>
+
+<script src="https://unpkg.com/vue@3.4.38/dist/vue.global.prod.js"></script>
+<script src="~/js/tickets-app.js"></script>

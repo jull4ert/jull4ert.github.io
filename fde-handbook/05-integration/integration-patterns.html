@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>整合設計模式｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>整合設計模式</h1>
+  <p class="sub">冪等、重試、影子模式、降級：讓整合在現實中站得住</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>整合設計模式是一些反覆出現、已被驗證的作法，用來處理整合中必然出現的問題：重複、失敗、不一致、速度不同、風險不確定。</p><h2>為什麼 FDE 需要它</h2><p>AI 整合特別需要這些模式，因為模型輸出不確定、呼叫會失敗、而你要接上的系統往往不能被弄壞。這些模式讓你可以放心地上線、觀察並逐步放權。</p><h2>怎麼做</h2><table><thead><tr><th>模式</th><th>解決什麼</th><th>作法</th></tr></thead><tbody><tr><td>冪等（idempotency）</td><td>重試造成重複動作</td><td>每個動作帶唯一鍵（如單號＋動作）；重複請求只生效一次</td></tr><tr><td>重試與退避</td><td>暫時性失敗</td><td>有限次數、逐次拉長間隔；區分可重試（逾時）與不可重試（參數錯）</td></tr><tr><td>逾時與斷路</td><td>依賴變慢拖垮整體</td><td>短逾時；連續失敗就暫停呼叫一段時間，轉人工</td></tr><tr><td>降級</td><td>AI 不可用</td><td>退回原本的人工流程，並明確告知使用者</td></tr><tr><td>佇列與背景工作</td><td>大量或慢的工作</td><td>放入佇列、由背景程序處理、有進度與失敗清單</td></tr><tr><td>發送箱（outbox）</td><td>資料變更與外送訊息要一致</td><td>先寫入同一交易的發送箱，再由程序送出</td></tr><tr><td>影子模式（shadow mode）</td><td>上線前不確定效果與風險</td><td>AI 與人同時處理同一批案件，但 AI 的結果不影響任何事，事後比對</td></tr><tr><td>金絲雀／分批放量</td><td>一次全面上線風險大</td><td>先給一個小群組或一小部分流量，觀察後再擴大</td></tr><tr><td>乾跑（dry run）</td><td>寫入動作的風險</td><td>先只輸出「將會做什麼」，由人確認後才實際執行</td></tr></tbody></table><h3>影子模式：FDE 最好用的信任工具之一</h3><ul><li>讓 AI 處理「真實的來信」，但結果只被記錄、不被使用；人仍照原流程處理。</li><li>兩週後比對：AI 與人的判斷一致率、不一致的類型、該升級卻沒升級的案例。</li><li>價值：用真實資料取得證據、不冒任何風險，並且客戶的人能親眼看到數字。</li><li>代價：需要資料流與儲存，並要確認個資處理仍符合規範。</li></ul><h3>冪等的簡單例子（概念）</h3><pre><code>// 以「單號 + 動作」作為冪等鍵；相同鍵第二次請求直接回傳第一次的結果
+var key = $"{ticket.Id}:approve";
+if (processed.TryGetValue(key, out var previous)) return previous;
+var result = Approve(ticket, reply);
+processed[key] = result;
+return result;</code></pre><p>這是概念示意。正式環境要用持久化的儲存並處理併發。TicketDesk 的核可 API 目前用狀態判斷避免重複，Lab 會討論如何改善。</p><h2>業界情境</h2><div class="card"><h3>示意情境：一封信寄了三次</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：自動寄信的流程在網路抖動時逾時並自動重試；實際上第一次已成功，客戶收到三封相同的信。</p><ul><li>根因：寄信動作不是冪等的，重試造成重複。</li><li>修正：每封信有唯一的信件編號，寄信前檢查是否已寄；重試只針對「尚未確認寄出」的信件。</li><li>延伸：先用乾跑與影子模式驗證一週，再開放真實寄出。</li></ul></div><h2>常見錯誤</h2><ul><li>重試沒有上限，也沒有退避。</li><li>寫入動作不冪等。</li><li>沒有降級路徑。</li><li>直接全面上線，沒有影子或分批。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>影子模式與分批放量同樣適用於非程式專案：新流程先與舊流程平行運作一個月、比對結果，再切換；新制度先在一個部門試行。</p></div><h2>怎麼練</h2><ul><li>替你的專案設計一個兩週的影子模式：記錄什麼、怎麼比對、怎麼判定通過。</li><li>找出你專案中一個會產生副作用的動作，設計它的冪等鍵與重試策略。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份上線策略，包含影子或分批放量、降級路徑、與副作用動作的冪等設計。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>這些模式來自分散式系統與金融交易系統：冪等、重試、補償、發送箱。學會它們，你就能閱讀與設計大多數企業整合。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

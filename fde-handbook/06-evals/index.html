@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>評估與品質｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>評估與品質</h1>
+  <p class="sub">把「好不好用」變成數字：驗收標準、評測集、評分方式、上線後監控與回歸</p>
+</header>
+<main class="page">
+
+<p>沒有評估，你只有感覺；有了評估，你才能向客戶證明有效、知道改了之後是變好還是變壞、並在出問題時迅速定位。這一區是 FDE 與「做 demo 的人」差距最大的地方。</p><div class="note">技術範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端同一個 .NET 專案</b>為基準，並以練習專案 <code>sample/TicketDesk</code> 為例。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念相同，但建置與測試指令、專案檔格式不同。</div>
+<div class="note">本區的數字（TicketDesk 的 78%、88% 等）是練習專案在<b>替身模型</b>上實際跑出來的結果，用來說明方法；換成真實模型後必須重新評測。</div>
+<h2>建議順序</h2><ol><li><a href="./acceptance-criteria.html">驗收標準</a>：品質門檻與安全底線，事先寫好並簽認</li><li><a href="./eval-sets.html">建立評測集</a>：來源、分層、標註、開發集與保留集</li><li><a href="./grading-methods.html">評分方式</a>：精確比對、規則、模型評審與人工</li><li><a href="./regression.html">回歸測試</a>：每次修改都重跑，並追蹤歷史</li><li><a href="./monitoring.html">上線後監控</a>：看得見漂移、覆寫與成本</li><li><a href="./failure-handling.html">分析與處理失敗</a>：錯誤分類、在對的層修正、記錄已知限制</li></ol><div id="children"></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

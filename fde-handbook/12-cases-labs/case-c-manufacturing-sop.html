@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>案例 C：製造業 SOP 問答｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>案例 C：製造業 SOP 問答</h1>
+  <p class="sub">虛構客戶：檢索問答最大的風險是「文件版本」與「安全邊界」</p>
+</header>
+<main class="page">
+<div class="note">本案例為虛構組合，用來說明決策與取捨；人名、公司與數字都是示意。</div><h2>背景</h2><p>一家製造公司，產線人員常需要查設備維修紀錄與作業標準（SOP），文件散落在共用資料夾，版本混亂。工程部希望做一個問答助手，讓現場人員快速查詢。</p><h2>時間線</h2><table><thead><tr><th>時間</th><th>事件</th><th>用到的技能</th></tr></thead><tbody><tr><td>第 1 週</td><td>跟班：看人如何查 SOP；發現同一份 SOP 有五個版本</td><td>現場跟班</td></tr><tr><td>第 2 週</td><td>先整理「唯一的資料來源」與版本制度，這比 AI 本身更重要</td><td>資料品質</td></tr><tr><td>第 3 至 4 週</td><td>檢索問答：回答附文件名稱、版本、頁碼；找不到就說找不到</td><td>檢索、評測</td></tr><tr><td>第 5 週</td><td>安全邊界：涉及安全與設備停機的問題，一律只引用原文並提示洽工程師</td><td>人機分工</td></tr><tr><td>第 6 至 7 週</td><td>現場試用；每週抽查 20 題；加入「規定有變更」的評測案例</td><td>監控、回歸</td></tr></tbody></table><h2>關鍵決策</h2><h3>決策 1：先修資料，再談 AI</h3><ul><li>發現版本混亂後，與工程部一起制訂「單一來源與版本標示」，AI 只讀最新版。</li></ul><h3>決策 2：安全相關問題不做推論</h3><ul><li>凡涉及安全、高壓、化學品、停機的問題，系統只輸出原文與出處，並要求洽工程師；不產生「建議」。</li></ul><h3>決策 3：「找不到」是正確答案</h3><ul><li>評測集中，一類是「文件沒有答案」的題目；系統若編造，就是失敗。</li></ul><h2>發生的問題</h2><ul><li>文件為掃描 PDF，文字辨識品質不一 → 先以文字辨識處理並抽樣核對；品質差的列入已知限制。</li><li>SOP 更新後，舊答案仍被引用 → 檢索時只納入「現行版」並在答案顯示版本與日期。</li><li>現場人員偏好口語提問，與文件用詞不同 → 評測集加入口語化問法。</li></ul><h2>結果（示意）</h2><p>（示意）在 80 題評測集上，答對且附正確出處 86%；「文件沒有答案」的題目中，系統正確回答「找不到」的比例 92%；安全類問題 100% 只引用原文。</p><h2>討論題</h2><ol><li>為什麼這個案例中最先做的是整理資料來源，而不是調整提示？</li><li>「找不到」為什麼要列入評測集？</li><li>安全類問題為什麼要「只引用原文，不做推論」？</li><li>如果 SOP 每週更新，你的評測與監控要怎麼配合？</li></ol><h2>對應章節</h2><ul><li><a href="../03-solution-design/rag-tools-finetune.html">檢索、工具與微調</a></li><li><a href="../05-integration/data-quality.html">資料品質</a></li><li><a href="../06-evals/eval-sets.html">建立評測集</a></li><li><a href="../11-non-code/industries.html">產業情境集</a></li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

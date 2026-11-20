@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>驗收標準｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>驗收標準</h1>
+  <p class="sub">開工前就寫好怎樣算完成：品質門檻、安全底線、量測方式</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>驗收標準是雙方事先同意的、可量測的「完成」定義。AI 專案的驗收通常包含兩類：<b>品質門檻</b>（可以逐步改善的指標，如分類正確率）與<b>安全底線</b>（必須維持的條件，如應升級的案件一個都不能漏）。</p><h2>為什麼 FDE 需要它</h2><p>Anthropic 的文件建議成功標準應是具體、可量測、可達成且相關的，並舉例如任務準確度、一致性、隱私保護、延遲與價格。沒有事先同意的標準，專案結束時容易陷入「好像還可以更好」的無盡爭論，也無法判斷何時該停止優化。</p><h2>怎麼做</h2><h3>驗收文件的內容</h3><table><thead><tr><th>項目</th><th>說明</th><th>範例</th></tr></thead><tbody><tr><td>品質門檻</td><td>指標＋門檻＋量測資料集</td><td>在評測集 v1 上分類正確率 ≥ 85%</td></tr><tr><td>安全底線</td><td>必須為 0 的事件</td><td>應升級給人的案例被自動放行 = 0</td></tr><tr><td>效能</td><td>延遲與可用性</td><td>90% 的請求在 5 秒內回應</td></tr><tr><td>成本</td><td>每月上限</td><td>每月模型費用不超過預算</td></tr><tr><td>隱私</td><td>資料處理的條件</td><td>送出模型的內容不含 email、電話、卡號、身分證字號</td></tr><tr><td>量測方式</td><td>誰、用什麼資料、什麼時候量</td><td>由客戶提供標準答案；FDE 執行評測；雙方共同檢視</td></tr><tr><td>例外</td><td>已知不處理的情況</td><td>英文來信、附件內容不在範圍</td></tr></tbody></table><h3>兩類標準要分開看</h3><ul><li>品質門檻可以是「趨勢」：這一階段 85%，下一階段 90%。</li><li>安全底線是「閘門」：只要有一件不通過，就不能放行，無論平均多漂亮。TicketDesk 的測試用 <code>Assert.Empty(unescalated)</code> 強制它。</li></ul><h3>樣本數與信心</h3>
+<p>評測集很小時，數字的不確定性很大。例如在 30 筆案例上觀察到 90% 正確，95% 信賴區間大約是 ±11 個百分點（約 79% 到 100%）。因此：</p><ul><li>不要用「差 2 個百分點」做重大決策。</li><li>要驗證的門檻附近，增加案例數。</li><li>向客戶說明數字的不確定性，比給一個看似精確的數字更可信。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：驗收時的爭議</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：專案結束時，客戶部門主管說：「我試了幾封信，覺得有一封分得不對，這個不能驗收。」</p><ul><li><b>沒有驗收標準</b>：雙方進入情緒化討論，沒有客觀的結論。</li><li><b>有驗收標準</b>：FDE 打開驗收文件：門檻是 85%，目前在 60 筆評測集上為 88%；那一封信已被加入評測集，列為「已知限制」；安全底線為 0 件未升級。主管同意以標準為準，並提出把那類信加入下一階段。</li></ul></div><h2>常見錯誤</h2><ul><li>只定義品質門檻，沒有安全底線。</li><li>驗收標準由 FDE 單方面決定。</li><li>只用平均值，忽略最嚴重的錯誤類型。</li><li>評測集太小，卻把數字當成精確。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案的驗收：例如「AI 輔助的月報摘要」：品質門檻是「與會計複核後的重要項目重疊率」，安全底線是「不得出現與來源數字不符的金額」。同樣用抽樣與標準答案量測。</p></div><h2>怎麼練</h2><ul><li>替你的專案寫一頁驗收標準，包含至少一個安全底線，並請客戶端的一個人簽認。</li><li>用 30 筆與 100 筆，各算一次「觀察到 90%」的信賴區間，理解差異。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份簽認過的驗收文件，且在專案中被實際用來判斷放行或不放行。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>把「完成」事先定義為可量測的條件，是軟體測試、品質管制與臨床試驗的共同做法。區分「品質」與「安全」兩種不同性質的標準，也是醫療與航空的常識。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests">Anthropic 文件：Create strong empirical evaluations（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

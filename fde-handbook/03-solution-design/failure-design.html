@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>為失敗而設計｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>為失敗而設計</h1>
+  <p class="sub">模型出錯、逾時、服務中斷、格式不對時，系統怎麼辦</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>為失敗而設計，是在設計階段就問：<b>每個依賴出問題時，使用者看到什麼、資料變成什麼、誰會被通知</b>。AI 系統的失敗模式比一般系統多：不只會當機，還會「看起來成功卻是錯的」。</p><h2>為什麼 FDE 需要它</h2><p>客戶不會因為系統有 99% 的時間正確而信任它，卻會因為 1% 的錯誤出現在最糟的時刻而失去信任。FDE 需要讓失敗是可預期、可見、可復原的。</p><h2>怎麼做</h2><h3>AI 系統的失敗模式</h3><table><thead><tr><th>失敗</th><th>例子</th><th>設計對策</th></tr></thead><tbody><tr><td>服務不可用或逾時</td><td>API 錯誤、網路中斷</td><td>設逾時；失敗時轉人工；不無限重試</td></tr><tr><td>輸出格式錯誤</td><td>不是合法 JSON、缺欄位</td><td>嚴格解析；失敗視為錯誤並轉人工</td></tr><tr><td>輸出內容無效</td><td>類別不在允許清單、數值超出範圍</td><td>白名單驗證；不合法就退回預設並標記</td></tr><tr><td>看似合理的錯誤（幻覺）</td><td>編造不存在的政策或訂單</td><td>要求引用出處；與來源核對；高風險交給人</td></tr><tr><td>被輸入誘導</td><td>來信中夾帶指令</td><td>把輸入視為資料；輸出驗證；不讓模型直接觸發副作用</td></tr><tr><td>成本失控</td><td>迴圈或大量重試</td><td>輪數與金額上限；預算告警</td></tr><tr><td>品質緩慢退化</td><td>資料或模型更新後準確率下降</td><td>持續監控與回歸測試，見<a href="../06-evals/monitoring.html">監控</a></td></tr><tr><td>供應商變更</td><td>模型下架或行為改變</td><td>固定版本；抽象介面；有備案</td></tr></tbody></table><h3>設計原則</h3><ul><li><b>失敗時預設往安全的方向</b>：不確定就轉人工，而不是放行。</li><li><b>失敗要可見</b>：記錄並顯示旗標；不要默默吞掉錯誤。</li><li><b>動作要冪等</b>：重試不應造成重複寄信或重複扣款。</li><li><b>有降級路徑</b>：AI 不可用時，原本的人工流程要能繼續。</li><li><b>演練失敗</b>：實際把模型關掉、讓它回傳垃圾，看系統怎麼反應。</li></ul><h3>在 TicketDesk 中的對應</h3><ul><li>模型呼叫例外 → 標記 <code>llm-error</code> 並轉人工（<code>Llm_failure_routes_to_human_instead_of_throwing</code>）。</li><li>類別無效 → 退回 <code>other</code> 並轉人工（<code>Invalid_category_falls_back_to_other_and_needs_human</code>）。</li><li>信心值超出範圍 → 夾在 0 到 1（<code>Confidence_is_clamped_to_valid_range</code>）。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：週五晚上，模型供應商當機</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客服分流系統在週五晚上遇到供應商服務中斷。</p><ul><li><b>沒有失敗設計</b>：所有來信卡在處理中，客服人員收到錯誤畫面，不知道要不要等；週一才發現堆了 600 封。</li><li><b>有失敗設計</b>：系統偵測到模型錯誤，把信件標記為「需人工」並維持原本的收件匣流程；畫面上顯示「AI 暫停，請照原流程處理」；值班工程師收到告警。</li></ul></div><h2>常見錯誤</h2><ul><li>只測「成功路徑」。</li><li>失敗時直接丟出例外讓使用者看到 500。</li><li>把模型當作永遠可用的元件。</li><li>沒有人被通知，錯誤靜靜累積。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式的失敗設計：AI 工具不可用時，原本的人工流程要有書面的備案；AI 產出的文件要有「這份由 AI 輔助、需人工核對」的標示，避免被誤認為已確認。</p></div><h2>怎麼練</h2><ul><li>在 TicketDesk 新增一個永遠拋出例外的 <code>ILlmClient</code>，確認畫面與稽核的行為；再讓它回傳超長草稿與負的信心值，看驗證如何處理。</li><li>替你的專案列出一張失敗模式表，每列寫出「使用者看到什麼」。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有失敗模式表，且至少有三種失敗被自動測試涵蓋；做過一次「關掉模型」的演練。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>為失敗而設計是可靠性工程的核心：斷路器、重試與退避、降級、演練（chaos engineering）。AI 的特別之處是多了「看似成功的錯誤」，因此驗證與人工把關比一般系統更重要。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM Applications（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

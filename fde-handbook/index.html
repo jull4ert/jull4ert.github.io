@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FDE 技能手冊｜導覽</title>
+<link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>FDE 技能手冊</h1>
+  <p class="sub">Forward Deployed Engineer 的技能養成：聚焦 AI／agent 導入，從看懂客戶的問題，到做出來、接進現有系統、評估品質、讓人真的用起來。範例以 .NET MVC＋Vue 為主，並涵蓋非程式領域與觸類旁通。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--sw)"></i>基礎（角色與地圖）</span>
+    <span><i class="dot" style="background:var(--accent)"></i>核心（問題到上線）</span>
+    <span><i class="dot" style="background:var(--proc)"></i>擴展（落地與複製）</span>
+    <span><span class="tag done">已完成</span></span>
+  </div>
+</header>
+
+<main>
+
+<h2>從這裡開始</h2>
+<div class="grid">
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3>想了解這個角色</h3>
+    <p>先讀 <a href="./00-role/what-is-fde.html">FDE 是什麼</a>，再做<a href="./01-skill-map/self-assessment.html">自我評估</a>，用<a href="./01-skill-map/learning-order.html">12 週學習順序</a>排計畫。</p>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3>想動手練習</h3>
+    <p>跑起<a href="./12-cases-labs/lab-0-setup.html">練習專案 TicketDesk</a>，依序做 <a href="./12-cases-labs/index.html">Lab 0 到 Lab 8</a>；也可以先讀<a href="./12-cases-labs/case-a-retail-support.html">案例 A</a>。</p>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3>正在做案子，要查東西</h3>
+    <p>翻<a href="./13-reference/discovery-questions.html">訪談題庫</a>、<a href="./13-reference/templates.html">模板庫</a>、<a href="./13-reference/cheat-sheet.html">一頁速查</a>。</p>
+  </div>
+</div>
+
+<h2>定位與範圍</h2>
+<div class="card">
+  <ul>
+    <li><b>定位</b>：技能養成手冊。每個技能頁都回答：<b>是什麼、為什麼 FDE 需要、怎麼做、業界情境、常見錯誤、非程式版、怎麼練、可觀察的證據、觸類旁通</b>。</li>
+    <li><b>焦點</b>：AI／agent 導入。FDE 的價值不在模型本身，而在把 agent 落地到客戶真實的資料、流程與人。</li>
+    <li><b>技術基準</b>：ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端同一個 .NET 專案；練習專案 <code>sample/TicketDesk</code>。</li>
+    <li><b>非程式領域</b>：獨立成<a href="./11-non-code/index.html">一區</a>，並在各技能頁附「非程式領域怎麼用」。</li>
+    <li><b>觸類旁通</b>：<a href="./14-extensions/index.html">一區</a>專門談相鄰職務、可遷移的原則與相鄰技術，並在各頁附「觸類旁通」。</li>
+    <li><b>情境</b>：頁面中的業界情境皆為<b>虛構組合</b>，數字與名稱為示意；有來源的事實會附出處，未查證的說法會明說。</li>
+    <li><b>與 <a href="../ai-agent-handbook/index.html">AI Agent 開發手冊</a> 的分工</b>：那本教「怎麼用 agent 做事」；這本教「怎麼把 agent 帶進別人的組織並做到有成果」。</li>
+    <li><b>範圍外</b>：模型訓練、純銷售與商務談判、各雲端平台的完整操作手冊、法律意見。</li>
+  </ul>
+</div>
+<div class="note">請先讀<a href="./13-reference/verification-log.html">實測驗證紀錄</a>：它說明哪些內容實際執行過、哪些只是讀過來源、哪些沒有驗證（例如真實模型的呼叫、瀏覽器中的畫面行為、法規的現行條文）。</div>
+
+<h2>分類邏輯：一個專案的生命週期</h2>
+<div class="card">
+  <p>FDE 的工作依時間順序展開，所以手冊按「專案進行的先後」分區，讀者可以對照自己現在卡在哪個階段。</p>
+  <div class="tree">看懂客戶 → 設計方案 → 做出來 → 接進系統 → 證明有效 → 取得信任 → 讓人用起來 → 複製擴散
+ 02          03         04        05         06         07         08            10
+        （貫穿全程：09 溝通；基礎：00、01；延伸：11、12、13、14）</div>
+</div>
+
+<h2>各區</h2>
+
+<h3>基礎：先知道這個角色是什麼</h3>
+<div class="grid">
+  <div class="card sw">
+    <h3><a href="./00-role/index.html">00 角色與定位</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./00-role/</p>
+    <ul>
+      <li><a href="./00-role/what-is-fde.html">FDE 是什麼</a>、<a href="./00-role/history-and-ai-era.html">由來與 AI 時代</a></li>
+      <li><a href="./00-role/vs-other-roles.html">與相近職務的差異</a></li>
+      <li><a href="./00-role/day-in-life.html">一天的工作</a>、<a href="./00-role/career-paths.html">職涯路徑</a></li>
+    </ul>
+  </div>
+  <div class="card sw">
+    <h3><a href="./01-skill-map/index.html">01 技能地圖與自我評估</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./01-skill-map/</p>
+    <ul>
+      <li><a href="./01-skill-map/six-competencies.html">六大能力</a>、<a href="./01-skill-map/levels-evidence.html">四個層級與證據</a></li>
+      <li><a href="./01-skill-map/self-assessment.html">24 題自我評估</a>（可勾選）</li>
+      <li><a href="./01-skill-map/learning-order.html">12 週學習順序</a></li>
+    </ul>
+  </div>
+</div>
+
+<h3>核心：從問題到上線</h3>
+<div class="grid">
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./02-discovery/index.html">02 客戶與問題定義</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./02-discovery/</p>
+    <ul>
+      <li>訪談技巧、現場跟班與流程盤點</li>
+      <li>判斷適不適合 AI、成功指標與基準值</li>
+      <li>關係人與組織現實、範圍與工作說明</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./03-solution-design/index.html">03 解決方案設計</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./03-solution-design/</p>
+    <ul>
+      <li>固定流程或自主 agent；檢索、工具與微調</li>
+      <li>人機分工與信任階梯</li>
+      <li>.NET MVC＋Vue 的架構、自建或購買、為失敗而設計</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./04-rapid-delivery/index.html">04 快速交付與原型</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./04-rapid-delivery/</p>
+    <ul>
+      <li>POC、試辦、正式上線；垂直切片</li>
+      <li>ASP.NET Core 呼叫模型、串流到 Vue</li>
+      <li>提示當程式管理、成本與延遲</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./05-integration/index.html">05 整合企業系統</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./05-integration/</p>
+    <ul>
+      <li>舊系統、資料品質（含民國年）</li>
+      <li>工具與 MCP、身分與權限</li>
+      <li>內網與防火牆、整合設計模式（影子模式、冪等）</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./06-evals/index.html">06 評估與品質</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./06-evals/</p>
+    <ul>
+      <li>驗收標準、評測集、評分方式</li>
+      <li>回歸測試、上線後監控</li>
+      <li>分析與處理失敗、已知限制</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--accent)">
+    <h3><a href="./07-trust-security/index.html">07 信任、資安與合規</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./07-trust-security/</p>
+    <ul>
+      <li>資料最小化與個資遮罩、提示注入與過度代理</li>
+      <li>稽核紀錄、回答資安問卷</li>
+      <li>個資法基本觀念、供應商與工具審查</li>
+    </ul>
+  </div>
+</div>
+
+<h3>擴展：讓成果留下來、可複製</h3>
+<div class="grid">
+  <div class="card proc">
+    <h3><a href="./08-adoption/index.html">08 上線與採用</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./08-adoption/</p>
+    <ul>
+      <li>使用者訓練、變革管理</li>
+      <li>交接與營運手冊、證明價值</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./09-communication/index.html">09 溝通與影響力</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./09-communication/</p>
+    <ul>
+      <li>進度與風險回報、說壞消息、談範圍</li>
+      <li>對主管與使用者說不同的話、寫給人看的文件</li>
+      <li>帶工作坊與展示</li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./10-feedback-loop/index.html">10 產品回饋迴圈</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./10-feedback-loop/</p>
+    <ul>
+      <li>客製或產品化</li>
+      <li>把經驗整理成可複用的資產</li>
+      <li>寫出能被採納的產品回饋</li>
+    </ul>
+  </div>
+</div>
+
+<h3>延伸：換一個領域、動手練習、拿來就用、觸類旁通</h3>
+<div class="grid">
+  <div class="card proc">
+    <h3><a href="./11-non-code/index.html">11 非程式領域應用</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./11-non-code/</p>
+    <ul>
+      <li><a href="./11-non-code/method.html">通用方法</a>：六步驟、六種 AI 工作型態</li>
+      <li>營運、財務、客服、人資、法務與行政</li>
+      <li><a href="./11-non-code/industries.html">產業情境集</a>：製造、零售、物流、醫療行政、教育、公部門、金融</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./12-cases-labs/index.html">12 案例與練習</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./12-cases-labs/　<span class="path">sample/TicketDesk/</span></p>
+    <ul>
+      <li>練習專案：ASP.NET Core MVC＋Vue，已實測可建置與測試</li>
+      <li>Lab 0 到 8（含評分表）；4 個完整案例</li>
+      <li>客戶訪談與資安審查的角色扮演</li>
+    </ul>
+  </div>
+  <div class="card" style="border-top:3px solid var(--ok)">
+    <h3><a href="./13-reference/index.html">13 速查與模板</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./13-reference/</p>
+    <ul>
+      <li><a href="./13-reference/discovery-questions.html">訪談題庫</a>、<a href="./13-reference/templates.html">13 份模板</a></li>
+      <li><a href="./13-reference/glossary.html">術語表</a>、<a href="./13-reference/cheat-sheet.html">一頁速查</a></li>
+      <li><a href="./13-reference/verification-log.html">實測驗證紀錄</a></li>
+    </ul>
+  </div>
+  <div class="card proc">
+    <h3><a href="./14-extensions/index.html">14 觸類旁通</a> <span class="tag done">已完成</span></h3>
+    <p class="path">./14-extensions/</p>
+    <ul>
+      <li>相鄰職務、可遷移的十二個原則</li>
+      <li>相鄰技術：何時不用 LLM</li>
+      <li>進入陌生領域的十個步驟、接下來學什麼</li>
+    </ul>
+  </div>
+</div>
+
+<h2>由淺到深的學習階段</h2>
+<div class="card">
+  <ul>
+    <li><b>Lv1 能協助</b>：懂角色與流程，能在資深 FDE 帶領下做訪談紀錄、整理需求、做簡單原型。（00、01、02 入門、04 入門、Lab 0 到 2）</li>
+    <li><b>Lv2 能獨立做一個小案</b>：能獨立完成「問題定義 → 方案 → 原型 → 評估」。（02 到 06、Lab 3 到 4）</li>
+    <li><b>Lv3 能把案子帶到上線</b>：能處理整合、資安審查、使用者採用與交接。（05、07、08、09、Lab 5 到 8）</li>
+    <li><b>Lv4 能放大影響</b>：能把多個客戶的經驗抽象成產品與方法，並帶領他人。（10、11、14）</li>
+  </ul>
+</div>
+
+<h2>目錄結構</h2>
+<div class="tree">fde-handbook/
+├─ index.html                 ← 本頁
+├─ assets/  style.css  nav.js  sitemap.js
+├─ 00-role/                   角色與定位
+├─ 01-skill-map/              技能地圖與自我評估
+├─ 02-discovery/              客戶與問題定義
+├─ 03-solution-design/        解決方案設計
+├─ 04-rapid-delivery/         快速交付與原型
+├─ 05-integration/            整合企業系統
+├─ 06-evals/                  評估與品質
+├─ 07-trust-security/         信任、資安與合規
+├─ 08-adoption/               上線與採用
+├─ 09-communication/          溝通與影響力
+├─ 10-feedback-loop/          產品回饋迴圈
+├─ 11-non-code/               非程式領域應用
+├─ 12-cases-labs/             案例與練習
+├─ 13-reference/              速查與模板
+├─ 14-extensions/             觸類旁通
+└─ sample/TicketDesk/         練習專案（ASP.NET Core MVC＋Vue，含測試與評測集）</div>
+
+<h2>維護與擴充</h2>
+<div class="card">
+  <ul>
+    <li>新增頁面：建立檔案 → 在 <code>assets/sitemap.js</code> 登記並加入父層 <code>c</code>。</li>
+    <li>供應商功能、模型名稱、價格、法規與各行業監理規範變動快，請優先重新查證；驗證狀態見<a href="./13-reference/verification-log.html">實測驗證紀錄</a>。</li>
+    <li>每頁底部的「參考出處」連結會另開分頁；請定期檢查連結是否仍有效（職缺頁尤其容易下架）。</li>
+    <li>真實專案中學到的新案例，建議去識別化後整理成<a href="./10-feedback-loop/playbooks.html">案例檔案</a>，再回饋到本手冊。</li>
+  </ul>
+</div>
+
+</main>
+<footer>fde-handbook FDE 技能手冊 · 建立於 2026-11-18</footer>
+<script src="./assets/sitemap.js"></script>
+<script src="./assets/nav.js"></script>
+</body>
+</html>

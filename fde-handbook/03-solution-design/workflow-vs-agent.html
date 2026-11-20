@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>固定流程或自主 agent｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>固定流程或自主 agent</h1>
+  <p class="sub">先用最簡單的，只在需要時增加自主性</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>Anthropic 在〈Building effective agents〉中區分兩種系統：<b>workflow</b>（工作流）是由預先寫好的程式路徑來編排模型與工具；<b>agent</b> 則是由模型自己決定流程與工具使用。</p><h2>為什麼 FDE 需要它</h2><p>這個選擇決定了可預測性、成本、延遲與風險。文章的建議是：從最簡單的解法開始，只在需要時才增加複雜度；許多情況下，一次模型呼叫搭配檢索與範例就足夠。Agent 以延遲與成本換取更好的表現，也可能讓錯誤累積，需要大量沙盒測試與護欄。</p><h2>怎麼做</h2><h3>選擇的順序</h3><ol><li><b>不用模型</b>：規則確定時，用程式。</li><li><b>單次模型呼叫</b>（加提示、範例、檢索）：分類、擷取、摘要、草稿多半在這一層。</li><li><b>固定流程（workflow）</b>：多個步驟，但路徑可預先決定。</li><li><b>自主 agent</b>：步驟數與路徑無法預先決定，且你能承受它的成本與風險。</li></ol><h3>常見的工作流模式</h3>
+<p>原文整理了數種模式（以原文為準，下表是本手冊的簡述）：</p><table><thead><tr><th>模式</th><th>做法</th><th>適用</th></tr></thead><tbody><tr><td>串接（chaining）</td><td>前一步的輸出給下一步，中間可加檢查</td><td>任務可以清楚拆成固定的幾步</td></tr><tr><td>路由（routing）</td><td>先分類，再交給不同的處理流程</td><td>不同類型需要不同的處理（客服分流）</td></tr><tr><td>平行（parallelization）</td><td>同時做多份獨立工作，或同一工作多次再比較</td><td>要加速，或需要多個角度</td></tr><tr><td>協調者與工作者</td><td>一個模型拆任務、分派、彙整</td><td>子任務無法事先列出</td></tr><tr><td>評估者與優化者</td><td>一個產出、一個評論，迭代改進</td><td>有明確的評估標準，且迭代有價值</td></tr></tbody></table><h3>決策的問題</h3><ul><li>步驟與順序能不能事先寫死？能 → workflow。</li><li>出錯時能不能回復？不能 → 加人工核可，或不要讓它自主。</li><li>延遲與成本能不能接受多輪呼叫？不能 → 簡化。</li><li>你能不能為它建立評測與監控？不能 → 不要上自主 agent。</li></ul><h3>在 TicketDesk 中</h3><p>它是「路由」模式：先分類，再依類別給草稿，最後由人核可。整個流程由 <code>TriageService</code> 的程式碼決定，模型只負責其中一個判斷，沒有讓模型自己決定下一步。</p><h2>業界情境</h2><div class="card"><h3>示意情境：客戶想要「一個會自己處理客訴的 agent」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客戶聽過「自主 agent」，要求它自己查訂單、決定補償、寄信。</p><table><thead><tr><th>做法</th><th>特性</th><th>風險</th></tr></thead><tbody><tr><td>全自主 agent</td><td>模型自己決定查什麼、補償多少、是否寄出</td><td>補償金額錯誤、被來信誘導（見<a href="../07-trust-security/prompt-injection.html">提示注入</a>）、難以稽核</td></tr><tr><td>路由＋草稿＋人核可（建議的第一版）</td><td>模型分類並草擬，人確認補償與寄出</td><td>低；效果有限但可量測</td></tr></tbody></table><p>FDE 的角色是把「想要全自動」轉成分階段路徑：先用第二種取得數字與信任，再依證據擴大模型的決定範圍（見<a href="./human-in-the-loop.html">人機分工</a>的信任階梯）。</p></div><h2>常見錯誤</h2><ul><li>因為「agent」很熱門就直接上，沒有檢查 workflow 是否足夠。</li><li>讓模型決定高風險的動作（付款、刪除、寄出），卻沒有人核可。</li><li>多輪自主呼叫，卻沒有成本與輪數上限。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式的同構：先用固定的作業流程與檢核表（workflow），只有在無法事先寫死步驟時，才讓 AI 自行規劃。例如月結對帳：固定步驟＋AI 找差異，通常比讓 AI「自己完成月結」更穩。</p></div><h2>怎麼練</h2><ul><li>替你正在做的題目，寫出「不用模型」「單次呼叫」「workflow」「agent」四種做法，並說明為何選擇其中一種。</li><li>把一個 agent 方案改成 workflow，列出你失去與得到的東西。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份設計說明，清楚寫出選擇 workflow 或 agent 的理由，以及自主性被限制在哪裡。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「用最簡單的可行解」是工程的通則：能用索引就不用快取、能用快取就不用分散式系統。AI 設計只是把這個原則應用到「模型有多少自主權」這個軸上。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic：Building effective agents（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

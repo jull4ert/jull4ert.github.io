@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>術語表｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>術語表</h1>
+  <p class="sub">本手冊用到的名詞，附一句話說明</p>
+</header>
+<main class="page">
+<div class="note">定義為本手冊的簡化說明，並非標準規格。</div><table><thead><tr><th>名詞</th><th>說明</th></tr></thead><tbody><tr><td>FDE（Forward Deployed Engineer）</td><td>前線部署工程師：駐在或嵌入客戶端，把產品落地到客戶的真實環境並做到有成果的工程師。</td></tr><tr><td>POC（概念驗證）</td><td>用最小成本驗證技術可行性的階段，通常用真實但小量的資料。</td></tr><tr><td>試辦（Pilot）</td><td>讓真實使用者在小範圍實際使用，驗證價值的階段。</td></tr><tr><td>垂直切片</td><td>先做一條從畫面到資料、完整但最簡的路徑，而不是一層一層做。</td></tr><tr><td>Workflow（工作流）</td><td>由預先寫好的程式路徑編排模型與工具的系統。</td></tr><tr><td>Agent</td><td>由模型自己決定流程與工具使用的系統。</td></tr><tr><td>RAG（檢索增強）</td><td>先檢索相關資料，再放進提示讓模型回答的做法。</td></tr><tr><td>工具呼叫</td><td>模型輸出要呼叫的工具與參數，由你的程式實際執行並回傳結果。</td></tr><tr><td>MCP</td><td>Model Context Protocol：以標準方式提供工具與資料來源給 AI 應用的協定。</td></tr><tr><td>微調</td><td>以資料調整模型行為；通常是最後手段。</td></tr><tr><td>提示（Prompt）</td><td>給模型的指令與內容。</td></tr><tr><td>Token</td><td>模型處理文字的計量單位；影響成本、延遲與上下文長度。</td></tr><tr><td>幻覺</td><td>模型產生流暢但不正確或不存在的內容。</td></tr><tr><td>提示注入</td><td>在輸入中夾帶指令，讓模型偏離原本設定。</td></tr><tr><td>過度代理</td><td>給予模型過多的權限或行動能力，使其錯誤或被誘導時造成嚴重後果。</td></tr><tr><td>人機分工（Human-in-the-loop）</td><td>設計人在哪裡把關、如何核可與覆寫。</td></tr><tr><td>自動化偏誤</td><td>人傾向過度信任機器的建議。</td></tr><tr><td>信任階梯</td><td>依證據逐步放寬模型自主權的階段：觀察、建議、核可、例外才找人。</td></tr><tr><td>評測集（Eval set）</td><td>一組固定的輸入與期望結果，用於重複量測表現。</td></tr><tr><td>開發集／保留集</td><td>開發集用來調整；保留集只用來檢查是否過度配合。</td></tr><tr><td>過度配合</td><td>為了讓測試通過而調整到只適用於已知案例，失去泛化能力。</td></tr><tr><td>回歸測試</td><td>每次變更後重跑固定的測試，確認既有表現沒有變差。</td></tr><tr><td>品質門檻／安全底線</td><td>前者是可逐步改善的指標；後者是必須維持的條件，一次失敗就不能放行。</td></tr><tr><td>護欄指標</td><td>效率提升時，不能變差的指標（如漏接數）。</td></tr><tr><td>基準值</td><td>改善前的現況數字；沒有它就無法證明有效。</td></tr><tr><td>影子模式</td><td>AI 與人同時處理真實案件，但 AI 的結果不生效，事後比對。</td></tr><tr><td>冪等</td><td>同一個請求重複執行，結果與只執行一次相同。</td></tr><tr><td>斷路器</td><td>連續失敗時暫停呼叫一段時間，保護系統並轉為降級。</td></tr><tr><td>降級</td><td>依賴不可用時，退回較簡單但可用的方式（如人工流程）。</td></tr><tr><td>反損壞層</td><td>在你的程式與舊系統之間的轉接層，吸收舊系統的怪異格式。</td></tr><tr><td>System of record</td><td>某項資料以哪個系統為準。</td></tr><tr><td>資料最小化</td><td>只蒐集、傳送與保存完成任務所必需的資料。</td></tr><tr><td>遮罩／假名化</td><td>把可識別個人的資訊換成代號。</td></tr><tr><td>稽核紀錄</td><td>記錄誰、何時、做了什麼、依據什麼，只增不改。</td></tr><tr><td>SSO</td><td>單一登入：以客戶既有的身分系統登入。</td></tr><tr><td>最小權限</td><td>只給完成工作所必需的權限。</td></tr><tr><td>SOW</td><td>工作說明書：範圍、交付物、假設與驗收的文件。</td></tr><tr><td>Non-goals</td><td>明確寫出不做的事。</td></tr><tr><td>範圍蔓延</td><td>範圍在沒有正式決定下逐步擴大。</td></tr><tr><td>Runbook</td><td>營運手冊：日常操作與突發狀況的處理步驟。</td></tr><tr><td>巴士係數</td><td>有多少人離開，專案就無法繼續；越低越危險。</td></tr><tr><td>冠軍（Champion）</td><td>客戶內部願意推動並說服同儕的支持者。</td></tr><tr><td>事前驗屍</td><td>想像專案已失敗，反推可能原因的工作坊技巧。</td></tr><tr><td>Playbook</td><td>把驗證有效的作法整理成可複用的資產。</td></tr><tr><td>Parking lot（停車場）</td><td>收集與當前主題無關或超出範圍議題的清單，之後再處理。</td></tr><tr><td>民國年</td><td>台灣常見的日期格式（例：113 年 = 西元 2024 年）；整合舊資料時常見的髒資料來源。</td></tr></tbody></table>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

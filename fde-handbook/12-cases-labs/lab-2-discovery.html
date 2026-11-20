@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 2：從訪談紀錄做問題定義｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 2：從訪談紀錄做問題定義</h1>
+  <p class="sub">把一份混亂的訪談紀錄，變成可行動的專案文件</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：從 <code>docs/discovery/interview-notes.md</code>（虛構客戶「晨光生活」）產出六份交付物。</p><p><b>預估時間</b>：2 到 3 小時　<b>前置</b>：讀過 <a href="../02-discovery/index.html">02 客戶與問題定義</a></p></div><h2>步驟</h2><ol><li>讀完訪談紀錄，標記：客戶說的「解決方案」、事實、情緒、隱藏的資料來源、尚未確認的數字。</li><li>寫<b>一段話的問題定義</b>（不得出現「AI 全自動」）。</li><li>畫<b>流程圖</b>：物流查詢信與退款信各一張，標出切換系統與等待。</li><li>用<a href="../02-discovery/ai-fit-triage.html">六個條件</a>評分四個候選：來信分類與草稿、自動退款、物流狀態查詢、客訴自動回覆。</li><li>寫<b>成功指標</b>：每項標明基準值「已有」或「尚未量測」，並設計護欄指標。</li><li>畫<b>關係人圖</b>，並寫出你對林小姐與資安長各自的下一步。</li><li>寫<b>一頁範圍文件</b>：目標、範圍內、不在範圍（至少三項）、假設（至少三項，附日期）、驗收。</li></ol><h2>預期結果</h2><p>你的產出應該能讓一位沒參加訪談的同事，看完就知道：要解決什麼、先做什麼、不做什麼、怎麼算成功、有哪些事要先處理。</p><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 問題定義不含解決方案</li><li><input type="checkbox" disabled> 標出至少 3 個隱藏的事實（例如私人 Excel）</li><li><input type="checkbox" disabled> 有一個指標寫「尚未量測」並說明如何量測</li><li><input type="checkbox" disabled> 不在範圍至少 3 項</li><li><input type="checkbox" disabled> 假設都附日期與負責人</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考解答（作者的版本，你的可以不同）</summary>
+<h3>關鍵觀察</h3><ul><li>客戶說的是解決方案：「AI 全自動回信」；事實顯示真正的恐懼是<b>回錯與承諾錯</b>（「已退款」事件），速度是次要。</li><li>「6 分鐘」是主管的估計，不是系統紀錄 → 基準值<b>尚未量測</b>，需要先抽樣計時或查工單時間。</li><li>隱藏資料來源：林小姐的私人 Excel（VIP 名單與特殊處理）→ 系統外的規則會影響分流。</li><li>40% 是物流查詢，本質是「查單號貼狀態」，用工具查詢即可，不需要模型判斷。</li><li>資訊部的連線審核約三週 → 現在就要申請，並用遮罩樣本同步進行。</li><li>資安長擔心資料送海外 → 第一週就要資料流圖與遮罩說明。</li><li>林小姐「不想被取代」→ 她應該是設計夥伴，而不是被通知的對象。</li></ul><h3>問題定義（一段話）</h3>
+<p>客服團隊每月處理約 8,000 封來信（旺季 12,000 以上），其中大量為重複類型，且一次回覆錯誤（如錯誤承諾退款）的代價很高。我們要讓客服人員能更快、更安全地處理來信：由系統先分類並擬草稿，需要判斷的案件明確交給人，且每一步可被稽核。</p>
+<h3>AI 適合度（節錄）</h3><table><thead><tr><th>候選</th><th>判斷</th><th>理由</th></tr></thead><tbody><tr><td>來信分類與草稿</td><td>適合，第一個切片</td><td>高頻、錯誤成本低（人核可）、人可快速驗證</td></tr><tr><td>自動退款</td><td>不適合全自動</td><td>涉及金錢、有消保爭議前例；可做「整理證據」輔助</td></tr><tr><td>物流狀態查詢</td><td>用工具，不用模型判斷</td><td>規則確定：查單號、貼狀態；可做成唯讀工具</td></tr><tr><td>客訴自動回覆</td><td>不做</td><td>主管要求客訴由人處理；列為升級規則</td></tr></tbody></table><h3>成功指標</h3><table><thead><tr><th>類別</th><th>指標</th><th>基準</th><th>目標</th></tr></thead><tbody><tr><td>效率</td><td>每封信人工處理時間</td><td>尚未量測（抽樣 30 封計時，第 1 週）</td><td>先量到基準再訂；暫定降低 25%</td></tr><tr><td>品質</td><td>分類與客服最終判斷一致率</td><td>尚未量測（建評測集）</td><td>≥ 85%（評測集上）</td></tr><tr><td>護欄</td><td>應升級卻被自動放行的件數</td><td>—</td><td>0</td></tr><tr><td>採用</td><td>每週使用草稿的客服比例</td><td>0%</td><td>≥ 70%（試辦第 4 週）</td></tr></tbody></table><h3>範圍文件（節錄）</h3><ul><li>範圍內：分流與草稿、人工核可畫面、評測集、稽核、交接文件。</li><li>不在範圍：自動寄信、處理客訴、英文來信（先轉人工）、語音與簡訊、修改工單系統。</li><li>假設：第 2 週前客戶提供 500 封遮罩樣本（陳經理）；第 1 週送出連線審核申請（王先生）；VIP 名單由林小姐提供匿名化版本，第 2 週前。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

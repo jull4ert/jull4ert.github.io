@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 1：讀懂專案與資料流｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 1：讀懂專案與資料流</h1>
+  <p class="sub">不改程式，只靠閱讀回答七個問題</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：建立對 TicketDesk 的心智模型，並練習用 Claude Code 當探索助手，同時自己驗證它的回答。</p><p><b>預估時間</b>：60 分鐘　<b>前置</b>：Lab 0</p></div><h2>步驟</h2><ol><li>先自己花 15 分鐘讀 <code>Services/TriageService.cs</code>，在紙上畫出「遮罩 → 呼叫 → 驗證 → 規則 → 稽核」。</li><li>回答下方七個問題，每題都要寫下<b>你的依據（檔案與行）</b>。</li><li>用 Claude Code 問同樣的七題，比較它的答案與你的答案；找出它說錯或含糊的地方（不要只相信它）。</li><li>畫出分層圖，標出哪些元件是「不可信的外部依賴」。</li></ol><h2>預期結果</h2><ul><li><b>Q1</b> 個資遮罩發生在哪裡？在呼叫模型之前還是之後？</li><li><b>Q2</b> 「需不需要人工」是模型決定的，還是程式決定的？決定的條件有哪些？</li><li><b>Q3</b> 模型呼叫丟出例外時，使用者與稽核各會看到什麼？</li><li><b>Q4</b> 稽核紀錄寫了什麼？故意不寫什麼？</li><li><b>Q5</b> 哪些測試保護「遮罩」？哪些保護「安全底線」？</li><li><b>Q6</b> 這個專案目前缺少哪三樣，是上線前一定要補的？</li><li><b>Q7</b> 把 <code>FakeLlmClient</code> 換成真實模型，哪些檔案要改、哪些不用？為什麼？</li></ul><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 七題都有附檔案依據</li><li><input type="checkbox" disabled> 能不看程式畫出分層圖</li><li><input type="checkbox" disabled> 找出至少一個 Claude Code 答得不夠精確的地方</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考答案</summary><ul><li>Q1：<code>TriageService.TriageAsync</code> 內，呼叫 <code>llm.TriageAsync</code> 之前，用 <code>PiiMasker.Mask(ticket.Body)</code>（注意：只遮罩內文，主旨沒有遮罩，這是一個值得討論的缺口）。</li><li>Q2：由程式決定。<code>TriageService.Validate</code> 中，因為疑似注入、無效類別、信心低於 0.7、類別為客訴或其他、優先為高而需要人工。</li><li>Q3：捕捉例外後回傳旗標 <code>llm-error</code>、<code>NeedsHuman=true</code>，並寫稽核；使用者看到的是需人工的結果而不是 500 錯誤。</li><li>Q4：寫時間、操作者、動作、單號、類別、優先、信心、是否需人工、旗標；不寫來信原文與個資。</li><li>Q5：<code>PiiMaskerTests</code>、<code>Personal_data_is_masked_before_reaching_the_model</code>、<code>Audit_entry_is_written_without_raw_body</code>；安全底線是 <code>EvalTests</code> 的 <code>Assert.Empty(unescalated)</code>。</li><li>Q6（其中三項）：身分與權限（操作者是固定字串）、稽核與資料持久化（目前在記憶體）、核可流程的後端強制。其他合理答案也可：姓名與地址遮罩、監控、成本上限。</li><li>Q7：只需新增或啟用 <code>ILlmClient</code> 的實作與註冊（<code>Program.cs</code>）；<code>TriageService</code> 與測試不用改，但<b>評測集必須重新跑</b>，不能沿用替身的數字。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

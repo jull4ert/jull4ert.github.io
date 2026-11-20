@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>案例 D：月結對帳差異說明｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>案例 D：月結對帳差異說明</h1>
+  <p class="sub">虛構客戶：數字交給公式，說明交給 AI，核對與核准交給人</p>
+</header>
+<main class="page">
+<div class="note">本案例為虛構組合，用來說明決策與取捨；人名、公司與數字都是示意。</div><h2>背景</h2><p>一家公司的會計團隊每月月結時，需要說明數十到上百筆對帳差異的可能原因。工作重複、耗時，且內控要求每筆說明都要有證據。團隊沒有開發資源。</p><h2>時間線</h2><table><thead><tr><th>時間</th><th>事件</th><th>用到的技能</th></tr></thead><tbody><tr><td>第 1 週</td><td>跟班月結；畫出流程：匯出差異清單 → 查原始單據 → 寫說明 → 主管覆核</td><td>流程盤點</td></tr><tr><td>第 2 週</td><td>設計提示範本與檢核表；用上個月的真實差異（遮罩）建立 30 筆評測集</td><td>非程式交付物</td></tr><tr><td>第 3 週</td><td>用現成的 AI 工具試跑：差異清單 → 說明草稿 → 附證據欄位；人工核對</td><td>最小版本</td></tr><tr><td>第 4 週</td><td>發現數字錯誤；加入試算表自動核對（金額必須與來源一致）</td><td>失敗處理</td></tr><tr><td>第 5 至 6 週</td><td>兩個月結週期的對照；寫使用政策與交接</td><td>採用、交接</td></tr></tbody></table><h2>關鍵決策</h2><h3>決策 1：AI 不算數字</h3><ul><li>差異金額由試算表公式計算；AI 只負責依清單與科目說明產生原因的說明草稿。</li></ul><h3>決策 2：每個原因必須有可核對的證據欄位</h3><ul><li>沒有證據的原因，標示「需人工確認」。</li></ul><h3>決策 3：職責分離</h3><ul><li>草稿由會計助理使用，覆核由主管；AI 工具不接觸會計系統的寫入權限。</li></ul><h2>發生的問題</h2><ul><li>第一次試跑時，AI 在一份說明中重新計算並寫錯金額 → 提示加入「不得修改或重算金額」，並以試算表核對。</li><li>機密科目被貼到個人帳號的工具 → 補上使用政策：只能使用公司核准的工具與帳號。</li><li>覆核者過度信任草稿 → 加入「每月插入兩筆已知有誤的草稿」檢查覆核是否有效。</li></ul><h2>結果（示意）</h2><p>（示意）月結說明撰寫時間由約 12 小時降到約 7 小時（兩個月結週期抽樣）；金額不一致 0 件被送出；使用政策與軌跡符合內控要求。全程沒有寫任何程式。</p><h2>討論題</h2><ol><li>為什麼這個案例沒有寫程式，仍然算 FDE 的工作？</li><li>「每月插入兩筆已知有誤的草稿」解決什麼問題？</li><li>如果客戶堅持要 AI 直接寫入會計系統，你要怎麼回應？</li><li>哪些交付物可以複用到其他部門（例如採購對帳）？</li></ol><h2>對應章節</h2><ul><li><a href="../11-non-code/finance.html">財務與會計</a></li><li><a href="../11-non-code/method.html">通用方法</a></li><li><a href="../03-solution-design/human-in-the-loop.html">人機分工</a></li><li><a href="../07-trust-security/data-minimization-pii.html">資料最小化</a></li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

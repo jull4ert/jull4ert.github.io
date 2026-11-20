@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>成本與延遲｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>成本與延遲</h1>
+  <p class="sub">估算、量測與控制：模型選擇、提示長度、呼叫次數</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>每次模型呼叫都有成本（依輸入與輸出的 token 數）與延遲（等待回應的時間）。這個技能是在設計階段就能粗估，在運作中能量測，並知道有哪些槓桿可以調整。</p><h2>為什麼 FDE 需要它</h2><p>客戶會問「每個月要花多少錢」與「要等多久」。答不出來，客戶無法決定預算；估錯，上線後可能發現成本是預期的十倍。AI 專案的成本與傳統系統不同：它隨「使用量×內容長度」增長。</p><h2>怎麼做</h2><h3>成本的估算公式</h3><pre><code>每次呼叫成本 ≈ 輸入 token 數 × 輸入單價 + 輸出 token 數 × 輸出單價
+每月成本    ≈ 每月呼叫數 × 每次呼叫成本 × (1 + 重試與評測的額外比例)</code></pre><p>單價請以供應商當下的公告為準（會變動，本手冊不列價格）。</p>
+<h3>用示意數字練習估算（價格為假設）</h3><table><thead><tr><th>項目</th><th>假設值</th></tr></thead><tbody><tr><td>每月來信</td><td>8,000 封</td></tr><tr><td>每次輸入（系統提示＋來信）</td><td>約 800 token</td></tr><tr><td>每次輸出（JSON＋草稿）</td><td>約 250 token</td></tr><tr><td>假設輸入單價（每百萬 token）</td><td>A 元</td></tr><tr><td>假設輸出單價（每百萬 token）</td><td>B 元</td></tr><tr><td>每月輸入 token</td><td>8,000 × 800 = 6.4M</td></tr><tr><td>每月輸出 token</td><td>8,000 × 250 = 2.0M</td></tr><tr><td>每月成本</td><td>6.4 × A ＋ 2.0 × B</td></tr></tbody></table><p>用你拿到的真實單價代入即可。重點是<b>知道成本跟什麼成正比</b>。</p><h3>降低成本與延遲的槓桿</h3><table><thead><tr><th>槓桿</th><th>做法</th><th>代價</th></tr></thead><tbody><tr><td>選較小的模型</td><td>分類與擷取常常不需要最大的模型；用評測集比較</td><td>需要重新評測</td></tr><tr><td>縮短輸入</td><td>只傳需要的欄位；歷史對話摘要；不要塞整份文件</td><td>可能漏掉資訊</td></tr><tr><td>限制輸出</td><td>設 max_tokens；要求簡短；只輸出需要的欄位</td><td>輸出可能被截斷，要處理</td></tr><tr><td>減少呼叫次數</td><td>先用規則處理明確的案例，只把模糊的交給模型</td><td>要維護規則</td></tr><tr><td>快取</td><td>相同或相似輸入重複使用結果（注意個資與時效）</td><td>可能用到過時結果</td></tr><tr><td>平行與批次</td><td>獨立工作同時進行；非即時的用批次</td><td>平行不省錢，只省時間</td></tr><tr><td>串流</td><td>改善「感受延遲」</td><td>驗證在完整輸出後</td></tr></tbody></table><h3>量測</h3><ul><li>記錄每次呼叫的輸入與輸出 token、延遲、模型版本、是否失敗（不記錄內容）。</li><li>看 p50 與 p95 延遲，不要只看平均。</li><li>設每日與每月的預算告警，並在程式內設輪數與金額上限。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：三個選擇的比較</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客服分流專案，用同一評測集比較：</p><table><thead><tr><th>方案</th><th>正確率（示意）</th><th>相對成本</th><th>延遲</th></tr></thead><tbody><tr><td>大模型，每封都呼叫</td><td>92%</td><td>10 倍</td><td>慢</td></tr><tr><td>小模型，每封都呼叫</td><td>89%</td><td>1 倍</td><td>快</td></tr><tr><td>規則先處理明確案例（約 40%），其餘交給小模型</td><td>90%</td><td>約 0.6 倍</td><td>多數即時</td></tr></tbody></table><p>三者的差距只有 3 個百分點，成本卻差一個量級。若護欄指標（該升級的都升級了）相同，選第三種。這個結論需要評測集才能支持，而不是憑感覺。</p></div><h2>常見錯誤</h2><ul><li>只在原型時看成本，沒有估算上線後的規模。</li><li>輸入塞入整份文件。</li><li>沒有輪數與預算上限，一個迴圈 bug 燒掉整月預算。</li><li>只看平均延遲。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>使用 AI 工具的成本也要管理：訂閱人數、用量上限、誰可以使用大模型。對客戶說明「用量增加 10 倍，成本大約增加幾倍」，是財務部門最在意的資訊。</p></div><h2>怎麼練</h2><ul><li>用你專案的真實量，代入公式估一個月的成本與敏感度（量增加 3 倍時如何）。</li><li>在 TicketDesk 中，加入「記錄每次呼叫的字元數」，並計算平均與 p95。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份成本模型，說明主要成本驅動因子，並有預算告警與上限設定。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「成本隨使用量線性增長」與雲端運算、簡訊、地圖 API 相同。FinOps 的基本功（標籤、預算、告警、單位成本）可以直接搬來用。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="../../ai-agent-handbook/09-governance/cost-control.html">姊妹手冊：成本控管（agent 使用面）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 0：環境與跑起專案｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 0：環境與跑起專案</h1>
+  <p class="sub">確認 .NET、測試與網站都能在你的機器上運作</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：把 TicketDesk 跑起來，看懂它的畫面與測試輸出。</p><p><b>預估時間</b>：30 分鐘　<b>前置</b>：已安裝 .NET 8（或更新的 SDK，且能執行 .NET 8 專案）；選用：Node.js</p></div><h2>步驟</h2><ol><li>打開終端機，進入 <code>sample/TicketDesk/</code>。執行 <code>dotnet --list-sdks</code> 與 <code>dotnet --list-runtimes</code>，確認有 .NET 8 的執行階段。</li><li>執行 <code>dotnet test TicketDesk.sln</code>。如果你的 NuGet 設定含有需要驗證的私有來源而還原失敗，請確認專案根目錄的 <code>nuget.config</code> 是否生效（它只使用 nuget.org）。</li><li>執行 <code>dotnet run --project src/TicketDesk.Web</code>，用瀏覽器打開終端機顯示的網址。</li><li>依序點選來信 #1、#3、#5、#6、#8，各按一次「AI 分流」，記錄分類、優先、信心與是否「需人工」、旗標。</li><li>打開下方的稽核紀錄，確認每次分流都有一筆，內容不含來信原文。</li><li>（選用）用 <code>claude -n "FDE-Lab0"</code> 啟動 Claude Code，請它「用三句話說明這個專案做什麼」，並自己對照 <code>README.md</code> 檢查它說得對不對。</li></ol><h2>預期結果</h2><p>在手冊建立時，於作者的環境實際執行，結果為：</p><ul><li><code>dotnet test</code>：<b>26 個測試全數通過</b>（遮罩 5、分流規則 9、民國年 10、評測 2）。</li><li>網站正常啟動，首頁載入 <code>tickets-app.js</code>。</li><li>#1：billing／normal／信心 0.95／不需人工。</li><li>#5：complaint／high／信心 0.95／<b>需人工</b>。</li><li>#6：billing／low／信心 0.99／<b>需人工</b>，旗標 <code>possible-injection</code>（來信內夾帶了指令）。</li><li>#8（發票寄錯、包裹也沒到）：shipping／normal／信心 0.9／<b>不需人工</b>（這是 Lab 3 要討論的一個隱憂）。</li></ul><p>你的數字應該一致；若不同，先檢查是否改動了專案檔案。</p><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 26 個測試通過</li><li><input type="checkbox" disabled> 能說出 #6 為什麼被標示為需人工</li><li><input type="checkbox" disabled> 稽核紀錄中沒有任何來信原文</li><li><input type="checkbox" disabled> 寫下一件讓你意外的觀察</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>常見狀況</summary><ul><li>還原失敗（401 或 NU1301）：確認 <code>nuget.config</code> 與你的全域設定。</li><li>埠被占用：加上 <code>--urls http://localhost:5099</code>。</li><li>看到的數字不同：確認沒有設定 <code>TICKETDESK_LLM</code> 環境變數（那會改用真實模型）。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

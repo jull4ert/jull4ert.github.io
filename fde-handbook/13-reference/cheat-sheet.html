@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>一頁速查｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>一頁速查</h1>
+  <p class="sub">專案流程、判斷規則、警訊與常用數字</p>
+</header>
+<main class="page">
+
+<h2>專案流程</h2>
+<div class="tree">看懂客戶 → 設計 → 垂直切片 → 整合 → 評測 → 信任 → 採用 → 複用
+ 02        03       04        05      06      07      08     10
+（全程：09 溝通）</div>
+<h2>開工前五問</h2><ol><li>真正的問題是什麼？（不是客戶說的解決方案）</li><li>成功怎麼量？基準值有嗎？護欄是什麼？</li><li>適合 AI 嗎？（頻率、規則、錯誤成本、資料、可驗證、價值可量）</li><li>人在哪裡把關？哪些一定由人決定？</li><li>資料去哪裡？誰審批？要等多久？</li></ol><h2>判斷規則</h2><table><thead><tr><th>情況</th><th>做法</th></tr></thead><tbody><tr><td>規則確定</td><td>寫程式，不用 AI</td></tr><tr><td>規則模糊但人可快速檢查</td><td>AI 當草稿或分流，人把關</td></tr><tr><td>錯誤成本高</td><td>只做輔助；決定留給人</td></tr><tr><td>不確定、低信心、疑似注入、高風險類別</td><td>一律轉人工（規則決定，不由模型決定）</td></tr><tr><td>模型輸出</td><td>視為不可信輸入：白名單驗證、範圍檢查、失敗轉人工</td></tr><tr><td>需要即時資料或動作</td><td>工具（窄、唯讀優先、最小權限）</td></tr><tr><td>需要客戶文件知識</td><td>檢索（附出處、依權限過濾）</td></tr><tr><td>現成工具能達 80%</td><td>不要自建</td></tr></tbody></table><h2>警訊</h2><ul><li>客戶直接說解決方案（「我們要 chatbot」）→ 回頭問「上一次發生什麼」</li><li>只有 demo、沒有評測集</li><li>沒有基準值就宣稱改善</li><li>只有一個評測集、沒有保留集</li><li>覆寫率 0%（可能沒人認真看）</li><li>防線只在畫面、沒在後端</li><li>金鑰在程式或前端</li><li>把 AI 的摘要當成專業意見（法律、財務、醫療）</li><li>專案後期才找資安與法務</li><li>交接只有簡報、沒有手冊也沒讓客戶操作</li></ul><h2>常用數字與記憶</h2><ul><li>30 筆案例觀察到 90%：95% 信賴區間約 ±11 個百分點。小樣本不要過度解讀。</li><li>三的規則：同一需求出現在三個客戶，考慮產品化。</li><li>一頁文件原則：結論與需要的行動放在最前面。</li><li>壞消息：早、事實、影響、選項、建議、下一步。</li><li>誠實的資安回答：具體、有證據、承認限制、不知道就說不知道並承諾期限。</li></ul><h2>在 TicketDesk 上最常用的指令</h2><pre><code>dotnet test TicketDesk.sln
+dotnet run --project src/TicketDesk.Web
+dotnet test --logger "console;verbosity=detailed"   # 看評測輸出</code></pre><p>相關頁面：<a href="../12-cases-labs/index.html">案例與練習</a>、<a href="./templates.html">模板庫</a>。</p>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

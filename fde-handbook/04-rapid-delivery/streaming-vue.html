@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>串流到 Vue｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>串流到 Vue</h1>
+  <p class="sub">用 Server-Sent Events 讓使用者即時看到回應，以及它的限制</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>串流是讓後端「邊產生、邊送出」，前端「邊收、邊顯示」。使用者不必等整段回應完成就看到開頭，感受上快很多。常見做法是 Server-Sent Events（SSE）：HTTP 回應保持開啟，後端逐段寫入 <code>data: ...</code>。</p><h2>為什麼 FDE 需要它</h2><p>模型產生長文字需要數秒到數十秒。串流不會讓總時間變短，但能大幅改善「等待的感受」。FDE 要知道怎麼做，也要知道它的代價：驗證與規則要在完整輸出之後才能執行。</p><h2>怎麼做</h2><h3>後端（ASP.NET Core）：TicketDesk 的範例</h3>
+<p>這是「模擬串流」：草稿已經產生完畢，再分段送出，用來示範前後端的機制。實測用 <code>curl -N</code> 能逐段收到。</p><pre><code>[HttpGet("tickets/{id:int}/draft-stream")]
+public async Task DraftStream(int id, CancellationToken ct)
+{
+    var ticket = store.Get(id);
+    if (ticket?.Triage is null)
+    {
+        Response.StatusCode = StatusCodes.Status404NotFound;
+        return;
+    }
+
+    Response.ContentType = "text/event-stream";
+    Response.Headers.CacheControl = "no-cache";
+
+    var text = ticket.Triage.DraftReply;
+    for (var i = 0; i &lt; text.Length; i += 4)
+    {
+        var chunk = text.Substring(i, Math.Min(4, text.Length - i));
+        await Response.WriteAsync($"data: {JsonSerializer.Serialize(chunk)}\n\n", ct);
+        await Response.Body.FlushAsync(ct);
+        await Task.Delay(30, ct);
+    }
+    await Response.WriteAsync("event: done\ndata: {}\n\n", ct);
+}</code></pre><h3>前端（Vue）：用 fetch 讀取串流</h3><pre><code>async streamDraft() {
+  this.reply = "";
+  const res = await fetch("/api/tickets/" + this.current.id + "/draft-stream");
+  if (!res.ok || !res.body) throw new Error("串流失敗（" + res.status + "）");
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+    let idx;
+    while ((idx = buffer.indexOf("\n\n")) &gt;= 0) {
+      const block = buffer.slice(0, idx);
+      buffer = buffer.slice(idx + 2);
+      if (block.startsWith("data: ") &amp;&amp; !block.includes("event: done")) {
+        this.reply += JSON.parse(block.slice(6));
+      }
+    }
+  }
+}</code></pre><p>用 <code>fetch</code> 而不是 <code>EventSource</code>，因為前者可以用 POST、可帶標頭、也比較容易處理錯誤。</p>
+<h3>串流的代價與注意</h3><ul><li><b>驗證與規則</b>：遮罩、白名單驗證、「是否交給人」的規則，只能在完整輸出後執行。串流中顯示的內容<b>尚未驗證</b>，介面上不要讓使用者在串流完成前就送出。</li><li><b>中途失敗</b>：連線中斷時，前端已顯示一半的內容，要有明確的錯誤狀態與重試。</li><li><b>代理與緩衝</b>：反向代理或閘道可能緩衝回應，導致串流看起來是一次出現。部署時要確認（例如關閉緩衝）。</li><li><b>取消</b>：使用者離開時，要把取消傳回後端，停止呼叫以免浪費成本。</li><li><b>Razor 與 Vue 的衝突</b>：在 .cshtml 中使用 Vue 的縮寫 <code>@click</code> 會被 Razor 當成程式碼；請用 <code>v-on:click</code>，或寫成 <code>@@click</code>。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：客戶抱怨「很慢」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：草稿產生平均需要 8 秒，使用者覺得系統卡住，重複點擊，造成重複呼叫與成本。</p><ul><li>改善 1：按下後立即顯示「處理中」並停用按鈕。</li><li>改善 2：串流顯示草稿，使用者 1 秒內就看到開頭。</li><li>改善 3：在串流完成、驗證通過前，「核可送出」維持停用。</li></ul><p>總時間沒有變，但客戶的感受與重複呼叫都改善了。</p></div><h2>常見錯誤</h2><ul><li>串流完就直接採用，沒有跑驗證。</li><li>沒處理中斷與重試。</li><li>忘記代理緩衝，測試環境正常、客戶環境卻一次出現。</li><li>在 .cshtml 中用 <code>@click</code> 而讓頁面無法編譯。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式情境沒有串流，但有相同的體驗原則：讓使用者知道系統正在處理、大約多久、能不能中途取消，而不是讓他對著空白畫面等待。</p></div><h2>怎麼練</h2><ul><li>在 TicketDesk 實際點「重新串流顯示草稿」，觀察逐字顯示；用瀏覽器開發者工具的網路頁籤看回應。</li><li>修改範例：串流進行時，停用「核可送出」，完成後才啟用。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>能實際跑出逐段顯示；能說明為什麼串流中的內容尚未通過驗證。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>漸進式顯示（先給部分結果）是通用的體驗設計：網頁骨架畫面、影片緩衝、搜尋即時結果。核心是用「進展的可見性」降低等待的焦慮。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

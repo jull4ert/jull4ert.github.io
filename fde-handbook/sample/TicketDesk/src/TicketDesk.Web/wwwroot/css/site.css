@@ -1,0 +1,23 @@
+body { font-family: system-ui, "Microsoft JhengHei", sans-serif; margin: 0; }
+header { background: #1f3a5f; color: #fff; padding: 8px 16px; }
+header h1 { margin: 0; font-size: 1.1rem; }
+main { padding: 16px; }
+.hint { color: #666; font-size: .9rem; }
+.layout { display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; }
+.list { flex: 1 1 300px; }
+.list ul { list-style: none; padding: 0; margin: 0; }
+.list li { border: 1px solid #ccc; padding: 8px 10px; margin-bottom: 6px; cursor: pointer; }
+.list li.active { border-color: #1f3a5f; background: #eef3fa; }
+.detail { flex: 2 1 400px; }
+.body { background: #f6f6f6; padding: 8px; white-space: pre-wrap; }
+.status { color: #666; font-size: .8rem; margin-left: 6px; }
+.badge { display: inline-block; font-size: .75rem; border: 1px solid #999; border-radius: 99px; padding: 0 8px; margin-right: 4px; }
+.badge.warn { border-color: #b45309; color: #b45309; }
+.badge.ok { border-color: #15803d; color: #15803d; }
+.warn-text { color: #b45309; }
+.error { color: #b91c1c; }
+.empty { color: #888; }
+textarea { width: 100%; box-sizing: border-box; display: block; margin: 4px 0 8px; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; }
+.audit { margin-top: 24px; }

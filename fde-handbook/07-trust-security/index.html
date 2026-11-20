@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>信任、資安與合規｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>信任、資安與合規</h1>
+  <p class="sub">AI 專案能不能上線，常常取決於資安與法務；這一區教你怎麼讓客戶放心</p>
+</header>
+<main class="page">
+
+<p>客戶的資安、法務與稽核部門，決定你的專案能不能上線。FDE 要能和他們用同一種語言對話：資料去哪裡、誰能看、被怎麼保護、出事怎麼辦。</p><div class="note"><b>這不是法律意見。</b>法規會修正，適用的版本與解釋因情況而異；涉及個資、跨境傳輸與行業監理的問題，請交由客戶的法務與合規人員，或你公司的法務判斷。</div><div class="note">技術範例以 <b>ASP.NET Core MVC（.NET 8）＋ Vue 3，前後端同一個 .NET 專案</b>為基準，並以練習專案 <code>sample/TicketDesk</code> 為例。若你的專案是 .NET Framework 的 ASP.NET MVC 5，觀念相同，但建置與測試指令、專案檔格式不同。</div>
+<h2>建議順序</h2><ol><li><a href="./data-minimization-pii.html">資料最小化與個資遮罩</a>：送出的資料越少越好</li><li><a href="./prompt-injection.html">提示注入與過度代理</a>：模型會被輸入誘導，所以要在系統層防禦</li><li><a href="./audit-logging.html">稽核紀錄</a>：事後能重建「誰、何時、做了什麼」</li><li><a href="./security-questionnaire.html">回答資安問卷</a>：誠實、具體、有證據</li><li><a href="./compliance-pdpa.html">個資法與合規基本觀念</a>：台灣情境的重點與限制</li><li><a href="./vendor-review.html">供應商與工具審查</a>：模型服務、外掛與 MCP 的風險</li></ol><div id="children"></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

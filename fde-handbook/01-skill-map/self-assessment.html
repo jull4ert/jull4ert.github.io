@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>自我評估｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>自我評估</h1>
+  <p class="sub">24 題檢核表，可勾選並即時看到六項能力的分布</p>
+</header>
+<main class="page">
+
+<h2>如何使用</h2>
+<ul>
+<li>每題請依「你是否獨立做過，且能拿出證據」勾選；只是看過或聽過，不要勾。</li>
+<li>勾選的結果會存在你自己的瀏覽器裡（若瀏覽器禁止儲存，仍可使用，只是重新整理後會清掉）。</li>
+<li>這是自我檢核工具，沒有及格線；重點是看出最弱的能力。</li>
+</ul>
+<div id="quiz"></div>
+<h2>你的結果</h2>
+<div id="result" class="card"><p>尚未勾選任何項目。</p></div>
+<script>
+(function () {
+  var Q = [
+    ["① 技術實作", [
+      "我能在一天內做出一個呼叫模型 API 的可執行原型（含前端畫面）",
+      "我會把模型輸出當成不可信的輸入，並寫驗證",
+      "我會把提示與設定放進版本控制並可重現",
+      "我知道怎麼估算一次呼叫的 token 成本與延遲"]],
+    ["② 客戶與問題定義", [
+      "我做過至少一次現場跟班，並畫出實際流程",
+      "我能在開工前寫出可量測的成功指標與基準值",
+      "我能判斷一個題目是否適合用 AI，並說明理由",
+      "我能指出專案的關鍵關係人，以及各自的疑慮"]],
+    ["③ 整合與環境", [
+      "我整合過至少一個舊系統或資料庫，並處理過資料品質問題",
+      "我能設計模型呼叫工具時的權限（最小權限）",
+      "我能在客戶的網路與防火牆限制下規劃連線方式",
+      "我知道整合失敗時的重試、冪等與降級作法"]],
+    ["④ 評估與信任", [
+      "我建立過評測集，並區分開發集與保留集",
+      "我能定義「必須升級給人」的安全底線並量測",
+      "我回答過客戶的資安問卷或參加過資安審查",
+      "我能說明個資如何被遮罩、保存與稽核"]],
+    ["⑤ 採用與溝通", [
+      "我辦過使用者訓練，並蒐集過回饋",
+      "我寫過進度回報，包含風險與需要客戶決定的事項",
+      "我處理過壞消息（延誤、效果不如預期）的溝通",
+      "我能用採用率或工時變化證明價值"]],
+    ["⑥ 回饋與複用", [
+      "我把一個案子的作法整理成可重用的範本",
+      "我寫過產品回饋，並被採納過",
+      "我能判斷哪些需求是客製、哪些該進產品",
+      "我寫過案例檔案，記錄背景、決策、結果與教訓"]]
+  ];
+  var KEY = "fde-self-assessment-v1";
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { state = {}; }
+  var quiz = document.getElementById("quiz");
+  Q.forEach(function (g, gi) {
+    var h = document.createElement("h3"); h.textContent = g[0]; quiz.appendChild(h);
+    var ul = document.createElement("ul"); ul.style.listStyle = "none"; ul.style.paddingLeft = "0";
+    g[1].forEach(function (text, ti) {
+      var id = gi + "-" + ti;
+      var li = document.createElement("li");
+      var label = document.createElement("label");
+      var cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = !!state[id];
+      cb.onchange = function () { state[id] = cb.checked; try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} render(); };
+      label.appendChild(cb); label.appendChild(document.createTextNode(" " + text));
+      li.appendChild(label); ul.appendChild(li);
+    });
+    quiz.appendChild(ul);
+  });
+  function render() {
+    var box = document.getElementById("result"), total = 0, rows = "";
+    Q.forEach(function (g, gi) {
+      var n = 0; g[1].forEach(function (_, ti) { if (state[gi + "-" + ti]) n++; });
+      total += n;
+      var bar = "";
+      for (var i = 0; i < 4; i++) bar += i < n ? "■" : "□";
+      rows += "<tr><td>" + g[0] + "</td><td>" + bar + " " + n + "/4</td></tr>";
+    });
+    var advice = total === 0 ? "尚未勾選任何項目。" : "合計 " + total + "/24。最弱的能力請優先補，並回到各區的「怎麼練」。";
+    box.innerHTML = "<p>" + advice + "</p><table><thead><tr><th>能力</th><th>已有證據的題數</th></tr></thead><tbody>" + rows + "</tbody></table>";
+  }
+  render();
+})();
+</script>
+<div class="note">參考對照（粗略）：多數題都勾 → 可能接近 Lv3；只勾①與部分②③ → 約 Lv1 到 Lv2。請以<a href="./levels-evidence.html">層級證據</a>為準。</div>
+
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

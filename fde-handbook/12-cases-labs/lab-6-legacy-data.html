@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 6：舊系統匯出檔與民國年｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 6：舊系統匯出檔與民國年</h1>
+  <p class="sub">壞資料要回報，不要猜，也不要默默丟掉</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：寫一個匯入器，讀 <code>docs/legacy/tickets-export.csv</code>，把民國年轉成西元，並回報所有無法處理的資料列（含行號與原因）。</p><p><b>預估時間</b>：90 分鐘　<b>前置</b>：Lab 0；讀過 <a href="../05-integration/data-quality.html">資料品質</a></p></div><h2>步驟</h2><ol><li>先用眼睛檢查這個 CSV，列出你預期有哪些列會有問題。</li><li>用既有的 <code>RocDate.TryParse</code> 寫 <code>LegacyTicketImporter.Parse</code>，回傳 <code>ImportResult</code>（成功的單據、錯誤清單）。<b>先寫測試</b>。</li><li>錯誤訊息必須包含<b>行號</b>與<b>單號</b>與<b>原因</b>。</li><li>檢查 L007（<code>2024/11/08</code> 是合法的西元日期，但被拒絕了）。這是 bug 還是合理？你要怎麼決定？寫下你的取捨。</li><li>寫一段「給客戶的資料品質回報」：這份匯出檔有哪些問題、各幾筆、建議怎麼處理。</li><li>思考：真實的舊系統匯出檔常是 Big5 編碼，也可能有欄位內含逗號或換行。這個簡化版匯入器會在哪裡壞掉？</li></ol><h2>預期結果</h2><p>作者實測：匯入 9 列資料，<b>成功 4 筆（L001、L002、L003、L009），錯誤 5 筆</b>：L004（113/02/30，不存在的日期）、L005（「昨天」）、L006（空白）、L007（西元格式，被拒絕）、L008（113/13/01，月份不合理）。3 個匯入器測試通過。</p><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 測試先於實作</li><li><input type="checkbox" disabled> 錯誤訊息含行號、單號、原因</li><li><input type="checkbox" disabled> 能說明為什麼拒絕比猜好</li><li><input type="checkbox" disabled> 對 L007 做出有理由的決定</li><li><input type="checkbox" disabled> 客戶回報稿具體而不指責</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考解答</summary><h3>匯入器</h3><pre><code>using TicketDesk.Web.Models;
+
+namespace TicketDesk.Web.Services;
+
+public record ImportResult(List&lt;Ticket&gt; Tickets, List&lt;string&gt; Errors);
+
+/// &lt;summary&gt;
+/// 讀舊系統匯出的 CSV。原則：壞資料要回報（含行號與原因），不要猜、也不要默默丟掉。
+/// 限制：這是簡化版，不處理欄位內含逗號或換行（真實匯出檔要用正式的 CSV 函式庫）。
+/// &lt;/summary&gt;
+public static class LegacyTicketImporter
+{
+    public static ImportResult Parse(IEnumerable&lt;string&gt; lines)
+    {
+        var tickets = new List&lt;Ticket&gt;();
+        var errors = new List&lt;string&gt;();
+        var lineNo = 0;
+
+        foreach (var line in lines)
+        {
+            lineNo++;
+            if (lineNo == 1 || string.IsNullOrWhiteSpace(line))
+            {
+                continue; // 標題列與空行
+            }
+
+            var cols = line.Split(',');
+            if (cols.Length != 5)
+            {
+                errors.Add($"第 {lineNo} 行：欄位數是 {cols.Length}，應為 5");
+                continue;
+            }
+
+            if (cols[0].Length &lt; 2 || !int.TryParse(cols[0][1..], out var id))
+            {
+                errors.Add($"第 {lineNo} 行：單號格式不符「{cols[0]}」");
+                continue;
+            }
+
+            if (!RocDate.TryParse(cols[4], out var date))
+            {
+                errors.Add($"第 {lineNo} 行（{cols[0]}）：建立日期無法判斷「{cols[4]}」");
+                continue;
+            }
+
+            tickets.Add(new Ticket
+            {
+                Id = id,
+                Customer = cols[1],
+                Subject = cols[2],
+                Body = cols[3],
+                CreatedAt = date.ToDateTime(TimeOnly.MinValue)
+            });
+        }
+
+        return new ImportResult(tickets, errors);
+    }
+}</code></pre><h3>讓測試專案讀得到匯出檔（TicketDesk.Tests.csproj）</h3><pre><code>&lt;None Include="../../docs/legacy/tickets-export.csv" Link="docs/tickets-export.csv" CopyToOutputDirectory="PreserveNewest" /&gt;</code></pre><h3>測試</h3><pre><code>// ---- Lab 6：舊系統匯出檔，壞資料要回報而不是猜 ----
+public class LegacyImporterTests
+{
+    private static string[] Sample() =&gt; File.ReadAllLines(Path.Combine(AppContext.BaseDirectory, "docs", "tickets-export.csv"));
+
+    [Fact]
+    public void Imports_valid_rows_and_reports_invalid_ones_with_line_numbers()
+    {
+        var result = LegacyTicketImporter.Parse(Sample());
+        Assert.Equal(4, result.Tickets.Count);
+        Assert.Equal(5, result.Errors.Count);
+        Assert.Contains(result.Errors, e =&gt; e.Contains("L004"));
+        Assert.Contains(result.Errors, e =&gt; e.Contains("L005"));
+    }
+
+    [Fact]
+    public void Converts_roc_dates_to_gregorian()
+    {
+        var result = LegacyTicketImporter.Parse(Sample());
+        var first = result.Tickets.First(t =&gt; t.Id == 1);
+        Assert.Equal(new DateTime(2024, 11, 5), first.CreatedAt.Date);
+    }
+
+    [Fact]
+    public void Rows_with_wrong_column_count_are_reported()
+    {
+        var result = LegacyTicketImporter.Parse(new[] { "單號,客戶,主旨,內容,建立日期", "L100,甲,乙" });
+        Assert.Empty(result.Tickets);
+        Assert.Single(result.Errors);
+    }
+}</code></pre><h3>L007 的取捨</h3><ul><li>目前的 <code>RocDate</code> 刻意只接受 2 到 3 位數的年份，所以「2024/11/08」被拒絕。這是<b>保守的選擇</b>：寧可請人確認，也不要猜。</li><li>若客戶確認「四位數年份一定是西元」，可以擴充 <code>RocDate</code> 支援，並<b>加上測試</b>與說明；這個規則應由客戶確認，而不是你假設。</li><li>更重要的是向客戶回報「這份匯出檔混用了兩種年份格式」，這是系統端的資料問題。</li></ul><h3>給客戶的回報（範例）</h3><p>本次匯出 9 筆，4 筆可匯入，5 筆需要確認：日期不存在 1 筆（L004）、月份不合理 1 筆（L008）、非日期文字 1 筆（L005）、空白 1 筆（L006）、西元格式與其他筆不一致 1 筆（L007）。建議請系統管理員確認原始資料，我們不會自行推測日期。</p></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>判斷適不適合 AI｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>判斷適不適合 AI</h1>
+  <p class="sub">用六個條件篩選題目，並知道什麼時候不該用 AI</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>不是每個問題都適合用 AI。這個技能是在投入前，用一組條件評估候選題目，避免把資源投在不適合或高風險的地方。</p><h2>為什麼 FDE 需要它</h2><p>FDE 常被期待「什麼都能用 AI 解決」。這個期待本身是風險。Anthropic 在談建構 agent 的文章中建議：從最簡單的解法開始，只在需要時才增加複雜度；很多情況下，一次模型呼叫搭配檢索與範例就夠了，而 agent 會用延遲與成本換取表現，也可能讓錯誤累積。判斷適不適合，是保護客戶也保護你自己。</p><h2>怎麼做</h2><h3>六個評估條件</h3><table><thead><tr><th>條件</th><th>問題</th><th>偏好</th></tr></thead><tbody><tr><td>① 頻率與量</td><td>這件事多常發生？量夠不夠大</td><td>高頻、大量，效益才值得</td></tr><tr><td>② 規則清晰度</td><td>好的結果能不能被說清楚？</td><td>有明確標準或大量範例</td></tr><tr><td>③ 錯誤成本</td><td>出錯會造成什麼後果？能不能回復？</td><td>錯誤成本低或可回復；高風險要有人把關</td></tr><tr><td>④ 資料可得</td><td>需要的資料拿得到嗎？品質如何？</td><td>資料已存在且可合法使用</td></tr><tr><td>⑤ 可驗證</td><td>人能不能快速檢查結果對不對？</td><td>檢查比自己做快很多</td></tr><tr><td>⑥ 價值可量</td><td>能不能衡量改善（時間、品質、金額）？</td><td>有可量測的基準值</td></tr></tbody></table><h3>先不要用 AI 的情況</h3><ul><li><b>規則完全確定</b>：用程式或查表就能 100% 解決（例如依金額區間決定簽核層級）。</li><li><b>必須 100% 正確且無人檢查</b>：例如自動核准付款。</li><li><b>資料不存在或不能用</b>：沒有資料，AI 只會編。</li><li><b>流程本身是壞的</b>：自動化一個壞流程只會更快地製造問題。</li><li><b>沒有人願意負責結果</b>：沒有 owner，上線後也不會有人維護。</li></ul><h3>快速決策</h3><ul><li>規則確定 → 寫程式，不要用 AI。</li><li>規則模糊但有人能快速檢查 → 適合 AI 當草稿或分流，人把關。</li><li>規則模糊且錯誤成本高 → 只能做輔助（找資料、整理），決定留給人。</li></ul><h3>為什麼很多試辦沒有走到正式</h3>
+<p>媒體引用 MIT 的研究報告《The GenAI Divide: State of AI in Business 2025》，稱約 95% 的企業生成式 AI 試辦沒有帶來可量測的損益影響（Fortune 轉述）。要注意：Fortune 的報導並未說明「失敗」如何定義與這個比例如何計算，樣本包含約 150 位領導者的訪談、350 位員工的問卷與 300 個公開部署，且我們沒有讀到報告原文。因此請把它當作「很多試辦沒有成效」的提醒，而不是精確的統計。</p><h2>業界情境</h2><div class="card"><h3>示意情境：五個候選題目的評分</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>電商客服部門提出五個想用 AI 的點，FDE 以六個條件快速評估：</p><table><thead><tr><th>候選</th><th>頻率</th><th>錯誤成本</th><th>可驗證</th><th>判斷</th></tr></thead><tbody><tr><td>來信分類與草稿</td><td>高</td><td>低（人核可）</td><td>高</td><td><b>適合，先做</b></td></tr><tr><td>自動退款核准</td><td>中</td><td>高（金錢）</td><td>中</td><td>不適合全自動；可做「整理證據」輔助</td></tr><tr><td>依規則發優惠券</td><td>高</td><td>低</td><td>高</td><td>規則確定，用程式即可</td></tr><tr><td>預測客戶流失</td><td>低</td><td>低</td><td>低</td><td>資料不足，暫緩</td></tr><tr><td>摘要每週客訴趨勢</td><td>中</td><td>低</td><td>中</td><td>適合，次優先</td></tr></tbody></table></div><h2>常見錯誤</h2><ul><li>先決定要用 AI，再找題目。</li><li>用 demo 成功來判斷適不適合，忽略邊緣案例與錯誤成本。</li><li>把「可以做到」當成「應該做」。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>同樣的條件可用在任何流程：先量「這件事一個月發生幾次、花多少時間、錯了會怎樣」。很多時候，簡單的表單或規則改善，就能得到比 AI 更穩定的效益。</p></div><h2>怎麼練</h2><ul><li>列出你工作中的五個候選題目，用六個條件評分，選出一個最適合與一個最不該用 AI 的，並寫下理由。</li><li>找一個「規則其實是確定的」卻被說成需要 AI 的案例，向對方說明如何用規則處理。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份候選題目評分表，且包含至少一個被你判斷為「不該用 AI」的題目與理由。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「先評估適不適合再投入」是所有技術導入的共通原則：導入雲端、區塊鏈、RPA 都適用。它的核心是把「興奮」與「價值」分開。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic：Building effective agents（已讀取）</a></li><li><a href="https://fortune.com/2025/08/18/mit-report-95-percent-generative-ai-pilots-at-companies-failing-cfo/">Fortune：MIT 報告報導（已讀取；為媒體轉述，非報告原文）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

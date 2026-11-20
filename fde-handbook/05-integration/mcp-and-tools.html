@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>工具與 MCP｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>工具與 MCP</h1>
+  <p class="sub">把客戶系統的能力，安全地交給模型使用</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p><b>工具（tool）</b>是模型可以請求執行的函式，例如「查詢訂單」「建立工單」。模型輸出要呼叫哪個工具與參數，由<b>你的程式</b>實際執行並把結果回傳。<b>MCP（Model Context Protocol）</b>是把工具與資料來源以標準方式提供給 AI 應用的協定，讓同一組工具可以被不同的 AI 應用重複使用。</p>
+<div class="note">MCP 的功能與各平台的支援會持續演進。這一頁談的是 FDE 設計工具時的原則，細節請以官方文件為準。姊妹手冊有 <a href="../../ai-agent-handbook/03-toolbox/mcp.html">MCP 的使用面說明</a>。</div><h2>為什麼 FDE 需要它</h2><p>公開的 FDE 職缺也把這個列為交付物：Anthropic 的職缺描述提到，要在客戶系統中交付 MCP 伺服器、sub-agent 與 agent skills。把客戶的系統能力包成「模型能安全使用的工具」，是 FDE 最具體的整合工作之一。</p><h2>怎麼做</h2><h3>工具設計原則</h3><ul><li><b>窄而明確</b>：「依訂單編號查詢訂單狀態」比「執行任意 SQL」安全得多。</li><li><b>唯讀優先</b>：先提供只讀工具；寫入類工具要有人核可。</li><li><b>參數嚴格驗證</b>：模型給的參數是不可信的輸入，與使用者輸入同等對待。</li><li><b>回傳精簡的結構化結果</b>：只回傳需要的欄位，避免塞入大量資料（浪費 token，也可能洩漏）。</li><li><b>清楚的描述與錯誤訊息</b>：模型靠描述決定何時使用；錯誤訊息要讓模型（與人）知道怎麼修正。</li><li><b>冪等與可稽核</b>：每次呼叫都記錄「誰（使用者）、透過哪個工具、參數、結果」。</li><li><b>限制範圍與數量</b>：分頁、最大筆數、時間範圍；避免一次撈出整張表。</li></ul><h3>工具的風險分級</h3><table><thead><tr><th>等級</th><th>例子</th><th>控制</th></tr></thead><tbody><tr><td>讀取（低）</td><td>查訂單狀態、查文件</td><td>依使用者權限過濾；限制筆數；記錄</td></tr><tr><td>建立（中）</td><td>建立工單草稿</td><td>預設為草稿；人核可後才生效</td></tr><tr><td>修改（高）</td><td>更新訂單、退款</td><td>人核可；有上限；可復原；雙人確認</td></tr><tr><td>刪除／不可逆（極高）</td><td>刪除資料、寄出對外信件</td><td>預設不提供給模型，或需要明確的人工確認</td></tr></tbody></table><h3>示意：一個查詢工具的定義</h3>
+<p>下面是工具定義的「概念示意」（欄位名稱依你使用的平台而不同）：</p><pre><code>name: get_order_status
+description: 依訂單編號查詢目前的出貨狀態。只能查詢呼叫者有權限的訂單。
+parameters:
+  orderNo: string（格式 A + 8 位數字；不符則拒絕）
+returns:
+  { orderNo, status, lastUpdatedAt }   # 不回傳客戶個資與金額</code></pre><h3>MCP 的角色</h3><ul><li>把工具包成 MCP 伺服器，客戶可以用在多個 AI 應用，而不是綁在你的程式裡。</li><li>代價：多一個要維運與保護的元件；權限、稽核與網路連線都要設計。</li><li>供應鏈風險：來源不明的 MCP 伺服器等同於不受信任的程式碼；客戶環境中要審查與限定來源。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：「給它資料庫權限就好」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客戶的資訊主管說：「直接給 AI 資料庫連線，它想查什麼就查什麼，很快。」</p><ul><li>風險：提示注入可以讓模型被誘導查詢不該看的資料；沒有稽核；一個壞查詢拖垮資料庫。</li><li>FDE 的替代方案：提供三個窄工具（查訂單狀態、查最近三筆來信、查退款政策），每個都依使用者權限過濾、限制筆數、記錄稽核。</li><li>客戶一開始覺得「麻煩」，但在第一次資安審查時，這個設計成為過關的關鍵。</li></ul></div><h2>常見錯誤</h2><ul><li>提供「萬用」工具（任意 SQL、任意 URL）。</li><li>工具回傳整份資料，浪費成本又增加外洩風險。</li><li>工具沒有稽核。</li><li>直接使用來源不明的 MCP 伺服器。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式場景中，「工具」可能是既有系統的功能：用 AI 助理整理資料後，由人在原系統操作。重點仍是：AI 只做建議與整理，會產生副作用的動作由人執行或核可。</p></div><h2>怎麼練</h2><ul><li>替你的專案設計三個工具（一個讀取、一個建立草稿、一個高風險），寫出描述、參數驗證、回傳欄位與控制。</li><li>審查一個你找到的第三方 MCP 伺服器：它需要哪些權限？程式來源可信嗎？</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份工具清單，每個工具都有風險等級、參數驗證、權限與稽核設計。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「窄而明確的介面、最小權限、稽核」同樣適用於設計 REST API、微服務與內部平台。模型只是一個需要特別小心的呼叫者。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://job-boards.greenhouse.io/anthropic/jobs/5391021008">Anthropic 的 Forward Deployed Engineer 職缺（已讀取；職缺頁可能下架）</a></li><li><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM Applications（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

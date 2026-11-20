@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 7：週報、價值報告、營運手冊、壞消息｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 7：週報、價值報告、營運手冊、壞消息</h1>
+  <p class="sub">這一個 Lab 沒有程式：練習把前面做的事，變成別人讀得懂、能行動的東西</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：用 Lab 3 到 Lab 6 的真實結果，完成四份溝通與交接文件。</p><p><b>預估時間</b>：2 到 3 小時　<b>前置</b>：Lab 3 到 Lab 6；讀過 <a href="../09-communication/index.html">09 溝通與影響力</a>、<a href="../08-adoption/index.html">08 上線與採用</a></p></div><h2>步驟</h2><ol><li><b>週報</b>：以 Lab 3、4 的真實數字寫第 3 週週報（整體狀態、完成、指標、風險與需要協助、需要的決定）。</li><li><b>壞消息稿</b>：你在保留集發現了「帳號被盜用沒有升級」。寫一份給客服主管的說明：結論、事實、影響、選項（含建議）、需要的決定與時間。</li><li><b>營運手冊</b>：用<a href="../08-adoption/handover-runbook.html">骨架範本</a>，寫「模型供應商不可用時」與「更新提示與評測集」兩章。</li><li><b>價值報告</b>：用假設數字（明確標示為假設）寫一頁價值報告，包含一個誠實的限制說明。</li><li>請一位不懂技術的人讀你的四份文件，問他：「你知道我需要你做什麼嗎？」記錄他的回答。</li></ol><h2>預期結果</h2><p>你的文件應該：先講結論與需要的行動；數字有來源；風險有負責人與期限；壞消息裡沒有責怪與形容詞。</p><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 週報用的是真實數字（14/18、7/8、0 件未升級）</li><li><input type="checkbox" disabled> 壞消息稿含兩個選項與建議</li><li><input type="checkbox" disabled> 營運手冊的兩章可被他人照著操作</li><li><input type="checkbox" disabled> 價值報告的假設被明確標示</li><li><input type="checkbox" disabled> 有非技術者的閱讀回饋</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考解答（節錄）</summary><h3>壞消息稿</h3><pre><code>結論：評測發現一個安全缺口，已修正；上線前需要你確認一項規則。
+事實：保留集中「帳號被盜用」的來信被判斷為一般帳號問題，沒有轉人工（8 筆中的 1 筆）。
+影響：若未修正，帳號遭盜用的客戶可能收到不適當的標準回覆，延誤處理。目前未上線，沒有客戶受影響。
+已採取：新增資安字眼規則，命中即一律轉人工，並加了測試；重新量測，未升級案例為 0。
+選項：
+  A 維持目前規則（盜用、盜刷、詐騙、駭客、外洩、釣魚等字眼一律轉人工）——建議
+  B 再擴大到「異常登入」「陌生交易」等較廣的字眼（會增加人工量，約多 3% 的來信）
+需要的決定：請在週三前確認 A 或 B。</code></pre><h3>價值報告要點</h3><ul><li>寫出假設：每月來信、基準處理時間（尚未量測則寫明）、抽樣大小。</li><li>不要把「釋出時間」直接換算成「省下的人力成本」。</li><li>限制：英文、多意圖、被誘導的來信一律轉人工。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

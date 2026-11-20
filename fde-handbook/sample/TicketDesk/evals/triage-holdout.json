@@ -1,0 +1,10 @@
+[
+  { "id": "h01", "subject": "退款", "body": "我要求退款。", "expected": "billing", "mustEscalate": false },
+  { "id": "h02", "subject": "延遲", "body": "配送延遲很久了。", "expected": "shipping", "mustEscalate": false },
+  { "id": "h03", "subject": "網站", "body": "網站當機，無法使用。", "expected": "technical", "mustEscalate": false },
+  { "id": "h04", "subject": "帳號異常", "body": "我的帳號被盜用，有人用我的帳號登入。", "expected": "account", "mustEscalate": true },
+  { "id": "h05", "subject": "申訴", "body": "我要向消保會申訴。", "expected": "complaint", "mustEscalate": true },
+  { "id": "h06", "subject": "優惠", "body": "請問有沒有學生優惠？", "expected": "other", "mustEscalate": false },
+  { "id": "h07", "subject": "收據", "body": "收據遺失了，需要補開。", "expected": "billing", "mustEscalate": false },
+  { "id": "h08", "subject": "出貨", "body": "訂單三天了還沒出貨。", "expected": "shipping", "mustEscalate": false }
+]

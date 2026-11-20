@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>身分與權限｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>身分與權限</h1>
+  <p class="sub">以使用者身分操作、最小權限，並讓權限在每一層都生效</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>身分與權限是：知道「是誰在操作」，並限制他只能看到與做他有權限的事。在 AI 系統中，最重要的原則是<b>模型沒有自己的權限，它只能代表某個使用者、在該使用者的權限內行動</b>。</p><h2>為什麼 FDE 需要它</h2><p>AI 讓權限問題放大：它可以在一次回答中整合許多來源的資料，使原本分散、需要權限才能看的資訊被輕易組合。若系統用一個大權限的帳號代替使用者查詢，就等於把每個使用者的權限提升到最大。OWASP 的 LLM 風險清單中，「過度代理（Excessive Agency）」與「敏感資訊洩漏」都與此有關。</p><h2>怎麼做</h2><h3>核心原則</h3><ul><li><b>代表使用者</b>：查詢與工具呼叫要帶使用者的身分，並在資料層套用其權限；不要用單一的高權限服務帳號代替所有人。</li><li><b>最小權限</b>：服務帳號只給需要的最小權限，且唯讀優先。</li><li><b>權限在資料層判斷，不在提示中判斷</b>：不要用「請不要回答某些資料」這種提示來保護機密。</li><li><b>每一層都檢查</b>：前端隱藏按鈕不是權限；API 與服務層必須再檢查。</li><li><b>稽核含使用者</b>：每次操作都記錄是誰，見<a href="../07-trust-security/audit-logging.html">稽核紀錄</a>。</li></ul><h3>單一登入（SSO）</h3><ul><li>客戶通常已有身分系統（如 Microsoft Entra ID／Active Directory、其他 OIDC 或 SAML 供應商）。FDE 要接上它，而不是自己做一套帳號。</li><li>向客戶 IT 確認：用哪個協定、誰能註冊應用程式、角色與群組如何對應、token 有效期。</li><li>權限來源以客戶的群組或角色為準，不要在你的系統內重複維護一份。</li></ul><h3>ASP.NET Core 的作法（示意，TicketDesk 預設未啟用）</h3><pre><code>builder.Services.AddAuthorization(o =&gt;
+    o.AddPolicy("Support", p =&gt; p.RequireRole("support-agent")));
+
+[ApiController]
+[Route("api")]
+[Authorize(Policy = "Support")]
+public class TicketsApiController(...) : ControllerBase
+{
+    // 以登入者作為稽核的操作者，而不是固定字串
+    private string Actor =&gt; User.Identity?.Name ?? "unknown";
+}</code></pre><p>TicketDesk 目前用固定字串 <code>demo-user</code> 當操作者，並在 README 中明說這是刻意省略；Lab 會要求你補上。</p><h3>檢索中的權限</h3><ul><li>文件被切片建索引時，要連同「誰能看」的資訊（部門、機密等級）一起儲存。</li><li>查詢時以使用者的權限過濾，<b>在把內容送進模型之前</b>過濾；不要先取回再讓模型自己「不要說」。</li><li>測試：用低權限帳號問高權限文件的內容，應該得到「找不到」。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：薪資表被問出來了</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：公司內部文件問答系統，用一個高權限的服務帳號索引所有文件，包含人資的薪資調整表。一位新進員工問：「我們部門主管的年終獎金大概多少？」系統根據索引的內容回答了。</p><ul><li>問題不在模型，而在<b>索引與查詢時沒有套用權限</b>。</li><li>修正：文件索引時標記存取群組；查詢時過濾；薪資類文件從索引移除，或僅對人資角色開放。</li><li>驗證：加入「低權限帳號查高權限內容」的回歸測試。</li></ul></div><h2>常見錯誤</h2><ul><li>以服務帳號查詢，所有使用者權限等同管理員。</li><li>用提示要求模型「不要洩漏」代替權限控管。</li><li>只在前端控制權限。</li><li>權限邏輯在自己系統再做一份，和客戶的來源不同步。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>使用 AI 工具處理文件時，要想：「我貼進去的內容，其他人也有權限看嗎？」共用的 AI 工作區或知識庫，若裡面混了不同敏感度的文件，等於把權限放寬。依機密等級分開存放。</p></div><h2>怎麼練</h2><ul><li>替 TicketDesk 加上登入（可用最簡單的方式，如測試用的固定使用者），並讓稽核紀錄記錄真實的操作者。</li><li>設計一個「低權限查高權限內容」的測試案例，說明預期結果。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份權限設計文件，說明身分來源、角色對應、每層如何檢查，並有越權的自動測試。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「代表使用者行動」是所有委派式系統的原則（OAuth 的授權委派、批次工作的最小權限）。AI 是最近一個必須遵守它的新角色。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://genai.owasp.org/llm-top-10/">OWASP Top 10 for LLM Applications（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

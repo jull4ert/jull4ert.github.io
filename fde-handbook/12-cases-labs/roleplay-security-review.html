@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資安審查角色扮演｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>資安審查角色扮演</h1>
+  <p class="sub">一人當 FDE，一人當資安長；練習誠實、具體、有證據地回答</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>這個練習模擬客戶資安長對你的 AI 專案的審查會議。重點是：回答時誠實、具體、能指出證據，並知道什麼時候該說「我不確定，我會在某日前回覆」。</p><h2>為什麼 FDE 需要它</h2><p>多數 FDE 第一次面對資安審查時，會因為緊張而誇大或含糊。實際演練過，能大幅降低這種反應。</p><h2>怎麼做</h2><h3>如何進行</h3><ol><li>FDE 先花 15 分鐘準備：用 <code>sample/TicketDesk</code> 的實際設計，整理資料流圖與一頁說明。</li><li>資安長用下方問題清單提問，並依「追問」深入。</li><li>審查 20 分鐘，FDE 不可以說「很安全」「業界標準」這類空泛的話，每個回答都要指向證據。</li><li>結束後雙方回顧：哪些回答有說服力？哪些聽起來像誇大？</li></ol><h3>問題清單與追問（供扮演資安長者使用）</h3><table><thead><tr><th>問題</th><th>追問</th></tr></thead><tbody><tr><td>資料會送到哪裡？</td><td>送出的是什麼欄位？有個資嗎？怎麼證明遮罩有效？</td></tr><tr><td>供應商會保存或拿去訓練嗎？</td><td>依據是什麼文件？版本與日期？怎麼確保條款不會變？</td></tr><tr><td>誰能存取系統與紀錄？</td><td>操作者是怎麼識別的？管理員的權限如何控管？</td></tr><tr><td>如果模型被誘導（提示注入）會怎樣？</td><td>你怎麼證明？有測試嗎？最壞情況是什麼？</td></tr><tr><td>出事了你們怎麼知道？</td><td>有稽核紀錄嗎？存多久？誰能看？可以竄改嗎？</td></tr><tr><td>你們用了哪些第三方元件？</td><td>誰審查過？版本固定嗎？</td></tr><tr><td>有沒有通過某某認證？</td><td>涵蓋範圍是你的系統還是供應商？</td></tr><tr><td>出事了怎麼通報？</td><td>多久內？誰負責？</td></tr></tbody></table><h3>評分表</h3><table><thead><tr><th>項目</th><th>0</th><th>1</th><th>2</th></tr></thead><tbody><tr><td>具體而非空泛</td><td>多為「很安全」</td><td>部分具體</td><td>每個回答都具體</td></tr><tr><td>證據</td><td>沒有</td><td>提到有證據</td><td>能當場指出文件、測試或設定</td></tr><tr><td>誠實說明限制</td><td>隱藏限制</td><td>被追問才承認</td><td>主動說明限制與補救計畫</td></tr><tr><td>不知道時的反應</td><td>亂猜</td><td>含糊帶過</td><td>說不知道並承諾期限</td></tr><tr><td>區分責任</td><td>混在一起</td><td>部分區分</td><td>清楚區分你、客戶與供應商的責任</td></tr></tbody></table><div class="note">練習時請用 TicketDesk 的<b>實際</b>狀況回答，包括它的限制（沒有登入、稽核在記憶體、遮罩抓不到姓名與地址）。誠實說出這些，並提出補救計畫，是這個練習的重點。</div><h2>業界情境</h2><div class="card"><h3>示意情境：「很安全」與「這樣處理」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>兩位 FDE 面對同一個問題：「個資會不會外流？」</p><table><thead><tr><th></th><th>回答</th></tr></thead><tbody><tr><td>A</td><td>「不會，我們有做安全措施，是業界標準。」</td></tr><tr><td>B</td><td>「送出前會遮罩卡號、email、手機、市話與身分證字號，測試在這裡；姓名與地址目前抓不到，我們用欄位排除與每週 20 封抽查補強；稽核紀錄不含原文，這是測試。供應商條款的保存與訓練政策，我附上條款摘要，並在週五前請法務確認最新版本。」</td></tr></tbody></table><p>B 的回答有限制、有證據、有承諾期限；資安長通常更信任 B。</p></div><h2>常見錯誤</h2><ul><li>用「業界標準」代替具體說明。</li><li>被追問就改口。</li><li>把供應商的認證說成自己的。</li></ul><h2>怎麼練</h2><ul><li>完成一次完整演練並寫下三個你會改進的回答。</li><li>用<a href="../07-trust-security/security-questionnaire.html">資安問卷</a>的答案格式，整理你的回答。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>一份回答紀錄，每個答案都附證據位置與限制說明。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>誠實說明限制並提出補救，也是面對稽核、客訴與事故檢討時最有效的策略。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

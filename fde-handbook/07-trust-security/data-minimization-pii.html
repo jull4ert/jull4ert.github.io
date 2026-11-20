@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>資料最小化與個資遮罩｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>資料最小化與個資遮罩</h1>
+  <p class="sub">只送出完成任務所需的資料，並在送出前遮罩個資</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>資料最小化是：<b>只蒐集、傳送與保存完成任務所必需的資料</b>。個資遮罩是在資料送給模型或寫入紀錄之前，把可識別個人的資訊（電子郵件、電話、身分證字號、卡號等）替換成代號。</p><h2>為什麼 FDE 需要它</h2><p>資料最小化是最有效、也最容易向客戶說明的保護：<b>沒送出的資料，就不會外洩</b>。它也直接對應法規中「在特定目的的必要範圍內」使用個資的要求（見<a href="./compliance-pdpa.html">個資法基本觀念</a>）。許多專案能否通過資安審查，取決於你能否清楚說明「哪些資料送到哪裡」。</p><h2>怎麼做</h2><h3>步驟</h3><ol><li><b>畫資料流圖</b>：資料從哪裡來、經過哪些元件、送到哪個外部服務、存在哪裡、保存多久。</li><li><b>逐欄位問「模型需要嗎」</b>：分類來信不需要客戶姓名與卡號；回覆草稿可能需要名字，但可以用代號再由系統填回。</li><li><b>在邊界遮罩</b>：資料離開你的控制範圍之前遮罩，而不是靠模型「不要洩漏」。</li><li><b>用代號可還原的方式</b>：必要時以 <code>[CUSTOMER_1]</code> 取代，回應後由系統換回，不讓模型看到真實值。</li><li><b>限制保存</b>：紀錄不含原文；原文依客戶的保存政策處理。</li></ol><h3>TicketDesk 的遮罩</h3><table><thead><tr><th>類型</th><th>規則</th><th>替換為</th></tr></thead><tbody><tr><td>卡號</td><td>13 到 16 位數字（可含空白或連字號）</td><td><code>[CARD]</code></td></tr><tr><td>電子郵件</td><td>一般 email 格式</td><td><code>[EMAIL]</code></td></tr><tr><td>手機</td><td>09 開頭 10 碼</td><td><code>[PHONE]</code></td></tr><tr><td>身分證字號</td><td>一個大寫字母＋1 或 2＋8 位數字</td><td><code>[ID]</code></td></tr></tbody></table><p>規則順序很重要：先處理卡號，避免手機規則吃掉卡號前十碼。測試在 <code>PiiMaskerTests</code>。</p><h3>遮罩的限制（要誠實告訴客戶）</h3><ul><li><b>規則式遮罩抓不到所有個資</b>：姓名、地址、公司名稱、病歷內容，用規則很難可靠辨識。TicketDesk 沒有處理姓名與地址。</li><li><b>可能誤判或漏判</b>：長數字可能被誤認為卡號；格式特殊的號碼會漏掉。</li><li><b>自由文字中的間接識別</b>：「住在三樓的那位退休教師」不含任何規則可抓的欄位，卻可能識別個人。</li><li><b>對策</b>：結合欄位層級的排除（根本不取用姓名欄位）、命名實體辨識、以及人工抽查遮罩的結果。</li></ul><h3>資料分級</h3><table><thead><tr><th>等級</th><th>例子</th><th>處理</th></tr></thead><tbody><tr><td>公開</td><td>產品說明、公開網站內容</td><td>可送外部服務</td></tr><tr><td>內部</td><td>一般營運文件</td><td>依客戶政策；通常可送核准的服務</td></tr><tr><td>機密</td><td>合約、報價、財務</td><td>遮罩或限定服務；需審批</td></tr><tr><td>個資／敏感</td><td>客戶姓名電話、病歷、薪資</td><td>最小化、遮罩、嚴格存取與稽核；未經核准不得送外部</td></tr></tbody></table><h2>業界情境</h2><div class="card"><h3>示意情境：「我們的資料不會外流」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：資安長問：「你們的 AI 會不會把我們的客戶資料送出去？」</p><ul><li><b>不好的回答</b>：「不會，我們有安全措施。」（空泛，無法驗證）</li><li><b>好的回答</b>：打開資料流圖——「只有來信的主旨與內文會送到模型服務；送出前會遮罩卡號、電話、email、身分證字號；姓名與地址欄位不取用；紀錄只存摘要不存原文。已知限制：規則遮罩抓不到自由文字中的姓名，我們用抽樣檢查，每週 20 封。」</li></ul><p>具體、有限制說明的回答，比「完全安全」更可信。</p></div><h2>常見錯誤</h2><ul><li>以為遮罩可以百分之百。</li><li>把完整資料送出再靠提示要求模型保密。</li><li>只畫了系統資料流，卻漏了日誌與除錯輸出。</li><li>評測集中含真實個資，且被複製到各處。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>使用 AI 工具處理文件時，先把姓名、帳號、金額等敏感欄位以代號取代再貼上；盡量用公司核准的工具，並確認內容是否會被保存或用於訓練（以合約與官方政策為準）。</p></div><h2>怎麼練</h2><ul><li>替 TicketDesk 畫資料流圖，標出每個地方的資料內容與保存。</li><li>擴充 <code>PiiMasker</code>：增加市話與統一編號的規則並寫測試，同時寫出「應該不被遮罩」的反例。</li><li>拿 20 封遮罩後的來信，人工檢查有沒有漏網的個資，記錄漏掉的類型。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份資料流圖與遮罩規則清單；有遮罩的測試與抽樣檢查紀錄；能說清楚遮罩的限制。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>資料最小化與假名化（pseudonymization）是隱私工程的核心，也是 GDPR 等法規的基本原則；同樣的思考適用於日誌、分析報表、與外包交付。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=I0050021">全國法規資料庫：個人資料保護法（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

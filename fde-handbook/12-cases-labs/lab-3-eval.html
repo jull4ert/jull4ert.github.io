@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 3：評測、錯誤分類與安全缺口｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 3：評測、錯誤分類與安全缺口</h1>
+  <p class="sub">用評測集找出問題，在對的層修正，並避免過度配合</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：分析開發集與保留集的失敗，補上保留集暴露的安全缺口，並理解為什麼不能直接把保留集的錯誤「修到過關」。</p><p><b>預估時間</b>：90 分鐘　<b>前置</b>：Lab 0；讀過 <a href="../06-evals/index.html">06 評估與品質</a></p></div><h2>步驟</h2><ol><li>執行 <code>dotnet test --logger "console;verbosity=detailed"</code>，記錄 dev 與 holdout 的輸出（正確率、失誤案例、未升級案例）。</li><li>用<a href="../06-evals/failure-handling.html">錯誤分類表</a>，替每個失誤（d15 至 d18、h04、h07）標記原因與應修正的層。</li><li>你會發現保留集有一個<b>安全缺口</b>（h04：帳號被盜用卻沒升級）。設計並實作修正，讓它升級，並寫一個單元測試。</li><li>再想一個問題：來信 #8（發票寄錯、包裹也沒到）目前被放行。這算不算缺口？你要怎麼決定？寫下理由。</li><li>討論：h07（「收據」）能不能直接把「收據」加進 <code>FakeLlmClient</code> 的帳務關鍵字？這樣做的問題是什麼？你會怎麼做才算合理？</li><li>把你加的新案例（至少 6 筆，取自你對真實情境的想像）放進開發集，重新量測。</li></ol><h2>預期結果</h2><p>手冊作者實測：</p><ul><li>修正前：dev 14/18（78%）、holdout 7/8（88%）、holdout 有 1 筆未升級（h04）。</li><li>修正後（見參考解答）：dev 仍是 14/18、holdout 仍是 7/8，但<b>未升級為 0</b>；分類正確率沒有變，因為這個修正針對的是「安全底線」，不是「分類」。</li></ul><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 每個失誤都有分類與修正層</li><li><input type="checkbox" disabled> h04 已升級且有測試</li><li><input type="checkbox" disabled> 能說出為什麼不該為了 h07 直接調整以通過保留集</li><li><input type="checkbox" disabled> 新增案例後重新量測並記錄</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考解答</summary><h3>1. 在規則層修正（確定、便宜、不依賴模型）</h3><p>新增 <code>Services/SecuritySignals.cs</code>：</p><pre><code>using System.Text.RegularExpressions;
+
+namespace TicketDesk.Web.Services;
+
+/// &lt;summary&gt;帳號被盜用、盜刷、詐騙等資安事件字眼：一律交給人，不管模型怎麼分類。&lt;/summary&gt;
+public static class SecuritySignals
+{
+    private static readonly Regex Pattern = new(@"盜用|被盜|盜刷|詐騙|駭客|外洩|釣魚", RegexOptions.Compiled);
+
+    public static bool Looks(string? text) =&gt; !string.IsNullOrEmpty(text) &amp;&amp; Pattern.IsMatch(text);
+}</code></pre><p>在 <code>TriageService.TriageAsync</code> 呼叫模型之前加入旗標，並在 <code>Validate</code> 中把它列入「需要人工」的條件：</p><pre><code>if (SecuritySignals.Looks(ticket.Subject + " " + ticket.Body))
+{
+    flags.Add("security-sensitive");
+}
+// ...
+var needsHuman =
+    flags.Contains("possible-injection") ||
+    flags.Contains("security-sensitive") ||     // 新增
+    flags.Contains("invalid-category") ||
+    confidence &lt; MinConfidence || ...</code></pre><h3>2. 測試</h3><pre><code>// ---- Lab 3：資安事件字眼一律交給人 ----
+public class SecurityEscalationTests
+{
+    private sealed class ConfidentLlm : ILlmClient
+    {
+        public Task&lt;LlmTriage&gt; TriageAsync(string subject, string maskedBody, CancellationToken ct = default) =&gt;
+            Task.FromResult(new LlmTriage("account", "normal", 0.95, "草稿", "理由"));
+    }
+
+    [Fact]
+    public async Task Account_takeover_is_escalated_even_when_model_is_confident()
+    {
+        var svc = new TriageService(new ConfidentLlm(), new InMemoryAuditLog(), TimeProvider.System);
+        var result = await svc.TriageAsync(new Ticket { Id = 1, Subject = "帳號異常", Body = "我的帳號被盜用，有人用我的帳號登入。" }, "t");
+        Assert.True(result.NeedsHuman);
+        Assert.Contains("security-sensitive", result.Flags);
+    }
+
+    [Fact]
+    public async Task Ordinary_account_question_is_not_flagged_as_security()
+    {
+        var svc = new TriageService(new ConfidentLlm(), new InMemoryAuditLog(), TimeProvider.System);
+        var result = await svc.TriageAsync(new Ticket { Id = 1, Subject = "忘記密碼", Body = "我登入不了帳號。" }, "t");
+        Assert.DoesNotContain("security-sensitive", result.Flags);
+        Assert.False(result.NeedsHuman);
+    }
+}</code></pre><h3>3. 關於 #8 與 h07</h3><ul><li>#8（多意圖）：是否算缺口取決於業務風險。若客戶認為「一封信混了兩件事就該由人看」，可以加規則（例如偵測到兩個以上類別的關鍵字就降低信心或轉人工）。<b>這是需要和客服主管討論的決定，不是你自己決定</b>。</li><li>h07：把「收據」直接加進關鍵字，等於「看著保留集改答案」，保留集就失去意義，分數也不再代表泛化能力。合理的做法是：把「收據」的案例加進<b>開發集</b>、改規則，然後<b>另外取得新的保留集</b>來檢查。</li><li>也要記得：保留集只有 8 筆，88% 與 78% 的差異不具統計意義。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

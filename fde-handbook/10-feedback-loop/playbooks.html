@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>把經驗整理成可複用的資產｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>把經驗整理成可複用的資產</h1>
+  <p class="sub">範本、檢核表、評測集與參考架構：讓下一個專案更快</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>Playbook 是把一次專案中被驗證有效的作法，整理成別人可以直接使用的資產：範本、檢核表、參考架構、評測集的樣式、程式庫，以及「做法與教訓」。</p><h2>為什麼 FDE 需要它</h2><p>FDE 的規模取決於「能不能把經驗留下來」。不留下的經驗只存在你的腦中，下一個專案要從頭來過。整理資產的投資，會在第二、第三個專案開始回收；它也是你職涯成長的證據，見<a href="../01-skill-map/levels-evidence.html">Lv4 的證據</a>。</p><h2>怎麼做</h2><h3>可複用的資產類型</h3><table><thead><tr><th>類型</th><th>例子</th><th>本手冊對應</th></tr></thead><tbody><tr><td>訪談與盤點工具</td><td>訪談題庫、流程盤點表</td><td><a href="../13-reference/discovery-questions.html">訪談題庫</a></td></tr><tr><td>文件模板</td><td>範圍文件、驗收標準、價值報告、營運手冊</td><td><a href="../13-reference/templates.html">模板</a></td></tr><tr><td>參考架構</td><td>分層、介面、稽核、遮罩的標準做法</td><td>TicketDesk 專案</td></tr><tr><td>評測資產</td><td>評測集的結構、評分準則、回歸測試的範本</td><td><code>evals/</code>、<a href="../06-evals/index.html">06</a></td></tr><tr><td>程式庫</td><td>遮罩、驗證、稽核、重試等共用元件</td><td>TicketDesk 的 Services</td></tr><tr><td>案例檔案</td><td>每個專案一頁的背景、決策、結果、教訓</td><td><a href="../13-reference/templates.html">模板</a></td></tr><tr><td>訓練教材</td><td>工作坊、速查</td><td><a href="../08-adoption/training.html">使用者訓練</a></td></tr></tbody></table><h3>怎麼整理</h3><ol><li><b>專案中就開始</b>：做到第二次類似的事，就停下來問：這能不能變成範本？</li><li><b>去識別化</b>：移除客戶名稱、資料與機密；不要把客戶的真實資料放進通用資產。</li><li><b>寫清楚「何時適用」與「何時不適用」</b>：沒有邊界的範本會被誤用。</li><li><b>附一個真實的例子</b>：抽象的範本沒人看得懂。</li><li><b>在下一個專案實際使用並修正</b>：沒用過的範本，不算完成。</li><li><b>指定維護者與更新週期</b>：資產會過時。</li></ol><h3>案例檔案的格式（建議）</h3><pre><code># 案例：&lt;專案代號&gt;（已去識別化）
+- 背景：產業、規模、要解決的問題
+- 成功指標與基準、結果
+- 關鍵決策：我們選了什麼、為什麼、放棄了什麼
+- 遇到的阻礙與處理
+- 已知限制
+- 可複用的資產：連結
+- 教訓：下次會怎麼做不同</code></pre><h3>未經授權不要複用的東西</h3><ul><li>客戶的資料、文件、程式碼與機密。</li><li>涉及保密協議的設計細節。</li><li>不確定時，先問客戶與自己公司的法務。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：第三個專案快了三週</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：FDE 在前兩個專案後，整理了一套「訪談題庫＋評測集結構＋驗收模板＋遮罩元件」。第三個專案使用這些資產，第一週就做完問題定義與評測集初版（以往要三週）。</p><ul><li>在第三個專案中，他發現遮罩元件不支援統一編號，補上後更新資產。</li><li>同組的另一位 FDE 也開始使用，並貢獻了不同產業的題庫。</li><li>這成為他晉升的主要證據：不只做了專案，也讓團隊更有效率。</li></ul></div><h2>常見錯誤</h2><ul><li>沒有去識別化就分享。</li><li>整理出很多範本，但沒人用。</li><li>沒有維護，範本過時。</li><li>以為寫完文件就算有資產，沒有實際驗證。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>任何領域的重複工作都可以變成資產：標準的訪談指引、報告範本、檢核表、常見問題庫。「第二次做的時候就整理」是最容易開始的習慣。</p></div><h2>怎麼練</h2><ul><li>整理你最近一個專案的案例檔案（去識別化），並找一位同事評論。</li><li>從 TicketDesk 挑一個可複用的元件（如遮罩），寫出「何時適用、何時不適用」。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有至少兩份被他人使用過的資產，並有使用者的回饋與更新紀錄。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>把隱性知識變成顯性資產，是知識管理、軟體重用與工程文化的核心；醫院的臨床路徑、航空的檢查表，都是同一種思維的成果。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

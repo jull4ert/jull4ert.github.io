@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab 5：人機核可：後端強制與 Vue 介面｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>Lab 5：人機核可：後端強制與 Vue 介面</h1>
+  <p class="sub">防線要放在後端；畫面只是讓人容易做對</p>
+</header>
+<main class="page">
+<div class="card"><p><b>目標</b>：讓「需要人工」的來信，在核可時必須由人明確確認，並讓這個規則在<b>後端</b>被強制執行。</p><p><b>預估時間</b>：90 分鐘　<b>前置</b>：Lab 0；了解 Razor 與 Vue 的 <code>@</code> 衝突（請用 <code>v-on:click</code>）</p></div><h2>步驟</h2><ol><li>在畫面上對 #5（客訴）按「AI 分流」，然後直接按「核可送出」。目前會發生什麼？</li><li>用瀏覽器開發者工具（或 curl）直接呼叫 <code>POST /api/tickets/5/approve</code>，確認即使不經過畫面也能送出。這說明了什麼問題？</li><li>修改後端：<code>ApproveRequest</code> 加入 <code>Confirmed</code>；需人工的案件若未確認，回傳 400。<b>先寫測試</b>。</li><li>修改 Vue：需人工的信顯示確認勾選框；未勾選時停用「核可送出」，勾選後送出 <code>confirmed: true</code>。</li><li>稽核紀錄加入 <code>confirmed=</code>。</li><li>思考：勾選框能不能被當成「人真的看過」的證據？有什麼方法能降低「一律勾選」的風險？（提示：見<a href="../03-solution-design/human-in-the-loop.html">自動化偏誤</a>）</li></ol><h2>預期結果</h2><p>作者實測：</p><ul><li>三個單元測試通過（需人工且未確認 → 400；需人工且已確認 → 成功；一般案件不需確認）。</li><li>以 curl 呼叫：未帶 <code>confirmed</code> → 回傳 <code>{"error":"此信需要人工判斷，請確認後再核可"}</code>；帶 <code>confirmed:true</code> → 成功，稽核紀錄出現 <code>confirmed=True</code>。</li><li>Vue 變更只做了 <code>node --check</code> 語法檢查，<b>沒有在瀏覽器中實際點擊測試</b>，請你自己驗證畫面行為。</li></ul><h2>檢核清單</h2><ul><li><input type="checkbox" disabled> 後端測試先於實作</li><li><input type="checkbox" disabled> 直接呼叫 API 也無法繞過</li><li><input type="checkbox" disabled> 畫面在未確認時停用按鈕</li><li><input type="checkbox" disabled> 稽核記錄確認狀態</li><li><input type="checkbox" disabled> 能說明勾選框的局限</li></ul><h2>參考解答</h2><p>請先自己做完再看。解答只是其中一種合理的做法。</p><details><summary>參考解答</summary><h3>後端（TicketsApiController）</h3><pre><code>public record ApproveRequest(string? Reply, bool Confirmed = false);
+
+// 在檢查回覆非空之後：
+// 需要人工判斷的信，必須由人明確確認；這個檢查放在後端，不能只靠畫面上的勾選框
+if (ticket.Triage.NeedsHuman &amp;&amp; !request.Confirmed)
+{
+    return BadRequest(new { error = "此信需要人工判斷，請確認後再核可" });
+}</code></pre><h3>測試</h3><pre><code>// ---- Lab 5：需人工的信，核可時必須明確確認（後端強制，不只靠畫面） ----
+public class ApproveConfirmationTests
+{
+    private static (TicketsApiController Controller, ITicketStore Store) Build()
+    {
+        var store = new InMemoryTicketStore();
+        var audit = new InMemoryAuditLog();
+        var triage = new TriageService(new FakeLlmClient(), audit, TimeProvider.System);
+        return (new TicketsApiController(store, triage, audit, TimeProvider.System), store);
+    }
+
+    [Fact]
+    public async Task Needs_human_ticket_cannot_be_approved_without_confirmation()
+    {
+        var (c, store) = Build();
+        await c.Triage(5, default); // 客訴：一定需要人工
+        var result = c.Approve(5, new TicketsApiController.ApproveRequest("我們很抱歉", false));
+        Assert.IsType&lt;BadRequestObjectResult&gt;(result);
+        Assert.Equal(TicketStatus.Triaged, store.Get(5)!.Status);
+    }
+
+    [Fact]
+    public async Task Needs_human_ticket_can_be_approved_with_confirmation()
+    {
+        var (c, store) = Build();
+        await c.Triage(5, default);
+        var result = c.Approve(5, new TicketsApiController.ApproveRequest("我們很抱歉", true));
+        Assert.IsType&lt;OkObjectResult&gt;(result);
+        Assert.Equal(TicketStatus.Replied, store.Get(5)!.Status);
+    }
+
+    [Fact]
+    public async Task Routine_ticket_does_not_need_confirmation()
+    {
+        var (c, _) = Build();
+        await c.Triage(3, default); // 技術問題，信心高，不需人工
+        var result = c.Approve(3, new TicketsApiController.ApproveRequest("請提供截圖", false));
+        Assert.IsType&lt;OkObjectResult&gt;(result);
+    }
+}</code></pre><h3>前端（Index.cshtml 與 tickets-app.js）</h3><pre><code>&lt;label v-if="current.triage.needsHuman" class="confirm"&gt;
+    &lt;input type="checkbox" v-model="confirmed" /&gt; 我已親自確認此信內容與系統狀態，並負責這次回覆
+&lt;/label&gt;
+&lt;button v-on:click="approve"
+        v-bind:disabled="busy || current.status === 'Replied' || (current.triage.needsHuman &amp;&amp; !confirmed)"&gt;核可送出&lt;/button&gt;
+
+// tickets-app.js
+data() { return { /* ... */ confirmed: false }; },
+// select(t) 內重設： this.confirmed = false;
+// approve() 的 body： JSON.stringify({ reply: this.reply, confirmed: this.confirmed })</code></pre><h3>關於勾選框的局限</h3><ul><li>勾選框只是留下「責任歸屬」的紀錄，並不能保證人真的看過。</li><li>可以搭配：高風險類別要求輸入簡短理由、定期插入已知有誤的測試案例、抽樣審查與覆寫率監控。</li></ul></details>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

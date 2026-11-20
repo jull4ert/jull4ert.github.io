@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>模板庫｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>模板庫</h1>
+  <p class="sub">十三份可複製的模板</p>
+</header>
+<main class="page">
+<p>複製後依專案修改。每個模板都對應手冊中的一頁，括號內是詳細說明。</p><h2>一頁範圍文件</h2><p>（說明：<a href="../02-discovery/scope-sow.html">對應頁面</a>）</p><pre><code>專案名稱：
+日期：　版本：　負責人：
+
+目標（一兩句話，含指標）：
+範圍內：
+ -
+不在範圍（至少三項）：
+ -
+假設（附日期與負責人）：
+ - 例：第 2 週前由 ○○ 提供 500 筆遮罩樣本
+依賴：
+驗收標準：（連結到驗收文件）
+階段與出口條件：POC → 試辦 → 正式
+變更處理：新需求由 ○○ 評估影響，雙方共同決定並記錄
+風險與緩解：</code></pre><h2>驗收標準</h2><p>（說明：<a href="../06-evals/acceptance-criteria.html">對應頁面</a>）</p><pre><code>品質門檻
+| 指標 | 門檻 | 量測資料 | 量測方式 |
+| 分類正確率 | ≥ 85% | 評測集 v1（60 筆） | 自動，每次修改重跑 |
+
+安全底線（必須為 0）
+| 條件 | 量測方式 |
+| 應升級給人的案例被自動放行 | 評測集中 mustEscalate 案例 |
+
+隱私：送出模型的內容不含 email、電話、卡號、身分證字號
+效能：90% 的請求在 5 秒內回應
+成本：每月不超過 ○○
+已知不處理：（例：英文來信）
+簽認：客戶 ○○　日期　／　FDE ○○　日期</code></pre><h2>週報</h2><p>（說明：<a href="../09-communication/status-reporting.html">對應頁面</a>）</p><pre><code>○○專案 週報（第 N 週）
+整體：綠／黃／紅 — 一句話原因
+本週完成（成果導向，3 到 5 項）：
+指標（目標 → 現況）：
+下週計畫：
+風險與需要協助（描述、影響、需要誰做什麼、期限）：
+需要的決定（具體問題與選項，附建議）：</code></pre><h2>決策紀錄</h2><p>（說明：<a href="../09-communication/writing-docs.html">對應頁面</a>）</p><pre><code>## 決策：○○
+- 日期：　決定者：
+- 背景：
+- 選項：A…；B…
+- 決定：
+- 理由：
+- 之後要重新檢視的條件：</code></pre><h2>資料流說明表</h2><p>（說明：<a href="../07-trust-security/data-minimization-pii.html">對應頁面</a>）</p><pre><code>| 資料項目 | 來源 | 經過的元件 | 是否送出外部服務 | 遮罩或最小化 | 保存位置與期限 | 存取者 |
+| 來信主旨 | 工單系統 | 分流服務 | 是（模型服務） | 規則遮罩 | 不保存 | 系統 |
+| 來信內文 | 工單系統 | 分流服務 | 是 | 規則遮罩（卡號、email、手機、市話、身分證） | 不保存 | 系統 |
+| 稽核紀錄 | 分流服務 | 稽核儲存 | 否 | 不含原文 | 12 個月 | 稽核與管理員 |</code></pre><h2>評測案例（JSON）</h2><p>（說明：<a href="../06-evals/eval-sets.html">對應頁面</a>）</p><pre><code>{ "id": "d01",
+  "subject": "…",
+  "body": "…（已遮罩）",
+  "expected": "billing",
+  "mustEscalate": false,
+  "notes": "標註者與爭議說明（選填）" }
+
+標註指南（附在評測集旁）：
+- 每個類別的定義與一個正例、一個反例
+- 多意圖來信怎麼標
+- 什麼情況 mustEscalate = true</code></pre><h2>提示範本（prompt card）</h2><p>（說明：<a href="../04-rapid-delivery/prompts-as-code.html">對應頁面</a>）</p><pre><code>名稱：　　版本：　　負責人：　　更新：
+目的：
+輸入（來源、是否已遮罩）：
+輸出格式（欄位與允許值）：
+限制（不得做的事；不確定時怎麼辦）：
+範例（至少 2 個，含 1 個邊界案例）：
+核對（使用者要檢查什麼）：
+變更紀錄：日期｜版本｜變更｜評測結果</code></pre><h2>營運手冊骨架</h2><p>（說明：<a href="../08-adoption/handover-runbook.html">對應頁面</a>）</p><pre><code>1. 系統概觀（架構圖、元件、外部依賴）
+2. 環境與設定（機密只寫位置）
+3. 日常操作（部署、回滾、更新提示與評測集）
+4. 監控與告警（告警｜意義｜處理）
+5. 常見問題（症狀｜原因｜處理）
+6. 降級：AI 暫停時的人工流程
+7. 已知限制
+8. 聯絡人與升級路徑
+9. 成本與預算告警
+10. 變更紀錄</code></pre><h2>價值報告</h2><p>（說明：<a href="../08-adoption/proving-value.html">對應頁面</a>）</p><pre><code>一句話成果：
+與目標比較（目標｜基準｜現況）：
+採用狀況（使用人數與持續性）：
+使用者故事（一則，具體）：
+成本與效益（標示估計與不確定性）：
+限制與下一步：</code></pre><h2>案例檔案</h2><p>（說明：<a href="../10-feedback-loop/playbooks.html">對應頁面</a>）</p><pre><code># 案例：○○（已去識別化）
+- 背景：
+- 成功指標與基準、結果：
+- 關鍵決策（選了什麼、為什麼、放棄了什麼）：
+- 阻礙與處理：
+- 已知限制：
+- 可複用資產（連結）：
+- 教訓：下次會怎麼做不同</code></pre><h2>客製追蹤清單</h2><p>（說明：<a href="../10-feedback-loop/custom-vs-product.html">對應頁面</a>）</p><pre><code>| 需求 | 客戶 | 目前做法 | 其他客戶也有？ | 決定 |</code></pre><h2>產品回饋</h2><p>（說明：<a href="../10-feedback-loop/writing-feedback.html">對應頁面</a>）</p><pre><code>一句話摘要：
+情境與使用者：
+證據（客戶數、頻率、引述、數據與日期）：
+影響：
+目前的替代做法：
+嚴重度（阻擋／重要／改善）：
+選項（可選）：
+附件（已去識別化）：</code></pre><h2>工作坊議程（90 分鐘）</h2><p>（說明：<a href="../09-communication/workshops.html">對應頁面</a>）</p><pre><code>10 分鐘 目的、成果、規則
+15 分鐘 暖身：每人 1 分鐘分享最麻煩的一件事
+40 分鐘 主體活動（盤點／排序／事前驗屍）
+15 分鐘 收斂：歸類、投票、決定
+10 分鐘 行動項目（誰、做什麼、何時前）；24 小時內寄出紀錄</code></pre>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

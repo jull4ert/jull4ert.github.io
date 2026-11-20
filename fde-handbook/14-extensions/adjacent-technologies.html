@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>相鄰技術｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>相鄰技術</h1>
+  <p class="sub">RPA、低程式碼、BI、規則引擎、OCR、傳統機器學習：何時不用 LLM</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>LLM 不是唯一的工具。許多客戶問題用其他技術更便宜、更穩定、更容易維護。FDE 要知道這些選項，並誠實地建議最合適的一個。</p><h2>為什麼 FDE 需要它</h2><p>Anthropic 對 agent 的建議也是「從最簡單的解法開始」。熟悉相鄰技術，才能做到這件事，也才能與客戶既有的工具共存，而不是推翻重來。</p><h2>怎麼做</h2><table><thead><tr><th>技術</th><th>適合</th><th>不適合（或較弱）</th><th>與 LLM 的搭配</th></tr></thead><tbody><tr><td>規則引擎／一般程式</td><td>規則完全確定、需要 100% 一致</td><td>規則模糊、文字理解</td><td>LLM 理解輸入，規則決定結果（TicketDesk 的做法）</td></tr><tr><td>RPA（機器人流程自動化）</td><td>固定的畫面操作、沒有 API 的舊系統</td><td>輸入多變、需要理解文字</td><td>LLM 先整理輸入，RPA 執行重複操作；注意脆弱性</td></tr><tr><td>低程式碼／表單／工作流平台</td><td>簡單流程、審核與通知</td><td>複雜的判斷與文字處理</td><td>LLM 作為其中一個步驟（分類、草稿）</td></tr><tr><td>BI／儀表板</td><td>看趨勢、監控、指標</td><td>個案層級的處理</td><td>用於監控 AI 專案（覆寫率、成本）</td></tr><tr><td>全文搜尋</td><td>關鍵字查文件</td><td>語意相近但用詞不同的查詢</td><td>檢索階段可結合搜尋與語意檢索</td></tr><tr><td>OCR／文件處理服務</td><td>掃描文件轉文字與版面</td><td>理解文字內容</td><td>先 OCR，再由 LLM 擷取與摘要；注意品質核對</td></tr><tr><td>傳統機器學習</td><td>有大量標註資料的預測與分類、需要可預期的成本</td><td>資料少、任務常變</td><td>分類量大且穩定時，可能比 LLM 便宜且快</td></tr><tr><td>人工流程改善</td><td>流程本身有問題</td><td>—</td><td>先修流程，再談自動化</td></tr></tbody></table><h3>選擇時的問題</h3><ul><li>這個問題的規則是否確定？（是 → 程式）</li><li>有沒有大量穩定的標註資料？（是 → 考慮傳統機器學習）</li><li>輸入是多變的文字嗎？（是 → LLM 有價值）</li><li>客戶已經有這類工具嗎？（是 → 優先使用，減少維運負擔）</li><li>失敗時的後果與可解釋性要求？</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：一個其實不需要 LLM 的專案</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客戶想用 LLM 判斷「請假單是否符合規定」。FDE 檢視後發現：規則共十二條，全部確定（天數、職等、日期區間）。</p><ul><li>建議：用規則引擎實作；請假單上的「事由」文字，可選用 LLM 做摘要，但不參與決定。</li><li>客戶一開始失望，但在兩週後看到「100% 一致、可稽核、零模型成本」後接受。</li><li>這個建議也避免了一個潛在的稽核問題：AI 無法解釋為何某張單據被拒。</li></ul></div><h2>常見錯誤</h2><ul><li>看到問題就想用 LLM。</li><li>忽略客戶已有的工具。</li><li>把 RPA 當成長期穩定的方案而不評估維護成本。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案中，簡單的表單、檢核表與流程調整，常常比導入任何技術更有效。先問：「如果不用任何新技術，我們能怎麼改善？」</p></div><h2>怎麼練</h2><ul><li>替你正在考慮的 AI 題目，各列出一個「不用 LLM」的替代方案，比較成本與風險。</li><li>找出客戶現有的一個自動化工具，想想 LLM 怎麼與它搭配。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>在至少一個專案中，你曾建議「不用 LLM」或「LLM 只負責其中一步」，並有理由。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>「用對的工具」是所有技術職務的核心判斷；了解工具的邊界，比精通單一工具更能解決真實問題。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic：Building effective agents（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

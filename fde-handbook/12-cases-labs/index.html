@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>案例與練習｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>案例與練習</h1>
+  <p class="sub">用完整案例看全貌，用 Lab 在練習專案上動手，用角色扮演練習人的部分</p>
+</header>
+<main class="page">
+
+<p>知道和做到之間有一段距離。這一區用三種方式縮短它：<b>案例</b>（看別人怎麼做、哪裡出錯）、<b>Lab</b>（在 TicketDesk 練習專案上動手）、<b>角色扮演</b>（練習訪談與資安審查）。</p>
+<div class="note">所有案例都是虛構組合，數字與名稱為示意。Lab 中的數字（測試數、正確率）是在練習專案上<b>實際執行</b>得到的，詳見<a href="../13-reference/verification-log.html">實測驗證紀錄</a>。</div>
+<h2>練習專案：TicketDesk</h2>
+<div class="card"><p>位置：<code>sample/TicketDesk/</code>（ASP.NET Core MVC＋Vue 3，同一個專案）。內容與限制見該資料夾的 <code>README.md</code>。它刻意保留了幾個缺口（保留集的資安缺口、遮罩與注入偵測的盲點、核可只靠畫面、舊資料匯入）作為練習題。</p></div>
+<h2>Lab 路徑</h2><table><thead><tr><th>Lab</th><th>主題</th><th>對應技能</th></tr></thead><tbody><tr><td><a href="./lab-0-setup.html">Lab 0</a></td><td>環境與跑起專案</td><td>技術實作</td></tr><tr><td><a href="./lab-1-read-project.html">Lab 1</a></td><td>讀懂專案與資料流</td><td>技術實作、整合</td></tr><tr><td><a href="./lab-2-discovery.html">Lab 2</a></td><td>從訪談紀錄做問題定義</td><td>客戶與問題定義</td></tr><tr><td><a href="./lab-3-eval.html">Lab 3</a></td><td>評測、錯誤分類與安全缺口</td><td>評估與信任</td></tr><tr><td><a href="./lab-4-safety.html">Lab 4</a></td><td>個資遮罩與提示注入</td><td>評估與信任</td></tr><tr><td><a href="./lab-5-human-in-loop.html">Lab 5</a></td><td>人機核可：後端強制與 Vue 介面</td><td>技術實作、人機分工</td></tr><tr><td><a href="./lab-6-legacy-data.html">Lab 6</a></td><td>舊系統匯出檔與民國年</td><td>整合與環境</td></tr><tr><td><a href="./lab-7-handover.html">Lab 7</a></td><td>週報、價值報告、營運手冊、壞消息</td><td>採用與溝通</td></tr><tr><td><a href="./lab-8-capstone.html">Lab 8</a></td><td>綜合練習與評分表</td><td>全部</td></tr></tbody></table><h2>案例</h2><ul><li><a href="./case-a-retail-support.html">案例 A：電商客服來信分流</a>（對應 Lab 的主軸）</li><li><a href="./case-b-insurance-claims.html">案例 B：保險理賠資料整理</a>（從「自動審核」到「資料整理」）</li><li><a href="./case-c-manufacturing-sop.html">案例 C：製造業 SOP 問答</a>（文件版本與安全邊界）</li><li><a href="./case-d-finance-recon.html">案例 D：月結對帳差異說明</a>（非程式為主，數字與內控）</li></ul><h2>角色扮演</h2><ul><li><a href="./roleplay-interview.html">客戶訪談角色扮演</a>（附隱藏資訊卡與評分表）</li><li><a href="./roleplay-security-review.html">資安審查角色扮演</a>（附問題清單與追問）</li></ul><div id="children"></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

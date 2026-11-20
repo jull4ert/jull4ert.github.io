@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>案例 A：電商客服來信分流｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>案例 A：電商客服來信分流</h1>
+  <p class="sub">虛構客戶「晨光生活」：從「全自動回信」走到「分流＋草稿＋人核可」</p>
+</header>
+<main class="page">
+<div class="note">本案例為虛構組合，用來說明決策與取捨；人名、公司與數字都是示意。</div><h2>背景</h2><p>晨光生活是中型電商，客服 9 人，每月來信約 8,000 封，旺季更多。老闆要求「今年一定要上 AI」，客服主管想要「全自動回信」，但他最怕的是回錯與錯誤承諾。客服系統是自建的舊 .NET MVC 系統。完整的訪談紀錄在 <code>docs/discovery/interview-notes.md</code>，也是 Lab 2 的素材。</p><h2>時間線</h2><table><thead><tr><th>時間</th><th>事件</th><th>用到的技能</th></tr></thead><tbody><tr><td>第 1 週</td><td>訪談、跟班；發現「6 分鐘」是估計、私人 Excel 的 VIP 名單</td><td>訪談、流程盤點</td></tr><tr><td>第 1 週</td><td>送出資訊部連線審核（約三週）；請求遮罩後的歷史來信</td><td>關係人、整合</td></tr><tr><td>第 2 週</td><td>建立評測集 v1（60 筆）與驗收標準；範圍文件簽認</td><td>評估、範圍</td></tr><tr><td>第 3 週</td><td>垂直切片：分流、草稿、核可、稽核；替身模型，量出第一版數字</td><td>垂直切片</td></tr><tr><td>第 4 週</td><td>資安說明會：資料流圖、遮罩、限制；請客服試用</td><td>資安、採用</td></tr><tr><td>第 5 至 6 週</td><td>調整規則、擴充評測集；發現多意圖與資安缺口；壞消息溝通</td><td>評估、溝通</td></tr><tr><td>第 7 至 8 週</td><td>影子模式兩週，比對人與系統；試辦與訓練</td><td>影子模式、訓練</td></tr><tr><td>第 9 週</td><td>價值報告、交接與營運手冊</td><td>證明價值、交接</td></tr></tbody></table><h2>關鍵決策</h2><h3>決策 1：不做「全自動回信」</h3><ul><li>選項：A 全自動；B 分流＋草稿＋人核可。</li><li>選擇 B。理由：客戶最怕的是錯誤承諾；B 的風險低、可量測；並用信任階梯定義之後何時放權。</li><li>關鍵動作：FDE 沒有直接拒絕，而是提供一條有條件的路徑。</li></ul><h3>決策 2：客訴、法律字眼、資安事件一律轉人工</h3><ul><li>這是客服主管提出的底線，被寫入驗收標準的「安全底線」。</li></ul><h3>決策 3：影子模式再上線</h3><ul><li>兩週內，系統與客服同時處理真實來信，但系統結果不採用。</li><li>比對：一致率、未升級案例、客服覆寫的類型。</li><li>價值：用真實資料取得證據，並讓資安與主管有信心。</li></ul><h2>發生的問題</h2><ul><li>私人 Excel（VIP）不在系統中，影響優先順序 → 請林小姐提供匿名化版本，並納入規則。</li><li>「6 分鐘」基準是估計 → 第 1 週抽樣 30 封計時，得到實測基準。</li><li>連線審核比預期久 → 因為第一週就送出申請，而且用遮罩樣本平行進行，只延後試辦的真實連線測試。</li><li>保留集發現「帳號被盜用」未升級 → 加入資安字眼規則，並向主管說明。</li><li>部分客服擔心被取代 → 邀請最資深的客服參與評測並負責找「最容易錯的案例」，她後來成為最有力的支持者。</li></ul><h2>結果（示意）</h2><p>（示意）影子模式兩週，分類一致率 88%，應升級案件漏接 0。試辦 4 週後，每週使用草稿的客服 7 人（共 9 人）。首次回覆的人工處理時間由估計的 6 分鐘，降至抽樣實測的 4.2 分鐘。限制清單：英文、多意圖、被誘導的來信一律轉人工。</p><h2>討論題</h2><ol><li>客服主管要的是「全自動」，你怎麼把他帶到 B 方案，而不讓他覺得被拒絕？</li><li>「6 分鐘」是估計。如果沒有先量基準，三個月後會發生什麼？</li><li>你會把影子模式放在哪個階段？不做影子直接試辦，風險是什麼？</li><li>資安缺口是在保留集被發現的。如果沒有保留集，你會在何時、以什麼方式發現？</li><li>哪些成果可以變成其他零售客戶的可複用資產？</li></ol><h2>對應章節</h2><ul><li><a href="../02-discovery/index.html">02 客戶與問題定義</a></li><li><a href="../03-solution-design/human-in-the-loop.html">人機分工</a></li><li><a href="../05-integration/integration-patterns.html">影子模式</a></li><li><a href="../06-evals/index.html">06 評估與品質</a></li><li><a href="./lab-2-discovery.html">Lab 2</a>、<a href="./lab-3-eval.html">Lab 3</a></li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

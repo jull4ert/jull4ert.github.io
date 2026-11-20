@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>垂直切片｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>垂直切片</h1>
+  <p class="sub">先做一條從頭到尾的完整路徑，而不是一層一層做</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>垂直切片是：挑一個最小的完整使用情境，從畫面、API、業務規則、模型到資料與稽核，全部做通，哪怕每層都很簡單。相對的「水平切片」是先做完資料層、再做 API、再做畫面。</p><h2>為什麼 FDE 需要它</h2><p>AI 專案的未知多半在整條路的接縫：資料取得、格式、權限、使用者的反應。水平做法要到最後才看到接縫的問題；垂直切片能在第一週就把最大的風險暴露出來，也能讓客戶盡早看到真實的東西並給回饋。</p><h2>怎麼做</h2><h3>怎麼選第一條切片</h3><ul><li>選<b>最常見、最簡單</b>的一種案例，而不是最難的。</li><li>一定要<b>包含人工核可與稽核</b>，因為這些是後面最容易被拖到最後、卻最影響信任的部分。</li><li>用<b>真實資料（遮罩後）</b>，不要用自己編的資料。</li><li>讓客戶的某個人能在一個畫面上<b>親手操作</b>。</li></ul><h3>在 TicketDesk 中，一條切片包含</h3><table><thead><tr><th>層</th><th>內容</th><th>檔案</th></tr></thead><tbody><tr><td>畫面</td><td>列表、分流按鈕、結果、可編輯草稿、核可</td><td><code>Views/Tickets/Index.cshtml</code>、<code>wwwroot/js/tickets-app.js</code></td></tr><tr><td>API</td><td>列出、分流、核可、稽核</td><td><code>Controllers/Api/TicketsApiController.cs</code></td></tr><tr><td>規則</td><td>遮罩、呼叫、驗證、是否交給人</td><td><code>Services/TriageService.cs</code></td></tr><tr><td>模型</td><td>先用替身，之後換真實</td><td><code>Services/FakeLlmClient.cs</code></td></tr><tr><td>稽核與評測</td><td>紀錄與評測集</td><td><code>IAuditLog</code>、<code>evals/</code></td></tr></tbody></table><h3>第一週的安排（示意）</h3><table><thead><tr><th>天</th><th>目標</th></tr></thead><tbody><tr><td>1</td><td>拿到 30 封遮罩後的真實來信；手動分類作為標準答案</td></tr><tr><td>2</td><td>用替身跑通整條路；畫面能列出信件、顯示分流結果</td></tr><tr><td>3</td><td>接真實模型（或維持替身）；用 30 封量出第一版正確率與錯誤類型</td></tr><tr><td>4</td><td>加上核可與稽核；請兩位客服試用</td></tr><tr><td>5</td><td>整理數字與觀察，向客戶展示並決定第二條切片</td></tr></tbody></table><h3>之後怎麼長</h3><p>第二條切片通常是「同一條路加一種類別」或「同一類別加更多例外」，而不是新增一整層。</p><h2>業界情境</h2><div class="card"><h3>示意情境：先做資料層的代價</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：兩位工程師接到相同的專案。</p><ul><li><b>甲</b>：先花三週建立完整的資料模型與匯入，之後才發現客戶的來信有 40% 沒有訂單編號，整個設計需要重來。</li><li><b>乙</b>：第一週就用 30 封真實來信做完整一條路，第二天就發現訂單編號缺漏，並在第一次展示時就與客戶討論如何處理。</li></ul></div><h2>常見錯誤</h2><ul><li>把「切片」做成只有畫面的假資料展示。</li><li>第一條切片就挑最難的案例。</li><li>省略稽核與核可，認為「之後再補」。</li><li>用自己編的資料，沒有碰到真實的髒資料。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案：先用一個真實案例，完整做完從「輸入」到「核可」到「記錄」的流程，例如用一份真實發票，走完 AI 擷取欄位、人工確認、登錄系統的全部步驟，而不是先設計完整的流程文件。</p></div><h2>怎麼練</h2><ul><li>替你的專案規劃第一週的垂直切片，每一天都有可展示的產出。</li><li>在 TicketDesk 上新增一個類別（例如 <code>refund</code>），走完一條完整的切片：規則、測試、畫面、評測集。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>在第一週結束時，有一個客戶的某位使用者能親手操作的版本，且使用真實的資料。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>垂直切片（或稱 tracer bullet、walking skeleton）是軟體工程中降低整合風險的通用技巧；在非軟體領域，等同於「先做一個完整的樣品」。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

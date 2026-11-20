@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>稽核紀錄｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>稽核紀錄</h1>
+  <p class="sub">事後能重建「誰、何時、做了什麼、依據什麼」，且不洩漏個資</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>稽核紀錄是對重要動作與決策的不可事後任意修改的記錄：誰操作、何時、做了什麼、系統的建議是什麼、人是否採用或修改。</p><h2>為什麼 FDE 需要它</h2><p>客戶的稽核、資安與法務都會問：「如果出問題，我們怎麼知道發生了什麼？」沒有稽核，AI 系統就是一個黑盒子，無法被信任、也無法被問責。稽核也是你自己的保護：出了爭議時，能證明系統與人的各自行為。</p><h2>怎麼做</h2><h3>記錄什麼</h3><table><thead><tr><th>欄位</th><th>內容</th><th>TicketDesk 對應</th></tr></thead><tbody><tr><td>時間</td><td>事件發生時間（含時區）</td><td><code>At</code></td></tr><tr><td>操作者</td><td>人或系統帳號</td><td><code>Actor</code>（示範為固定值；應接身分系統）</td></tr><tr><td>動作</td><td>triage、approve、reject…</td><td><code>Action</code></td></tr><tr><td>對象</td><td>案件編號</td><td><code>TicketId</code></td></tr><tr><td>決策內容</td><td>分類、優先、信心、是否轉人工、旗標</td><td><code>Detail</code></td></tr><tr><td>人的處置</td><td>是否修改草稿、誰核可</td><td>approve 的 <code>edited=</code></td></tr><tr><td>版本</td><td>模型版本、提示版本、規則版本</td><td>建議加入（目前未實作）</td></tr></tbody></table><h3>不記錄什麼</h3><ul><li>來信原文、個資、金鑰：避免紀錄本身成為洩漏來源。TicketDesk 有測試確認稽核內容不含原始 email（<code>Audit_entry_is_written_without_raw_body</code>）。</li><li>若需要保留原文以便重現，應放在權限受控、有保存期限的獨立儲存。</li></ul><h3>設計原則</h3><ul><li><b>只增不改</b>：紀錄只能新增；修改與刪除要被禁止或另有紀錄。</li><li><b>與業務資料分開</b>：避免被業務操作覆蓋；可考慮寫入不可竄改的儲存或交給客戶的日誌平台。</li><li><b>可查詢</b>：能依案件、操作者、時間查詢；稽核人員能自己查，不必找你。</li><li><b>有保存期限與存取控制</b>：誰能看稽核紀錄本身也要控管。</li><li><b>關聯識別碼</b>：一個請求的所有紀錄可用同一個 ID 串起來。</li><li><b>失敗也要記</b>：模型錯誤、被拒絕、被攔截的事件同樣重要。</li></ul><p>TicketDesk 的稽核只存在記憶體中（重啟就消失），README 已註明；真實專案要持久化。</p><h2>業界情境</h2><div class="card"><h3>示意情境：客戶投訴：「AI 把退款說成已處理」</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：客戶投訴收到的回覆寫著「退款已處理」，實際並未退款。主管要求查明責任。</p><ul><li>稽核紀錄顯示：該草稿由 AI 產生；客服人員 A 在 14:03 核可，未修改；模型版本與提示版本為 v2。</li><li>結論：問題出在提示（草稿不應宣稱已處理）與核可流程（高風險字句未強制檢查）。</li><li>有稽核，討論是針對流程改善，而不是互相指責。</li></ul></div><h2>常見錯誤</h2><ul><li>只記成功，不記失敗。</li><li>紀錄中含原文與個資。</li><li>紀錄可以被應用程式任意修改。</li><li>沒有人知道在哪裡查。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式流程同樣需要軌跡：AI 輔助產出的文件，記錄使用的工具、日期、誰複核；至少留一份「這份是 AI 協助產生、經 X 核對」的標記。</p></div><h2>怎麼練</h2><ul><li>替 TicketDesk 的稽核加上模型與提示版本欄位，並更新測試。</li><li>設計一個稽核查詢畫面：依案件編號與時間範圍查詢，顯示該案完整的決策軌跡。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有稽核設計文件，且稽核人員能用它在 10 分鐘內重建一個案件的處理過程。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>稽核軌跡是金融、醫療、政府系統的標準要求；在版本控制（commit 歷史）與區塊鏈的概念裡也能看到同樣的「只增不改」原則。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.nist.gov/itl/ai-risk-management-framework">NIST AI Risk Management Framework（已讀取）</a></li><li><a href="https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=I0050021&flno=20-1">個人資料保護法第 20-1 條（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

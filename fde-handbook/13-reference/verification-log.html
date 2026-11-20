@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>實測驗證紀錄｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>實測驗證紀錄</h1>
+  <p class="sub">哪些是實際執行過的、哪些只是讀過來源、哪些沒有驗證</p>
+</header>
+<main class="page">
+
+<div class="note">這一頁是對讀者的承諾：標明每一類內容的可信程度。請不要把「沒驗證」的部分當成已驗證的事實。</div>
+<h2>A. 已在作者環境實際執行（Windows，.NET SDK 10 建置 net8.0 專案）</h2><table><thead><tr><th>項目</th><th>結果</th></tr></thead><tbody><tr><td><code>dotnet test</code>（基準專案）</td><td>26 個測試通過：遮罩 5、分流規則 9、民國年 10、評測 2</td></tr><tr><td><code>dotnet test</code>（加入 Lab 3 到 6 的參考解答後）</td><td>43 個測試全數通過；dev 14/18（78%）、holdout 7/8（88%）、未升級案例 0</td></tr><tr><td>網站啟動與 API</td><td>以 curl 驗證：列表、分流、核可、稽核；#1、#5、#6、#8 的分流結果與手冊所述一致</td></tr><tr><td>串流端點</td><td>以 <code>curl -N</code> 驗證逐段輸出與 404（尚未分流）</td></tr><tr><td>Lab 5 後端強制</td><td>以 curl 驗證：需人工且未確認 → 400；已確認 → 成功，稽核含 <code>confirmed</code></td></tr><tr><td>前端 JavaScript</td><td><code>node --check</code> 語法檢查通過（<b>未在瀏覽器實際點擊測試</b>）</td></tr><tr><td>站內連結與頁面</td><td>見本頁底部的檢查摘要</td></tr></tbody></table><h2>B. 讀取過來源（只引用已讀到的內容）</h2><table><thead><tr><th>來源</th><th>用於</th><th>備註</th></tr></thead><tbody><tr><td>a16z〈Forward deployed job titles〉</td><td>FDE 由來與職稱</td><td>作者觀點；日期等細節未引用</td></tr><tr><td>eWeek 報導（Indeed 資料、OpenAI／Anthropic／Cohere 招募）</td><td>招募趨勢數字</td><td>媒體轉述</td></tr><tr><td>Anthropic FDE 職缺（巴黎）與 Palantir FDSE 職缺</td><td>職責描述</td><td>職缺頁可能下架</td></tr><tr><td>Anthropic〈Building effective agents〉</td><td>workflow 與 agent 的區分、簡單優先</td><td>已讀取</td></tr><tr><td>Anthropic 文件：Create strong empirical evaluations</td><td>成功標準與評測方式</td><td>已讀取前段</td></tr><tr><td>OWASP Top 10 for LLM Applications（2025）</td><td>風險清單名稱</td><td>已讀取清單頁</td></tr><tr><td>NIST AI RMF</td><td>框架概述</td><td>已讀取</td></tr><tr><td>全國法規資料庫：個資法與第 20-1 條</td><td>條文重點</td><td>2025 年 11 月修正的施行日期未定，現行文字<b>未能確認</b></td></tr><tr><td>Fortune 對 MIT 報告的報導</td><td>「多數試辦未見成效」的提醒</td><td>媒體轉述；定義與計算方式不明；未讀報告原文</td></tr></tbody></table><h2>C. 沒有驗證（請自行驗證後再使用）</h2><ul><li><code>AnthropicLlmClient</code>：沒有用真實金鑰呼叫過；請求格式、模型名稱與參數請以官方文件為準。</li><li>Vue 畫面（含串流按鈕、核可確認勾選框）：沒有在瀏覽器中實際操作。</li><li>CI 範例（GitHub Actions）：僅為概念示意，未執行。</li><li>MCP 的具體功能與 .NET 對應套件：未實測；本手冊只談設計原則。</li><li>.NET Framework（MVC 5）：只提醒差異，未逐項驗證。</li><li>各供應商的資料保留、訓練政策與區域：未查證；一律以合約與官方文件為準。</li><li>法規：個資法修正後的現行條文與施行日、行業監理規範：未查證；請洽法務。</li><li>所有「示意」數字（客戶情境、成本、節省時數、成功率）：皆為說明用的假設，不是實測或統計。</li></ul><h2>D. 調查後決定不採用的說法</h2><ul><li>「Palantir 內部稱 FDE 為 Delta、另有 Echo」：只在第三方整理中出現，未在第一手資料確認，因此不採用。</li><li>a16z〈Trading margin for moat…〉一文：搜尋結果顯示存在，但嘗試讀取時回傳 404，因此未引用其內容。</li><li>OpenAI 的 FDE 職缺：只找到招募平台的轉述，未找到原始職缺，因此只在調查時參考，未引用為事實。</li></ul><h2>E. 這本手冊的已知限制</h2><ul><li>工具與供應商的功能變動很快，請以官方文件為準。</li><li>多數案例為虛構，可能不符合你的產業現實。</li><li>沒有涵蓋所有產業的法規。</li><li>作者只在一個環境（Windows）測試。</li></ul><h2>F. 站內檢查摘要（2026-11-18）</h2><ul><li>頁面：首頁 1、各區索引 15、內容頁 90，共 106 頁；與 <code>sitemap.js</code> 登記的 90 個內容頁一致，沒有缺漏或多餘。</li><li>以腳本檢查所有站內連結與錨點：0 個失效；HTML 標籤無未閉合或多餘的結尾標籤。</li><li>外部連結 11 個：10 個回應 200；Fortune 的報導對自動請求回應 403（網站阻擋機器人），請用瀏覽器確認。</li><li>檢查只涵蓋連結與標籤結構，<b>沒有</b>在瀏覽器中逐頁目視確認排版。</li></ul>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

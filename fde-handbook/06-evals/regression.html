@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>回歸測試｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>回歸測試</h1>
+  <p class="sub">每次修改都重跑評測，追蹤歷史，避免「修好一個、壞掉三個」</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>回歸測試是在每次變更後，重新執行固定的測試與評測，確認既有的表現沒有變差。對 AI 系統，變更包含：提示、模型版本、規則、資料、程式。</p><h2>為什麼 FDE 需要它</h2><p>AI 系統特別容易發生「局部改善、整體退化」：為了修好一類錯誤，改了提示，卻讓另一類錯誤變多。沒有回歸，你只會在客戶抱怨時才發現。</p><h2>怎麼做</h2><h3>做法</h3><ul><li>把評測放進一般的測試流程：TicketDesk 的評測就是 xUnit 測試，<code>dotnet test</code> 就會執行。</li><li>任何會改變輸出的修改（提示、模型、規則、資料前處理）都要跑評測，並把結果寫進變更說明。</li><li>設定<b>門檻</b>：品質低於門檻、或任何安全底線失敗，就讓建置失敗。</li><li>記錄<b>歷史</b>：每次評測的版本、日期、指標，畫成趨勢；看得到緩慢的退化。</li><li>保留集不隨意使用，避免過度配合。</li></ul><h3>在 TicketDesk 中</h3><pre><code>Assert.Empty(unescalated);                       // 安全底線：不能有漏掉的
+Assert.True((double)correct / total &gt;= 0.70,     // 品質門檻（目前基準約 78%）
+            "dev 正確率低於 70%");</code></pre><h3>真實模型的特別注意</h3><ul><li><b>非確定性</b>：相同輸入可能得到不同輸出。降低隨機性的設定能幫助一致，但不一定完全相同；重要的評測要多跑幾次取平均，並觀察變異。</li><li><b>固定模型版本</b>：使用供應商允許的固定版本識別，並記錄；模型更新就是一次必須回歸的變更。</li><li><b>成本</b>：評測也花錢。小型快速評測每次提交都跑；完整評測每日或發版前跑。</li><li><b>替身與真實並用</b>：替身用於每次提交（快、免費）；真實模型用於發版前與定期。</li></ul><h3>CI 範例（概念示意，未於本手冊實測）</h3><pre><code># 以 GitHub Actions 為例的概念：每次 PR 跑測試與評測
+steps:
+  - uses: actions/checkout@v4
+  - uses: actions/setup-dotnet@v4
+    with: { dotnet-version: '8.0.x' }
+  - run: dotnet test TicketDesk.sln</code></pre><p>實際的版本號與語法請以你所用平台的官方文件為準。</p><h2>業界情境</h2><div class="card"><h3>示意情境：改善語氣，卻漏掉升級</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：為了讓草稿更親切，有人修改了提示。因為沒有回歸，一週後才發現：在特定句型下，模型不再給出較低的信心值，使幾封應該升級給人的信件被放行。</p><ul><li>有回歸：該次修改在 PR 階段就會讓「應升級」的案例失敗，被攔下。</li><li>之後把這幾封信加進評測集，成為永久的保護。</li></ul></div><h2>常見錯誤</h2><ul><li>只在最初驗收時評測，之後再也不跑。</li><li>修改後只看被修的那一類。</li><li>評測結果沒有歷史，無法看趨勢。</li><li>模型更新時沒有跑回歸。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案也應該有回歸：提示範本更新後，用固定的 20 份樣本重跑，檢查重要欄位是否仍正確，並留下紀錄。</p></div><h2>怎麼練</h2><ul><li>在 TicketDesk 把門檻調到 0.85，觀察測試失敗；再想想要怎麼改善而不是調回門檻。</li><li>建立一份評測歷史表：日期、變更內容、正確率、底線結果。</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>每一次變更都有對應的評測紀錄；曾有至少一次回歸測試攔下了有問題的變更。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>回歸測試與持續整合是軟體工程的基礎；在資料科學中等同「模型卡」與監控，在製造中則是首件檢驗與抽檢。</p></div>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>

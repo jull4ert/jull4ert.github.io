@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>POC、試辦、正式上線｜FDE 技能手冊</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<header>
+  <nav id="crumb" aria-label="麵包屑"></nav>
+  <h1>POC、試辦、正式上線</h1>
+  <p class="sub">三個階段的目的、出口條件，以及每一階段該省略什麼</p>
+</header>
+<main class="page">
+<h2>這個技能是什麼</h2><p>把導入分成三個階段：<b>POC</b>（概念驗證）回答「技術上做不做得到」；<b>試辦（Pilot）</b>回答「真實使用者用起來有沒有價值」；<b>正式上線（Production）</b>回答「能不能長期穩定運作」。</p><h2>為什麼 FDE 需要它</h2><p>AI 專案最常見的失敗是在階段之間混淆：把 POC 的展示當成可上線；或在還不知道有沒有價值時就投入正式上線的工程。階段與出口條件，讓客戶與你都知道「現在在驗證什麼」，也讓你有理由在 POC 階段省略重工程。</p><h2>怎麼做</h2><table><thead><tr><th>階段</th><th>要回答的問題</th><th>典型時間</th><th>可以省略</th><th>出口條件（示例）</th></tr></thead><tbody><tr><td>POC</td><td>技術可行嗎？資料夠用嗎？</td><td>1 到 3 週</td><td>登入、效能、完整介面、整合</td><td>在 30 筆真實樣本上，分類正確率達到預先定義的門檻，並確認資料可取得</td></tr><tr><td>試辦</td><td>真實使用者願意用嗎？有價值嗎？</td><td>4 到 8 週</td><td>完整的規模化、全面整合</td><td>一個小團隊實際使用；採用率與時間節省達標；護欄指標為 0</td></tr><tr><td>正式上線</td><td>可長期、穩定、安全地運作嗎？</td><td>依範圍</td><td>（不能省略）</td><td>監控、稽核、權限、備援、交接文件、維運負責人</td></tr></tbody></table><h3>每個階段的產出</h3><ul><li>POC：可行性報告＋可展示的原型＋評測集的初版。</li><li>試辦：使用數據＋使用者回饋＋風險清單＋上線所需的工作清單。</li><li>正式：上線系統＋監控＋交接＋營運手冊（見<a href="../08-adoption/handover-runbook.html">交接與營運手冊</a>）。</li></ul><h3>正式上線前的最小檢查清單</h3><ul><li>有明確的維運負責人（客戶端的人，不是你）。</li><li>有監控與告警；有回復到人工流程的方法。</li><li>個資、權限與稽核已通過客戶的審查。</li><li>評測集與回歸測試可重複執行（見<a href="../06-evals/regression.html">回歸測試</a>）。</li><li>成本上限與預算告警已設定。</li><li>交接文件完成，客戶端有人能操作。</li></ul><h2>業界情境</h2><div class="card"><h3>示意情境：POC 太漂亮，試辦破功</h3><p class="path">以下是虛構的組合情境，用來說明做法；人名、公司與數字都是示意，不是真實客戶。</p><p>虛構情境：某物流公司的 POC 展示時，AI 從貨運單據擷取欄位的準確率看起來接近完美。</p><ul><li>試辦時，真實單據包含手寫修改、傳真品質的掃描、多種版本表單，準確率掉到 70% 左右。</li><li>原因：POC 用的是客戶挑選過的乾淨樣本。</li><li>改進：之後所有 POC 一律由 FDE 自己從系統隨機抽樣，並明確包含「最難的 20%」。</li></ul></div><h2>常見錯誤</h2><ul><li>POC 時就想做到可上線的品質，拖太久。</li><li>用挑過的樣本做 POC。</li><li>沒有事先寫好出口條件，每次都靠「感覺」決定要不要往下。</li><li>跳過試辦直接正式上線，使用者第一次接觸就是全面推出。</li></ul><h2>非程式領域怎麼用</h2><div class="card sw"><h3>非程式領域版</h3><p>非程式專案同樣適用：先在一個小團隊試行新流程（試辦），確認價值與可行，再全面推行；POC 可能只是一份用 AI 輔助完成的樣本文件。</p></div><h2>怎麼練</h2><ul><li>替你的專案寫出三階段的出口條件，每一條都要可量測。</li><li>檢視過去一個專案：它在哪個階段被混淆？</li></ul><h2>可觀察的證據</h2><p>用這些證據判斷自己是否真的會了，而不是「看過」。</p><ul><li>有一份階段計畫，每階段都有出口條件，並被客戶認可。</li></ul><h2>觸類旁通</h2><div class="card proc"><h3>觸類旁通</h3><p>階段式交付與關卡（stage gate）是藥品開發、硬體產品與新創的共通結構：每一關要回答一個特定的問題，通過才投入下一關的成本。</p></div><section class="refs"><h3>參考出處</h3><ul><li><a href="https://www.anthropic.com/engineering/building-effective-agents">Anthropic：Building effective agents（已讀取）</a></li></ul></section>
+</main>
+<footer></footer>
+<script src="../assets/sitemap.js"></script>
+<script src="../assets/nav.js"></script>
+</body>
+</html>
